@@ -3,13 +3,15 @@ import uno
 
 def getInputList(inputSheet, inputGroupName):
     x = 1
-    inputsArray = [0]
+    inputsArray = [[0], [0], [0]]
 
     # The inputs of the desired Input List are iterated into an array.
     # The loop breaks once there are two blank rows in the list.
     while True:
         if inputSheet.getCellByPosition(0, x).getString() == inputGroupName:
-            inputsArray.append(inputSheet.getCellByPosition(1, x).getString())
+            inputsArray[0].append(inputSheet.getCellByPosition(1, x).getString())
+            inputsArray[1].append(inputSheet.getCellByPosition(3, x).CellBackColor)
+            inputsArray[2].append(inputSheet.getCellByPosition(4, x).getString())
         if inputSheet.getCellByPosition(0, x).getString() == "":
             if inputSheet.getCellByPosition(0, x + 1).getString() == "":
                 break
@@ -19,8 +21,10 @@ def getInputList(inputSheet, inputGroupName):
 
 def testItOut(inputSheet, inputsArray):
     x = 1
-    while x < len(inputsArray):
-        inputSheet.getCellByPosition(8, x).setString(inputsArray[x])
+    while x < len(inputsArray[0]):
+        inputSheet.getCellByPosition(8, x).setString(inputsArray[0][x])
+        inputSheet.getCellByPosition(9, x).setString(inputsArray[1][x])
+        inputSheet.getCellByPosition(10, x).setString(inputsArray[2][x])
         x = x + 1
 
 
@@ -32,7 +36,8 @@ def main(*args):
     # Placeholder values.
     inputSheet = model.Sheets.getByName("Input Lists")
     inputGroupName = "Default"
-    inputsArray = [0]
+
+    inputsArray = [[0], [0], [0]]
 
     inputsArray = getInputList(inputSheet, inputGroupName)
     testItOut(inputSheet, inputsArray)
