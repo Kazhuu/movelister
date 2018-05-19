@@ -1,5 +1,4 @@
 import uno
-from com.sun.star.table import CellRangeAddress
 
 
 def getInputList(inputSheet, inputGroupName):
@@ -32,7 +31,7 @@ def main(*args):
     sheet = model.CurrentController.ActiveSheet
     # Placeholder values.
     inputSheet = model.Sheets.getByName("Input Lists")
-    inputGroupName = "Water"
+    inputGroupName = "Default"
     inputsArray = [0]
 
     inputsArray = getInputList(inputSheet, inputGroupName)
