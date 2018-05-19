@@ -1,7 +1,7 @@
 import uno
 from com.sun.star.table import CellRangeAddress
 
-from src import environment
+from movelister import environment
 
 
 def group_rows(sheet, start_row, nb_rows):
