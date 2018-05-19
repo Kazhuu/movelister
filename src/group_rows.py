@@ -1,6 +1,8 @@
 import uno
 from com.sun.star.table import CellRangeAddress
 
+from src import environment
+
 
 def group_rows(sheet, start_row, nb_rows):
     cra = CellRangeAddress()
@@ -13,7 +15,7 @@ def group_rows(sheet, start_row, nb_rows):
 
 def main(*args):
     # Basic things to connect to the document.
-    desktop = XSCRIPTCONTEXT.getDesktop()
+    desktop = environment.getDesktop()
     model = desktop.getCurrentComponent()
     sheet = model.CurrentController.ActiveSheet
     # Placeholder values.
@@ -23,5 +25,4 @@ def main(*args):
     group_rows(sheet, start_row, nb_rows)
 
 
-# Erprted services.
 g_exportedScripts = (main,)
