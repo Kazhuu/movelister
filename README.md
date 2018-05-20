@@ -1,5 +1,5 @@
 # Movelister
-TODO: Write description of the project.
+Movelister is - or will be - a versatile tool for creating various types of in-depth notes about video game character data in a sheet form. This could include simple movelists or other type of tables which map out the limits of a game's potential interactivity.
 
 
 ## Dependancies
@@ -31,8 +31,17 @@ python main.py
 This script should run without the errors. If you see error messages, make sure the socket is open.
 
 ### Windows
-TODO: Write windows dev enviroment setup here.
+To use LibreOffice Calc with a socket open, you have to start LibreOffice using the parameter listed below. For convenience's sake, you might want to include this parameter inside a shortcut that starts LibreOffice.
+```
+--accept="socket,host=localhost,port=2002;urp;StarOffice.ServiceManager"
+```
+It's most convenient to use LibreOffice's own installed version of Python to run any Python scripts so that it can automatically find the important Uno library. In addition, you need to run Movelister-related scripts from the main Movelister directory so that it can find any useful modules related to it as well.
 
+This part of the process can be made a bit faster by writing an own .bat file inside the Movelister main folder that starts main.py with LibreOffice's own Python executable that's usually situated in *LibreOffice 5/Program/*. For example:
+
+```
+..\..\..\..\program\python main.py
+```
 
 ## Resources
 * [Apache OpenOffice Developer's Guide](https://wiki.openoffice.org/wiki/Documentation/DevGuide/OpenOffice.org_Developers_Guide) for main knowledge about OpenOffice UNO (Universal Network Objects) technology and how to use it.
