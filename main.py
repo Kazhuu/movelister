@@ -7,13 +7,12 @@ import os
 import sys
 
 # This is to emulate how LibreOffice adds pythonpath folder to PYTHONPATH where
-# the script is executed. PYTHONPATH is added when executing from the commant
+# the script is executed. PYTHONPATH is added when executing from the command
 # line.
 if __name__ == '__main__':
     sys.path.append(os.path.join(os.path.dirname('__file__'), 'pythonpath'))
 
-from movelister import environment  # nopep8
-from movelister import group  # nopep8
+from movelister import environment, group, inputList, test  # nopep8
 
 
 def kappa(**kwargs):
@@ -24,7 +23,16 @@ def kappa(**kwargs):
     a = 1
     testCell = newSheet.getCellByPosition(1, 1)
     testCell.setString(a)
-    return None
+
+
+def printInputList(**kwargs):
+    model = environment.getDocument(**kwargs)
+    sheet = model.CurrentController.ActiveSheet
+    inputSheet = model.Sheets.getByName("Input Lists")
+    inputGroupName = "Default"
+    inputsArray = [[0], [0], [0]]
+    inputsArray = inputList.getInputList(inputSheet, inputGroupName)
+    test.testItOut(inputSheet, inputsArray)
 
 
 def groupRows(**kwargs):
@@ -35,9 +43,6 @@ def groupRows(**kwargs):
     group.groupRows(sheet, startRow, endRow)
 
 
-# Tuple of exported functions seen by LibreOffice.
-g_exportedScripts = (kappa, groupRows)
-
 # Run when executed from the command line.
 if __name__ == '__main__':
-    groupRows(host='localhost', port=2002)
+    printInputList(host='localhost', port=2002)
