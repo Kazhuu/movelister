@@ -43,9 +43,6 @@ def groupRows(**kwargs):
     group.groupRows(sheet, startRow, endRow)
 
 
-# Tuple of exported functions seen by LibreOffice.
-g_exportedScripts = (kappa, groupRows)
-
 # Run when executed from the command line.
 if __name__ == '__main__':
     printInputList(host='localhost', port=2002)
