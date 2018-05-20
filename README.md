@@ -5,16 +5,10 @@ Movelister is - or will be - a versatile tool for creating various types of in-d
 ## Dependancies
 LibreOffice installation is expected before these. On Windows LibreOffice installation includes Python installation but not on Linux. On Linux you also need to install Python 3 if not already available.
 
-
-### Linux
 On Linux to enable Python for LibreOffice install, if not already. Install following packages:
 ```
 sudo apt install libreoffice-script-provider-python uno-libs3 python3-uno
 ```
-
-### Windows
-TODO: Write needed information about getting started if needed any.
-
 
 ## Setup development environment
 To have a good development environment and with debugging abilities. It's easier first to develop them using separate Python process which then connects to external LibreOffice process. After you are done with the development, you can run working scripts inside of the LibreOffice process. [This Christopher Bourez's blog post](http://christopher5106.github.io/office/2015/12/06/openoffice-libreoffice-automate-your-office-tasks-with-python-macros.html) explains the idea.
