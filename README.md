@@ -17,18 +17,18 @@ TODO: Write needed information about getting started if needed any.
 
 
 ## Setup development environment
-To have a good development environment and with debugging abilities. It's easier first to develop them using separate Python process which then connects to the external LibreOffice process. After you are done with the development, you can run working scripts inside of the LibreOffice process. [This Christopher Bourez's blog post](http://christopher5106.github.io/office/2015/12/06/openoffice-libreoffice-automate-your-office-tasks-with-python-macros.html) explains the idea.
+To have a good development environment and with debugging abilities. It's easier first to develop them using separate Python process which then connects to external LibreOffice process. After you are done with the development, you can run working scripts inside of the LibreOffice process. [This Christopher Bourez's blog post](http://christopher5106.github.io/office/2015/12/06/openoffice-libreoffice-automate-your-office-tasks-with-python-macros.html) explains the idea.
 
 ### Linux
 First start LibreOffice calc process with:
 ```
 libreoffice templates/movelister_template_v1.ods --accept="socket,host=localhost,port=2002;urp;StarOffice.ServiceManager"
 ```
-Then start separate Python process and get access to LibreOffice process using opened socket. Test created connection by running `movelister.py` with:
+Then start separate Python process and get access to LibreOffice process using opened socket. Test created connection by running `main.py` with:
 ```
-python movelister.py
+python main.py
 ```
-This script should run without the errors.
+This script should run without the errors. If you see error messages, make sure the socket is open.
 
 ### Windows
 TODO: Write windows dev enviroment setup here.
