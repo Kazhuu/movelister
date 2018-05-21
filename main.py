@@ -12,15 +12,24 @@ import sys
 if __name__ == '__main__':
     sys.path.append(os.path.join(os.path.dirname('__file__'), 'pythonpath'))
 
-from movelister import environment, group, inputList, test  # nopep8
+from movelister import environment, group, inputList, mechanicsList, test  # nopep8
 
 
 def printInputList(**kwargs):
     model = environment.getDocument(**kwargs)
+
+    # Getting all relevant data from Input Lists sheet.
     inputSheet = model.Sheets.getByName("Input Lists")
     inputGroupName = "Default"
-    inputsArray = inputList.getInputList(inputSheet, inputGroupName)
-    test.testItOut(inputSheet, inputsArray)
+    inputDataArray = inputList.getInputList(inputSheet, inputGroupName)
+
+    # Going to Mechanics list, carving out some space and printing the data.
+    startRow = 2
+    nameField1 = "Test"
+    nameField2 = "Modifier"
+    mechanicsSheet = model.Sheets.getByName("Mechanics Test")
+    mechanicsList.generateActionFull(mechanicsSheet, inputDataArray, nameField1, nameField2, startRow)
+    # test.testItOut(inputSheet, inputDataArray)
 
 
 def groupRows(**kwargs):

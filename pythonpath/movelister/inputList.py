@@ -15,9 +15,8 @@ def getInputList(inputSheet, inputGroupName):
                         break
         x = x + 1
 
-    inputSheet.getCellByPosition(11, 5).setString(startRow)
-    inputSheet.getCellByPosition(11, 6).setString(endRow)
+    # The four attributes for CellRangeByPosition are: left, top, right, bottom.
     range = inputSheet.getCellRangeByPosition(1, startRow, 3, endRow)
 
-    inputsArray = range.getDataArray()
-    return inputsArray
+    inputDataArray = range.getDataArray()
+    return inputDataArray
