@@ -15,19 +15,8 @@ if __name__ == '__main__':
 from movelister import environment, group, inputList, test  # nopep8
 
 
-def kappa(**kwargs):
-    model = environment.getDocument(**kwargs)
-    model.Sheets.insertNewByName("Nojes", 0)
-    newSheet = model.Sheets.getByName("Nojes")
-    newSheet.getCellByPosition(0, 0).setString("Test")
-    a = 1
-    testCell = newSheet.getCellByPosition(1, 1)
-    testCell.setString(a)
-
-
 def printInputList(**kwargs):
     model = environment.getDocument(**kwargs)
-    sheet = model.CurrentController.ActiveSheet
     inputSheet = model.Sheets.getByName("Input Lists")
     inputGroupName = "Default"
     inputsArray = [[0], [0], [0]]
@@ -38,6 +27,7 @@ def printInputList(**kwargs):
 def groupRows(**kwargs):
     model = environment.getDocument(**kwargs)
     sheet = model.CurrentController.ActiveSheet
+    # Placeholder values.
     startRow = 10
     endRow = 20
     group.groupRows(sheet, startRow, endRow)
