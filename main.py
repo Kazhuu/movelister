@@ -19,7 +19,6 @@ def printInputList(**kwargs):
     model = environment.getDocument(**kwargs)
     inputSheet = model.Sheets.getByName("Input Lists")
     inputGroupName = "Default"
-    inputsArray = [[0], [0], [0]]
     inputsArray = inputList.getInputList(inputSheet, inputGroupName)
     test.testItOut(inputSheet, inputsArray)
 

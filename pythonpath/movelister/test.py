@@ -1,11 +1,10 @@
 def testItOut(inputSheet, inputsArray):
 
-    # the cell range has to be exactly the size of the array or you get a runtime error.
-    # I'm not sure how to calculate array length on the fly yet. len() seems a bit off?
-    range = inputSheet.getCellRangeByPosition(11, 1, 13, 32)
+    # The cell range has to be exactly the size of the array or you get a runtime error.
+    range = inputSheet.getCellRangeByPosition(11, 1, 13, len(inputsArray))
     range.setDataArray(inputsArray)
 
-    inputSheet.getCellByPosition(15, 2).setString(len(inputsArray[0][0]))
+    inputSheet.getCellByPosition(15, 2).setString(len(inputsArray))
 
     # while x < len(inputsArray[0][0]):
     # inputSheet.getCellByPosition(8, x + 1).setString(inputsArray[x][0])

@@ -3,17 +3,16 @@ def getInputList(inputSheet, inputGroupName):
     startRow = -1
     endRow = -1
 
-    # The loop iterates through a desired input list to find its coordinates.
-    # The loop breaks once there are two blank rows in the list.
-    while True:
+    # The loop iterates through a desired input list to get its coordinates.
+    # The loop breaks once there are two non-relevant rows or x is over 1000.
+    while x < 1000:
         if inputSheet.getCellByPosition(0, x).getString() == inputGroupName:
                 if startRow == -1:
                     startRow = x
-                if inputSheet.getCellByPosition(0, x + 1).getString() == "":
+                if inputSheet.getCellByPosition(0, x + 1).getString() != inputGroupName:
                     endRow = x
-        if inputSheet.getCellByPosition(0, x).getString() == "":
-            if inputSheet.getCellByPosition(0, x + 1).getString() == "":
-                break
+                    if inputSheet.getCellByPosition(0, x + 2).getString() != inputGroupName:
+                        break
         x = x + 1
 
     inputSheet.getCellByPosition(11, 5).setString(startRow)
