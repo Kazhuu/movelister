@@ -20,3 +20,16 @@ def getInputList(inputSheet, inputGroupName):
 
     inputDataArray = range.getDataArray()
     return inputDataArray
+
+
+def getInputColors(inputSheet, inputDataArray):
+    x = 1
+    inputColors = []
+
+    # Iterate through Results List second column to get a list of colors.
+    while x < len(inputDataArray) + 1:
+        inputColors.append(inputSheet.getCellByPosition(4, x).CellBackColor)
+        x = x + 1
+
+    print(inputColors)
+    return inputColors

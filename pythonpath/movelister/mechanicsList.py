@@ -1,14 +1,15 @@
 from com.sun.star.table import CellRangeAddress
 
 
-def generateAction(mechanicsSheet, inputDataArray, nameField1, nameField2, startRow):
+def generateAction(mechanicsSheet, inputDataArray, inputColors, nameField1, nameField2, startRow):
 
     # Generate empty rows according to Input List length.
     mechanicsSheet.Rows.insertByIndex(startRow, len(inputDataArray) + 1)
 
     # Zip the multi-dimensional inputDataArray into three smaller arrays.
     # However: this seems to make the new array incompatible with setDataArray...
-    inputList, inputColors, inputGroups = zip(*inputDataArray)
+    # Find a solution!
+    inputList, notUseful, inputGroups = zip(*inputDataArray)
     # print(inputList)
 
     # range = mechanicsSheet.getCellRangeByPosition(2, 2, 4, len(inputDataArray) + 1)
@@ -17,7 +18,7 @@ def generateAction(mechanicsSheet, inputDataArray, nameField1, nameField2, start
     # range = mechanicsSheet.getCellRangeByPosition(2, 2, 3, len(inputList2))
     # range.setDataArray(inputList2)
 
-    # Fill columns for name and modifier. Temporary solution?
+    # Fill columns for name and modifier. Temporary solution!!
     nameCell1 = mechanicsSheet.getCellByPosition(0, startRow)
     nameCell1.setString(nameField1)
     nameCell2 = mechanicsSheet.getCellByPosition(1, startRow)
@@ -28,10 +29,16 @@ def generateAction(mechanicsSheet, inputDataArray, nameField1, nameField2, start
     range = mechanicsSheet.getCellRangeByPosition(1, startRow, 1, len(inputList) - 1 + startRow)
     range.fillAuto(0, 1)
 
-    # Fill column for Input List. Temporary solution?
+    # Fill column for Input List. Temporary solution!!
     y = 0
     while y < len(inputList):
         mechanicsSheet.getCellByPosition(2, y + startRow).setString(inputList[y])
+        y = y + 1
+
+    # Test printing out the inputColors array.
+    y = 0
+    while y < len(inputGroups):
+        mechanicsSheet.getCellByPosition(8, y + startRow).setString(inputColors[y])
         y = y + 1
 
     # Add Groups automatically based on data in the inputGroups array.

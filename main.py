@@ -22,13 +22,15 @@ def generateSingleAction(**kwargs):
     inputSheet = model.Sheets.getByName('Input Lists')
     inputGroupName = 'Default'
     inputDataArray = inputList.getInputList(inputSheet, inputGroupName)
+    inputColors = inputList.getInputColors(inputSheet, inputDataArray)
 
     # Go to Mechanics list, carve out some space and print the data.
+    # Note: still incomplete! See MechanicsList.py
     startRow = 2
     nameField1 = 'Test'
     nameField2 = 'Modifier'
     mechanicsSheet = model.Sheets.getByName('Mechanics Test')
-    mechanicsList.generateAction(mechanicsSheet, inputDataArray, nameField1, nameField2, startRow)
+    mechanicsList.generateAction(mechanicsSheet, inputDataArray, inputColors, nameField1, nameField2, startRow)
     # test.testItOut(inputSheet, inputDataArray)
 
 
@@ -42,16 +44,8 @@ def createConditionalFormatting(**kwargs):
     resultsListColors = conditionalFormat.getResultsListColors(resultsSheet, resultsList)
 
     # A function that uses the gathered data and generates the formatting.
+    # Note: still incomplete! See conditionalFormat.py
     conditionalFormat.applyConditionalFormatting(sheet, resultsList, resultsListColors)
-
-
-def groupRows(**kwargs):
-    model = environment.getDocument(**kwargs)
-    sheet = model.CurrentController.ActiveSheet
-    # Placeholder values.
-    startRow = 10
-    endRow = 20
-    group.groupRows(sheet, startRow, endRow)
 
 
 # Run when executed from the command line.

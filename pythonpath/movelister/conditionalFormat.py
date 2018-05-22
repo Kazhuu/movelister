@@ -21,7 +21,7 @@ def getResultsListColors(resultsSheet, resultsList):
     resultsListColors = [0]
 
     # Iterate through Results List second column to get a list of colors.
-    while x < len(resultsList):
+    while x < len(resultsList) + 1:
         resultsListColors.append(resultsSheet.getCellByPosition(1, x).CellBackColor)
         x = x + 1
 
