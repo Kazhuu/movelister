@@ -15,20 +15,20 @@ if __name__ == '__main__':
 from movelister import environment, group, inputList, mechanicsList, test  # nopep8
 
 
-def printInputList(**kwargs):
+def generateSingleAction(**kwargs):
     model = environment.getDocument(**kwargs)
 
-    # Getting all relevant data from Input Lists sheet.
+    # Get all relevant data from Input Lists sheet.
     inputSheet = model.Sheets.getByName("Input Lists")
     inputGroupName = "Default"
     inputDataArray = inputList.getInputList(inputSheet, inputGroupName)
 
-    # Going to Mechanics list, carving out some space and printing the data.
+    # Go to Mechanics list, carve out some space and print the data.
     startRow = 2
     nameField1 = "Test"
     nameField2 = "Modifier"
     mechanicsSheet = model.Sheets.getByName("Mechanics Test")
-    mechanicsList.generateActionFull(mechanicsSheet, inputDataArray, nameField1, nameField2, startRow)
+    mechanicsList.generateAction(mechanicsSheet, inputDataArray, nameField1, nameField2, startRow)
     # test.testItOut(inputSheet, inputDataArray)
 
 
@@ -43,4 +43,4 @@ def groupRows(**kwargs):
 
 # Run when executed from the command line.
 if __name__ == '__main__':
-    printInputList(host='localhost', port=2002)
+    generateSingleAction(host='localhost', port=2002)
