@@ -1,4 +1,5 @@
 from com.sun.star.table import CellRangeAddress
+from movelister import group
 
 
 def generateAction(mechanicsSheet, inputDataArray, inputColors, nameField1, nameField2, startRow):
@@ -11,12 +12,6 @@ def generateAction(mechanicsSheet, inputDataArray, inputColors, nameField1, name
     # Find a solution!
     inputList, notUseful, inputGroups = zip(*inputDataArray)
     # print(inputList)
-
-    # range = mechanicsSheet.getCellRangeByPosition(2, 2, 4, len(inputDataArray) + 1)
-    # range.setDataArray(inputDataArray)
-
-    # range = mechanicsSheet.getCellRangeByPosition(2, 2, 3, len(inputList2))
-    # range.setDataArray(inputList2)
 
     # Fill columns for name and modifier. Temporary solution!!
     nameCell1 = mechanicsSheet.getCellByPosition(0, startRow)
@@ -45,7 +40,7 @@ def generateAction(mechanicsSheet, inputDataArray, inputColors, nameField1, name
     generateGroupsFromArray(mechanicsSheet, inputGroups, startRow)
 
     # Add markings on certain unused phases to show where an animation starts / ends.
-    # to be added...
+    # Needs a code that reads Master Action List beforehand. To be added!
 
 
 def generateGroupsFromArray(mechanicsSheet, inputGroups, startRow):
@@ -61,7 +56,7 @@ def generateGroupsFromArray(mechanicsSheet, inputGroups, startRow):
                 groupEndRow = x
                 if x == len(inputGroups) - 1:
                     groupEndRow = groupEndRow + 1
-                groupRows(mechanicsSheet, groupStartRow + startRow, groupEndRow + startRow - 1)
+                group.groupRows(mechanicsSheet, groupStartRow + startRow, groupEndRow + startRow - 1)
                 groupStartRow = -1
                 currentGroup = -1
         if inputGroups[x] != '':
@@ -71,23 +66,7 @@ def generateGroupsFromArray(mechanicsSheet, inputGroups, startRow):
         x = x + 1
 
     # Test printing out the inputGroups array.
-        y = 0
-        while y < len(inputGroups):
-            mechanicsSheet.getCellByPosition(7, y + startRow).setString(inputGroups[y])
-            y = y + 1
-
-
-def groupRows(mechanicsSheet, groupStartRow, groupEndRow):
-    cra = CellRangeAddress()
-    cra.Sheet = mechanicsSheet.RangeAddress.Sheet
-    cra.StartRow = groupStartRow
-    cra.EndRow = groupEndRow
-    mechanicsSheet.group(cra, 1)
-
-
-def ungroupRows(mechanicsSheet, groupStartRow, groupEndRow):
-    cra = CellRangeAddress()
-    cra.Sheet = mechanicsSheet.RangeAddress.Sheet
-    cra.StartRow = groupStartRow
-    cra.EndRow = groupEndRow
-    mechanicsSheet.ungroup(cra, 1)
+    y = 0
+    while y < len(inputGroups):
+        mechanicsSheet.getCellByPosition(7, y + startRow).setString(inputGroups[y])
+        y = y + 1

@@ -41,9 +41,3 @@ def applyConditionalFormatting(sheet, resultsList, resultsListColors):
     # condition1.value = 1
 
     # conForm.addNew(condition1)
-
-    print('hello')
-    # cra = CellRangeAddress()
-    # cra.StartRow = startRow
-    # cra.EndRow = endRow
-    # sheet.group(cra, 1)

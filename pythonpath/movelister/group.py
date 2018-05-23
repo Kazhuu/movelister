@@ -1,8 +1,17 @@
 from com.sun.star.table import CellRangeAddress
 
 
-def groupRows(sheet, startRow, endRow):
+def groupRows(sheet, groupStartRow, groupEndRow):
     cra = CellRangeAddress()
-    cra.StartRow = startRow
-    cra.EndRow = endRow
+    cra.Sheet = sheet.RangeAddress.Sheet
+    cra.StartRow = groupStartRow
+    cra.EndRow = groupEndRow
     sheet.group(cra, 1)
+
+
+def ungroupRows(sheet, groupStartRow, groupEndRow):
+    cra = CellRangeAddress()
+    cra.Sheet = sheet.RangeAddress.Sheet
+    cra.StartRow = groupStartRow
+    cra.EndRow = groupEndRow
+    sheet.ungroup(cra, 1)
