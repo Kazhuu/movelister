@@ -1,4 +1,5 @@
 from com.sun.star.table import CellRangeAddress
+from com.sun.star.table.TableOrientation import ROWS
 
 
 def groupRows(sheet, groupStartRow, groupEndRow):
@@ -6,7 +7,7 @@ def groupRows(sheet, groupStartRow, groupEndRow):
     cra.Sheet = sheet.RangeAddress.Sheet
     cra.StartRow = groupStartRow
     cra.EndRow = groupEndRow
-    sheet.group(cra, 1)
+    sheet.group(cra, ROWS)
 
 
 def ungroupRows(sheet, groupStartRow, groupEndRow):
@@ -14,4 +15,4 @@ def ungroupRows(sheet, groupStartRow, groupEndRow):
     cra.Sheet = sheet.RangeAddress.Sheet
     cra.StartRow = groupStartRow
     cra.EndRow = groupEndRow
-    sheet.ungroup(cra, 1)
+    sheet.ungroup(cra, ROWS)

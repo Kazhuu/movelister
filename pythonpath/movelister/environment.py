@@ -1,5 +1,4 @@
 import uno
-
 from com.sun.star.connection import NoConnectException
 
 
