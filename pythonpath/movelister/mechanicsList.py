@@ -40,8 +40,7 @@ def generateAction(mechanicsSheet, inputDataArray, inputColors, nameField1, name
     # Add Groups automatically based on data in the inputGroups array.
     generateGroupsFromArray(mechanicsSheet, inputGroups, startRow)
 
-    # Add markings on certain unused phases to show where an animation starts / ends.
-    # Needs a code that reads Master Action List beforehand. To be added!
+    # To do: a function that adds where an Action starts and ends with markings.
 
 
 def generateGroupsFromArray(mechanicsSheet, inputGroups, startRow):

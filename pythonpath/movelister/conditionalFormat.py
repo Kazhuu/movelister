@@ -1,4 +1,6 @@
+import uno
 from com.sun.star.beans import PropertyValue
+from com.sun.star.sheet.ConditionOperator import LESS
 
 
 def getResultsList(resultsSheet):
@@ -16,12 +18,12 @@ def getResultsList(resultsSheet):
     return resultsList
 
 
-def getResultsListColors(resultsSheet, resultsList):
+def getResultsListColors(resultsSheet, listLength):
     x = 1
     resultsListColors = [0]
 
     # Iterate through Results List second column to get a list of colors.
-    while x < len(resultsList) + 1:
+    while x < listLength + 1:
         resultsListColors.append(resultsSheet.getCellByPosition(1, x).CellBackColor)
         x = x + 1
 
@@ -31,11 +33,18 @@ def getResultsListColors(resultsSheet, resultsList):
 def applyConditionalFormatting(sheet, resultsList, resultsListColors):
 
     # Just a test.
-    range = sheet.getCellRangeByPosition(1, 2, 11, 12)
+    range = sheet.getCellRangeByPosition(1, 1, 12, 12)
     conForm = range.ConditionalFormat
 
     print(resultsList)
     print(resultsListColors)
+
+    condition = uno.createUnoStruct("com.sun.star.beans.PropertyValue")
+
+    condition.Name = "Operator"
+    condition.Value = (LESS)
+
+    # conForm.addNew(condition)
 
     # condition1 = PropertyValue()
     # condition1.value = 1
