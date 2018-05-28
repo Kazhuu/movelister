@@ -12,14 +12,16 @@ import sys
 if __name__ == '__main__':
     sys.path.append(os.path.join(os.path.dirname('__file__'), 'pythonpath'))
 
-from movelister import conditionalFormat, delete, environment, group, inputList, mechanicsList, test  # nopep8
+from movelister import conditionalFormat, delete, environment, group, \
+    inputList, mechanicsList, test, sheet  # nopep8
 
 
 def generateSingleAction(**kwargs):
-    model = environment.getDocument(**kwargs)
-    masterSheet = model.Sheets.getByName('Master Action List')
-    inputSheet = model.Sheets.getByName('Input Lists')
-    mechanicsSheet = model.Sheets.getByName('Mechanics Test')
+    sheets = sheet.Sheet(**kwargs)
+
+    masterSheet = sheets.getMasterActionList()
+    inputSheet = sheets.getInputList()
+    mechanicsSheet = sheets.getMasterActionList()
 
     # To do: a function that figures out if a new Action has to be generated in Mechanics List.
     # Also: what position it should be in.
