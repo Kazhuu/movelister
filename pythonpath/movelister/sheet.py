@@ -26,7 +26,7 @@ class Sheet:
     def getInputList(self):
         return self.sheets.getByName(INPUT_LIST_SHEET_NAME)
 
-    def getMasterActionList(self):
+    def getMechanicsList(self):
         return self.sheets.getByName(MECHANICS_LIST_SHEET_NAME)
 
     def getSimultaneousTest(self):

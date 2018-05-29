@@ -13,7 +13,7 @@ if __name__ == '__main__':
     sys.path.append(os.path.join(os.path.dirname('__file__'), 'pythonpath'))
 
 from movelister import conditionalFormat, delete, environment, group, \
-    inputList, mechanicsList, test, sheet  # nopep8
+    inputList, masterList, mechanicsList, test, sheet  # nopep8
 
 
 def generateSingleAction(**kwargs):
@@ -21,7 +21,7 @@ def generateSingleAction(**kwargs):
 
     masterSheet = sheets.getMasterActionList()
     inputSheet = sheets.getInputList()
-    mechanicsSheet = sheets.getMasterActionList()
+    mechanicsSheet = sheets.getMechanicsList()
 
     # To do: a function that figures out if a new Action has to be generated in Mechanics List.
     # Also: what position it should be in.
@@ -35,7 +35,7 @@ def generateSingleAction(**kwargs):
     inputColors = inputList.getInputColors(inputSheet, inputDataArray)
 
     # A function that generates empty rows in Mechanics List and prints the data.
-    # Note: still incomplete! See MechanicsList.py
+    # Note: the data printing part is still incomplete! See MechanicsList.py
     startRow = 2
     nameField1 = 'Test'
     nameField2 = 'Modifier'
@@ -45,12 +45,15 @@ def generateSingleAction(**kwargs):
 
     # To do: a function probably has to re-generate Conditional Formatting after larger operations.
 
+    # To do: the code should generate a Named Range for the animation if we start using those.
+
 
 def deleteSingleAction(**kwargs):
-    model = environment.getDocument(**kwargs)
-    masterSheet = model.Sheets.getByName('Master Action List')
-    inputSheet = model.Sheets.getByName('Input Lists')
-    mechanicsSheet = model.Sheets.getByName('Mechanics Test')
+    sheets = sheet.Sheet(**kwargs)
+
+    masterSheet = sheets.getMasterActionList()
+    inputSheet = sheets.getInputList()
+    mechanicsSheet = sheets.getMechanicsList()
 
     # To do: a function that figures out if an old Action has to be deleted from Mechanics List.
     # Also: what position it's in.
@@ -69,35 +72,35 @@ def deleteSingleAction(**kwargs):
     # To do: a function probably has to re-generate Conditional Formatting after larger operations.
 
 
-def generatePhases(**kwargs):
-    model = environment.getDocument(**kwargs)
-    masterSheet = model.Sheets.getByName('Master Action List')
-    mechanicsSheet = model.Sheets.getByName('Mechanics Test')
+def refreshPhases(**kwargs):
+    sheets = sheet.Sheet(**kwargs)
 
-    # To do: a function that figures out if more phases need to be drawn on Mechanics List.
-    # Also: what position they have to be in.
+    masterSheet = sheets.getMasterActionList()
+    mechanicsSheet = sheets.getMechanicsList()
 
-    # To do: a function that generates three rows per Phase and gives them correct length.
+    # A function that fetches Master Action List to fetch its highest phase number.
+    masterDataArray = masterList.getMasterList(masterSheet)
+    highestPhase = masterList.getHighestPhaseNumber(masterSheet, len(masterDataArray))
 
-    # To do: a function has to generate Data Validation for any new columns that are created.
+    # A function that counts the phases in the Mechanics List.
+    phaseCount = mechanicsList.countPhases(mechanicsSheet)
 
-    # To do: a function has to re-generate Conditional Formatting for the new area.
+    # Afunction that compares the highest known Phase number vs Mechanics List
+    # and determines if new phases have to be added or deleted.
 
+    if highestPhase > phaseCount:
+        mechanicsList.generatePhases(mechanicsSheet, highestPhase, phaseCount)
+    if highestPhase < phaseCount:
+        mechanicsList.deletePhases(mechanicsSheet, highestPhase, phaseCount)
 
-def deletePhases(**kwargs):
-    model = environment.getDocument(**kwargs)
-    masterSheet = model.Sheets.getByName('Master Action List')
-    mechanicsSheet = model.Sheets.getByName('Mechanics Test')
-
-    # To do: a function that figures out if there are redundant phases drawn on Mechanics List.
-
-    delete.deleteColumns(mechanicsSheet, 2, 2)
+    # To do: a function may have to re-generate Conditional Formatting for the sheet.
 
 
 def createConditionalFormatting(**kwargs):
-    model = environment.getDocument(**kwargs)
-    sheet = model.Sheets.getByName('Mechanics Test')
-    resultsSheet = model.Sheets.getByName('Results List')
+    sheets = sheet.Sheet(**kwargs)
+
+    mechanicsSheet = sheets.getMasterActionList()
+    resultsSheet = sheets.getResultsList()
 
     # A function that gets all relevant data from the Results Sheet.
     resultsList = conditionalFormat.getResultsList(resultsSheet)
@@ -105,9 +108,9 @@ def createConditionalFormatting(**kwargs):
 
     # A function that uses the gathered data and generates the formatting.
     # Note: still incomplete! See conditionalFormat.py
-    conditionalFormat.applyConditionalFormatting(sheet, resultsList, resultsListColors)
+    conditionalFormat.applyConditionalFormatting(mechanicsSheet, resultsList, resultsListColors)
 
 
 # Run when executed from the command line.
 if __name__ == '__main__':
-    generateSingleAction(host='localhost', port=2002)
+    refreshPhases(host='localhost', port=2002)

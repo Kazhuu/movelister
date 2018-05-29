@@ -31,5 +31,4 @@ def getInputColors(inputSheet, inputDataArray):
         inputColors.append(inputSheet.getCellByPosition(4, x).CellBackColor)
         x = x + 1
 
-    print(inputColors)
     return inputColors
