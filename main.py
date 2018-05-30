@@ -13,6 +13,7 @@ if __name__ == '__main__':
     sys.path.append(os.path.join(os.path.dirname('__file__'), 'pythonpath'))
 
 from movelister.context import Context  # nopep8
+from movelister.sheet import Sheet  # nopep8
 from movelister import conditionalFormat, delete, group, inputList, masterList, \
     mechanicsList, messageBox, modifierList, sheet, test  # nopep8
 
@@ -22,11 +23,9 @@ if __name__ != '__main__':
 
 
 def generateSingleAction():
-    sheets = sheet.Sheet()
-
-    masterSheet = sheets.getMasterActionList()
-    inputSheet = sheets.getInputList()
-    mechanicsSheet = sheets.getMechanicsList()
+    masterSheet = Sheet.getMasterActionList()
+    inputSheet = Sheet.getInputList()
+    mechanicsSheet = Sheet.getMechanicsList()
 
     # To do: a function that figures out if a new Action has to be generated in Mechanics List.
     # Also: what position it should be in.
@@ -52,11 +51,9 @@ def generateSingleAction():
 
 
 def deleteSingleAction():
-    sheets = sheet.Sheet()
-
-    masterSheet = sheets.getMasterActionList()
-    inputSheet = sheets.getInputList()
-    mechanicsSheet = sheets.getMechanicsList()
+    masterSheet = Sheet.getMasterActionList()
+    inputSheet = Sheet.getInputList()
+    mechanicsSheet = Sheet.getMechanicsList()
 
     # To do: a function that figures out if an old Action has to be deleted from Mechanics List.
     # Also: what position it's in.
@@ -76,9 +73,8 @@ def deleteSingleAction():
 
 
 def refreshPhases():
-    sheets = sheet.Sheet()
-    masterSheet = sheets.getMasterActionList()
-    mechanicsSheet = sheets.getMechanicsList()
+    masterSheet = Sheet.getMasterActionList()
+    mechanicsSheet = Sheet.getMechanicsList()
 
     # A function that fetches Master Action List to fetch its highest phase number.
     # To do: to be more flexible, the code should also take into account if the high phase numbers
@@ -102,9 +98,7 @@ def refreshPhases():
 
 
 def refreshModifiers():
-    sheets = sheet.Sheet()
-
-    modifierSheet = sheets.getModifierList()
+    modifierSheet = Sheet.getModifierList()
 
     # A function that creates a Data Array of the whole Modifier List.
     # A separate array is created for the cell background color data.
@@ -123,10 +117,8 @@ def refreshModifiers():
 
 
 def createConditionalFormatting():
-    sheets = sheet.Sheet()
-
-    mechanicsSheet = sheets.getMasterActionList()
-    resultsSheet = sheets.getResultsList()
+    mechanicsSheet = Sheet.getMasterActionList()
+    resultsSheet = Sheet.getResultsList()
 
     # A function that gets all relevant data from the Results Sheet.
     resultsList = conditionalFormat.getResultsList(resultsSheet)
@@ -140,4 +132,4 @@ def createConditionalFormatting():
 # Run when executed from the command line.
 if __name__ == '__main__':
     Context.setup(host='localhost', port=2002)
-    refreshPhases()
+    generateSingleAction()
