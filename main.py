@@ -13,7 +13,7 @@ if __name__ == '__main__':
     sys.path.append(os.path.join(os.path.dirname('__file__'), 'pythonpath'))
 
 from movelister import conditionalFormat, delete, environment, group, \
-    inputList, masterList, mechanicsList, messageBox, test, sheet  # nopep8
+    inputList, masterList, mechanicsList, messageBox, modifierList, sheet, test  # nopep8
 
 
 def generateSingleAction(**kwargs):
@@ -32,16 +32,14 @@ def generateSingleAction(**kwargs):
 
     inputGroupName = 'Default'
     inputDataArray = inputList.getInputList(inputSheet, inputGroupName)
-    inputColors = inputList.getInputColors(inputSheet, inputDataArray)
+    inputColors = inputList.getInputColors(inputSheet, len(inputDataArray))
 
     # A function that generates empty rows in Mechanics List and prints the data.
     # Note: the data printing part is still incomplete! See MechanicsList.py
     startRow = 2
     nameField1 = 'Test'
     nameField2 = 'Modifier'
-
     mechanicsList.generateAction(mechanicsSheet, inputDataArray, inputColors, nameField1, nameField2, startRow)
-    # test.testItOut(inputSheet, inputDataArray)
 
     # To do: a function probably has to re-generate Conditional Formatting after larger operations.
 
@@ -79,6 +77,8 @@ def refreshPhases(**kwargs):
     mechanicsSheet = sheets.getMechanicsList()
 
     # A function that fetches Master Action List to fetch its highest phase number.
+    # To do: to be more flexible, the code should also take into account if the high phase numbers
+    # are actually USED at all in the Mechanics List.
     masterDataArray = masterList.getMasterList(masterSheet)
     highestPhase = masterList.getHighestPhaseNumber(masterSheet, len(masterDataArray)) + 1
 
@@ -95,6 +95,27 @@ def refreshPhases(**kwargs):
         mechanicsList.deletePhases(mechanicsSheet, highestPhase, phaseCount, **kwargs)
 
     # To do: a function may have to re-generate Conditional Formatting for the sheet.
+
+
+def refreshModifiers(**kwargs):
+    sheets = sheet.Sheet(**kwargs)
+
+    modifierSheet = sheets.getModifierList()
+
+    # A function that creates a Data Array of the whole Modifier List.
+    # A separate array is created for the cell background color data.
+    modifierDataArray = modifierList.getModifierList(modifierSheet)
+    modifierColors = modifierList.getModifierListColors(modifierSheet, len(modifierDataArray))
+
+    print(modifierDataArray)
+    print(modifierColors)
+
+    # To do: compare this data to the Modifiers columns in Master Action List.
+
+    # To do: delete unnecessary Modifier columns or add necessary Modifier Columns
+    # in Master Action List.
+
+    # To do: color the cell background of the columns if something was created.
 
 
 def createConditionalFormatting(**kwargs):

@@ -10,15 +10,15 @@ def createMessage(type, titleText, messageText, **kwargs):
     model = environment.getDocument(**kwargs)
     window = model.CurrentController.Frame.ContainerWindow
 
-    if type == "OK":
+    if type == 'OK':
         box = window.getToolkit().createMessageBox(window, MESSAGEBOX,  BUTTONS_OK, titleText, messageText)
-    if type == "YES_NO":
+    if type == 'YES_NO':
         box = window.getToolkit().createMessageBox(window, MESSAGEBOX,  BUTTONS_YES_NO, titleText, messageText)
 
     result = box.execute()
     if result == OK:
-        return "OK"
+        return 'OK'
     if result == YES:
-        return "YES"
+        return 'YES'
     if result == NO:
-        return "NO"
+        return 'NO'

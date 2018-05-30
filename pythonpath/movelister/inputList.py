@@ -22,12 +22,12 @@ def getInputList(inputSheet, inputGroupName):
     return inputDataArray
 
 
-def getInputColors(inputSheet, inputDataArray):
+def getInputColors(inputSheet, listLength):
     x = 1
     inputColors = []
 
     # Iterate through Results List second column to get a list of colors.
-    while x < len(inputDataArray) + 1:
+    while x < listLength + 1:
         inputColors.append(inputSheet.getCellByPosition(4, x).CellBackColor)
         x = x + 1
 

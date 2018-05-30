@@ -76,9 +76,6 @@ def generatePhases(mechanicsSheet, highestPhase, phaseCount):
     startCol = phaseCount * 3 + 3
     amount = (highestPhase - phaseCount) * 3
 
-    print(amount)
-    print(startCol)
-
     mechanicsSheet.Columns.insertByIndex(startCol, amount)
 
     # A loop that generates three Columns per phase.
@@ -109,13 +106,13 @@ def generatePhases(mechanicsSheet, highestPhase, phaseCount):
 def deletePhases(mechanicsSheet, highestPhase, phaseCount, **kwargs):
     amount = (phaseCount - highestPhase) * 3
     startCol = (phaseCount - ((amount / 3) - 1)) * 3
-    titleText = "Warning:"
-    messageText = "Phase columns are about to be deleted and data may become lost. Do you want to continue?"
+    titleText = 'Warning:'
+    messageText = 'Phase columns are about to be deleted and data may become lost. Do you want to continue?'
 
     # A messagebox warning user that some data may become lost.
-    result = messageBox.createMessage("YES_NO", titleText, messageText, **kwargs)
+    result = messageBox.createMessage('YES_NO', titleText, messageText, **kwargs)
 
-    if result == "YES":
+    if result == 'YES':
         delete.deleteColumns(mechanicsSheet, startCol, amount)
 
 
@@ -125,7 +122,7 @@ def countPhases(mechanicsSheet):
     # A function that counts the phases in the Mechanics List.
     # The code is inflexible so far: it counts phases using the position of first non-Phase column.
     while x < 50:
-        if mechanicsSheet.getCellByPosition(x, 0).getString() == "Notes 1":
+        if mechanicsSheet.getCellByPosition(x, 0).getString() == 'Notes 1':
             break
         x = x + 1
 
