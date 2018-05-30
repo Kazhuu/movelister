@@ -3,45 +3,18 @@ from com.sun.star.beans import PropertyValue
 from com.sun.star.sheet.ConditionOperator import LESS
 
 
-def getResultsList(resultsSheet):
-    x = 1
-    resultsList = [0]
+def applyConditionalFormatting(sheet, resultsDataArray, resultsListColors):
 
-    # Iterate through Results List first column to get a list of Results.
-    while x < 100:
-        if resultsSheet.getCellByPosition(0, x).getString() != '':
-            resultsList.append(resultsSheet.getCellByPosition(0, x).getString())
-        elif resultsSheet.getCellByPosition(0, x + 1).getString() == '':
-                break
-        x = x + 1
-
-    return resultsList
-
-
-def getResultsListColors(resultsSheet, listLength):
-    x = 1
-    resultsListColors = [0]
-
-    # Iterate through Results List second column to get a list of colors.
-    while x < listLength + 1:
-        resultsListColors.append(resultsSheet.getCellByPosition(1, x).CellBackColor)
-        x = x + 1
-
-    return resultsListColors
-
-
-def applyConditionalFormatting(sheet, resultsList, resultsListColors):
-
-    # Just a test.
+    # To do: finish this function. It does nothing so far.
     range = sheet.getCellRangeByPosition(1, 1, 12, 12)
     conForm = range.ConditionalFormat
 
-    print(resultsList)
+    print(resultsDataArray)
     print(resultsListColors)
 
-    condition = uno.createUnoStruct("com.sun.star.beans.PropertyValue")
+    condition = uno.createUnoStruct('com.sun.star.beans.PropertyValue')
 
-    condition.Name = "Operator"
+    condition.Name = 'Operator'
     condition.Value = (LESS)
 
     # conForm.addNew(condition)
@@ -50,3 +23,13 @@ def applyConditionalFormatting(sheet, resultsList, resultsListColors):
     # condition1.value = 1
 
     # conForm.addNew(condition1)
+
+
+def removeConditionalFormatting(sheet):
+    print('Nothing here yet.')
+    # To do: a function that deletes all existing Conditional Formatting in a sheet.
+
+    # Explanation: making changes to a document usually fractures Conditional Formatting into many small ranges.
+    # Having to deal with dozens or hundreds of small ranges slows down some LibreOffice functions a LOT.
+    # Deleting all the ranges and then programmatically creating one intact big range is one way to optimize,
+    # and it should probably be done after every large change in the file.

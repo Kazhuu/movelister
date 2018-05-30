@@ -1,6 +1,6 @@
 class Singleton(object):
     """
-    Singleton metaclass fot creating singleton objects.
+    Singleton metaclass for creating singleton objects.
     """
     instances = {}
 

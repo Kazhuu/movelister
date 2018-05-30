@@ -15,7 +15,7 @@ if __name__ == '__main__':
 from movelister.context import Context  # nopep8
 from movelister.sheet import Sheet  # nopep8
 from movelister import conditionalFormat, delete, group, inputList, masterList, \
-    mechanicsList, messageBox, modifierList, sheet, test  # nopep8
+    mechanicsList, messageBox, modifierList, resultsList, test  # nopep8
 
 # Setup context automatically when macro is run from the LibreOffice.
 if __name__ != '__main__':
@@ -121,15 +121,15 @@ def createConditionalFormatting():
     resultsSheet = Sheet.getResultsList()
 
     # A function that gets all relevant data from the Results Sheet.
-    resultsList = conditionalFormat.getResultsList(resultsSheet)
-    resultsListColors = conditionalFormat.getResultsListColors(resultsSheet, len(resultsList))
+    resultsDataArray = resultsList.getResultsList(resultsSheet)
+    resultsListColors = resultsList.getResultsListColors(resultsSheet, len(resultsDataArray))
 
     # A function that uses the gathered data and generates the formatting.
     # Note: still incomplete! See conditionalFormat.py
-    conditionalFormat.applyConditionalFormatting(mechanicsSheet, resultsList, resultsListColors)
+    conditionalFormat.applyConditionalFormatting(mechanicsSheet, resultsDataArray, resultsListColors)
 
 
 # Run when executed from the command line.
 if __name__ == '__main__':
     Context.setup(host='localhost', port=2002)
-    generateSingleAction()
+    createConditionalFormatting()
