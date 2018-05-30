@@ -3,11 +3,11 @@ from com.sun.star.awt.MessageBoxButtons import BUTTONS_OK, BUTTONS_OK_CANCEL, BU
  BUTTONS_YES_NO_CANCEL, BUTTONS_RETRY_CANCEL, BUTTONS_ABORT_IGNORE_RETRY
 from com.sun.star.awt.MessageBoxResults import OK, YES, NO, CANCEL
 
-from movelister import environment
+from movelister.context import Context
 
 
-def createMessage(type, titleText, messageText, **kwargs):
-    model = environment.getDocument(**kwargs)
+def createMessage(type, titleText, messageText):
+    model = Context.getDocument()
     window = model.CurrentController.Frame.ContainerWindow
 
     if type == 'OK':

@@ -103,14 +103,14 @@ def generatePhases(mechanicsSheet, highestPhase, phaseCount):
         x = x + 1
 
 
-def deletePhases(mechanicsSheet, highestPhase, phaseCount, **kwargs):
+def deletePhases(mechanicsSheet, highestPhase, phaseCount):
     amount = (phaseCount - highestPhase) * 3
     startCol = (phaseCount - ((amount / 3) - 1)) * 3
     titleText = 'Warning:'
     messageText = 'Phase columns are about to be deleted and data may become lost. Do you want to continue?'
 
     # A messagebox warning user that some data may become lost.
-    result = messageBox.createMessage('YES_NO', titleText, messageText, **kwargs)
+    result = messageBox.createMessage('YES_NO', titleText, messageText)
 
     if result == 'YES':
         delete.deleteColumns(mechanicsSheet, startCol, amount)

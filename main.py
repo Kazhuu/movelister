@@ -12,12 +12,17 @@ import sys
 if __name__ == '__main__':
     sys.path.append(os.path.join(os.path.dirname('__file__'), 'pythonpath'))
 
-from movelister import conditionalFormat, delete, environment, group, \
-    inputList, masterList, mechanicsList, messageBox, modifierList, sheet, test  # nopep8
+from movelister.context import Context  # nopep8
+from movelister import conditionalFormat, delete, group, inputList, masterList, \
+    mechanicsList, messageBox, modifierList, sheet, test  # nopep8
+
+# Setup context automatically when macro is run from the LibreOffice.
+if __name__ != '__main__':
+    Context.setup()
 
 
-def generateSingleAction(**kwargs):
-    sheets = sheet.Sheet(**kwargs)
+def generateSingleAction():
+    sheets = sheet.Sheet()
 
     masterSheet = sheets.getMasterActionList()
     inputSheet = sheets.getInputList()
@@ -46,8 +51,8 @@ def generateSingleAction(**kwargs):
     # To do: the code should generate a Named Range for the animation if we start using those.
 
 
-def deleteSingleAction(**kwargs):
-    sheets = sheet.Sheet(**kwargs)
+def deleteSingleAction():
+    sheets = sheet.Sheet()
 
     masterSheet = sheets.getMasterActionList()
     inputSheet = sheets.getInputList()
@@ -70,9 +75,8 @@ def deleteSingleAction(**kwargs):
     # To do: a function probably has to re-generate Conditional Formatting after larger operations.
 
 
-def refreshPhases(**kwargs):
-    sheets = sheet.Sheet(**kwargs)
-
+def refreshPhases():
+    sheets = sheet.Sheet()
     masterSheet = sheets.getMasterActionList()
     mechanicsSheet = sheets.getMechanicsList()
 
@@ -92,13 +96,13 @@ def refreshPhases(**kwargs):
     if highestPhase > phaseCount:
         mechanicsList.generatePhases(mechanicsSheet, highestPhase, phaseCount)
     if highestPhase < phaseCount:
-        mechanicsList.deletePhases(mechanicsSheet, highestPhase, phaseCount, **kwargs)
+        mechanicsList.deletePhases(mechanicsSheet, highestPhase, phaseCount)
 
     # To do: a function may have to re-generate Conditional Formatting for the sheet.
 
 
-def refreshModifiers(**kwargs):
-    sheets = sheet.Sheet(**kwargs)
+def refreshModifiers():
+    sheets = sheet.Sheet()
 
     modifierSheet = sheets.getModifierList()
 
@@ -118,8 +122,8 @@ def refreshModifiers(**kwargs):
     # To do: color the cell background of the columns if something was created.
 
 
-def createConditionalFormatting(**kwargs):
-    sheets = sheet.Sheet(**kwargs)
+def createConditionalFormatting():
+    sheets = sheet.Sheet()
 
     mechanicsSheet = sheets.getMasterActionList()
     resultsSheet = sheets.getResultsList()
@@ -135,4 +139,5 @@ def createConditionalFormatting(**kwargs):
 
 # Run when executed from the command line.
 if __name__ == '__main__':
-    refreshPhases(host='localhost', port=2002)
+    Context.setup(host='localhost', port=2002)
+    refreshPhases()

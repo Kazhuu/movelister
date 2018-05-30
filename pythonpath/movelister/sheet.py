@@ -1,4 +1,4 @@
-from movelister import environment
+from movelister.context import Context
 
 
 MASTER_ACTION_LIST_SHEET_NAME = 'Master Action List'
@@ -17,8 +17,8 @@ class Sheet:
     document.
     """
 
-    def __init__(self, **kwargs):
-        self.sheets = environment.getDocument(**kwargs).Sheets
+    def __init__(self):
+        self.sheets = Context.getDocument().Sheets
 
     def getMasterActionList(self):
         return self.sheets.getByName(MASTER_ACTION_LIST_SHEET_NAME)
