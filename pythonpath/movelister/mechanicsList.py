@@ -1,6 +1,6 @@
 from com.sun.star.table import CellRangeAddress
 
-from movelister import group, delete
+from movelister import group, delete, messageBox
 
 
 def generateAction(mechanicsSheet, inputDataArray, inputColors, nameField1, nameField2, startRow):
@@ -106,13 +106,17 @@ def generatePhases(mechanicsSheet, highestPhase, phaseCount):
         x = x + 1
 
 
-def deletePhases(mechanicsSheet, highestPhase, phaseCount):
-    startCol = phaseCount * 3
+def deletePhases(mechanicsSheet, highestPhase, phaseCount, **kwargs):
     amount = (phaseCount - highestPhase) * 3
+    startCol = (phaseCount - ((amount / 3) - 1)) * 3
+    titleText = "Warning:"
+    messageText = "Phase columns are about to be deleted and data may become lost. Do you want to continue?"
 
-    # To do: a messagebox warning user that some data may become lost.
+    # A messagebox warning user that some data may become lost.
+    result = messageBox.createMessage("YES_NO", titleText, messageText, **kwargs)
 
-    delete.deleteColumns(mechanicsSheet, startCol, amount)
+    if result == "YES":
+        delete.deleteColumns(mechanicsSheet, startCol, amount)
 
 
 def countPhases(mechanicsSheet):

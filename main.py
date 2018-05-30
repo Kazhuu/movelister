@@ -13,7 +13,7 @@ if __name__ == '__main__':
     sys.path.append(os.path.join(os.path.dirname('__file__'), 'pythonpath'))
 
 from movelister import conditionalFormat, delete, environment, group, \
-    inputList, masterList, mechanicsList, test, sheet  # nopep8
+    inputList, masterList, mechanicsList, messageBox, test, sheet  # nopep8
 
 
 def generateSingleAction(**kwargs):
@@ -80,18 +80,19 @@ def refreshPhases(**kwargs):
 
     # A function that fetches Master Action List to fetch its highest phase number.
     masterDataArray = masterList.getMasterList(masterSheet)
-    highestPhase = masterList.getHighestPhaseNumber(masterSheet, len(masterDataArray))
+    highestPhase = masterList.getHighestPhaseNumber(masterSheet, len(masterDataArray)) + 1
 
     # A function that counts the phases in the Mechanics List.
     phaseCount = mechanicsList.countPhases(mechanicsSheet)
 
-    # Afunction that compares the highest known Phase number vs Mechanics List
-    # and determines if new phases have to be added or deleted.
-
+    # Comparing the highest known Phase number in Master Action List vs Mechanics List phase number
+    # and determining if new phases have to be added or deleted.
+    if highestPhase == phaseCount:
+        print('No need to add or delete phases.')
     if highestPhase > phaseCount:
         mechanicsList.generatePhases(mechanicsSheet, highestPhase, phaseCount)
     if highestPhase < phaseCount:
-        mechanicsList.deletePhases(mechanicsSheet, highestPhase, phaseCount)
+        mechanicsList.deletePhases(mechanicsSheet, highestPhase, phaseCount, **kwargs)
 
     # To do: a function may have to re-generate Conditional Formatting for the sheet.
 
