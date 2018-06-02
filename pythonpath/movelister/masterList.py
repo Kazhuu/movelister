@@ -1,4 +1,4 @@
-from movelister import loop
+from movelister import loop, messageBox
 
 
 def getMasterList(masterSheet):
@@ -22,6 +22,7 @@ def getHighestPhaseNumber(masterSheet, listLength):
     x = -1
     phase = 0
     check = -1
+    phaseCol = loop.getColumnLocation(masterSheet, 'Phase')
 
     # The loop iterates through the Phase column and finds the highest number in sequence.
     # Warning: loop cannot find high phase numbers that are out of sequence.
@@ -30,9 +31,12 @@ def getHighestPhaseNumber(masterSheet, listLength):
     # (as indicated by the Modifiers columns) so it doesn't do everything it's supposed to yet.
     while x <= listLength:
         x = x + 1
-        if masterSheet.getCellByPosition(3, x).getValue() == phase:
+        if masterSheet.getCellByPosition(phaseCol, x).getValue() == phase:
             phase = phase + 1
             x = -1
 
-    phase = phase - 1
     return(phase)
+
+
+def fixModifiers(masterSheet, modifierDataArray):
+    print("TO DO")

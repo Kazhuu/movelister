@@ -80,9 +80,10 @@ def refreshPhases():
     # To do: to be more flexible, the code should also take into account if the high phase numbers
     # are actually USED at all in the Mechanics List.
     masterDataArray = masterList.getMasterList(masterSheet)
-    highestPhase = masterList.getHighestPhaseNumber(masterSheet, len(masterDataArray)) + 1
+    highestPhase = masterList.getHighestPhaseNumber(masterSheet, len(masterDataArray))
 
     # A function that counts the phases in the Mechanics List.
+    # One is subtracted from result to account for the three "status" columns at the start.
     phaseCount = mechanicsList.countPhases(mechanicsSheet)
 
     # Comparing the highest known Phase number in Master Action List vs Mechanics List phase number
@@ -103,10 +104,10 @@ def refreshModifiers():
     # A function that creates a Data Array of the whole Modifier List.
     # A separate array is created for the cell background color data.
     modifierDataArray = modifierList.getModifierList(modifierSheet)
-    modifierColors = modifierList.getModifierListColors(modifierSheet, len(modifierDataArray))
+    modifierListColors = modifierList.getModifierListColors(modifierSheet, len(modifierDataArray))
 
     print(modifierDataArray)
-    print(modifierColors)
+    print(modifierListColors)
 
     # To do: compare this data to the Modifiers columns in Master Action List.
 
@@ -132,4 +133,4 @@ def createConditionalFormatting():
 # Run when executed from the command line.
 if __name__ == '__main__':
     Context.setup(host='localhost', port=2002)
-    createConditionalFormatting()
+    refreshPhases()

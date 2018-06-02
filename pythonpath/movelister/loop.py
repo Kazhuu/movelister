@@ -1,3 +1,25 @@
+from movelister import messageBox
+
+
+def getColumnLocation(sheet, columnName):
+    x = -1
+    column = -1
+
+    # The loop iterates through the row 0 of chosen List to find where a certain Column is.
+    while x < 40:
+        x = x + 1
+        if sheet.getCellByPosition(x, 0).getString() == columnName:
+            column = x
+            break
+
+    # Error message if it wasn't found.
+    if column == - 1:
+        messageBox.createMessage('OK', 'Warning:', "Program couldn't find the column " + columnName + '.')
+        exit()
+
+    return column
+
+
 def getEndOfList(sheet):
     x = 1
     endRow = -1

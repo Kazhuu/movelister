@@ -1,6 +1,6 @@
 from com.sun.star.table import CellRangeAddress
 
-from movelister import group, delete, messageBox
+from movelister import delete, group, loop, messageBox
 
 
 def generateAction(mechanicsSheet, inputDataArray, inputColors, nameField1, nameField2, startRow):
@@ -73,15 +73,20 @@ def generateGroupsFromArray(mechanicsSheet, inputGroups, startRow):
 
 
 def generatePhases(mechanicsSheet, highestPhase, phaseCount):
-    startCol = phaseCount * 3 + 3
+    phasesStart = loop.getColumnLocation(mechanicsSheet, '> Phase 0 result') - 1
     amount = (highestPhase - phaseCount) * 3
+    startCol = phasesStart + ((phaseCount + 1) * 3)
+    str1 = '> Phase '
+    str2 = ' result'
 
+    print(startCol)
+    print(amount)
     mechanicsSheet.Columns.insertByIndex(startCol, amount)
 
     # A loop that generates three Columns per phase.
     # It also generates specific details for each Column.
     phasePart = 0
-    loop = 1
+    loopC = 1
     x = 0
     while x < amount:
         if phasePart == 0:
@@ -90,8 +95,7 @@ def generatePhases(mechanicsSheet, highestPhase, phaseCount):
         if phasePart == 1:
             # mechanicsSheet.getColumns().getByIndex(startCol + x).OptimalWidth = 1
             mechanicsSheet.getColumns().getByIndex(startCol + x).Width = 4700
-            mechanicsSheet.getCellByPosition(startCol + x, 0).setString('Phase ' + str(phaseCount + loop) + ' result')
-            # mechanicsSheet.getCellByPosition(startCol + x, 0).getCellAddress().Column.Width = 1
+            mechanicsSheet.getCellByPosition(startCol + x, 0).setString(str1 + str(phaseCount + loopC) + str2)
             # To do: Add Data Validation for Actions on this column.
         if phasePart == 2:
             mechanicsSheet.getColumns().getByIndex(startCol + x).Width = 2000
@@ -99,13 +103,14 @@ def generatePhases(mechanicsSheet, highestPhase, phaseCount):
         phasePart = phasePart + 1
         if phasePart > 2:
             phasePart = 0
-            loop = loop + 1
+            loopC = loopC + 1
         x = x + 1
 
 
 def deletePhases(mechanicsSheet, highestPhase, phaseCount):
+    phasesStart = loop.getColumnLocation(mechanicsSheet, '> Phase 0 result') - 1
     amount = (phaseCount - highestPhase) * 3
-    startCol = (phaseCount - ((amount / 3) - 1)) * 3
+    startCol = phasesStart + (((phaseCount + 1) * 3)) - (amount)
     titleText = 'Warning:'
     messageText = 'Phase columns are about to be deleted and data may become lost. Do you want to continue?'
 
@@ -117,15 +122,11 @@ def deletePhases(mechanicsSheet, highestPhase, phaseCount):
 
 
 def countPhases(mechanicsSheet):
-    x = 0
-
-    # A function that counts the phases in the Mechanics List.
-    # The code is inflexible so far: it counts phases using the position of first non-Phase column.
-    while x < 50:
-        if mechanicsSheet.getCellByPosition(x, 0).getString() == 'Notes 1':
-            break
-        x = x + 1
+    # Mechanics Sheet top row is iterated through twice to figure out how many columns are taken by Phases.
+    phasesStart = loop.getColumnLocation(mechanicsSheet, '> Phase 0 result')
+    phasesEnd = loop.getColumnLocation(mechanicsSheet, 'Notes 1')
 
     # Small math operation to get the actual number of phases.
-    x = (x / 3) - 1
-    return x
+    phaseNum = (phasesEnd - phasesStart - 2) / 3
+    print(phaseNum)
+    return phaseNum
