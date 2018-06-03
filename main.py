@@ -26,6 +26,7 @@ def generateMechanicsList():
     masterSheet = Sheet.getMasterActionList()
     inputSheet = Sheet.getInputList()
     mechanicsSheet = Sheet.getMechanicsList()
+    modifierSheet = Sheet.getModifierList()
 
     # A very general function that creates / refreshes full mechanics list up to date with a single button.
     # If the project has multiple views / Mechanics Lists, there would probably be some drop down menu
@@ -39,6 +40,8 @@ def generateMechanicsList():
     # The code goes through Master Action List and makes a "projection" of what the Mechanics List should
     # look like. It's a multi-dimensional array where one part lists how many rows a single animation takes.
     # (Based on data in Input List). Other part list the action name and modifier name.
+
+    masterList.getMasterListProjection(masterSheet, modifierSheet)
 
     # TO DO: the code creates a new Array which is eventually pasted on mechanicsList, replacing it
     # entirely in a single swoop. (It's faster to do it like this than generate row-by-row.) The wideness
@@ -183,4 +186,4 @@ def createConditionalFormatting():
 # Run when executed from the command line.
 if __name__ == '__main__':
     Context.setup(host='localhost', port=2002)
-    refreshPhases()
+    generateMechanicsList()
