@@ -12,10 +12,10 @@ import sys
 if __name__ == '__main__':
     sys.path.append(os.path.join(os.path.dirname('__file__'), 'pythonpath'))
 
-from movelister.context import Context  # nopep8
-from movelister.sheet import Sheet  # nopep8
+from movelister.context import Context  # noqa
+from movelister.sheet import Sheet  # noqa
 from movelister import conditionalFormat, delete, group, inputList, masterList, \
-    mechanicsList, messageBox, modifierList, resultsList, test  # nopep8
+    mechanicsList, messageBox, modifierList, resultsList, test  # noqa
 
 # Setup context automatically when macro is run from the LibreOffice.
 if __name__ != '__main__':
