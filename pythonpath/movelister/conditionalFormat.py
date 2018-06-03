@@ -6,8 +6,8 @@ from com.sun.star.sheet.ConditionOperator import LESS
 def applyConditionalFormatting(sheet, resultsDataArray, resultsListColors):
 
     # To do: finish this function. It does nothing so far.
-    range = sheet.getCellRangeByPosition(1, 1, 12, 12)
-    conForm = range.ConditionalFormat
+    # range = sheet.getCellRangeByPosition(1, 1, 12, 12)
+    # conForm = range.ConditionalFormat
 
     print(resultsDataArray)
     print(resultsListColors)

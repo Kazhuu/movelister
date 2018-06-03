@@ -2,7 +2,6 @@ from movelister import loop, messageBox
 
 
 def getMasterList(masterSheet):
-    x = 1
     endRow = -1
 
     # The loop iterates through Master Action List to get its end row.
@@ -21,7 +20,6 @@ def getMasterList(masterSheet):
 def getHighestPhaseNumber(masterSheet, listLength):
     x = -1
     phase = 0
-    check = -1
     phaseCol = loop.getColumnLocation(masterSheet, 'Phase')
 
     # The loop iterates through the Phase column and finds the highest number in sequence.
