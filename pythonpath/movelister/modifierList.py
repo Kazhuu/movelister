@@ -2,7 +2,6 @@ from movelister import loop
 
 
 def getModifierList(modifierSheet):
-    x = 1
     endRow = -1
 
     # The loop iterates through Modifier List to get its end row.

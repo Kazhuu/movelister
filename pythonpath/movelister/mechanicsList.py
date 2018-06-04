@@ -1,5 +1,3 @@
-from com.sun.star.table import CellRangeAddress
-
 from movelister import delete, group, loop, messageBox
 
 

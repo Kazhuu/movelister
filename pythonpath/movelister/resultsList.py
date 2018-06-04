@@ -2,7 +2,6 @@ from movelister import loop
 
 
 def getResultsList(resultsSheet):
-    x = 1
     endRow = -1
 
     # The loop iterates through Master Action List to get its end row.
