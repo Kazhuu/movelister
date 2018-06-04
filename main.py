@@ -36,13 +36,12 @@ def generateMechanicsList():
     # it has to be generated from scratch? Or for now, the code gives the user a message
     # saying they need to have the template open.
 
-    # TO DO: a function for a quick comparison of the contents of Master Action List and Mechanics List.
     # The code goes through Master Action List and makes a "projection" of what the Mechanics List should
     # look like. It's a multi-dimensional array where one part lists how many rows a single animation takes.
-    # (Based on data in Input List). Other part list the action name and modifier name.
-
+    # (Based on data in Input List). (?) Other part list the action name and modifier name.
     masterList.getMasterListProjection(masterSheet, modifierSheet)
 
+    # TO DO: a function for a quick comparison of the contents of Master Action List and Mechanics List.
     # TO DO: the code creates a new Array which is eventually pasted on mechanicsList, replacing it
     # entirely in a single swoop. (It's faster to do it like this than generate row-by-row.) The wideness
     # of the array is determined by the amount of columns in the Mechanics List because it will also include
