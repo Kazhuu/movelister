@@ -1,4 +1,4 @@
-from com.sun.star.awt import MessageBoxType
+from com.sun.star.awt.MessageBoxType import MESSAGEBOX
 from com.sun.star.awt import MessageBoxButtons
 from com.sun.star.awt import MessageBoxResults
 
@@ -11,17 +11,17 @@ def createMessage(type, titleText, messageText):
 
     if type == 'OK':
         box = window.getToolkit().createMessageBox(
-            window, MessageBoxType.MESSAGEBOX,
+            window, MESSAGEBOX,
             MessageBoxButtons.BUTTONS_OK, titleText, messageText)
     if type == 'YES_NO':
         box = window.getToolkit().createMessageBox(
-            window, MessageBoxType.MESSAGEBOX,
+            window, MESSAGEBOX,
             MessageBoxButtons.BUTTONS_YES_NO, titleText, messageText)
 
     result = box.execute()
     if result == MessageBoxResults.OK:
         return 'OK'
-    if result == MessageBoxButtons.YES:
+    if result == MessageBoxResults.YES:
         return 'YES'
-    if result == MessageBoxButtons.NO:
+    if result == MessageBoxResults.NO:
         return 'NO'
