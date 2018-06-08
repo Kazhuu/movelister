@@ -2,7 +2,6 @@
 Main file for the all usable LibreOffice macros. Can also be executed from the
 command line and connect to opened LibreOffice socket.
 """
-
 import os
 import sys
 
@@ -15,11 +14,25 @@ if __name__ == '__main__':
 from movelister.context import Context  # noqa
 from movelister.sheet import Sheet  # noqa
 from movelister import conditionalFormat, delete, group, inputList, masterList, \
-    mechanicsList, messageBox, modifierList, resultsList, test  # noqa
+    mechanicsList, messageBox, modifierList, resultsList, test, dev, color  # noqa
 
 # Setup context automatically when macro is run from the LibreOffice.
 if __name__ != '__main__':
     Context.setup()
+
+
+def setColor():
+    """
+    Test macro to test Color class and setting color.
+    """
+    modifierSheet = Sheet.getModifierList()
+    c = color.Color(modifierSheet.getCellByPosition(0, 0).CellBackColor)
+    c.alpha = 0
+    c.red = 0
+    c.green = 0
+    c.blue = 255
+    print(hex(c.value))
+    modifierSheet.getCellByPosition(0, 0).CellBackColor = c.value
 
 
 def generateMechanicsList():
@@ -185,4 +198,4 @@ def createConditionalFormatting():
 # Run when executed from the command line.
 if __name__ == '__main__':
     Context.setup(host='localhost', port=2002)
-    generateMechanicsList()
+    setColor()
