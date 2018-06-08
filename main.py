@@ -22,6 +22,9 @@ if __name__ != '__main__':
 
 
 def setColor():
+    """
+    Test macro to test Color class and setting color.
+    """
     modifierSheet = Sheet.getModifierList()
     c = color.Color(modifierSheet.getCellByPosition(0, 0).CellBackColor)
     c.alpha = 0
