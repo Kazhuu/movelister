@@ -1,6 +1,6 @@
 import itertools
 
-from movelister import loop, messageBox
+from movelister import loop, messageBox, modifierList
 
 
 def getMasterList(masterSheet):
@@ -22,7 +22,6 @@ def getMasterList(masterSheet):
 def getMasterListProjection(masterSheet, modifierSheet):
     MDA = getMasterList(masterSheet)
     nameCol = loop.getColumnLocation(masterSheet, 'Action Name')
-    phaseCol = loop.getColumnLocation(masterSheet, 'Phase')
     modStartCol = loop.getColumnLocation(masterSheet, 'DEF')
     modEndCol = loop.getColumnLocation(masterSheet, 'Full Name') - 1
     modAmount = modEndCol - modStartCol
@@ -32,6 +31,7 @@ def getMasterListProjection(masterSheet, modifierSheet):
     projection = [[], []]
     tempString = ''
     tempProjection = [[], []]
+    currentActionDEF = -1
     currentActionMods = [[], []]
     currentActionMods.clear()
     currentPrereqs = ''
@@ -39,10 +39,12 @@ def getMasterListProjection(masterSheet, modifierSheet):
     x = 0
 
     # A bit of error checking.
-    print(len(MDA))
-    if len(MDA) <= 2 and MDA[1][nameCol] == "":
-        messageBox.createMessage("OK", "Warning:", "Master Action List seems to be empty. Unable to generate.")
+    if len(MDA) <= 2 and MDA[1][nameCol] == '':
+        messageBox.createMessage('OK', 'Warning:', 'Master Action List seems to be empty. Unable to generate.')
         exit()
+
+    # Get an array of impossible variations (derived from Modifier rules) to compare with the action list later on.
+    antiVariationSet = modifierList.getImpossibleVariations(modifierSheet)
 
     # Loop through rows of Master Action List (represented as the multi-dimensional List MDA).
     while x < len(MDA) - 1:
@@ -53,39 +55,39 @@ def getMasterListProjection(masterSheet, modifierSheet):
         # per each row of the animation.
         currentActionMods.append([])
 
-        # Loop for going through all modifier columns.
-        if currentName == MDA[x][nameCol]:
-            y = -1
-            while y < modAmount:
-                y = y + 1
-
-                # If first column (DEF) has 'X' and tempProjection is empty, the default version of an action
-                # can be safely added to tempProjection.
-                if MDA[x][modStartCol + y] == 'X' and y == 0 and len(tempProjection[0]) == 0:
-                    tempProjection[0].append(currentName)
-                    tempProjection[1].append('')
-
-                    # If a column has 'X' in any other circumstance...
-                    # Collect all the 'X' for each row in a multi-dimensional array currentActionMods.
-                if MDA[x][modStartCol + y] == 'X' and y > 0:
-                    currentActionMods[currentActionRow].append(y)
-
-            # Second loop through columns to handle 'P' (prerequisites).
+        # Loop through columns to make a string of potential 'P' (prerequisites) markings.
+        if prereqsDone == -1:
             y = -1
             while y < modAmount:
                 y = y + 1
 
                 # If a column has 'P' in any spot past 'DEF' column, it's recorded to be used as a string.
                 # The variable prereqsDone is used to prevent initializing multiple times per animation.
-                # If an action has more than 1 phase, the first line of the action is ignored.
-                if prereqsDone == -1:
-                    if (currentActionRow == 0 and len(currentActionMods) <= 1) or currentActionRow > 0:
-                        if MDA[x][modStartCol + y] == 'P' and y > 0:
-                            prereqsDone == 0
-                            if currentPrereqs != '':
-                                currentPrereqs = currentPrereqs + ' + ' + MDA[0][modStartCol + y]
-                            else:
-                                currentPrereqs = currentPrereqs + MDA[0][modStartCol + y]
+                # if (currentActionRow == 0 and len(currentActionMods) <= 1) or currentActionRow > 0:
+                if MDA[x - 1][modStartCol + y] == 'P' and y > 0:
+                    prereqsDone == 0
+                    if currentPrereqs != '':
+                        currentPrereqs = currentPrereqs + ' + ' + MDA[0][modStartCol + y]
+                    else:
+                        currentPrereqs = currentPrereqs + MDA[0][modStartCol + y]
+                    print('currentPrereqs was changed to ' + currentPrereqs)
+
+        # Loop for going through all modifier columns.
+        if currentName == MDA[x][nameCol]:
+            y = -1
+            while y < modAmount:
+                y = y + 1
+
+                # If first column (DEF) has 'X' and tempProjection is empty, the code acknowledges
+                # that there needs to be a modifier-less default variation of the action.
+                if MDA[x][modStartCol + y] == 'X' and y == 0 and currentActionDEF < 1:
+                    currentActionDEF = 1
+                    print('There will be a DEF version of ' + currentName)
+
+                    # If a column has 'X' in any other circumstance...
+                    # Collect all the 'X' for each row in a multi-dimensional array currentActionMods.
+                if MDA[x][modStartCol + y] == 'X' and y > 0:
+                    currentActionMods[currentActionRow].append(y)
 
         # If currentName doesn't match current row, update it. This signifies the start of a new action.
         if currentName != MDA[x][nameCol]:
@@ -93,35 +95,40 @@ def getMasterListProjection(masterSheet, modifierSheet):
             # Process the currentActionMods list to figure out all the possible variations of the action.
             # The procession happens row by row because otherwise some variations will be missed.
             if len(currentActionMods) > 1:
-                z = -1
+                print('currentActionMods ' + str(currentActionMods))
 
                 # Get a set of all possible variations of a single action.
                 variationSet = getPossibleVariations(currentActionMods)
 
-                # To do: delete impossible combinations from the tempSet based on the modifier rules.
-                # Also delete blank entries.
+                # Delete impossible combinations (and blanks) from the set based on modifier rules.
+                realisticSet = (variationSet - antiVariationSet)
 
                 # Sort the set.
-                sortedSet = sorted(variationSet)
+                sortedSet = sorted(realisticSet)
+
+                if currentActionDEF == 1:
+                    tempProjection[0].append(currentName)
+                    tempProjection[1].append(currentPrereqs)
+
                 if len(sortedSet) > 0:
                     print('All combinations of ' + currentName + ': ' + str(sortedSet))
 
-                # Adding the animations in the tempProjection.
-                for xx in sortedSet:
-                    for xxy in xx:
-                        if tempString == '':
-                            tempString = tempString + MDA[0][modStartCol + xxy]
-                        else:
-                            tempString = tempString + ' + ' + MDA[0][modStartCol + xxy]
+                    # Adding the animations in the tempProjection.
+                    for xx in sortedSet:
+                        for xxy in xx:
+                            if tempString == '':
+                                tempString = tempString + MDA[0][modStartCol + xxy]
+                            else:
+                                tempString = tempString + ' + ' + MDA[0][modStartCol + xxy]
 
-                    tempProjection[0].append(currentName)
-                    if currentPrereqs != '' and tempString != '':
-                        tempProjection[1].append(currentPrereqs + ' + ' + tempString)
-                    elif currentPrereqs != '' and tempString == '':
-                        tempProjection[1].append(currentPrereqs)
-                    else:
-                        tempProjection[1].append(tempString)
-                    tempString = ''
+                        tempProjection[0].append(currentName)
+                        if currentPrereqs != '' and tempString != '':
+                            tempProjection[1].append(currentPrereqs + ' + ' + tempString)
+                        elif currentPrereqs != '' and tempString == '':
+                            tempProjection[1].append(currentPrereqs)
+                        else:
+                            tempProjection[1].append(tempString)
+                            tempString = ''
 
                 # Add all content from tempProjection into final projection data array.
                 xyx = -1
@@ -136,8 +143,10 @@ def getMasterListProjection(masterSheet, modifierSheet):
             currentActionRow = -1
             currentActionMods.clear()
             tempProjection = [[], []]
+            tempString = ''
             currentPrereqs = ''
             prereqsDone = -1
+            currentActionDEF = -1
             x = x - 1
 
             # Add to the variable that tells how many actions the code has listed so far.
@@ -148,12 +157,12 @@ def getMasterListProjection(masterSheet, modifierSheet):
     for zzyy in projection[0]:
         x = x + 1
         zzyyx = str(zzyy)
-        masterSheet.getCellByPosition(14, x).setString(zzyyx)
+        masterSheet.getCellByPosition(18, x).setString(zzyyx)
     x = 0
     for zzyy in projection[1]:
         x = x + 1
         zzyyx = str(zzyy)
-        masterSheet.getCellByPosition(15, x).setString(zzyyx)
+        masterSheet.getCellByPosition(19, x).setString(zzyyx)
 
 
 def getPossibleVariations(currentActionMods):
