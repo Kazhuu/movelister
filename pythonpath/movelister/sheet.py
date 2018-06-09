@@ -48,3 +48,18 @@ class Sheet():
     @classmethod
     def getAbout(cls):
         return Context.getDocument().Sheets.getByName(ABOUT_SHEET_NAME)
+
+    @classmethod
+    def getByName(cls, name):
+        """
+        Get sheet by given name.
+        """
+        return Context.getDocument().Sheets.getByName(name)
+
+    @classmethod
+    def newSheet(cls, name, position):
+        """
+        Creates new sheet with given name to given position and returns is.
+        """
+        Context.getDocument().Sheets.insertNewByName(name, position)
+        return cls.getByName(name)

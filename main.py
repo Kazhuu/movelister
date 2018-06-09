@@ -14,7 +14,7 @@ if __name__ == '__main__':
 from movelister.context import Context  # noqa
 from movelister.sheet import Sheet  # noqa
 from movelister import conditionalFormat, delete, group, inputList, masterList, \
-    mechanicsList, messageBox, modifierList, resultsList, test, dev, color  # noqa
+    mechanicsList, messageBox, modifierList, resultsList, test, dev, color, cursor  # noqa
 
 # Setup context automatically when macro is run from the LibreOffice.
 if __name__ != '__main__':
@@ -33,6 +33,16 @@ def setColor():
     c.blue = 255
     print(hex(c.value))
     modifierSheet.getCellByPosition(0, 0).CellBackColor = c.value
+
+
+def copySheet():
+    """
+    Test macro to copy entire sheet to another one using cursor.
+    """
+    sheet = Sheet.getMasterActionList()
+    newSheet = Sheet.newSheet('copy', 1)
+    data = cursor.getSheetContent(sheet)
+    cursor.setSheetContent(newSheet, data)
 
 
 def generateMechanicsList():
@@ -198,4 +208,4 @@ def createConditionalFormatting():
 # Run when executed from the command line.
 if __name__ == '__main__':
     Context.setup(host='localhost', port=2002)
-    generateMechanicsList()
+    copySheet()
