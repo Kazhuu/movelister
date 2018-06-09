@@ -45,6 +45,7 @@ def getMasterListProjection(masterSheet, modifierSheet):
 
     # Get an array of impossible variations (derived from Modifier rules) to compare with the action list later on.
     antiVariationSet = modifierList.getImpossibleVariations(modifierSheet)
+    # print('All impossible combinations: ' + str(antiVariationSet))
 
     # Loop through rows of Master Action List (represented as the multi-dimensional List MDA).
     while x < len(MDA) - 1:
@@ -101,6 +102,7 @@ def getMasterListProjection(masterSheet, modifierSheet):
                 variationSet = getPossibleVariations(currentActionMods)
 
                 # Delete impossible combinations (and blanks) from the set based on modifier rules.
+                # TO DO: another sort of filtering is needed.
                 realisticSet = (variationSet - antiVariationSet)
 
                 # Sort the set.
@@ -111,7 +113,8 @@ def getMasterListProjection(masterSheet, modifierSheet):
                     tempProjection[1].append(currentPrereqs)
 
                 if len(sortedSet) > 0:
-                    print('All combinations of ' + currentName + ': ' + str(sortedSet))
+                    print('The final list of combinations from ' + currentName + ': ' + str(sortedSet))
+                    print('Following variations were deleted: ' + str(variationSet & antiVariationSet))
 
                     # Adding the animations in the tempProjection.
                     for xx in sortedSet:
