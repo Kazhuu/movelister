@@ -17,7 +17,7 @@ def getImpossibleVariations(modifierSheet):
     combinationsList = []
     y = -1
 
-    # Current code supports up to 99 (?) different modifiers and 10 different rule groups per column.
+    # Current code supports 10 different rule groups per column.
     # It shouldn't be too hard to change, though.
 
     # A loop starts moving through the Modifier Sheet's XOR columns..
@@ -53,13 +53,14 @@ def getImpossibleVariations(modifierSheet):
         # Re-initialize values for next column.
         currentRowGroups = [[], [], [], [], [], [], [], [], [], []]
 
-    # To do: implement AND groups too.
+    # To do: implement AND groups.
 
     # Individual numbers are filtered out of the set because those are unaffected
     # by XOR rules. Complex combinations are also filtered out. The list is then
     # made into a set to remove duplicates.
     filteredList = [x for x in combinationsList if len(x) == 2]
     antiVariationSet = set(filteredList)
+
     return antiVariationSet
 
 
