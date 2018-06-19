@@ -8,50 +8,41 @@ def getImpossibleVariations(modifierSheet):
     XORStartCol = loop.getColumnLocation(modifierSheet, 'XOR Group:')
     XOREndCol = loop.getColumnLocation(modifierSheet, 'AND Group:') - 1
     ANDStartCol = loop.getColumnLocation(modifierSheet, 'AND Group:')
-    ANDEndCol = loop.getColumnLocation(modifierSheet, 'Implies:') - 1
+    ANDEndCol = loop.getColumnLocation(modifierSheet, 'IF Group:') - 1
     XORAmount = XOREndCol - XORStartCol
     ANDAmount = ANDEndCol - ANDStartCol
-    tempRow = []
+    totalColumns = XORAmount + ANDAmount
+    totalLoopCount = 0
     currentRowGroups = [[], [], [], [], [], [], [], [], [], []]
     tempList = []
     combinationsList = []
     y = -1
 
     # Current code supports 10 different rule groups per column.
-    # It shouldn't be too hard to change, though.
+    # It can be increased by increasing the size of the currentRowGroups array.
 
-    # A loop starts moving through the Modifier Sheet's XOR columns..
+    # A loop starts moving through the Modifier Sheet's XOR columns from left to right..
     while y < XORAmount:
         y = y + 1
 
-        # Another loop starts moving through the rows.
+        # Another loop starts moving through the rows from up to down.
         x = 0
         while x < len(MDA) - 1:
             x = x + 1
 
-            # If there is a number on one of the XOR columns, append to that index
-            # in currentRowGroups.
+            # If there are numbers on a single column, they are appended to their
+            # respective index on currentRowGroups.
             if MDA[x][XORStartCol + y] != '':
                 currentRowGroups[int(MDA[x][XORStartCol + y])].append(x)
 
-        # Iterate through currentRowGroups and calculate all combinations.
+        # Iterate through currentRowGroups and calculate all combinations per row.
         # Append the combinations to combinationsList.
-        z = -1
-        while z < len(currentRowGroups) - 1:
-            z = z + 1
-            tempIndex = -1
-            while tempIndex < len(currentRowGroups[z]) - 1:
-                tempIndex = tempIndex + 1
-                tempRow.append(currentRowGroups[z][tempIndex])
-
-            if len(tempRow) > 0:
-                for L in range(0, len(tempRow) + 1):
-                    for subset in itertools.combinations(tempRow, L):
-                        combinationsList.append(subset)
-                tempRow.clear()
+        tempList = iterateCombinations(currentRowGroups, combinationsList)
+        combinationsList = tempList
 
         # Re-initialize values for next column.
         currentRowGroups = [[], [], [], [], [], [], [], [], [], []]
+        totalLoopCount = totalLoopCount + 1
 
     # To do: implement AND groups.
 
@@ -62,6 +53,27 @@ def getImpossibleVariations(modifierSheet):
     antiVariationSet = set(filteredList)
 
     return antiVariationSet
+
+
+def iterateCombinations(currentRowGroups, combinationsList):
+    tempRow = []
+    z = -1
+
+    # Iterate through currentRowGroups and calculate all combinations per row.
+    while z < len(currentRowGroups) - 1:
+        z = z + 1
+        tempIndex = -1
+        while tempIndex < len(currentRowGroups[z]) - 1:
+            tempIndex = tempIndex + 1
+            tempRow.append(currentRowGroups[z][tempIndex])
+
+        if len(tempRow) > 0:
+            for L in range(0, len(tempRow) + 1):
+                for subset in itertools.combinations(tempRow, L):
+                    combinationsList.append(subset)
+            tempRow.clear()
+
+    return combinationsList
 
 
 def getModifierList(modifierSheet):
