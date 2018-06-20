@@ -1,6 +1,6 @@
 import itertools
 
-from movelister import loop, messageBox, modifierList, test
+from movelister import error, loop, modifierList, test
 
 
 def getMasterList(masterSheet):
@@ -34,14 +34,15 @@ def getMasterListProjection(masterSheet, modifierSheet):
     currentActionPrereqs = []
     prereqsString = ''
 
-    # A bit of error checking.
-    if len(MDA) <= 2 and MDA[1][nameCol] == '':
-        messageBox.createMessage('OK', 'Warning:', 'Master Action List seems to be empty. Unable to generate.')
-        exit()
+    # A bit of error checking before starting.
+    error.projectionErrorCheck(MDA, nameCol)
 
     # Get an array of impossible variations (derived from Modifier rules) to compare with the action list later on.
-    antiVariationSet = modifierList.getImpossibleVariations(modifierSheet)
-    print('All impossible combinations: ' + str(antiVariationSet))
+    antiVariationXOR = modifierList.getImpossibleVariations(modifierSheet, 'XOR')
+    antiVariationAND = modifierList.getImpossibleVariations(modifierSheet, 'AND')
+    print('All impossible variations (XOR): ' + str(antiVariationXOR))
+    print('All impossible variations (AND): ' + str(antiVariationAND[0]))
+    print('Protected variations (AND): ' + str(antiVariationAND[1]))
 
     # Loop through rows of Master Action List (represented as the multi-dimensional List MDA).
     x = 0
@@ -83,7 +84,7 @@ def getMasterListProjection(masterSheet, modifierSheet):
             # Process the currentActionMods list to figure out all the possible variations of the action.
             # The procession happens row by row because otherwise some variations will be missed.
             if len(currentActionMods) > 1:
-                sortedList = processVariations(currentActionMods, antiVariationSet)
+                sortedList = processVariations(currentActionMods, antiVariationXOR, antiVariationAND)
 
                 if currentActionDEF == 1:
                     projection[0].append(currentName)
@@ -109,21 +110,42 @@ def getMasterListProjection(masterSheet, modifierSheet):
     test.printProjectionTest(projection, masterSheet)
 
 
-def processVariations(currentActionMods, antiVariationSet):
+def processVariations(currentActionMods, antiVariationXOR, antiVariationAND):
 
     # Get a set of all possible variations of a single action.
     variationSet = getPossibleVariations(currentActionMods)
-    filteredSet = variationSet.copy()
+    filteredSet1 = variationSet.copy()
 
-    # Delete impossible combinations from the set based on modifier rules.
-    for imp in antiVariationSet:
+    # Delete impossible variations from the set based on XOR modifier rules.
+    for imp in antiVariationXOR:
         for item in variationSet:
             if match(item, imp):
-                filteredSet.discard(item)
+                filteredSet1.discard(item)
+
+    # Delete impossible variations from the set based on AND modifier rules.
+    # TO DO: the code is confused if the project has more than 1 AND group. Should be fixed.
+    filteredSet2 = filteredSet1.copy()
+
+    for imp in antiVariationAND[0]:
+        for ymp in imp:
+            for omp in ymp:
+
+                for item in filteredSet1:
+                    if match(item, omp):
+                        discardItem = 1
+
+                        for amp in antiVariationAND[1]:
+                            for emp in amp:
+                                for ump in emp:
+                                    if match(item, ump):
+                                        discardItem = 0
+                        if discardItem == 1:
+                            filteredSet2.discard(item)
+                            print("discarded" + str(item))
 
     # Delete empty from the set.
     emptySet = {()}
-    refinedSet = filteredSet - emptySet
+    refinedSet = filteredSet2 - emptySet
 
     # Sort the data.
     sortedList = sorted(refinedSet)
