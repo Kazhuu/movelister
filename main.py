@@ -62,7 +62,7 @@ def generateMechanicsList():
     # The code goes through Master Action List and makes a "projection" of what the Mechanics List should
     # look like. It's a multi-dimensional array where one part lists how many rows a single animation takes.
     # (Based on data in Input List). (?) Other part list the action name and modifier name.
-    masterList.getMasterListProjection(masterSheet, modifierSheet)
+    projection = masterList.getMasterListProjection(masterSheet, modifierSheet)
 
     # TO DO: a function for a quick comparison of the contents of Master Action List and Mechanics List.
     # TO DO: the code creates a new Array which is eventually pasted on mechanicsList, replacing it

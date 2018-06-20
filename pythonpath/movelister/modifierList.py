@@ -102,7 +102,6 @@ def iterateCombinations(currentRowGroups, combinationsList, mode):
                 completeList = [[], []]
                 filterResults = [x for x in combinationsList if len(x) == len(tempRow)]
                 completeList[1].append(filterResults)
-                print(completeList[1])
 
             # Clear variables for next index.
             tempRow.clear()

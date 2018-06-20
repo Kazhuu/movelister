@@ -10,6 +10,12 @@ def printProjectionTest(projection, masterSheet):
         x = x + 1
         zzyyx = str(zzyy)
         masterSheet.getCellByPosition(19, x).setString(zzyyx)
+    x = 0
+
+    for zzyy in projection[2]:
+        x = x + 1
+        zzyyx = str(zzyy)
+        masterSheet.getCellByPosition(20, x).setString(zzyyx)
 
 
 def testItOut(inputSheet, inputDataArray):

@@ -6,7 +6,7 @@ def getColumnLocation(sheet, columnName):
     column = -1
 
     # The loop iterates through the row 0 of chosen List to find where a certain Column is.
-    while x < 40:
+    while x < 80:
         x = x + 1
         if sheet.getCellByPosition(x, 0).getString() == columnName:
             column = x
@@ -18,6 +18,25 @@ def getColumnLocation(sheet, columnName):
         exit()
 
     return column
+
+
+def getRowLocation(sheet, column, string):
+    x = 0
+    rowPosition = -1
+
+    # The loop iterates through the rows of a chosen List to find a string from some Row.
+    while x < 5000:
+        x = x + 1
+        if sheet.getCellByPosition(column, x).getString() == string:
+            rowPosition = x
+            break
+
+    # Error message if it wasn't found.
+    if column == - 1:
+        messageBox.createMessage('OK', 'Warning:', "Program couldn't find a cell with " + string + '.')
+        exit()
+
+    return rowPosition
 
 
 def getEndOfList(sheet):

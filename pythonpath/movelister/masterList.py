@@ -26,8 +26,9 @@ def getMasterListProjection(masterSheet, modifierSheet):
     modEndCol = loop.getColumnLocation(masterSheet, 'Full Name') - 1
     modAmount = modEndCol - modStartCol
     currentName = MDA[1][nameCol]
+    currentInputList = MDA[1][nameCol - 1]
     currentActionRow = -1
-    projection = [[], []]
+    projection = [[], [], [], []]
     currentActionDEF = -1
     currentActionMods = [[], []]
     currentActionMods.clear()
@@ -89,15 +90,18 @@ def getMasterListProjection(masterSheet, modifierSheet):
                 if currentActionDEF == 1:
                     projection[0].append(currentName)
                     projection[1].append(prereqsString)
+                    projection[2].append(currentInputList)
 
                 if len(sortedList) > 0:
                     print('The final list of combinations from ' + currentName + ': ' + str(sortedList))
 
                     # Add all the variations of the current attack in the projection.
-                    projection = fillProjection(MDA, sortedList, projection, currentName, prereqsString, modStartCol)
+                    projection = fillProjection(MDA, sortedList, projection, currentName, currentInputList,
+                                                prereqsString, modStartCol)
 
             # Update currentName with new action and re-initialize variables for next action.
             currentName = MDA[x][nameCol]
+            currentInputList = MDA[x][nameCol - 1]
             print('Next attack is ' + currentName)
             currentActionRow = -1
             currentActionMods.clear()
@@ -106,8 +110,22 @@ def getMasterListProjection(masterSheet, modifierSheet):
             currentActionDEF = -1
             x = x - 1
 
+    # Estimate the position of each action in Mechanics List.
+    projection = estimateActionPositions(modifierSheet, projection)
+
     # A quick test that prints out the contents of the projection.
     test.printProjectionTest(projection, masterSheet)
+
+
+def estimateActionPositions(modifierSheet, projection):
+    MDA = modifierList.getModifierList(modifierSheet)
+
+    # To do: code that calculates the length of all input lists.
+
+    # To do: code that estimates the position of each action based on input list length.
+    # This is added to 'projection' index 4.
+
+    return projection
 
 
 def processVariations(currentActionMods, antiVariationXOR, antiVariationAND):
@@ -126,14 +144,18 @@ def processVariations(currentActionMods, antiVariationXOR, antiVariationAND):
     # TO DO: the code is confused if the project has more than 1 AND group. Should be fixed.
     filteredSet2 = filteredSet1.copy()
 
+    # Digging through the nested array.
     for imp in antiVariationAND[0]:
         for ymp in imp:
             for omp in ymp:
 
+                # If there's a match with the item to delete, and the List item...
                 for item in filteredSet1:
                     if match(item, omp):
                         discardItem = 1
 
+                        # ...compare the List item with another list of things to ignore.
+                        # If there's a match at any point, don't delete item.
                         for amp in antiVariationAND[1]:
                             for emp in amp:
                                 for ump in emp:
@@ -141,7 +163,6 @@ def processVariations(currentActionMods, antiVariationXOR, antiVariationAND):
                                         discardItem = 0
                         if discardItem == 1:
                             filteredSet2.discard(item)
-                            print("discarded" + str(item))
 
     # Delete empty from the set.
     emptySet = {()}
@@ -176,7 +197,7 @@ def getPossibleVariations(currentActionMods):
     return tempSet
 
 
-def fillProjection(MDA, sortedList, projection, currentName, prereqsString, modStartCol):
+def fillProjection(MDA, sortedList, projection, currentName, currentInputList, prereqsString, modStartCol):
     tempString = ''
 
     # Add all the variations of the current attack in the projection.
@@ -188,6 +209,7 @@ def fillProjection(MDA, sortedList, projection, currentName, prereqsString, modS
                 tempString = tempString + ' + ' + MDA[0][modStartCol + xxy]
 
         projection[0].append(currentName)
+        projection[2].append(currentInputList)
         if prereqsString != '':
             projection[1].append(prereqsString + ' + ' + tempString)
         else:
