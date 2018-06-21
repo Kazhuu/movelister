@@ -39,11 +39,13 @@ def getMasterListProjection(masterSheet, modifierSheet):
     error.projectionErrorCheck(MDA, nameCol)
 
     # Get an array of impossible variations (derived from Modifier rules) to compare with the action list later on.
-    antiVariationXOR = modifierList.getImpossibleVariations(modifierSheet, 'XOR')
-    antiVariationAND = modifierList.getImpossibleVariations(modifierSheet, 'AND')
-    print('All impossible variations (XOR): ' + str(antiVariationXOR))
-    print('All impossible variations (AND): ' + str(antiVariationAND[0]))
-    print('Protected variations (AND): ' + str(antiVariationAND[1]))
+    antiVariationOR = modifierList.getImpossibleVariations(modifierSheet, 'OR')
+    antiVariationNAND = modifierList.getImpossibleVariations(modifierSheet, 'NAND')
+    antiVariationXNOR = modifierList.getImpossibleVariations(modifierSheet, 'XNOR')
+    print('List of OR-rules: ' + str(antiVariationOR))
+    print('All impossible variations based on NAND-rules: ' + str(antiVariationNAND))
+    print('All impossible variations based on XNOR-rules: ' + str(antiVariationXNOR[0]))
+    print('Protected variations (XNOR): ' + str(antiVariationXNOR[1]))
 
     # Loop through rows of Master Action List (represented as the multi-dimensional List MDA).
     x = 0
@@ -85,7 +87,8 @@ def getMasterListProjection(masterSheet, modifierSheet):
             # Process the currentActionMods list to figure out all the possible variations of the action.
             # The procession happens row by row because otherwise some variations will be missed.
             if len(currentActionMods) > 1:
-                sortedList = processVariations(currentActionMods, antiVariationXOR, antiVariationAND)
+                sortedList = processVariations(currentActionMods, antiVariationOR, antiVariationNAND,
+                                               antiVariationXNOR)
 
                 if currentActionDEF == 1:
                     projection[0].append(currentName)
@@ -128,51 +131,6 @@ def estimateActionPositions(modifierSheet, projection):
     return projection
 
 
-def processVariations(currentActionMods, antiVariationXOR, antiVariationAND):
-
-    # Get a set of all possible variations of a single action.
-    variationSet = getPossibleVariations(currentActionMods)
-    filteredSet1 = variationSet.copy()
-
-    # Delete impossible variations from the set based on XOR modifier rules.
-    for imp in antiVariationXOR:
-        for item in variationSet:
-            if match(item, imp):
-                filteredSet1.discard(item)
-
-    # Delete impossible variations from the set based on AND modifier rules.
-    # TO DO: the code is confused if the project has more than 1 AND group. Should be fixed.
-    filteredSet2 = filteredSet1.copy()
-
-    # Digging through the nested array.
-    for imp in antiVariationAND[0]:
-        for ymp in imp:
-            for omp in ymp:
-
-                # If there's a match with the item to delete, and the List item...
-                for item in filteredSet1:
-                    if match(item, omp):
-                        discardItem = 1
-
-                        # ...compare the List item with another list of things to ignore.
-                        # If there's a match at any point, don't delete item.
-                        for amp in antiVariationAND[1]:
-                            for emp in amp:
-                                for ump in emp:
-                                    if match(item, ump):
-                                        discardItem = 0
-                        if discardItem == 1:
-                            filteredSet2.discard(item)
-
-    # Delete empty from the set.
-    emptySet = {()}
-    refinedSet = filteredSet2 - emptySet
-
-    # Sort the data.
-    sortedList = sorted(refinedSet)
-    return sortedList
-
-
 def getPossibleVariations(currentActionMods):
     z = -1
     tempMods1 = []
@@ -195,6 +153,94 @@ def getPossibleVariations(currentActionMods):
     # Converts tempMods1 into a set to delete all duplicates.
     tempSet = set(tempMods1)
     return tempSet
+
+
+def processVariations(currentActionMods, antiVariationOR, antiVariationNAND, antiVariationXNOR):
+
+    # Get a set of all possible variations of a single action.
+    variationSet = getPossibleVariations(currentActionMods)
+
+    # Delete impossible variations from the set based on NAND modifier rules.
+    filteredSet1 = processNANDVariations(variationSet, antiVariationNAND)
+
+    # Delete impossible variations from the set based on XNOR modifier rules.
+    # TO DO: the code is confused if the project has more than 1 XNOR group. Should be fixed.
+    filteredSet2 = processXNORVariations(filteredSet1, antiVariationXNOR)
+
+    # Delete impossible variations from the set based on OR rules.
+    filteredSet3 = processORVariations(filteredSet2, antiVariationOR)
+
+    # Delete empty from the set.
+    emptySet = {()}
+    refinedSet = filteredSet3 - emptySet
+
+    # Sort the data.
+    sortedList = sorted(refinedSet)
+    return sortedList
+
+
+def processNANDVariations(variationSet, antiVariationNAND):
+    filteredSet1 = variationSet.copy()
+
+    # Delete impossible variations from the set based on NAND modifier rules.
+    for imp in antiVariationNAND:
+        for item in variationSet:
+            if match(item, imp):
+                filteredSet1.discard(item)
+
+    return filteredSet1
+
+
+def processXNORVariations(filteredSet1, antiVariationXNOR):
+    filteredSet2 = filteredSet1.copy()
+
+    # Digging through the nested array.
+    for imp in antiVariationXNOR[0]:
+        for ymp in imp:
+            for omp in ymp:
+
+                # If there's a match with the item to delete, and the List item...
+                for item in filteredSet1:
+                    if match(item, omp):
+                        discardItem = 1
+
+                        # ...compare the List item with another list of things to ignore.
+                        # If there's a match at any point, don't delete item.
+                        for amp in antiVariationXNOR[1]:
+                            for emp in amp:
+                                for ump in emp:
+                                    if match(item, ump):
+                                        discardItem = 0
+                        if discardItem == 1:
+                            filteredSet2.discard(item)
+
+    return filteredSet2
+
+
+def processORVariations(filteredSet2, antiVariationOR):
+    tries = 0
+    matches = 0
+    filteredSet3 = filteredSet2.copy()
+
+    # Delete impossible variations from the set based on OR rules.
+    for item in filteredSet2:
+        tries = 0
+        matches = 0
+
+        for imp in antiVariationOR:
+            for ymp in imp:
+                if ymp != []:
+                    tries = tries + 1
+                    # print('attempting to match the elements of... ' + str(item) + ' and ' + str(ymp))
+                    for omp in ymp:
+                        for atem in item:
+                            if omp == atem:
+                                matches = matches + 1
+        if matches < tries:
+            # print(str(item) + ' was deleted!')
+            filteredSet3.discard(item)
+
+    return filteredSet3
 
 
 def fillProjection(MDA, sortedList, projection, currentName, currentInputList, prereqsString, modStartCol):

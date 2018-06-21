@@ -6,10 +6,12 @@ from movelister import loop
 def getImpossibleVariations(modifierSheet, mode):
     MDA = getModifierList(modifierSheet)
 
-    if mode == 'XOR':  # returned as a set
-        antiVariations = getAntiVariations(MDA, modifierSheet, 'XOR')
-    if mode == 'AND':  # returned as a 2d-list
-        antiVariations = getAntiVariations(MDA, modifierSheet, 'AND')
+    if mode == 'OR':  # returned as a multi-dimensional list
+        antiVariations = getAntiVariations(MDA, modifierSheet, 'OR')
+    if mode == 'NAND':  # returned as a set
+        antiVariations = getAntiVariations(MDA, modifierSheet, 'NAND')
+    if mode == 'XNOR':  # returned as a 2d-list
+        antiVariations = getAntiVariations(MDA, modifierSheet, 'XNOR')
     # TO DO: a code for 'IF' groups. But that isn't a priority yet...
 
     return antiVariations
@@ -18,23 +20,31 @@ def getImpossibleVariations(modifierSheet, mode):
 def getAntiVariations(MDA, modifierSheet, mode):
     currentRowGroups = [[], [], [], [], [], [], [], [], [], []]
     combinationsList = []
+    antiVariationSet = {}
 
     # Current code supports 10 different rule groups per column.
     # It can be increased by increasing the size of the currentRowGroups array.
 
-    if mode == 'XOR':
-        XORStartCol = loop.getColumnLocation(modifierSheet, 'XOR Group:')
-        XOREndCol = loop.getColumnLocation(modifierSheet, 'AND Group:') - 1
-        XORAmount = XOREndCol - XORStartCol
-        loopAmount = XORAmount
-        startCol = XORStartCol
-    if mode == 'AND':
-        completeList = [[], []]
-        ANDStartCol = loop.getColumnLocation(modifierSheet, 'AND Group:')
-        ANDEndCol = loop.getColumnLocation(modifierSheet, 'IF Group:') - 1
-        ANDAmount = ANDEndCol - ANDStartCol
-        loopAmount = ANDAmount
-        startCol = ANDStartCol
+    if mode == 'OR':
+        ORStartCol = loop.getColumnLocation(modifierSheet, 'OR Group:')
+        OREndCol = loop.getColumnLocation(modifierSheet, 'NAND Group:') - 1
+        ORAmount = OREndCol - ORStartCol
+        loopAmount = ORAmount
+        startCol = ORStartCol
+        ORList = []
+    if mode == 'NAND':
+        NANDStartCol = loop.getColumnLocation(modifierSheet, 'NAND Group:')
+        NANDEndCol = loop.getColumnLocation(modifierSheet, 'XNOR Group:') - 1
+        NANDAmount = NANDEndCol - NANDStartCol
+        loopAmount = NANDAmount
+        startCol = NANDStartCol
+    if mode == 'XNOR':
+        XNORList = [[], []]
+        XNORStartCol = loop.getColumnLocation(modifierSheet, 'XNOR Group:')
+        XNOREndCol = loop.getColumnLocation(modifierSheet, 'IF Group:') - 1
+        XNORAmount = XNOREndCol - XNORStartCol
+        loopAmount = XNORAmount
+        startCol = XNORStartCol
 
     # A loop starts moving through the Modifier Sheet's columns from left to right..
     y = -1
@@ -51,45 +61,51 @@ def getAntiVariations(MDA, modifierSheet, mode):
             if MDA[x][startCol + y] != '':
                 currentRowGroups[int(MDA[x][startCol + y])].append(x)
 
-        # Iterate through currentRowGroups and calculate all combinations per row.
+        # Iterate through currentRowGroups and calculate all combinations per row if XNOR or NAND.
         # Append the combinations to combinationsList.
-        combinationsList = iterateCombinations(currentRowGroups, combinationsList, mode)
+        if mode == 'NAND' or mode == 'XNOR':
+            combinationsList = iterateCombinations(currentRowGroups, combinationsList, mode)
 
-        if mode == 'AND':
-            completeList[0].append(combinationsList[0])
-            completeList[1].append(combinationsList[1])
+        if mode == 'XNOR':
+            XNORList[0].append(combinationsList[0])
+            XNORList[1].append(combinationsList[1])
             combinationsList.clear()
+
+        if mode == 'OR':
+            ORList.append(currentRowGroups)
 
         # Re-initialize values for next column.
         currentRowGroups = [[], [], [], [], [], [], [], [], [], []]
 
     # Individual numbers are filtered out of the set because those are unaffected
-    # by XOR rules. Complex combinations are also filtered out. The list is then
+    # by NAND rules. Complex combinations are also filtered out. The list is then
     # made into a set to remove duplicates.
-    if mode == 'XOR':
+    if mode == 'NAND':
         filterResults = list([x for x in combinationsList if len(x) == 2])
         antiVariationSet = set(filterResults)
+        return antiVariationSet
 
-    if mode == 'AND':
-        return completeList
+    if mode == 'XNOR':
+        return XNORList
 
-    return antiVariationSet
+    if mode == 'OR':
+        return ORList
 
 
 def iterateCombinations(currentRowGroups, combinationsList, mode):
     tempRow = []
-    z = -1
-    completeList = [[], []]
+    XNORList = [[], []]
 
     # Iterate through currentRowGroups and calculate all combinations per index.
+    z = -1
     while z < len(currentRowGroups) - 1:
         z = z + 1
 
         # The code unpacks all values from a single index of currentRowGroups to tempRow.
-        tempIndex = -1
-        while tempIndex < len(currentRowGroups[z]) - 1:
-            tempIndex = tempIndex + 1
-            tempRow.append(currentRowGroups[z][tempIndex])
+        zyx = -1
+        while zyx < len(currentRowGroups[z]) - 1:
+            zyx = zyx + 1
+            tempRow.append(currentRowGroups[z][zyx])
 
         # If there's anything on the tempRow, code calculates all iterations of it.
         if len(tempRow) > 0:
@@ -97,22 +113,22 @@ def iterateCombinations(currentRowGroups, combinationsList, mode):
                 for subset in itertools.combinations(tempRow, L):
                     combinationsList.append(subset)
 
-            # 'AND' rules require early filtering inside the loop.
-            if mode == 'AND':
-                completeList = [[], []]
+            # 'XNOR' rules require early filtering inside the loop.
+            if mode == 'XNOR':
+                XNORList = [[], []]
                 filterResults = [x for x in combinationsList if len(x) == len(tempRow)]
-                completeList[1].append(filterResults)
+                XNORList[1].append(filterResults)
 
             # Clear variables for next index.
             tempRow.clear()
 
-    if mode == 'XOR':
+    if mode == 'NAND':
         return combinationsList
 
-    if mode == 'AND':
+    if mode == 'XNOR':
         filterResults = [x for x in combinationsList if len(x) == 1]
-        completeList[0].append(filterResults)
-        return completeList
+        XNORList[0].append(filterResults)
+        return XNORList
 
 
 def getModifierList(modifierSheet):
