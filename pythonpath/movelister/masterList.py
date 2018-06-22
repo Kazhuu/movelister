@@ -36,7 +36,7 @@ def getMasterListProjection(masterSheet, modifierSheet, inputSheet):
     prereqsString = ''
 
     # A bit of error checking before starting.
-    error.projectionErrorCheck(MDA, nameCol)
+    error.masterListProjectionErrorCheck(MDA, nameCol)
 
     # Get an array of impossible variations (derived from Modifier rules) to compare with the action list later on.
     antiVariationOR = modifierList.getImpossibleVariations(modifierSheet, 'OR')
@@ -118,6 +118,8 @@ def getMasterListProjection(masterSheet, modifierSheet, inputSheet):
 
     # A quick test that prints out the contents of the projection.
     test.printProjectionTest(projection, masterSheet)
+
+    return projection
 
 
 def estimateActionPositionsForProjection(inputSheet, projection):

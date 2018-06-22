@@ -55,7 +55,7 @@ def getInputListLengths(inputSheet):
         if row[0] == currentInputList:
             number = number + 1
 
-    # The last append necessarily happens outside loop.
+    # The last append happens necessarily outside loop.
     if currentInputList != '':
         inputListLengths[0].append(currentInputList)
         inputListLengths[1].append(number)

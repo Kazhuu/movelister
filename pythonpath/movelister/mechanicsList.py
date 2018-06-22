@@ -1,4 +1,57 @@
-from movelister import delete, group, loop, messageBox
+from movelister import cursor, delete, group, loop, messageBox
+
+
+def refreshMechanicsList(mechanicsSheet, inputSheet, projectionMaster):
+    MDA = cursor.getSheetContent(mechanicsSheet)
+    updatedList = cursor.getSheetContent(mechanicsSheet)
+
+    # Creating a projection of what Mechanics List holds at the moment.
+    projectionMechanics = createMechanicsListProjection(MDA, projectionMaster)
+
+    # Start going through MDA.
+
+
+def createMechanicsListProjection(MDA, projectionMaster):
+    currentAction = MDA[2][0]
+    currentMods = MDA[2][1]
+    projectionMechanics = [[], [], [], []]
+
+    # Creating a projection of what Mechanics List holds at the moment.
+    z = -1
+    projectionMechanics[3].append(2)
+
+    for row in MDA:
+        z = z + 1
+
+        if row[0] == '' and z > 1:
+            projectionMechanics[0].append(currentAction)
+            projectionMechanics[1].append(currentMods)
+            projectionMechanics[3].append(z + 1)
+            currentAction = MDA[z + 1][0]
+            currentMods = MDA[z + 1][1]
+
+    # The last append happens necessarily outside loop.
+    projectionMechanics[0].append(currentAction)
+    projectionMechanics[1].append(currentMods)
+    projectionMechanics[3].append(z)
+
+    # Fill index [2] with the help of the Master List Projection.
+    x = -1
+    for actionML in projectionMechanics[0]:
+        x = 0
+        for action in projectionMaster[0]:
+            x = x + 1
+            if actionML == action:
+                projectionMechanics[2].append(projectionMaster[2][x])
+                break
+            else:
+                projectionMechanics[2].append('')
+
+    return projectionMechanics
+
+
+def compareProjectionToMechanicsList(mechanicsSheet, projectionMaster):
+    print()
 
 
 def generateAction(mechanicsSheet, inputDataArray, inputColors, nameField1, nameField2, startRow):

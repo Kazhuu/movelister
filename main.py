@@ -64,11 +64,9 @@ def generateMechanicsList():
     # input list and [3] lists the expected location of the action in Mechanics List.
     projection = masterList.getMasterListProjection(masterSheet, modifierSheet, inputSheet)
 
-    # TO DO: a function for a quick comparison of the contents of Master Action List and Mechanics List.
-    # TO DO: the code creates a new Array which is eventually pasted on mechanicsList, replacing it
-    # entirely in a single swoop. (It's faster to do it like this than generate row-by-row.) The wideness
-    # of the array is determined by the amount of columns in the Mechanics List because it will also include
-    # user-generated data.
+    # Code creates a new Array which is eventually pasted on mechanicsList, replacing it
+    # entirely in a single swoop. (It's faster to do it like this than generate row-by-row.)
+    mechanicsList.refreshMechanicsList(mechanicsSheet, inputSheet, projection)
 
     # The code starts going through Mechanics List using the projection and data from Input Lists.
     # It first checks if the animation in Mechanics List exists in MAL. If not, it's skipped entirely.
