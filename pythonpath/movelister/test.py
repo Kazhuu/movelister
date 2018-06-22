@@ -11,8 +11,7 @@ def printProjectionTest(projection, masterSheet):
         zzyyx = str(zzyy)
         masterSheet.getCellByPosition(19, x).setString(zzyyx)
     x = 0
-
-    for zzyy in projection[2]:
+    for zzyy in projection[3]:
         x = x + 1
         zzyyx = str(zzyy)
         masterSheet.getCellByPosition(20, x).setString(zzyyx)

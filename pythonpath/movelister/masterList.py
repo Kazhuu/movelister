@@ -1,6 +1,6 @@
 import itertools
 
-from movelister import error, loop, modifierList, test
+from movelister import error, inputList, loop, modifierList, test
 
 
 def getMasterList(masterSheet):
@@ -19,7 +19,7 @@ def getMasterList(masterSheet):
     return masterDataArray
 
 
-def getMasterListProjection(masterSheet, modifierSheet):
+def getMasterListProjection(masterSheet, modifierSheet, inputSheet):
     MDA = getMasterList(masterSheet)
     nameCol = loop.getColumnLocation(masterSheet, 'Action Name')
     modStartCol = loop.getColumnLocation(masterSheet, 'DEF')
@@ -114,19 +114,33 @@ def getMasterListProjection(masterSheet, modifierSheet):
             x = x - 1
 
     # Estimate the position of each action in Mechanics List.
-    projection = estimateActionPositions(modifierSheet, projection)
+    projection = estimateActionPositionsForProjection(inputSheet, projection)
 
     # A quick test that prints out the contents of the projection.
     test.printProjectionTest(projection, masterSheet)
 
 
-def estimateActionPositions(modifierSheet, projection):
-    MDA = modifierList.getModifierList(modifierSheet)
+def estimateActionPositionsForProjection(inputSheet, projection):
 
-    # To do: code that calculates the length of all input lists.
+    # Get lengths of all input lists.
+    inputListLengths = inputList.getInputListLengths(inputSheet)
 
-    # To do: code that estimates the position of each action based on input list length.
+    # Code that estimates the position of each action based on input list length.
     # This is added to 'projection' index 4.
+    currentPos = 2
+    projection[3].append(currentPos)
+
+    z = -1
+    while z < len(projection[2]) - 1:
+        z = z + 1
+        currentInputList = projection[2][z]
+
+        x = -1
+        while x < len(inputListLengths) - 1:
+            x = x + 1
+            if inputListLengths[0][x] == currentInputList:
+                currentPos = currentPos + inputListLengths[1][x] + 1
+                projection[3].append(currentPos)
 
     return projection
 

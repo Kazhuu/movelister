@@ -1,3 +1,6 @@
+from movelister import cursor
+
+
 def getInputList(inputSheet, inputGroupName):
     x = 1
     startRow = -1
@@ -32,3 +35,29 @@ def getInputColors(inputSheet, listLength):
         x = x + 1
 
     return inputColors
+
+
+def getInputListLengths(inputSheet):
+    IDA = cursor.getSheetContent(inputSheet)
+    currentInputList = IDA[1][0]
+    inputListLengths = [[], []]
+
+    # Code that calculates the length of all input lists.
+    z = 0
+    number = 0
+    for row in IDA:
+        z = z + 1
+        if row[0] != currentInputList and z > 1:
+            inputListLengths[0].append(currentInputList)
+            inputListLengths[1].append(number)
+            currentInputList = IDA[z][0]
+            number = 0
+        if row[0] == currentInputList:
+            number = number + 1
+
+    # The last append necessarily happens outside loop.
+    if currentInputList != '':
+        inputListLengths[0].append(currentInputList)
+        inputListLengths[1].append(number)
+
+    return inputListLengths
