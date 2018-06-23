@@ -17,6 +17,26 @@ def printProjectionTest(projection, masterSheet):
         masterSheet.getCellByPosition(20, x).setString(zzyyx)
 
 
+def printMechanicsListTest(projection, mechanicsSheet):
+    x = 0
+
+    for zzyy in projection[0]:
+        x = x + 1
+        zzyyx = str(zzyy)
+        mechanicsSheet.getCellByPosition(25, x).setString(zzyyx)
+    x = 0
+    for zzyy in projection[1]:
+        x = x + 1
+        zzyyx = str(zzyy)
+        mechanicsSheet.getCellByPosition(26, x).setString(zzyyx)
+    x = 0
+    for zzyy in projection[2]:
+        x = x + 1
+        zzyyx = str(zzyy)
+        mechanicsSheet.getCellByPosition(27, x).setString(zzyyx)
+
+
+
 def testItOut(inputSheet, inputDataArray):
 
     # The cell range has to be exactly the size of the array or you get a runtime error.

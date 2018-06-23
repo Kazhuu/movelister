@@ -19,7 +19,7 @@ def getInputList(inputSheet, inputGroupName):
         x = x + 1
 
     # The four attributes for CellRangeByPosition are: left, top, right, bottom.
-    range = inputSheet.getCellRangeByPosition(1, startRow, 3, endRow)
+    range = inputSheet.getCellRangeByPosition(1, startRow, 3, endRow + 1)
 
     inputDataArray = range.getDataArray()
     return inputDataArray
