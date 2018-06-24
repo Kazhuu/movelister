@@ -1,21 +1,11 @@
 import itertools
 
-from movelister import error, inputList, loop, modifierList, test
+from movelister import cursor, error, inputList, loop, modifierList, test
 
 
 def getMasterList(masterSheet):
-    endRow = -1
-    modEndCol = loop.getColumnLocation(masterSheet, 'Full Name') - 1
+    masterDataArray = cursor.getSheetContent(masterSheet)
 
-    # The loop iterates through Master Action List to get its end row.
-    # The loop breaks once there are two empty rows or x is over 1000.
-    endRow = loop.getEndOfList(masterSheet)
-
-    # The four attributes for CellRangeByPosition are: left, top, right, bottom.
-    # The data array consists of ALL relevant data in the sheet, including modifiers.
-    range = masterSheet.getCellRangeByPosition(0, 0, modEndCol, endRow + 1)
-
-    masterDataArray = range.getDataArray()
     return masterDataArray
 
 

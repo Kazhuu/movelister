@@ -1,6 +1,12 @@
 import itertools
 
-from movelister import loop
+from movelister import cursor, loop
+
+
+def getModifierList(modifierSheet):
+    modifierDataArray = cursor.getSheetContent(modifierSheet)
+
+    return modifierDataArray
 
 
 def getImpossibleVariations(modifierSheet, mode):
@@ -129,22 +135,6 @@ def iterateCombinations(currentRowGroups, combinationsList, mode):
         filterResults = [x for x in combinationsList if len(x) == 1]
         XNORList[0].append(filterResults)
         return XNORList
-
-
-def getModifierList(modifierSheet):
-    endRow = -1
-    rulesEndCol = loop.getColumnLocation(modifierSheet, 'Notes 1:') - 1
-
-    # The loop iterates through Modifier List to get its end row.
-    # The loop breaks once there are two empty rows or x is over 1000.
-    endRow = loop.getEndOfList(modifierSheet)
-
-    # The four attributes for CellRangeByPosition are: left, top, right, bottom.
-    # The array is wide enough to get ALL relevant rules information too.
-    range = modifierSheet.getCellRangeByPosition(0, 0, rulesEndCol, endRow + 1)
-
-    modifierDataArray = range.getDataArray()
-    return modifierDataArray
 
 
 def getModifierListColors(modifierSheet, listLength):

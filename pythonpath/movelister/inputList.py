@@ -3,12 +3,16 @@ from movelister import cursor
 
 def getInputList(inputSheet, inputGroupName):
     x = 1
-    startRow = -1
-    endRow = -1
+    startRow = 0
+    endRow = 0
+
+    if inputGroupName == '':
+        inputGroupName = 'Default'
 
     # The loop iterates through a desired input list to get its coordinates.
     # The loop breaks once there are two non-relevant rows or x is over 1000.
     while x < 1000:
+        x = x + 1
         if inputSheet.getCellByPosition(0, x).getString() == inputGroupName:
                 if startRow == -1:
                     startRow = x
@@ -16,7 +20,6 @@ def getInputList(inputSheet, inputGroupName):
                     endRow = x
                     if inputSheet.getCellByPosition(0, x + 2).getString() != inputGroupName:
                         break
-        x = x + 1
 
     # The four attributes for CellRangeByPosition are: left, top, right, bottom.
     range = inputSheet.getCellRangeByPosition(1, startRow, 3, endRow + 1)
@@ -59,5 +62,8 @@ def getInputListLengths(inputSheet):
     if currentInputList != '':
         inputListLengths[0].append(currentInputList)
         inputListLengths[1].append(number)
+
+    inputListLengths[0].append('')
+    inputListLengths[0].append('')
 
     return inputListLengths
