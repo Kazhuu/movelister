@@ -35,16 +35,37 @@ def setSheetContent(sheet, data):
     cursor.setDataArray(data)
 
 
-def getRowsContent(sheet, startRow, endRow):
+def getColumn(sheet, columnIndex):
     """
-    Return given rows data in two dimensional array. Data is just a
-    slice of used sheet space returned by getSheetContent(). So if
-    used space is larger than sliced row content, then empty cells
+    Return column used content from given index as one-dimensional array.
+    Data is just a slice of used sheet space returned by getSheetContent().
+    So if used space is larger than sliced row content, then empty cells
     are included in with empty strings.
     """
     cursor = sheet.createCursor()
     cursor.gotoStartOfUsedArea(False)
     cursor.gotoEndOfUsedArea(True)
     rangeAddress = cursor.getRangeAddress()
-    # left, top, right, bottom
-    return cursor.getCellRangeByPosition(startRow, rangeAddress.StartRow, endRow, rangeAddress.EndRow).getDataArray()
+    # left, top, right, bottom.
+    data = cursor.getCellRangeByPosition(
+        columnIndex, rangeAddress.StartRow, columnIndex, rangeAddress.EndRow).getDataArray()
+    # Transfer two-dimensional array to one-dimensional array.
+    return [i[0] for i in data]
+
+
+def getRow(sheet, rowIndex):
+    """
+    Return row used content from given index as one-dimensional array.
+    Data is just a slice of used sheet space returned by getSheetContent().
+    So if used space is larger than sliced row content, then empty cells
+    are included in with empty strings.
+    """
+    cursor = sheet.createCursor()
+    cursor.gotoStartOfUsedArea(False)
+    cursor.gotoEndOfUsedArea(True)
+    rangeAddress = cursor.getRangeAddress()
+    # left, top, right, bottom.
+    data = cursor.getCellRangeByPosition(
+        rangeAddress.StartColumn, rowIndex, rangeAddress.EndColumn, rowIndex).getDataArray()
+    # Transfer two-dimensional array to one-dimensional array.
+    return list(data[0])
