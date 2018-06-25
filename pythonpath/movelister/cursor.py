@@ -13,7 +13,7 @@ def getUsedAreaSize(sheet):
 def getSheetContent(sheet):
     """
     Returns two dimensional array of all non empty content of the given
-    sheet. Array contais string and double values.
+    sheet. Array contains string and double values.
     """
     cursor = sheet.createCursor()
     cursor.gotoStartOfUsedArea(False)

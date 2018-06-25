@@ -1,44 +1,160 @@
-from movelister import delete, group, loop, messageBox
+from movelister import cursor, delete, group, inputList, loop, messageBox
 
 
-def generateAction(mechanicsSheet, inputDataArray, inputColors, nameField1, nameField2, startRow):
+def refreshMechanicsList(mechanicsSheet, inputSheet, projectionMaster):
+    MDA = cursor.getSheetContent(mechanicsSheet)
+    actionInputCheck = projectionMaster[2]
+    currentActionArray = []
+    updatedList = MDA[0:2]
 
-    # Generate empty rows according to Input List length.
-    mechanicsSheet.Rows.insertByIndex(startRow, len(inputDataArray) + 1)
+    # Known bugs 1: trying to generate too long a list can cause index to go OoB in MDA.
+    # Known bugs 2: first action with "Water" input list is not fully generated.
 
-    # Zip the multi-dimensional inputDataArray into three smaller arrays.
-    # However: this seems to make the new array incompatible with setDataArray...
-    # Find a solution!
-    inputList, notUseful, inputGroups = zip(*inputDataArray)
-    # print(inputList)
+    # Creating a projection of what Mechanics List holds at the moment.
+    projectionMechanics = createMechanicsListProjection(MDA, projectionMaster)
 
-    # Fill columns for name and modifier. Temporary solution!!
-    nameCell1 = mechanicsSheet.getCellByPosition(0, startRow)
-    nameCell1.setString(nameField1)
-    nameCell2 = mechanicsSheet.getCellByPosition(1, startRow)
-    nameCell2.setString(nameField2)
+    # Start going through Master List Projection.
+    for a in range(len(projectionMaster[0])):
+        match = 0
 
-    range = mechanicsSheet.getCellRangeByPosition(0, startRow, 1, len(inputList) - 1 + startRow)
-    range.fillAuto(0, 1)
-    range = mechanicsSheet.getCellRangeByPosition(1, startRow, 1, len(inputList) - 1 + startRow)
-    range.fillAuto(0, 1)
+        # Compare Master List Projection directly with Mechanics List Projection.
+        for b in range(len(projectionMechanics[0])):
 
-    # Fill column for Input List. Temporary solution!!
-    y = 0
-    while y < len(inputList):
-        mechanicsSheet.getCellByPosition(2, y + startRow).setString(inputList[y])
-        y = y + 1
+            # If there's a match between action names...
+            if projectionMaster[0][a] == projectionMechanics[0][b] and \
+               projectionMaster[1][a] == projectionMechanics[1][b]:
 
-    # Test printing out the inputColors array.
-    y = 0
-    while y < len(inputGroups):
-        mechanicsSheet.getCellByPosition(8, y + startRow).setString(inputColors[y])
-        y = y + 1
+                match = 1
+                print('There is a match: ' + str(projectionMaster[0][a]) + ' ' + str(projectionMaster[1][a]))
 
-    # Add Groups automatically based on data in the inputGroups array.
-    generateGroupsFromArray(mechanicsSheet, inputGroups, startRow)
+                # TO DO: also match between projected action location and length?
+                # In case lengths don't match, the code goes to more detailed row generation.
 
-    # To do: a function that adds where an Action starts and ends with markings.
+                # The code starts going through MDA row-by-row if current input list is unchecked.
+                # If it is, then actionInputCheck is updated to show that yes, the input list is okay.
+                if actionInputCheck[a] != 'OK!':
+                    actionInputCheck = compareActionWithInputList(MDA, inputSheet, projectionMaster,
+                                                                  projectionMechanics, actionInputCheck, a, b)
+
+                else:
+                    # Copy correct rows and generate missing rows in currentActionArray (?).
+                    print('TO DO: more detailed row handling.')
+
+                # Copy rows of the current attack from MDA into the currentActionArray.
+                currentActionArray = MDA[projectionMechanics[3][b]:projectionMechanics[3][b + 1]]
+
+                # Update updatedList with the temporary data.
+                updatedList = updatedList + currentActionArray
+                break
+
+        # If there was no match, the new data has to be generated.
+        # The correct format is a nested tuple...
+        if match == 0:
+            currentInputList = projectionMaster[2][a]
+            inputListContents = inputList.getInputList(inputSheet, currentInputList)
+            updatedList = generateNewActionData(MDA, updatedList, inputListContents, projectionMaster, a)
+
+    # Deleting old contents of Mechanics List. This clears groups and formatting
+    # as well as gets rid of extra rows at the bottom.
+    lowestRow = len(MDA)
+    delete.deleteRows(mechanicsSheet, 2, lowestRow)
+
+    # Set new array as sheet contents.
+    cursor.setSheetContent(mechanicsSheet, updatedList)
+
+
+def compareActionWithInputList(MDA, inputSheet, projectionMaster, projectionMechanics, actionInputCheck, a, b):
+    currentInputList = projectionMaster[2][a]
+    inputListContents = inputList.getInputList(inputSheet, currentInputList)
+
+    # Code checks the values between the projected location of current animation and next animation.
+    x = projectionMechanics[3][b] - 1
+    inputIndex = -1
+    inputMatch = -1
+    while x < projectionMechanics[3][b + 1] - 1:
+        x = x + 1
+        inputIndex = inputIndex + 1
+
+        # The code counts how many matches there is between input list and the already listed
+        # animation in the Mechanics List.
+        if MDA[x][2] == inputListContents[inputIndex][0]:
+            inputMatch = inputMatch + 1
+
+    # If there's a perfect match, the code remembers that this input list is fine.
+    # It is not checked on subsequent actions.
+    if inputMatch == inputIndex:
+        print('perfect match')
+
+        h = -1
+        for c in actionInputCheck:
+            h = h + 1
+            if c == currentInputList:
+                actionInputCheck[h] = 'OK!'
+
+    return actionInputCheck
+
+
+def createMechanicsListProjection(MDA, projectionMaster):
+    currentAction = MDA[2][0]
+    currentMods = MDA[2][1]
+    projectionMechanics = [[], [], [], []]
+
+    # Creating a projection of what Mechanics List holds at the moment.
+    z = -1
+    projectionMechanics[3].append(2)
+
+    for row in MDA:
+        z = z + 1
+
+        if row[0] == '' and z > 1:
+            projectionMechanics[0].append(currentAction)
+            projectionMechanics[1].append(currentMods)
+            projectionMechanics[3].append(z + 1)
+            currentAction = MDA[z + 1][0]
+            currentMods = MDA[z + 1][1]
+
+    # The last append happens necessarily outside loop.
+    projectionMechanics[0].append(currentAction)
+    projectionMechanics[1].append(currentMods)
+    projectionMechanics[3].append(z)
+
+    # Fill index [2] with the help of the Master List Projection.
+    x = -1
+    for actionML in projectionMechanics[0]:
+        x = 0
+        for action in projectionMaster[0]:
+            x = x + 1
+            if actionML == action:
+                projectionMechanics[2].append(projectionMaster[2][x])
+                break
+            else:
+                projectionMechanics[2].append('')
+
+    return projectionMechanics
+
+
+def generateNewActionData(MDA, updatedList, inputListContents, projectionMaster, a):
+    tempTuple = MDA[1:2]
+    tempList = list(tempTuple[0])
+    emptyTupleRow = MDA[1:2]
+
+    for raw in inputListContents:
+        if raw[0] != '':
+            tempList[0] = projectionMaster[0][a]
+            tempList[1] = projectionMaster[1][a]
+            tempList[2] = raw[0]
+
+            # Converting back to a nested tuple and updating final list row by row.
+            tempTuple2 = tuple(tempList)
+            tempList3 = [[]]
+            tempList3[0] = tempTuple2
+            tempTuple4 = tuple(tempList3)
+            updatedList = updatedList + tempTuple4
+
+    # Add one more empty row to mark the start of a new animation.
+    updatedList = updatedList + emptyTupleRow
+
+    return updatedList
 
 
 def generateGroupsFromArray(mechanicsSheet, inputGroups, startRow):

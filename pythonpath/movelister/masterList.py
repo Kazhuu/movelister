@@ -1,54 +1,44 @@
 import itertools
 
-from movelister import loop, messageBox, modifierList
+from movelister import cursor, error, inputList, loop, modifierList, test
 
 
 def getMasterList(masterSheet):
-    endRow = -1
-    modEndCol = loop.getColumnLocation(masterSheet, 'Full Name') - 1
+    masterDataArray = cursor.getSheetContent(masterSheet)
 
-    # The loop iterates through Master Action List to get its end row.
-    # The loop breaks once there are two empty rows or x is over 1000.
-    endRow = loop.getEndOfList(masterSheet)
-
-    # The four attributes for CellRangeByPosition are: left, top, right, bottom.
-    # The data array consists of ALL relevant data in the sheet, including modifiers.
-    range = masterSheet.getCellRangeByPosition(0, 0, modEndCol, endRow + 1)
-
-    masterDataArray = range.getDataArray()
     return masterDataArray
 
 
-def getMasterListProjection(masterSheet, modifierSheet):
+def getMasterListProjection(masterSheet, modifierSheet, inputSheet):
     MDA = getMasterList(masterSheet)
     nameCol = loop.getColumnLocation(masterSheet, 'Action Name')
     modStartCol = loop.getColumnLocation(masterSheet, 'DEF')
     modEndCol = loop.getColumnLocation(masterSheet, 'Full Name') - 1
     modAmount = modEndCol - modStartCol
     currentName = MDA[1][nameCol]
+    currentInputList = MDA[1][nameCol - 1]
     currentActionRow = -1
-    totalActions = 0
-    projection = [[], []]
-    tempString = ''
-    tempProjection = [[], []]
-    emptySet = {()}
+    projection = [[], [], [], []]
     currentActionDEF = -1
     currentActionMods = [[], []]
     currentActionMods.clear()
     currentActionPrereqs = []
     prereqsString = ''
-    x = 0
 
-    # A bit of error checking.
-    if len(MDA) <= 2 and MDA[1][nameCol] == '':
-        messageBox.createMessage('OK', 'Warning:', 'Master Action List seems to be empty. Unable to generate.')
-        exit()
+    # A bit of error checking before starting.
+    error.masterListProjectionErrorCheck(MDA, nameCol)
 
     # Get an array of impossible variations (derived from Modifier rules) to compare with the action list later on.
-    antiVariationSet = modifierList.getImpossibleVariations(modifierSheet)
-    print('All impossible combinations: ' + str(antiVariationSet))
+    antiVariationOR = modifierList.getImpossibleVariations(modifierSheet, 'OR')
+    antiVariationNAND = modifierList.getImpossibleVariations(modifierSheet, 'NAND')
+    antiVariationXNOR = modifierList.getImpossibleVariations(modifierSheet, 'XNOR')
+    print('List of OR-rules: ' + str(antiVariationOR))
+    print('All impossible variations based on NAND-rules: ' + str(antiVariationNAND))
+    print('All impossible variations based on XNOR-rules: ' + str(antiVariationXNOR[0]))
+    print('Protected variations (XNOR): ' + str(antiVariationXNOR[1]))
 
     # Loop through rows of Master Action List (represented as the multi-dimensional List MDA).
+    x = 0
     while x < len(MDA) - 1:
         x = x + 1
         currentActionRow = currentActionRow + 1
@@ -87,78 +77,64 @@ def getMasterListProjection(masterSheet, modifierSheet):
             # Process the currentActionMods list to figure out all the possible variations of the action.
             # The procession happens row by row because otherwise some variations will be missed.
             if len(currentActionMods) > 1:
-
-                # Get a set of all possible variations of a single action.
-                variationSet = getPossibleVariations(currentActionMods)
-                filteredSet = variationSet.copy()
-
-                # Delete impossible combinations from the set based on modifier rules.
-                for imp in antiVariationSet:
-                    for item in variationSet:
-                        if match(item, imp):
-                            filteredSet.discard(item)
-
-                # Delete empty from the set.
-                refinedSet = filteredSet - emptySet
-
-                # Sort the data.
-                sortedList = sorted(refinedSet)
+                sortedList = processVariations(currentActionMods, antiVariationOR, antiVariationNAND,
+                                               antiVariationXNOR)
 
                 if currentActionDEF == 1:
-                    tempProjection[0].append(currentName)
-                    tempProjection[1].append(prereqsString)
+                    projection[0].append(currentName)
+                    projection[1].append(prereqsString)
+                    projection[2].append(currentInputList)
 
                 if len(sortedList) > 0:
                     print('The final list of combinations from ' + currentName + ': ' + str(sortedList))
 
-                    # Adding the actions in the tempProjection.
-                    for xx in sortedList:
-                        for xxy in xx:
-                            if tempString == '':
-                                tempString = tempString + MDA[0][modStartCol + xxy]
-                            else:
-                                tempString = tempString + ' + ' + MDA[0][modStartCol + xxy]
-
-                        tempProjection[0].append(currentName)
-                        if prereqsString != '':
-                            tempProjection[1].append(prereqsString + ' + ' + tempString)
-                        else:
-                            tempProjection[1].append(tempString)
-                        tempString = ''
-
-                # Add all content from tempProjection into final projection data array.
-                xyx = -1
-                while xyx < len(tempProjection) - 1:
-                    xyx = xyx + 1
-                    for o in tempProjection[xyx]:
-                        projection[xyx].append(o)
+                    # Add all the variations of the current attack in the projection.
+                    projection = fillProjection(MDA, sortedList, projection, currentName, currentInputList,
+                                                prereqsString, modStartCol)
 
             # Update currentName with new action and re-initialize variables for next action.
             currentName = MDA[x][nameCol]
+            currentInputList = MDA[x][nameCol - 1]
             print('Next attack is ' + currentName)
             currentActionRow = -1
             currentActionMods.clear()
-            tempProjection = [[], []]
-            tempString = ''
             currentActionPrereqs = []
             prereqsString = ''
             currentActionDEF = -1
             x = x - 1
 
-        # Add to the variable that tells how many actions the code has listed so far.
-        totalActions = totalActions + 1
+    # Estimate the position of each action in Mechanics List.
+    projection = estimateActionPositionsForProjection(inputSheet, projection)
 
     # A quick test that prints out the contents of the projection.
-    x = 0
-    for zzyy in projection[0]:
-        x = x + 1
-        zzyyx = str(zzyy)
-        masterSheet.getCellByPosition(18, x).setString(zzyyx)
-    x = 0
-    for zzyy in projection[1]:
-        x = x + 1
-        zzyyx = str(zzyy)
-        masterSheet.getCellByPosition(19, x).setString(zzyyx)
+    test.printProjectionTest(projection, masterSheet)
+
+    return projection
+
+
+def estimateActionPositionsForProjection(inputSheet, projection):
+
+    # Get lengths of all input lists.
+    inputListLengths = inputList.getInputListLengths(inputSheet)
+
+    # Code that estimates the position of each action based on input list length.
+    # This is added to 'projection' index 4.
+    currentPos = 2
+    projection[3].append(currentPos)
+
+    z = -1
+    while z < len(projection[2]) - 1:
+        z = z + 1
+        currentInputList = projection[2][z]
+
+        x = -1
+        while x < len(inputListLengths) - 1:
+            x = x + 1
+            if inputListLengths[0][x] == currentInputList:
+                currentPos = currentPos + inputListLengths[1][x] + 1
+                projection[3].append(currentPos)
+
+    return projection
 
 
 def getPossibleVariations(currentActionMods):
@@ -185,6 +161,116 @@ def getPossibleVariations(currentActionMods):
     return tempSet
 
 
+def processVariations(currentActionMods, antiVariationOR, antiVariationNAND, antiVariationXNOR):
+
+    # Get a set of all possible variations of a single action.
+    variationSet = getPossibleVariations(currentActionMods)
+
+    # Delete impossible variations from the set based on NAND modifier rules.
+    filteredSet1 = processNANDVariations(variationSet, antiVariationNAND)
+
+    # Delete impossible variations from the set based on XNOR modifier rules.
+    # TO DO: the code is confused if the project has more than 1 XNOR group. Should be fixed.
+    filteredSet2 = processXNORVariations(filteredSet1, antiVariationXNOR)
+
+    # Delete impossible variations from the set based on OR rules.
+    filteredSet3 = processORVariations(filteredSet2, antiVariationOR)
+
+    # Delete empty from the set.
+    emptySet = {()}
+    refinedSet = filteredSet3 - emptySet
+
+    # Sort the data.
+    sortedList = sorted(refinedSet)
+    return sortedList
+
+
+def processNANDVariations(variationSet, antiVariationNAND):
+    filteredSet1 = variationSet.copy()
+
+    # Delete impossible variations from the set based on NAND modifier rules.
+    for imp in antiVariationNAND:
+        for item in variationSet:
+            if match(item, imp):
+                filteredSet1.discard(item)
+
+    return filteredSet1
+
+
+def processXNORVariations(filteredSet1, antiVariationXNOR):
+    filteredSet2 = filteredSet1.copy()
+
+    # Digging through the nested array.
+    for imp in antiVariationXNOR[0]:
+        for ymp in imp:
+            for omp in ymp:
+
+                # If there's a match with the item to delete, and the List item...
+                for item in filteredSet1:
+                    if match(item, omp):
+                        discardItem = 1
+
+                        # ...compare the List item with another list of things to ignore.
+                        # If there's a match at any point, don't delete item.
+                        for amp in antiVariationXNOR[1]:
+                            for emp in amp:
+                                for ump in emp:
+                                    if match(item, ump):
+                                        discardItem = 0
+                        if discardItem == 1:
+                            filteredSet2.discard(item)
+
+    return filteredSet2
+
+
+def processORVariations(filteredSet2, antiVariationOR):
+    tries = 0
+    matches = 0
+    filteredSet3 = filteredSet2.copy()
+
+    # Delete impossible variations from the set based on OR rules.
+    for item in filteredSet2:
+        tries = 0
+        matches = 0
+
+        for imp in antiVariationOR:
+            for ymp in imp:
+                if ymp != []:
+                    tries = tries + 1
+                    # print('attempting to match the elements of... ' + str(item) + ' and ' + str(ymp))
+                    for omp in ymp:
+                        for atem in item:
+                            if omp == atem:
+                                matches = matches + 1
+        if matches < tries:
+            # print(str(item) + ' was deleted!')
+            filteredSet3.discard(item)
+
+    return filteredSet3
+
+
+def fillProjection(MDA, sortedList, projection, currentName, currentInputList, prereqsString, modStartCol):
+    tempString = ''
+
+    # Add all the variations of the current attack in the projection.
+    for xx in sortedList:
+        for xxy in xx:
+            if tempString == '':
+                tempString = tempString + MDA[0][modStartCol + xxy]
+            else:
+                tempString = tempString + ' + ' + MDA[0][modStartCol + xxy]
+
+        projection[0].append(currentName)
+        projection[2].append(currentInputList)
+        if prereqsString != '':
+            projection[1].append(prereqsString + ' + ' + tempString)
+        else:
+            projection[1].append(tempString)
+        tempString = ''
+
+    return projection
+
+
 def makePrereqsString(currentActionPrereqs, prereqsString):
 
     # Makes a string out of the content of currentActionPrereqs.
@@ -194,6 +280,7 @@ def makePrereqsString(currentActionPrereqs, prereqsString):
             prereqsString = ouh
         else:
             prereqsString = prereqsString + ' + ' + ouh
+
     return prereqsString
 
 
