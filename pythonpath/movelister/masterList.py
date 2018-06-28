@@ -115,7 +115,7 @@ def getMasterListProjection(masterSheet, modifierSheet, inputSheet):
 def estimateActionPositionsForProjection(inputSheet, projection):
 
     # Get lengths of all input lists.
-    inputListLengths = inputList.getInputListLengths(inputSheet)
+    inputListLengths = inputList.getSpecificInputListLengths(inputSheet)
 
     # Code that estimates the position of each action based on input list length.
     # This is added to 'projection' index 4.
