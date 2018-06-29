@@ -7,7 +7,13 @@ def refreshMechanicsList(mechanicsSheet, inputSheet, projectionMaster):
     currentActionArray = []
     updatedList = MDA[0:2]
 
-    # Known bugs: the code doesn't always fix Mechanics List if input list is changed.
+    # First initialization of currentInputList.
+    currentInputList = projectionMaster[2][0]
+    inputListContents = inputList.getSpecificInputList(inputSheet, currentInputList)
+    print('Input list changed to: ' + str(currentInputList))
+
+    # Known bugs: the code doesn't fix existing Actions in Mechanics List if
+    # things are removed from some input list.
 
     # Creating a projection of what Mechanics List holds at the moment.
     projectionMechanics = createMechanicsListProjection(MDA, projectionMaster)
@@ -17,27 +23,26 @@ def refreshMechanicsList(mechanicsSheet, inputSheet, projectionMaster):
         nameMatch = 0
         lengthMatch = 0
 
+        # Check if the most recently loaded Input List matches current animation. If not, then update it.
+        if currentInputList != projectionMaster[2][a]:
+            currentInputList = projectionMaster[2][a]
+            inputListContents = inputList.getSpecificInputList(inputSheet, currentInputList)
+            print('Input list changed to: ' + str(currentInputList))
+
         # Compare Master List Projection directly with Mechanics List Projection.
         for b in range(len(projectionMechanics[0])):
 
             # If there's a match between action names...
             if projectionMaster[0][a] == projectionMechanics[0][b] and \
                projectionMaster[1][a] == projectionMechanics[1][b]:
-
                 nameMatch = 1
-                print('There is a match: ' + str(projectionMaster[0][a]) + ' ' + str(projectionMaster[1][a]))
 
-                # Get input list of the current action.
-                currentInputList = projectionMaster[2][a]
-                inputListContents = inputList.getSpecificInputList(inputSheet, currentInputList)
-                print('Current input list: ' + str(currentInputList))
-
-                # Also compare between projected action location and length. Returns 1 if it's a match.
+                # Also compare between projected action length. Returns 1 if it's a match.
                 lengthMatch = compareActionLengths(projectionMaster, projectionMechanics, a, b)
 
                 # In case lengths don't match, the code goes to more detailed row generation for this action.
                 if lengthMatch == 0:
-                    print('Something is wrong... projected lengths of the actions did not match.')
+                    print('Projected lengths did not match.')
 
                     # Copy correct rows and generate missing rows in currentActionArray (?).
                     updatedList = copyActionDataRowByRow(MDA, updatedList, inputListContents, projectionMaster,
@@ -135,7 +140,7 @@ def createMechanicsListProjection(MDA, projectionMaster):
     Creating a projection of what Mechanics List holds at the moment.
     '''
 
-    # projectionMechanics is appended with 2, which is the starting point of the list.
+    # projectionMechanics is appended with 2, which is the starting point of the data.
     projectionMechanics[3].append(2)
 
     z = -1
@@ -199,9 +204,9 @@ def copyActionDataRowByRow(MDA, updatedList, inputListContents, projectionMaster
     tempTuple = MDA[1:2]
     tempList = list(tempTuple[0])
     emptyTupleRow = MDA[1:2]
-    actionArea = MDA[projectionMechanics[3][b]: projectionMechanics[3][b + 1] - 1]
+    actionArea = MDA[projectionMechanics[3][b]: projectionMechanics[3][b + 1]]
 
-    # Comparing input list to what exists on the table (represented by MDA).
+    # Code compares input list to what exists in Mechanics List (represented by MDA).
     # If there is a match, the whole row is copied to updatedList.
     z = -1
     for raw in inputListContents:
@@ -209,7 +214,7 @@ def copyActionDataRowByRow(MDA, updatedList, inputListContents, projectionMaster
         match = 0
         for war in actionArea:
             if raw[0] == war[2]:
-                # print(str(raw[0]) + ' ' + str(war[2]))
+                print('There was a match with: ' + str(raw[0]) + ' ' + str(war[2]))
                 tempTuple = actionArea[z:z+1]
                 updatedList = updatedList + tempTuple
                 match = 1
@@ -217,7 +222,7 @@ def copyActionDataRowByRow(MDA, updatedList, inputListContents, projectionMaster
 
         # If there was no match, then the row is generated instead.
         if match == 0:
-            print('generating ' + str(raw[0]))
+            print('Generating ' + str(raw[0]))
             tempList[0] = projectionMaster[0][a]
             tempList[1] = projectionMaster[1][a]
             tempList[2] = raw[0]

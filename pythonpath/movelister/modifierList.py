@@ -18,7 +18,8 @@ def getImpossibleVariations(modifierSheet, mode):
         antiVariations = getAntiVariations(MDA, modifierSheet, 'NAND')
     if mode == 'XNOR':  # returned as a 2d-list
         antiVariations = getAntiVariations(MDA, modifierSheet, 'XNOR')
-    # TO DO: a code for 'IF' groups. But that isn't a priority yet...
+
+    # Known bugs: code becomes confused if there is more than one XNOR group.
 
     return antiVariations
 

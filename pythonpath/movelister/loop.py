@@ -1,14 +1,15 @@
-from movelister import messageBox
+from movelister import cursor, messageBox
 
 
 def getColumnLocation(sheet, columnName):
-    x = -1
+    columnRow = cursor.getRow(sheet, 0)
     column = -1
 
     # The loop iterates through the row 0 of chosen List to find where a certain Column is.
-    while x < 80:
+    x = -1
+    while x < len(columnRow):
         x = x + 1
-        if sheet.getCellByPosition(x, 0).getString() == columnName:
+        if columnRow[x] == columnName:
             column = x
             break
 
@@ -37,20 +38,3 @@ def getRowLocation(sheet, column, string):
         exit()
 
     return rowPosition
-
-
-def getEndOfList(sheet):
-    x = 1
-    endRow = -1
-
-    # The loop iterates through a list to figure out where it ends.
-    # The loop breaks once there are two empty rows or x is over 1000.
-    # Currently only used with Modifier List and Master List.
-    # I'm sure there's a better way to programmatically reach the end of a list.
-    while x < 1000:
-        if sheet.getCellByPosition(0, x).getString() == '':
-            if sheet.getCellByPosition(0, x + 1).getString() == '':
-                        endRow = x - 1
-                        break
-        x = x + 1
-    return endRow

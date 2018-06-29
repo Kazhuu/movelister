@@ -9,13 +9,13 @@ def getInputList(inputSheet):
 
 def getSpecificInputList(inputSheet, inputGroupName):
     IDA = getInputList(inputSheet)
-    x = -1
     startRow = -1
     endRow = -1
 
     if inputGroupName == '':
         inputGroupName = 'Default'
 
+    x = -1
     for row in IDA:
         x = x + 1
         if row[0] == inputGroupName and startRow == -1:
