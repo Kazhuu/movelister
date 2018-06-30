@@ -26,6 +26,7 @@ def getRowLocation(sheet, column, string):
     rowPosition = -1
 
     # The loop iterates through the rows of a chosen List to find a string from some Row.
+    # TO DO : use 'cursor' instead.
     while x < 5000:
         x = x + 1
         if sheet.getCellByPosition(column, x).getString() == string:
