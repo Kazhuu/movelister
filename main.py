@@ -2,6 +2,7 @@
 Main file for the all usable LibreOffice macros. Can also be executed from the
 command line and connect to opened LibreOffice socket.
 """
+import uno  # noqa
 import os
 import sys
 
