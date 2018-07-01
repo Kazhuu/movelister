@@ -29,9 +29,10 @@ class Context(Singleton):
                         kwargs['host'], kwargs['port']
                     )
                     cls.context = resolver.resolve(uri)
-                    manager = cls.context.ServiceManager
+                    cls.serviceManager = cls.context.ServiceManager
                     # Get the central desktop object.
-                    cls.desktop = manager.createInstanceWithContext('com.sun.star.frame.Desktop', cls.context)
+                    cls.desktop = cls.serviceManager.createInstanceWithContext(
+                        'com.sun.star.frame.Desktop', cls.context)
                 except NoConnectException:
                     print('could not connect to LibreOffice socket at {0}:{1}'.format(kwargs['host'], kwargs['port']))
                     print('make sure the socket is open')
@@ -40,6 +41,14 @@ class Context(Singleton):
                 cls.desktop = cls.context.ServiceManager.createInstanceWithContext(
                     "com.sun.star.frame.Desktop", cls.context
                 )
+
+    @classmethod
+    def getFrame(cls):
+        """
+        Returns current frame object. RunTimeError is raised if setup() is not called
+        before this. Frame represents current active LibreOffice UI.
+        """
+        return cls.getDesktop().CurrentFrame
 
     @classmethod
     def getDesktop(cls):
@@ -57,6 +66,4 @@ class Context(Singleton):
         Returns current document component.
         RunTimeError is raised if setup() is not called before this.
         """
-        if not hasattr(cls, 'desktop'):
-            raise RuntimeError(cls.EXCEPTION_MESSAGE)
-        return cls.desktop.getCurrentComponent()
+        return cls.getDesktop().getCurrentComponent()
