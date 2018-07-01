@@ -1,7 +1,7 @@
 from movelister import cursor, messageBox
 
 
-def getColumnLocation(sheet, columnName):
+def getColumnPosition(sheet, columnName):
     columnRow = cursor.getRow(sheet, 0)
     column = -1
 
@@ -21,15 +21,15 @@ def getColumnLocation(sheet, columnName):
     return column
 
 
-def getRowLocation(sheet, column, string):
-    x = 0
+def getRowPosition(sheet, column, string):
+    columnRow = cursor.getColumn(sheet, column)
     rowPosition = -1
 
-    # The loop iterates through the rows of a chosen List to find a string from some Row.
-    # TO DO : use 'cursor' instead.
-    while x < 5000:
+    # The loop iterates through the row 0 of chosen List to find where a certain Column is.
+    x = -1
+    while x < len(columnRow):
         x = x + 1
-        if sheet.getCellByPosition(column, x).getString() == string:
+        if columnRow[x] == string:
             rowPosition = x
             break
 

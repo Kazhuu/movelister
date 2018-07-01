@@ -1,3 +1,5 @@
+from movelister import cursor
+
 import uno
 from com.sun.star.beans import PropertyValue
 from com.sun.star.sheet.ConditionOperator import LESS
@@ -25,7 +27,12 @@ def applyConditionalFormatting(sheet, resultsDataArray, resultsListColors):
     # conForm.addNew(condition1)
 
 
-def removeConditionalFormatting(sheet):
+def clearConditionalFormatting(sheet):
+
+    # Test. Doesn't actually do what you'd expect it to do?
+    range = sheet.getCellRangeByPosition(1, 1, 100, 100)
+    range.ConditionalFormat.clear()
+
     print('Nothing here yet.')
     # To do: a function that deletes all existing Conditional Formatting in a sheet.
 

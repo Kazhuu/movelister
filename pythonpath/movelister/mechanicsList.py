@@ -270,7 +270,7 @@ def generateGroupsFromArray(mechanicsSheet, inputGroups, startRow):
 
 
 def generatePhases(mechanicsSheet, highestPhase, phaseCount):
-    phasesStart = loop.getColumnLocation(mechanicsSheet, '> Phase 0 result') - 1
+    phasesStart = loop.getColumnPosition(mechanicsSheet, '> Phase 0 result') - 1
     amount = (highestPhase - phaseCount) * 3
     startCol = phasesStart + ((phaseCount + 1) * 3)
     str1 = '> Phase '
@@ -305,7 +305,7 @@ def generatePhases(mechanicsSheet, highestPhase, phaseCount):
 
 
 def deletePhases(mechanicsSheet, highestPhase, phaseCount):
-    phasesStart = loop.getColumnLocation(mechanicsSheet, '> Phase 0 result') - 1
+    phasesStart = loop.getColumnPosition(mechanicsSheet, '> Phase 0 result') - 1
     amount = (phaseCount - highestPhase) * 3
     startCol = phasesStart + (((phaseCount + 1) * 3)) - (amount)
     titleText = 'Warning:'
@@ -320,8 +320,8 @@ def deletePhases(mechanicsSheet, highestPhase, phaseCount):
 
 def countPhases(mechanicsSheet):
     # Mechanics Sheet top row is iterated through twice to figure out how many columns are taken by Phases.
-    phasesStart = loop.getColumnLocation(mechanicsSheet, '> Phase 0 result')
-    phasesEnd = loop.getColumnLocation(mechanicsSheet, 'Notes 1')
+    phasesStart = loop.getColumnPosition(mechanicsSheet, '> Phase 0 result')
+    phasesEnd = loop.getColumnPosition(mechanicsSheet, 'Notes 1')
 
     # Small math operation to get the actual number of phases.
     phaseNum = (phasesEnd - phasesStart - 2) / 3

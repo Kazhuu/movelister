@@ -33,22 +33,22 @@ def getAntiVariations(MDA, modifierSheet, mode):
     # It can be increased by increasing the size of the currentRowGroups array.
 
     if mode == 'OR':
-        ORStartCol = loop.getColumnLocation(modifierSheet, 'OR Group:')
-        OREndCol = loop.getColumnLocation(modifierSheet, 'NAND Group:') - 1
+        ORStartCol = loop.getColumnPosition(modifierSheet, 'OR Group:')
+        OREndCol = loop.getColumnPosition(modifierSheet, 'NAND Group:') - 1
         ORAmount = OREndCol - ORStartCol
         loopAmount = ORAmount
         startCol = ORStartCol
         ORList = []
     if mode == 'NAND':
-        NANDStartCol = loop.getColumnLocation(modifierSheet, 'NAND Group:')
-        NANDEndCol = loop.getColumnLocation(modifierSheet, 'XNOR Group:') - 1
+        NANDStartCol = loop.getColumnPosition(modifierSheet, 'NAND Group:')
+        NANDEndCol = loop.getColumnPosition(modifierSheet, 'XNOR Group:') - 1
         NANDAmount = NANDEndCol - NANDStartCol
         loopAmount = NANDAmount
         startCol = NANDStartCol
     if mode == 'XNOR':
         XNORList = [[], []]
-        XNORStartCol = loop.getColumnLocation(modifierSheet, 'XNOR Group:')
-        XNOREndCol = loop.getColumnLocation(modifierSheet, 'Notes 1:') - 1
+        XNORStartCol = loop.getColumnPosition(modifierSheet, 'XNOR Group:')
+        XNOREndCol = loop.getColumnPosition(modifierSheet, 'Notes 1:') - 1
         XNORAmount = XNOREndCol - XNORStartCol
         loopAmount = XNORAmount
         startCol = XNORStartCol

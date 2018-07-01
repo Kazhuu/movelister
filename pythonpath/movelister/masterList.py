@@ -11,9 +11,9 @@ def getMasterList(masterSheet):
 
 def getMasterListProjection(masterSheet, modifierSheet, inputSheet):
     MDA = getMasterList(masterSheet)
-    nameCol = loop.getColumnLocation(masterSheet, 'Action Name')
-    modStartCol = loop.getColumnLocation(masterSheet, 'DEF')
-    modEndCol = loop.getColumnLocation(masterSheet, 'Full Name') - 1
+    nameCol = loop.getColumnPosition(masterSheet, 'Action Name')
+    modStartCol = loop.getColumnPosition(masterSheet, 'DEF')
+    modEndCol = loop.getColumnPosition(masterSheet, 'Full Name') - 1
     modAmount = modEndCol - modStartCol
     currentName = MDA[1][nameCol]
     currentInputList = MDA[1][nameCol - 1]
@@ -287,7 +287,7 @@ def makePrereqsString(currentActionPrereqs, prereqsString):
 def getHighestPhaseNumber(masterSheet, listLength):
     x = -1
     phase = 0
-    phaseCol = loop.getColumnLocation(masterSheet, 'Phase')
+    phaseCol = loop.getColumnPosition(masterSheet, 'Phase')
 
     # The loop iterates through the Phase column and finds the highest number in sequence.
     # Warning: loop cannot find high phase numbers that are out of sequence.

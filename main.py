@@ -13,8 +13,8 @@ if __name__ == '__main__':
 
 from movelister.context import Context  # noqa
 from movelister.sheet import Sheet  # noqa
-from movelister import conditionalFormat, delete, group, inputList, masterList, \
-    mechanicsList, messageBox, modifierList, resultsList, test, dev, color, cursor  # noqa
+from movelister import color, conditionalFormat, cursor, delete, dev, group, inputList, masterList, \
+    mechanicsList, messageBox, modifierList, resultsList, test, validation  # noqa
 
 # Setup context automatically when macro is run from the LibreOffice.
 if __name__ != '__main__':
@@ -119,7 +119,7 @@ def refreshModifiers():
 
 
 def createConditionalFormatting():
-    mechanicsSheet = Sheet.getMasterActionList()
+    mechanicsSheet = Sheet.getMechanicsList()
     resultsSheet = Sheet.getResultsList()
 
     # A function that gets all relevant data from the Results Sheet.
@@ -129,6 +129,7 @@ def createConditionalFormatting():
     # A function that uses the gathered data and generates the formatting.
     # Note: still incomplete! See conditionalFormat.py
     conditionalFormat.applyConditionalFormatting(mechanicsSheet, resultsDataArray, resultsListColors)
+    # conditionalFormat.clearConditionalFormatting(mechanicsSheet)
 
 
 # Run when executed from the command line.
