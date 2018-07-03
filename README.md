@@ -3,7 +3,7 @@ Movelister is (or: will be) a tool for creating various types of in-depth notes 
 
 
 ## Dependancies
-It's necessary for the user to install LibreOffice 5 to be able to use the Movelister scripts. Having Python installed is also a requirement. Python is automatically included in a LibreOffice installation on Windows but NOT on Linux, so on Linux the user may have to install Python separately.
+It's necessary for the user to install LibreOffice 5 to be able to use the Movelister scripts. Having Python 3 installed is also a requirement. Python is automatically included in a LibreOffice installation on Windows but NOT on Linux, so on Linux the user may have to install Python separately. On distros that has both Python 2 and 3 versions available and command `python` points to Python 2. Developers can change `python` commands to `python3` in this readme instead.
 
 On Linux, install following packages to enable Python for LibreOffice:
 ```
@@ -44,6 +44,14 @@ LibreOffice 5 has a specific directory where it searches for Python scripts - so
 __Note:__ so far the scripts are designed to be used together with the Movelister template, so make sure that it's open in LibreOffice Calc before you run scripts or you most likely get some errors.
 
 __Note 2:__ since this project is still at its early stages, the scripts don't offer a full functionality yet. Feel free to admire the template and give some feedback or ideas on it, though.
+
+
+## Running tests
+
+Test are located under test folder at the project root. Test suite opens a headless LibreOffice instance with project template .ods file. Then between each test the file is reopened. To run tests run command below at project root with LibreOffice that has eternal Python installation. Verbose option -v can be omitted if not needed.
+```
+python -m unittest -v
+```
 
 
 ## Resources

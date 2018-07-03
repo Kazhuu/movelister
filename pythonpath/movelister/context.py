@@ -43,6 +43,16 @@ class Context(Singleton):
                 )
 
     @classmethod
+    def reset(cls):
+        """
+        Resets the current context setup by setup() method. Remember to call
+        setup() again after this. This can be used to reset context if LibreOffice
+        process has restarted. Usefull for unit tests.
+        """
+        if hasattr(cls, 'desktop'):
+            del cls.desktop
+
+    @classmethod
     def getFrame(cls):
         """
         Returns current frame object. RunTimeError is raised if setup() is not called
