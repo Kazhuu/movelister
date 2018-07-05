@@ -1,6 +1,7 @@
-import unittest
 import os
+import platform
 import time
+import unittest
 from subprocess import Popen
 
 from movelister.context import Context
@@ -22,10 +23,15 @@ class OfficeTestCase(unittest.TestCase):
         libreOffice = os.environ.get('MV_LB_BIN')
         if libreOffice is None:
             raise RuntimeError(cls.EXCEPTION_MESSAGE)
-        # Open LibreOffice process.
-        cls.process = Popen(
-            [libreOffice, "templates/movelister_template.ods", "--headless",
-             "--accept=socket,host=localhost,port=2003;urp;StarOffice.ServiceManager"])
+        # Open LibreOffice process differently if platform is Windows.
+        system = platform.system()
+        if system == 'Windows':
+            cls.process = Popen(libreOffice + "templates\movelister_template.ods --headless \
+                --accept=socket,host=localhost,port=2003;urp;StarOffice.ServiceManager")
+        else:
+            cls.process = Popen(
+                [libreOffice, "templates/movelister_template.ods", "--headless",
+                 "--accept=socket,host=localhost,port=2003;urp;StarOffice.ServiceManager"])
         time.sleep(1)
         # Reset and setup context.
         Context.reset()
