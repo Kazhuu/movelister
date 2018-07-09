@@ -36,6 +36,19 @@ def printMechanicsListTest(projection, mechanicsSheet):
         mechanicsSheet.getCellByPosition(27, x).setString(zzyyx)
 
 
+def printModifierListTest(modifierDataArray, modifierListColors, modifierSheet):
+    x = 0
+
+    for zzyy in modifierDataArray:
+        x = x + 1
+        zzyyx = str(zzyy)
+        modifierSheet.getCellByPosition(12, x).setString(zzyyx)
+    x = 0
+    for zzyy in modifierListColors:
+        x = x + 1
+        zzyyx = str(zzyy)
+        modifierSheet.getCellByPosition(13, x).setString(zzyyx)
+
 
 def testItOut(inputSheet, inputDataArray):
 

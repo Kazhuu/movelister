@@ -1,6 +1,6 @@
 import itertools
 
-from movelister import cursor, error, inputList, loop, modifierList, test
+from movelister import cursor, delete, error, inputList, loop, messageBox, modifierList, test
 
 
 def getMasterList(masterSheet):
@@ -249,6 +249,10 @@ def processORVariations(filteredSet2, antiVariationOR):
     return filteredSet3
 
 
+def match(combination, match):
+    return all(elem in combination for elem in match)
+
+
 def fillProjection(MDA, sortedList, projection, currentName, currentInputList, prereqsString, modStartCol):
     tempString = ''
 
@@ -284,12 +288,103 @@ def makePrereqsString(currentActionPrereqs, prereqsString):
     return prereqsString
 
 
+def updateMasterListModifiers(masterSheet, modifierListModifiers, modifierListColors):
+    '''
+    This function updates the section with Modifiers in the Master List using the data from Modifier List.
+    '''
+    MDA = getMasterList(masterSheet)
+    topRowArray = cursor.getRow(masterSheet, 0)
+    startPos = loop.getColumnPosition(masterSheet, 'DEF') + 1
+    endPos = loop.getColumnPosition(masterSheet, 'Full Name')
+    masterListModifiers = topRowArray[startPos:endPos]
+    finalList = []
+
+    # Compare if Master List modifiers match Modifier List modifiers. If yes, function ends.
+    compareModifierLists(modifierListModifiers, masterListModifiers)
+
+    # If function continues beyond this point, then the modifiers of Master Action List will be
+    # updated to match the modifiers of Modifier List. Master List columns are copied or
+    # generated to a new array, which is then pasted to replace the previous columns.
+    newModifierArray = createNewModifierArray(MDA, masterSheet, startPos, modifierListModifiers, masterListModifiers)
+
+    # newModifierArray has to be turned sideways with iteration first.
+    finalList = loop.turnArraySideways(newModifierArray)
+
+    # Delete existing Modifier Block from Master List.
+    delete.deleteColumns(masterSheet, startPos, len(masterListModifiers))
+
+    # Create a new number of columns for pasting the newModifierArray array into.
+    masterSheet.Columns.insertByIndex(startPos, len(modifierListModifiers))
+    range = masterSheet.getCellRangeByPosition(startPos, 0, startPos + len(modifierListModifiers) - 1, len(MDA) - 1)
+
+    range.setDataArray(finalList)
+
+    # Fix column width.
+    fixModifierBlockColumnWidths(masterSheet, modifierListModifiers, startPos)
+
+    # TO DO: fix column colors.
+
+
+def compareModifierLists(modifierListModifiers, masterListModifiers):
+    '''
+    This function compares both modifier lists. If they're identical, the function is ended.
+    '''
+    if modifierListModifiers == masterListModifiers:
+        messageBox.createMessage('OK', "Note:", "Modifier lists are already up to date.")
+        exit()
+
+
+def createNewModifierArray(MDA, masterSheet, startPos, modifierListModifiers, masterListModifiers):
+    '''
+    This function creates the new array which is pasted in the Modifier block of Master List sheet.
+    '''
+    newList = []
+    tempCol = []
+
+    x = -1
+    for col in modifierListModifiers:
+        x = x + 1
+        match = 0
+
+        y = -1
+        for mod in masterListModifiers:
+            y = y + 1
+            if mod == col:
+                tempCol = cursor.getColumn(masterSheet, startPos + y)
+                match = 1
+                break
+
+        # If there's no match, code has to generate one extra row.
+        if match == 0:
+            tempCol.clear()
+            tempCol.append(col)
+
+            for a in range(len(MDA) - 1):
+                tempCol.append('')
+
+        # Creating a copy of tempCol to prevent data from being overwritten from
+        # newList. Then the copy is appended to newList.
+        tempCol2 = tempCol.copy()
+        newList.append(tempCol2)
+
+    return newList
+
+
+def fixModifierBlockColumnWidths(masterSheet, modifierListModifiers, startPos):
+    x = -1
+    while x < len(modifierListModifiers) - 1:
+        x = x + 1
+        masterSheet.getColumns().getByIndex(startPos + x).OptimalWidth = 1
+
+
 def getHighestPhaseNumber(masterSheet, listLength):
+    '''
+    The loop iterates through the Phase column and finds the highest number in sequence.
+    '''
     x = -1
     phase = 0
     phaseCol = loop.getColumnPosition(masterSheet, 'Phase')
 
-    # The loop iterates through the Phase column and finds the highest number in sequence.
     # Warning: loop cannot find high phase numbers that are out of sequence.
     # But something like that shouldn't happen in normal use, right?
     # Warning: the loop also doesn't check if the high phase numbers are actually in use,
@@ -301,11 +396,3 @@ def getHighestPhaseNumber(masterSheet, listLength):
             x = -1
 
     return(phase)
-
-
-def match(combination, match):
-    return all(elem in combination for elem in match)
-
-
-def fixModifiers(masterSheet, modifierDataArray):
-    print("TO DO")

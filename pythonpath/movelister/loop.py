@@ -39,3 +39,23 @@ def getRowPosition(sheet, column, string):
         exit()
 
     return rowPosition
+
+
+def turnArraySideways(array):
+    '''
+    This code turns a 2d-array so that its columns become rows and vice-versa.
+    '''
+    newList = []
+
+    for item in array[0]:
+        newList.append([])
+
+    x = -1
+    for row in array:
+        x = x + 1
+        y = - 1
+        for item in row:
+            y = y + 1
+            newList[y].append(item)
+
+    return newList

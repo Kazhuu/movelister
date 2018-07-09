@@ -3,3 +3,4 @@ __pycache__/
 .~lock.*
 /python.bat
 *~
+/python_t.bat

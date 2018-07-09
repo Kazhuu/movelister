@@ -101,22 +101,18 @@ def refreshPhases():
 
 
 def refreshModifiers():
+    masterSheet = Sheet.getMasterActionList()
     modifierSheet = Sheet.getModifierList()
 
     # A function that creates a Data Array of the whole Modifier List.
     # A separate array is created for the cell background color data.
-    modifierDataArray = modifierList.getModifierList(modifierSheet)
-    modifierListColors = modifierList.getModifierListColors(modifierSheet, len(modifierDataArray))
+    modifierListModifiers = modifierList.getModifierListProjection(modifierSheet)
+    modifierListColors = modifierList.getModifierListColors(modifierSheet, len(modifierListModifiers))
 
-    print(modifierDataArray)
-    print(modifierListColors)
-
-    # To do: compare this data to the Modifiers columns in Master Action List.
-
-    # To do: delete unnecessary Modifier columns or add necessary Modifier Columns
-    # in Master Action List.
-
+    # Function compares this data to the Modifiers columns in Master Action List.
+    # It then deletes unnecessary Modifier columns or add necessary Modifier Columns in Master Action List.
     # To do: color the cell background of the columns if something was created.
+    masterList.updateMasterListModifiers(masterSheet, modifierListModifiers, modifierListColors)
 
 
 def createConditionalFormatting():

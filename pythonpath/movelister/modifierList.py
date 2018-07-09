@@ -9,6 +9,22 @@ def getModifierList(modifierSheet):
     return modifierDataArray
 
 
+def getModifierListProjection(modifierSheet):
+    '''
+    This function returns a one-dimensional List of all the existing modifiers.
+    '''
+    modifierDataArray = getModifierList(modifierSheet)
+    newList = []
+
+    x = 0
+    for z in modifierDataArray:
+        x = x + 1
+        if z[0] != '' and x > 1:
+            newList.append(z[0])
+
+    return newList
+
+
 def getImpossibleVariations(modifierSheet, mode):
     MDA = getModifierList(modifierSheet)
 
@@ -143,6 +159,7 @@ def getModifierListColors(modifierSheet, listLength):
     modifierColors = []
 
     # Iterate through Results List color column to get a list of colors.
+    # This is necessary to do from the Sheet itself.
     while x < listLength + 1:
         modifierColors.append(modifierSheet.getCellByPosition(2, x).CellBackColor)
         x = x + 1
