@@ -1,6 +1,6 @@
 import itertools
 
-from movelister import cursor, delete, error, inputList, loop, messageBox, modifierList, test
+from movelister import color, cursor, delete, error, inputList, loop, messageBox, modifierList, test
 
 
 def getMasterList(masterSheet):
@@ -276,8 +276,9 @@ def fillProjection(MDA, sortedList, projection, currentName, currentInputList, p
 
 
 def makePrereqsString(currentActionPrereqs, prereqsString):
-
-    # Makes a string out of the content of currentActionPrereqs.
+    '''
+    This function makes a string out of the content of the array currentActionPrereqs.
+    '''
     prereqsSet = set(currentActionPrereqs)
     for ouh in prereqsSet:
         if prereqsString == '':
@@ -294,9 +295,9 @@ def updateMasterListModifiers(masterSheet, modifierListModifiers, modifierListCo
     '''
     MDA = getMasterList(masterSheet)
     topRowArray = cursor.getRow(masterSheet, 0)
-    startPos = loop.getColumnPosition(masterSheet, 'DEF') + 1
-    endPos = loop.getColumnPosition(masterSheet, 'Full Name')
-    masterListModifiers = topRowArray[startPos:endPos]
+    startCol = loop.getColumnPosition(masterSheet, 'DEF') + 1
+    endCol = loop.getColumnPosition(masterSheet, 'Full Name')
+    masterListModifiers = topRowArray[startCol:endCol]
     finalList = []
 
     # Compare if Master List modifiers match Modifier List modifiers. If yes, function ends.
@@ -305,24 +306,25 @@ def updateMasterListModifiers(masterSheet, modifierListModifiers, modifierListCo
     # If function continues beyond this point, then the modifiers of Master Action List will be
     # updated to match the modifiers of Modifier List. Master List columns are copied or
     # generated to a new array, which is then pasted to replace the previous columns.
-    newModifierArray = createNewModifierArray(MDA, masterSheet, startPos, modifierListModifiers, masterListModifiers)
+    newModifierArray = createNewModifierArray(MDA, masterSheet, startCol, modifierListModifiers, masterListModifiers)
 
     # newModifierArray has to be turned sideways with iteration first.
     finalList = loop.turnArraySideways(newModifierArray)
 
     # Delete existing Modifier Block from Master List.
-    delete.deleteColumns(masterSheet, startPos, len(masterListModifiers))
+    delete.deleteColumns(masterSheet, startCol, len(masterListModifiers))
 
     # Create a new number of columns for pasting the newModifierArray array into.
-    masterSheet.Columns.insertByIndex(startPos, len(modifierListModifiers))
-    range = masterSheet.getCellRangeByPosition(startPos, 0, startPos + len(modifierListModifiers) - 1, len(MDA) - 1)
+    masterSheet.Columns.insertByIndex(startCol, len(modifierListModifiers))
+    range = masterSheet.getCellRangeByPosition(startCol, 0, startCol + len(modifierListModifiers) - 1, len(MDA) - 1)
 
     range.setDataArray(finalList)
 
     # Fix column width.
-    fixModifierBlockColumnWidths(masterSheet, modifierListModifiers, startPos)
+    fixModifierBlockColumnWidths(masterSheet, MDA, modifierListModifiers, startCol)
 
-    # TO DO: fix column colors.
+    # Fix column colors.
+    setColorsToModifierBlock(masterSheet, startCol, endCol, modifierListColors)
 
 
 def compareModifierLists(modifierListModifiers, masterListModifiers):
@@ -334,7 +336,7 @@ def compareModifierLists(modifierListModifiers, masterListModifiers):
         exit()
 
 
-def createNewModifierArray(MDA, masterSheet, startPos, modifierListModifiers, masterListModifiers):
+def createNewModifierArray(MDA, masterSheet, startCol, modifierListModifiers, masterListModifiers):
     '''
     This function creates the new array which is pasted in the Modifier block of Master List sheet.
     '''
@@ -350,7 +352,7 @@ def createNewModifierArray(MDA, masterSheet, startPos, modifierListModifiers, ma
         for mod in masterListModifiers:
             y = y + 1
             if mod == col:
-                tempCol = cursor.getColumn(masterSheet, startPos + y)
+                tempCol = cursor.getColumn(masterSheet, startCol + y)
                 match = 1
                 break
 
@@ -370,11 +372,34 @@ def createNewModifierArray(MDA, masterSheet, startPos, modifierListModifiers, ma
     return newList
 
 
-def fixModifierBlockColumnWidths(masterSheet, modifierListModifiers, startPos):
+def fixModifierBlockColumnWidths(masterSheet, MDA, modifierListModifiers, startCol):
+    '''
+    This function sets the OptimalWidth of all columns in range to 1 (true).
+    '''
+    cellRange = masterSheet.getCellRangeByPosition(startCol, 0, startCol + len(modifierListModifiers), len(MDA))
+    cellRange.getColumns().OptimalWidth = 1
+
+
+def setColorsToModifierBlock(masterSheet, startCol, endCol, modifierListColors):
+    '''
+    This function sets colors to all the individual columns in the modifier block.
+    '''
+    offset = 0
+    tempCol = cursor.getColumn(masterSheet, startCol)
+    modifierListColors.append(0)
+
     x = -1
-    while x < len(modifierListModifiers) - 1:
+    for a in range(len(modifierListColors) - 1):
         x = x + 1
-        masterSheet.getColumns().getByIndex(startPos + x).OptimalWidth = 1
+        currentColor = color.Color(modifierListColors[x])
+        nextColor = color.Color(modifierListColors[x + 1])
+
+        if currentColor.value == nextColor.value:
+            offset = offset + 1
+        else:
+            masterSheet.getCellRangeByPosition(startCol + x - offset, 0, startCol + x,
+                                               len(tempCol)).CellBackColor = currentColor.value
+            offset = 0
 
 
 def getHighestPhaseNumber(masterSheet, listLength):
