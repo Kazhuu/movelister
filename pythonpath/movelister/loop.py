@@ -1,11 +1,13 @@
-from movelister import cursor, messageBox
+from movelister import cursor, loop, messageBox
 
 
 def getColumnPosition(sheet, columnName):
+    """
+    This function iterates through the row 0 of chosen List to find where a certain Column is.
+    """
     columnRow = cursor.getRow(sheet, 0)
     column = -1
 
-    # The loop iterates through the row 0 of chosen List to find where a certain Column is.
     x = -1
     while x < len(columnRow):
         x = x + 1
@@ -21,30 +23,27 @@ def getColumnPosition(sheet, columnName):
     return column
 
 
-def getRowPosition(sheet, column, string):
-    columnRow = cursor.getColumn(sheet, column)
-    rowPosition = -1
+def getColorArray(sheet):
+    """
+    This function creates an array of CellBackColor from the Color column in a chosen sheet.
+    The loop starts counting from 0 and thus skips the top row with labels on it.
+    """
+    sheetLength = cursor.getColumn(sheet, 0)
+    colPosition = loop.getColumnPosition(sheet, 'Color')
+    colorList = []
 
-    # The loop iterates through the row 0 of chosen List to find where a certain Column is.
-    x = -1
-    while x < len(columnRow):
+    x = 0
+    while x < len(sheetLength) - 1:
         x = x + 1
-        if columnRow[x] == string:
-            rowPosition = x
-            break
+        colorList.append(sheet.getCellByPosition(colPosition, x).CellBackColor)
 
-    # Error message if it wasn't found.
-    if column == - 1:
-        messageBox.createMessage('OK', 'Warning:', "Program couldn't find a cell with " + string + '.')
-        exit()
-
-    return rowPosition
+    return colorList
 
 
 def turnArraySideways(array):
-    '''
+    """
     This code turns a 2d-array so that its columns become rows and vice-versa.
-    '''
+    """
     newList = []
 
     for item in array[0]:

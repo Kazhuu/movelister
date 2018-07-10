@@ -10,13 +10,13 @@ def getMasterList(masterSheet):
 
 
 def getMasterListProjection(masterSheet, modifierSheet, inputSheet):
-    MDA = getMasterList(masterSheet)
+    mda = getMasterList(masterSheet)
     nameCol = loop.getColumnPosition(masterSheet, 'Action Name')
     modStartCol = loop.getColumnPosition(masterSheet, 'DEF')
     modEndCol = loop.getColumnPosition(masterSheet, 'Full Name') - 1
     modAmount = modEndCol - modStartCol
-    currentName = MDA[1][nameCol]
-    currentInputList = MDA[1][nameCol - 1]
+    currentName = mda[1][nameCol]
+    currentInputList = mda[1][nameCol - 1]
     currentActionRow = -1
     projection = [[], [], [], []]
     currentActionDEF = -1
@@ -26,7 +26,7 @@ def getMasterListProjection(masterSheet, modifierSheet, inputSheet):
     prereqsString = ''
 
     # A bit of error checking before starting.
-    error.masterListProjectionErrorCheck(MDA, nameCol)
+    error.masterListProjectionErrorCheck(mda, nameCol)
 
     # Get an array of impossible variations (derived from Modifier rules) to compare with the action list later on.
     antiVariationOR = modifierList.getImpossibleVariations(modifierSheet, 'OR')
@@ -37,9 +37,9 @@ def getMasterListProjection(masterSheet, modifierSheet, inputSheet):
     print('All impossible variations based on XNOR-rules: ' + str(antiVariationXNOR[0]))
     print('Protected variations (XNOR): ' + str(antiVariationXNOR[1]))
 
-    # Loop through rows of Master Action List (represented as the multi-dimensional List MDA).
+    # Loop through rows of Master Action List (represented as the multi-dimensional List mda).
     x = 0
-    while x < len(MDA) - 1:
+    while x < len(mda) - 1:
         x = x + 1
         currentActionRow = currentActionRow + 1
 
@@ -48,27 +48,27 @@ def getMasterListProjection(masterSheet, modifierSheet, inputSheet):
         currentActionMods.append([])
 
         # Loop for going through all modifier columns.
-        if currentName == MDA[x][nameCol]:
+        if currentName == mda[x][nameCol]:
             y = -1
             while y < modAmount:
                 y = y + 1
 
                 # If first column (DEF) has 'x', there needs to be a modifier-less default version of the action.
-                if MDA[x][modStartCol + y] == 'x' and y == 0 and currentActionDEF < 1:
+                if mda[x][modStartCol + y] == 'x' and y == 0 and currentActionDEF < 1:
                     currentActionDEF = 1
                     print('There will be a DEF version of ' + currentName)
 
                 # If a column has 'x' in any other circumstance...
                 # Collect all the 'x' for each row in a multi-dimensional array currentActionMods.
-                if MDA[x][modStartCol + y] == 'x' and y > 0:
+                if mda[x][modStartCol + y] == 'x' and y > 0:
                     currentActionMods[currentActionRow].append(y)
 
                 # If a cell has 'P' (prerequisite), store it for now.
-                if MDA[x][modStartCol + y] == 'P' and y > 0:
-                    currentActionPrereqs.append(MDA[0][modStartCol + y])
+                if mda[x][modStartCol + y] == 'P' and y > 0:
+                    currentActionPrereqs.append(mda[0][modStartCol + y])
 
         # If currentName doesn't match current row, update it. This signifies the start of a new action.
-        if currentName != MDA[x][nameCol]:
+        if currentName != mda[x][nameCol]:
 
             # Make a string out of currentActionPrereqs if needed.
             if len(currentActionPrereqs) > 0:
@@ -89,12 +89,12 @@ def getMasterListProjection(masterSheet, modifierSheet, inputSheet):
                     print('The final list of combinations from ' + currentName + ': ' + str(sortedList))
 
                     # Add all the variations of the current attack in the projection.
-                    projection = fillProjection(MDA, sortedList, projection, currentName, currentInputList,
+                    projection = fillProjection(mda, sortedList, projection, currentName, currentInputList,
                                                 prereqsString, modStartCol)
 
             # Update currentName with new action and re-initialize variables for next action.
-            currentName = MDA[x][nameCol]
-            currentInputList = MDA[x][nameCol - 1]
+            currentName = mda[x][nameCol]
+            currentInputList = mda[x][nameCol - 1]
             print('Next attack is ' + currentName)
             currentActionRow = -1
             currentActionMods.clear()
@@ -253,16 +253,16 @@ def match(combination, match):
     return all(elem in combination for elem in match)
 
 
-def fillProjection(MDA, sortedList, projection, currentName, currentInputList, prereqsString, modStartCol):
+def fillProjection(mda, sortedList, projection, currentName, currentInputList, prereqsString, modStartCol):
     tempString = ''
 
     # Add all the variations of the current attack in the projection.
     for xx in sortedList:
         for xxy in xx:
             if tempString == '':
-                tempString = tempString + MDA[0][modStartCol + xxy]
+                tempString = tempString + mda[0][modStartCol + xxy]
             else:
-                tempString = tempString + ' + ' + MDA[0][modStartCol + xxy]
+                tempString = tempString + ' + ' + mda[0][modStartCol + xxy]
 
         projection[0].append(currentName)
         projection[2].append(currentInputList)
@@ -276,9 +276,9 @@ def fillProjection(MDA, sortedList, projection, currentName, currentInputList, p
 
 
 def makePrereqsString(currentActionPrereqs, prereqsString):
-    '''
+    """
     This function makes a string out of the content of the array currentActionPrereqs.
-    '''
+    """
     prereqsSet = set(currentActionPrereqs)
     for ouh in prereqsSet:
         if prereqsString == '':
@@ -290,10 +290,10 @@ def makePrereqsString(currentActionPrereqs, prereqsString):
 
 
 def updateMasterListModifiers(masterSheet, modifierListModifiers, modifierListColors):
-    '''
+    """
     This function updates the section with Modifiers in the Master List using the data from Modifier List.
-    '''
-    MDA = getMasterList(masterSheet)
+    """
+    mda = getMasterList(masterSheet)
     topRowArray = cursor.getRow(masterSheet, 0)
     startCol = loop.getColumnPosition(masterSheet, 'DEF') + 1
     endCol = loop.getColumnPosition(masterSheet, 'Full Name')
@@ -306,7 +306,7 @@ def updateMasterListModifiers(masterSheet, modifierListModifiers, modifierListCo
     # If function continues beyond this point, then the modifiers of Master Action List will be
     # updated to match the modifiers of Modifier List. Master List columns are copied or
     # generated to a new array, which is then pasted to replace the previous columns.
-    newModifierArray = createNewModifierArray(MDA, masterSheet, startCol, modifierListModifiers, masterListModifiers)
+    newModifierArray = createNewModifierArray(mda, masterSheet, startCol, modifierListModifiers, masterListModifiers)
 
     # newModifierArray has to be turned sideways with iteration first.
     finalList = loop.turnArraySideways(newModifierArray)
@@ -316,30 +316,30 @@ def updateMasterListModifiers(masterSheet, modifierListModifiers, modifierListCo
 
     # Create a new number of columns for pasting the newModifierArray array into.
     masterSheet.Columns.insertByIndex(startCol, len(modifierListModifiers))
-    range = masterSheet.getCellRangeByPosition(startCol, 0, startCol + len(modifierListModifiers) - 1, len(MDA) - 1)
+    range = masterSheet.getCellRangeByPosition(startCol, 0, startCol + len(modifierListModifiers) - 1, len(mda) - 1)
 
     range.setDataArray(finalList)
 
     # Fix column width.
-    fixModifierBlockColumnWidths(masterSheet, MDA, modifierListModifiers, startCol)
+    fixModifierBlockColumnWidths(masterSheet, mda, modifierListModifiers, startCol)
 
     # Fix column colors.
     setColorsToModifierBlock(masterSheet, startCol, endCol, modifierListColors)
 
 
 def compareModifierLists(modifierListModifiers, masterListModifiers):
-    '''
+    """
     This function compares both modifier lists. If they're identical, the function is ended.
-    '''
+    """
     if modifierListModifiers == masterListModifiers:
         messageBox.createMessage('OK', "Note:", "Modifier lists are already up to date.")
         exit()
 
 
-def createNewModifierArray(MDA, masterSheet, startCol, modifierListModifiers, masterListModifiers):
-    '''
+def createNewModifierArray(mda, masterSheet, startCol, modifierListModifiers, masterListModifiers):
+    """
     This function creates the new array which is pasted in the Modifier block of Master List sheet.
-    '''
+    """
     newList = []
     tempCol = []
 
@@ -361,7 +361,7 @@ def createNewModifierArray(MDA, masterSheet, startCol, modifierListModifiers, ma
             tempCol.clear()
             tempCol.append(col)
 
-            for a in range(len(MDA) - 1):
+            for a in range(len(mda) - 1):
                 tempCol.append('')
 
         # Creating a copy of tempCol to prevent data from being overwritten from
@@ -372,18 +372,18 @@ def createNewModifierArray(MDA, masterSheet, startCol, modifierListModifiers, ma
     return newList
 
 
-def fixModifierBlockColumnWidths(masterSheet, MDA, modifierListModifiers, startCol):
-    '''
+def fixModifierBlockColumnWidths(masterSheet, mda, modifierListModifiers, startCol):
+    """
     This function sets the OptimalWidth of all columns in range to 1 (true).
-    '''
-    cellRange = masterSheet.getCellRangeByPosition(startCol, 0, startCol + len(modifierListModifiers), len(MDA))
+    """
+    cellRange = masterSheet.getCellRangeByPosition(startCol, 0, startCol + len(modifierListModifiers), len(mda))
     cellRange.getColumns().OptimalWidth = 1
 
 
 def setColorsToModifierBlock(masterSheet, startCol, endCol, modifierListColors):
-    '''
+    """
     This function sets colors to all the individual columns in the modifier block.
-    '''
+    """
     offset = 0
     tempCol = cursor.getColumn(masterSheet, startCol)
     modifierListColors.append(0)
@@ -403,9 +403,9 @@ def setColorsToModifierBlock(masterSheet, startCol, endCol, modifierListColors):
 
 
 def getHighestPhaseNumber(masterSheet, listLength):
-    '''
+    """
     The loop iterates through the Phase column and finds the highest number in sequence.
-    '''
+    """
     x = -1
     phase = 0
     phaseCol = loop.getColumnPosition(masterSheet, 'Phase')

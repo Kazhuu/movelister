@@ -10,9 +10,9 @@ def getModifierList(modifierSheet):
 
 
 def getModifierListProjection(modifierSheet):
-    '''
+    """
     This function returns a one-dimensional List of all the existing modifiers.
-    '''
+    """
     modifierDataArray = getModifierList(modifierSheet)
     newList = []
 
@@ -26,21 +26,26 @@ def getModifierListProjection(modifierSheet):
 
 
 def getImpossibleVariations(modifierSheet, mode):
-    MDA = getModifierList(modifierSheet)
+    mda = getModifierList(modifierSheet)
 
     if mode == 'OR':  # returned as a multi-dimensional list
-        antiVariations = getAntiVariations(MDA, modifierSheet, 'OR')
+        antiVariations = getAntiVariations(mda, modifierSheet, 'OR')
     if mode == 'NAND':  # returned as a set
-        antiVariations = getAntiVariations(MDA, modifierSheet, 'NAND')
+        antiVariations = getAntiVariations(mda, modifierSheet, 'NAND')
     if mode == 'XNOR':  # returned as a 2d-list
-        antiVariations = getAntiVariations(MDA, modifierSheet, 'XNOR')
+        antiVariations = getAntiVariations(mda, modifierSheet, 'XNOR')
 
     # Known bugs: code becomes confused if there is more than one XNOR group.
 
     return antiVariations
 
 
-def getAntiVariations(MDA, modifierSheet, mode):
+def getAntiVariations(mda, modifierSheet, mode):
+    """
+    This code calculates all the possible variations that cannot exist because of
+    user-set modifier rules. This list is then used to cull down the number of
+    variations of a single action to a more manageable size.
+    """
     currentRowGroups = [[], [], [], [], [], [], [], [], [], []]
     combinationsList = []
     antiVariationSet = {}
@@ -76,13 +81,13 @@ def getAntiVariations(MDA, modifierSheet, mode):
 
         # Another loop starts moving through the rows from up to down.
         x = 0
-        while x < len(MDA) - 1:
+        while x < len(mda) - 1:
             x = x + 1
 
             # If there are numbers on a single column, they are appended to their
             # respective index in currentRowGroups.
-            if MDA[x][startCol + y] != '':
-                currentRowGroups[int(MDA[x][startCol + y])].append(x)
+            if mda[x][startCol + y] != '':
+                currentRowGroups[int(mda[x][startCol + y])].append(x)
 
         # Iterate through currentRowGroups and calculate all combinations per row if XNOR or NAND.
         # Append the combinations to combinationsList.
@@ -152,16 +157,3 @@ def iterateCombinations(currentRowGroups, combinationsList, mode):
         filterResults = [x for x in combinationsList if len(x) == 1]
         XNORList[0].append(filterResults)
         return XNORList
-
-
-def getModifierListColors(modifierSheet, listLength):
-    x = 1
-    modifierColors = []
-
-    # Iterate through Results List color column to get a list of colors.
-    # This is necessary to do from the Sheet itself.
-    while x < listLength + 1:
-        modifierColors.append(modifierSheet.getCellByPosition(2, x).CellBackColor)
-        x = x + 1
-
-    return modifierColors

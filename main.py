@@ -14,7 +14,7 @@ if __name__ == '__main__':
 
 from movelister.context import Context  # noqa
 from movelister.sheet import Sheet  # noqa
-from movelister import color, conditionalFormat, cursor, delete, dev, group, inputList, masterList, \
+from movelister import color, conditionalFormat, cursor, delete, dev, group, inputList, loop, masterList, \
     mechanicsList, messageBox, modifierList, resultsList, test, validation  # noqa
 
 # Setup context automatically when macro is run from the LibreOffice.
@@ -64,18 +64,32 @@ def generateMechanicsList():
     # The code goes through Master Action List and makes a "projection" of what the Mechanics List should
     # look like. It's a multi-dimensional array where [0] lists action name, [1] lists modifiers, [2] lists
     # input list and [3] lists the expected location of the action in Mechanics List.
-    projection = masterList.getMasterListProjection(masterSheet, modifierSheet, inputSheet)
+    projectionMaster = masterList.getMasterListProjection(masterSheet, modifierSheet, inputSheet)
+
+    # Same thing for what is currently inside Mechanics List.
+    projectionMechanics = mechanicsList.getMechanicsListProjection(mechanicsSheet, projectionMaster)
 
     # Code creates a new Array which is eventually pasted on mechanicsList, replacing it
     # entirely in a single swoop. (It's faster to do it like this than generate row-by-row.)
-    mechanicsList.refreshMechanicsList(mechanicsSheet, inputSheet, projection)
+    mechanicsList.refreshMechanicsList(mechanicsSheet, inputSheet, projectionMaster, projectionMechanics)
 
     # TO DO: regenerate conditional formatting.
-    # TO DO: regenerate cell background colors.
+    # TO DO: color cell backgrounds according to info. There are basically three types of coloring:
+    # action colors, modifier colors and input colors.
+    actionColors = loop.getColorArray(masterSheet)
+    modifierColors = loop.getColorArray(modifierSheet)
+    inputColors = loop.getColorArray(inputSheet)
+
+    mechanicsList.setColors(mechanicsSheet, actionColors, modifierColors, inputColors)
+
     # TO DO: group rows according to info in Input List.
 
 
 def refreshPhases():
+    """
+    A test function for removing or adding phases in Mechanics List. Seems to work,
+    but the code could probably be more elegant.
+    """
     masterSheet = Sheet.getMasterActionList()
     mechanicsSheet = Sheet.getMechanicsList()
 
@@ -101,35 +115,43 @@ def refreshPhases():
 
 
 def refreshModifiers():
+    """
+    A function that refreshes the modifier block of Master List based on the data
+    the user has set inside Modifier List. This includes the number and position of
+    various modifiers as well as their color.
+    """
     masterSheet = Sheet.getMasterActionList()
     modifierSheet = Sheet.getModifierList()
 
     # A function that creates a Data Array of the whole Modifier List.
     # A separate array is created for the cell background color data.
     modifierListModifiers = modifierList.getModifierListProjection(modifierSheet)
-    modifierListColors = modifierList.getModifierListColors(modifierSheet, len(modifierListModifiers))
+    modifierColors = loop.getColorArray(modifierSheet)
 
     # Function compares this data to the Modifiers columns in Master Action List.
     # It then deletes unnecessary Modifier columns or add necessary Modifier Columns in Master Action List.
-    # To do: color the cell background of the columns if something was created.
-    masterList.updateMasterListModifiers(masterSheet, modifierListModifiers, modifierListColors)
+    # It then colors the cell background of the columns.
+    masterList.updateMasterListModifiers(masterSheet, modifierListModifiers, modifierColors)
 
 
 def createConditionalFormatting():
+    """
+    A test function for just setting up quick conditional formatting.
+    """
     mechanicsSheet = Sheet.getMechanicsList()
     resultsSheet = Sheet.getResultsList()
 
     # A function that gets all relevant data from the Results Sheet.
     resultsDataArray = resultsList.getResultsList(resultsSheet)
-    resultsListColors = resultsList.getResultsListColors(resultsSheet, len(resultsDataArray))
+    resultsColors = loop.getColorArray(resultsSheet)
 
     # A function that uses the gathered data and generates the formatting.
     # Note: still incomplete! See conditionalFormat.py
-    conditionalFormat.applyConditionalFormatting(mechanicsSheet, resultsDataArray, resultsListColors)
+    conditionalFormat.applyConditionalFormatting(mechanicsSheet, resultsDataArray, resultsColors)
     # conditionalFormat.clearConditionalFormatting(mechanicsSheet)
 
 
 # Run when executed from the command line.
 if __name__ == '__main__':
     Context.setup(host='localhost', port=2002)
-    refreshPhases()
+    generateMechanicsList()
