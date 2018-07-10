@@ -15,7 +15,7 @@ if __name__ == '__main__':
 from movelister.context import Context  # noqa
 from movelister.sheet import Sheet  # noqa
 from movelister import color, conditionalFormat, cursor, delete, dev, group, inputList, loop, masterList, \
-    mechanicsList, messageBox, modifierList, resultsList, test, validation  # noqa
+    mechanicsList, messageBox, modifierList, namedRanges, resultsList, test, validation  # noqa
 
 # Setup context automatically when macro is run from the LibreOffice.
 if __name__ != '__main__':
@@ -83,6 +83,16 @@ def generateMechanicsList():
     mechanicsList.setColors(mechanicsSheet, actionColors, modifierColors, inputColors)
 
     # TO DO: group rows according to info in Input List.
+
+
+def namedRangeTest():
+    """
+    Quick tests with named ranges.
+    """
+    mechanicsSheet = Sheet.getMechanicsList()
+    namedRange = Context.getDocument().NamedRanges
+    namedRanges.deleteNamedRanges(namedRange)
+    namedRanges.createNewNamedRange(mechanicsSheet, namedRange)
 
 
 def refreshPhases():
@@ -154,4 +164,4 @@ def createConditionalFormatting():
 # Run when executed from the command line.
 if __name__ == '__main__':
     Context.setup(host='localhost', port=2002)
-    generateMechanicsList()
+    namedRangeTest()
