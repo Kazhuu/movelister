@@ -14,8 +14,8 @@ if __name__ == '__main__':
 
 from movelister.context import Context  # noqa
 from movelister.sheet import Sheet  # noqa
-from movelister import color, conditionalFormat, cursor, delete, dev, group, inputList, loop, masterList, \
-    mechanicsList, messageBox, modifierList, namedRanges, resultsList, test, validation  # noqa
+from movelister import color, conditionalFormat, cursor, delete, dev, generate, group, inputList, loop, \
+    masterList, mechanicsList, messageBox, modifierList, namedRanges, resultsList, test, validation  # noqa
 
 # Setup context automatically when macro is run from the LibreOffice.
 if __name__ != '__main__':
@@ -124,6 +124,23 @@ def refreshPhases():
     # To do: a function may have to re-generate Conditional Formatting for the sheet.
 
 
+def refreshMasterList():
+    """
+    A function that generates or refreshes chosen Master List(s) based on the data
+    in the Overview. To be written...
+    """
+
+
+def generateMasterList():
+    document = Context.getDocument()
+    modifierSheet = Sheet.getModifierList()
+
+    generate.generateMasterList(document, modifierSheet, 'Default')
+
+    # How to define the position of the new document? Group it with other Master Action Lists?
+    # Leave it up to the user to move it?
+
+
 def refreshModifiers():
     """
     A function that refreshes the modifier block of Master List based on the data
@@ -164,4 +181,4 @@ def createConditionalFormatting():
 # Run when executed from the command line.
 if __name__ == '__main__':
     Context.setup(host='localhost', port=2002)
-    generateMechanicsList()
+    generateMasterList()

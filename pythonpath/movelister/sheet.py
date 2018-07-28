@@ -1,6 +1,7 @@
 from movelister.context import Context
 
 
+OVERVIEW_SHEET_NAME = 'Overview'
 MASTER_ACTION_LIST_SHEET_NAME = 'Master Action List'
 INPUT_LIST_SHEET_NAME = 'Input Lists'
 MECHANICS_LIST_SHEET_NAME = 'Mechanics Test'
@@ -16,6 +17,10 @@ class Sheet():
     Class to abstract all operations related to different sheets in the
     document.
     """
+
+    @classmethod
+    def getOverviewList(cls):
+        return Context.getDocument().Sheets.getByName(OVERVIEW_SHEET_NAME)
 
     @classmethod
     def getMasterActionList(cls):

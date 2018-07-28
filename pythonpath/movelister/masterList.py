@@ -1,6 +1,6 @@
 import itertools
 
-from movelister import color, cursor, delete, error, inputList, loop, messageBox, modifierList, test
+from movelister import color, cursor, delete, error, formatting, inputList, loop, messageBox, modifierList, test
 
 
 def getMasterList(masterSheet):
@@ -321,7 +321,7 @@ def updateMasterListModifiers(masterSheet, modifierListModifiers, modifierListCo
     range.setDataArray(finalList)
 
     # Fix column width.
-    fixModifierBlockColumnWidths(masterSheet, mda, modifierListModifiers, startCol)
+    formatting.setOptimalWidthToRange(masterSheet, startCol, len(modifierListModifiers))
 
     # Fix column colors.
     setColorsToModifierBlock(masterSheet, startCol, endCol, modifierListColors)
@@ -370,14 +370,6 @@ def createNewModifierArray(mda, masterSheet, startCol, modifierListModifiers, ma
         newList.append(tempCol2)
 
     return newList
-
-
-def fixModifierBlockColumnWidths(masterSheet, mda, modifierListModifiers, startCol):
-    """
-    This function sets the OptimalWidth of all columns in range to 1 (true).
-    """
-    cellRange = masterSheet.getCellRangeByPosition(startCol, 0, startCol + len(modifierListModifiers), len(mda))
-    cellRange.getColumns().OptimalWidth = 1
 
 
 def setColorsToModifierBlock(masterSheet, startCol, endCol, modifierListColors):

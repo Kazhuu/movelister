@@ -1,4 +1,4 @@
-from movelister import cursor, delete, group, inputList, loop, messageBox
+from movelister import convert, cursor, delete, group, inputList, loop, messageBox
 
 
 def refreshMechanicsList(mechanicsSheet, inputSheet, projectionMaster, projectionMechanics):
@@ -190,7 +190,7 @@ def generateNewActionData(mda, updatedList, inputListContents, projectionMaster,
     for z in range(len(mda[0])):
         tempList.append('')
 
-    emptyTupleRow = convertIntoNestedTuple(tempList)
+    emptyTupleRow = convert.convertIntoNestedTuple(tempList)
 
     for raw in inputListContents:
         if raw[0] != '':
@@ -199,24 +199,13 @@ def generateNewActionData(mda, updatedList, inputListContents, projectionMaster,
             tempList[2] = raw[0]
 
             # Converting back to a nested tuple and updating final list row by row.
-            tempTuple = convertIntoNestedTuple(tempList)
+            tempTuple = convert.convertIntoNestedTuple(tempList)
             updatedList = updatedList + tempTuple
 
     # Add one more empty row to mark the start of a new animation.
     updatedList = updatedList + emptyTupleRow
 
     return updatedList
-
-
-def convertIntoNestedTuple(list):
-    # This code converts an 1d List into a 2d Tuple that is compatible with a data array of a sheet.
-
-    tempTuple2 = tuple(list)
-    tempList3 = [[]]
-    tempList3[0] = tempTuple2
-    tempTuple4 = tuple(tempList3)
-
-    return tempTuple4
 
 
 def copyActionDataRowByRow(mda, updatedList, inputListContents, projectionMaster, projectionMechanics, a, b):

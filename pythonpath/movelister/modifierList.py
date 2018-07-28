@@ -1,6 +1,6 @@
 import itertools
 
-from movelister import cursor, loop
+from movelister import cursor, error, loop
 
 
 def getModifierList(modifierSheet):
@@ -14,15 +14,15 @@ def getModifierListProjection(modifierSheet):
     This function returns a one-dimensional List of all the existing modifiers.
     """
     modifierDataArray = getModifierList(modifierSheet)
-    newList = []
+    modifierList = []
 
     x = 0
     for z in modifierDataArray:
         x = x + 1
         if z[0] != '' and x > 1:
-            newList.append(z[0])
+            modifierList.append(z[0])
 
-    return newList
+    return modifierList
 
 
 def getImpossibleVariations(modifierSheet, mode):
@@ -73,6 +73,9 @@ def getAntiVariations(mda, modifierSheet, mode):
         XNORAmount = XNOREndCol - XNORStartCol
         loopAmount = XNORAmount
         startCol = XNORStartCol
+
+    # A bit of error checking before starting.
+    error.impossibleVariationsErrorCheck(mode, loopAmount)
 
     # A loop starts moving through the Modifier Sheet's columns from left to right..
     y = -1
