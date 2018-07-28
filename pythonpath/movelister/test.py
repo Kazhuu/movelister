@@ -4,17 +4,17 @@ def printProjectionTest(projection, masterSheet):
     for zzyy in projection[0]:
         x = x + 1
         zzyyx = str(zzyy)
-        masterSheet.getCellByPosition(18, x).setString(zzyyx)
+        masterSheet.getCellByPosition(19, x).setString(zzyyx)
     x = 0
     for zzyy in projection[1]:
         x = x + 1
         zzyyx = str(zzyy)
-        masterSheet.getCellByPosition(19, x).setString(zzyyx)
+        masterSheet.getCellByPosition(20, x).setString(zzyyx)
     x = 0
     for zzyy in projection[3]:
         x = x + 1
         zzyyx = str(zzyy)
-        masterSheet.getCellByPosition(20, x).setString(zzyyx)
+        masterSheet.getCellByPosition(21, x).setString(zzyyx)
 
 
 def printMechanicsListTest(projection, mechanicsSheet):

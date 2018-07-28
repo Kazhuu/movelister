@@ -140,50 +140,57 @@ def getMechanicsListProjection(mechanicsSheet, projectionMaster):
     This function creates a projection of what Mechanics List holds at the moment.
     """
     mda = cursor.getSheetContent(mechanicsSheet)
-    currentAction = mda[2][0]
-    currentMods = mda[2][1]
     projectionMechanics = [[], [], [], []]
 
-    # projectionMechanics is appended with 2, which is the starting point of the data.
-    projectionMechanics[3].append(2)
+    if len(mda) > 2:
+        currentAction = mda[2][0]
+        currentMods = mda[2][1]
 
-    z = -1
-    for row in mda:
-        z = z + 1
+        # projectionMechanics is appended with 2, which is the starting point of the data.
+        projectionMechanics[3].append(2)
 
-        if row[0] == '' and z > 1:
+        z = -1
+        for row in mda:
+            z = z + 1
+
+            if row[0] == '' and z > 1:
+                projectionMechanics[0].append(currentAction)
+                projectionMechanics[1].append(currentMods)
+                projectionMechanics[3].append(z + 1)
+                currentAction = mda[z + 1][0]
+                currentMods = mda[z + 1][1]
+
+        # The last append happens necessarily outside loop.
+        if currentAction != '':
             projectionMechanics[0].append(currentAction)
             projectionMechanics[1].append(currentMods)
             projectionMechanics[3].append(z + 1)
-            currentAction = mda[z + 1][0]
-            currentMods = mda[z + 1][1]
 
-    # The last append happens necessarily outside loop.
-    if currentAction != '':
-        projectionMechanics[0].append(currentAction)
-        projectionMechanics[1].append(currentMods)
-        projectionMechanics[3].append(z + 1)
-
-    # Fill index [2] with the help of the Master List Projection.
-    for actionML in projectionMechanics[0]:
-        x = -1
-        match = 0
-        for action in projectionMaster[0]:
-            x = x + 1
-            if actionML == action:
-                projectionMechanics[2].append(projectionMaster[2][x])
-                match = 1
-                break
-        if match == 0:
-            projectionMechanics[2].append('')
+        # Fill index [2] with the help of the Master List Projection.
+        for actionML in projectionMechanics[0]:
+            x = -1
+            match = 0
+            for action in projectionMaster[0]:
+                x = x + 1
+                if actionML == action:
+                    projectionMechanics[2].append(projectionMaster[2][x])
+                    match = 1
+                    break
+            if match == 0:
+                projectionMechanics[2].append('')
 
     return projectionMechanics
 
 
 def generateNewActionData(mda, updatedList, inputListContents, projectionMaster, a):
-    tempTuple = mda[1:2]
-    tempList = list(tempTuple[0])
-    emptyTupleRow = mda[1:2]
+
+    # Generate an empty List that is as wide as the Mechanics List.
+    tempList = []
+
+    for z in range(len(mda[0])):
+        tempList.append('')
+
+    emptyTupleRow = convertIntoNestedTuple(tempList)
 
     for raw in inputListContents:
         if raw[0] != '':
@@ -192,16 +199,24 @@ def generateNewActionData(mda, updatedList, inputListContents, projectionMaster,
             tempList[2] = raw[0]
 
             # Converting back to a nested tuple and updating final list row by row.
-            tempTuple2 = tuple(tempList)
-            tempList3 = [[]]
-            tempList3[0] = tempTuple2
-            tempTuple4 = tuple(tempList3)
-            updatedList = updatedList + tempTuple4
+            tempTuple = convertIntoNestedTuple(tempList)
+            updatedList = updatedList + tempTuple
 
     # Add one more empty row to mark the start of a new animation.
     updatedList = updatedList + emptyTupleRow
 
     return updatedList
+
+
+def convertIntoNestedTuple(list):
+    # This code converts an 1d List into a 2d Tuple that is compatible with a data array of a sheet.
+
+    tempTuple2 = tuple(list)
+    tempList3 = [[]]
+    tempList3[0] = tempTuple2
+    tempTuple4 = tuple(tempList3)
+
+    return tempTuple4
 
 
 def copyActionDataRowByRow(mda, updatedList, inputListContents, projectionMaster, projectionMechanics, a, b):
