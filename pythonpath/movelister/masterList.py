@@ -1,6 +1,6 @@
 import itertools
 
-from movelister import color, cursor, delete, error, formatting, inputList, loop, messageBox, modifierList, test
+from movelister import color, convert, cursor, delete, error, formatting, inputList, loop, messageBox, modifierList, test
 
 
 def getMasterList(masterSheet):
@@ -309,7 +309,7 @@ def updateMasterListModifiers(masterSheet, modifierListModifiers, modifierListCo
     newModifierArray = createNewModifierArray(mda, masterSheet, startCol, modifierListModifiers, masterListModifiers)
 
     # newModifierArray has to be turned sideways with iteration first.
-    finalList = loop.turnArraySideways(newModifierArray)
+    finalList = convert.turnArraySideways(newModifierArray)
 
     # Delete existing Modifier Block from Master List.
     delete.deleteColumns(masterSheet, startCol, len(masterListModifiers))
