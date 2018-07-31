@@ -46,7 +46,7 @@ def copySheet():
     cursor.setSheetContent(newSheet, data)
 
 
-def generateMechanicsList():
+def generateOrRefreshMechanicsList():
     """
     A very general function that creates / refreshes full mechanics list up to date with a single button.
     If the project has multiple views / Mechanics Lists, there would probably be some drop down menu
@@ -57,9 +57,19 @@ def generateMechanicsList():
     mechanicsSheet = Sheet.getMechanicsList()
     modifierSheet = Sheet.getModifierList()
 
-    # TO DO: a function that determines if there is a Mechanics List in the file. If not,
-    # it has to be generated from scratch? Or for now, the code gives the user a message
-    # saying they need to have the template open.
+    # TO DO: name is a placeholder value. Eventually, once UI is implemented, user can choose it.
+    name = 'Default'
+    sheetName = 'Mechanics List (' + name + ')'
+
+    # A bit of error checking at the start.
+    result = error.listGenerationNameCheck(document, sheetName)
+
+    if result == 'GENERATE':
+        print()
+        # TO DO: a function that generates the template of Mechanics List from nothing.
+        # The code then segues into the usual "refresh" code that updates the info inside the List.
+    elif result == 'NO':
+        exit()
 
     # The code goes through Master Action List and makes a "projection" of what the Mechanics List should
     # look like. It's a multi-dimensional array where [0] lists action name, [1] lists modifiers, [2] lists
@@ -83,6 +93,30 @@ def generateMechanicsList():
     mechanicsList.setColors(mechanicsSheet, actionColors, modifierColors, inputColors)
 
     # TO DO: group rows according to info in Input List.
+
+
+def generateOrRefreshMasterList():
+    document = Context.getDocument()
+    aboutSheet = Sheet.getAbout()
+    modifierSheet = Sheet.getModifierList()
+
+    # TO DO: name is a placeholder value. Eventually, once UI is implemented, user can choose it.
+    name = 'Default'
+    sheetName = 'Master List (' + name + ')'
+
+    # A bit of error checking at the start.
+    result = error.listGenerationNameCheck(document, sheetName)
+
+    if result == 'GENERATE':
+        generate.generateMasterList(document, modifierSheet, aboutSheet, sheetName)
+    elif result == 'YES':
+        print()
+        # To do: go to Master List refresh function.
+    else:
+        exit()
+
+    # How to define the position of the new document? Group it with other Master Action Lists?
+    # Leave it up to the user to move it?
 
 
 def namedRangeTest():
@@ -122,30 +156,6 @@ def refreshPhases():
         mechanicsList.deletePhases(mechanicsSheet, highestPhase, phaseCount)
 
     # To do: a function may have to re-generate Conditional Formatting for the sheet.
-
-
-def generateOrRefreshMasterList():
-    document = Context.getDocument()
-    aboutSheet = Sheet.getAbout()
-    modifierSheet = Sheet.getModifierList()
-
-    # TO DO: name is a placeholder value. Eventually, once UI is implemented, user can choose it.
-    name = 'Default'
-    sheetName = 'Master List (' + name + ')'
-
-    # A bit of error checking at the start.
-    result = error.masterListGenerateNameCheck(document, sheetName)
-
-    if result == 'GENERATE':
-        generate.generateMasterList(document, modifierSheet, aboutSheet, sheetName)
-    elif result == 'YES':
-        print()
-        # To do: go to Master List refresh function.
-    else:
-        exit()
-
-    # How to define the position of the new document? Group it with other Master Action Lists?
-    # Leave it up to the user to move it?
 
 
 def refreshModifiers():

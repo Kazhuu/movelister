@@ -374,7 +374,7 @@ def createNewModifierArray(mda, masterSheet, startCol, modifierListModifiers, ma
 
 def setColorsToModifierBlock(masterSheet, startCol, endCol, modifierListColors):
     """
-    This function sets colors to all the individual columns in the modifier block.
+    This function sets colors to all the individual columns in the modifier block of a master list.
     """
     offset = 0
     tempCol = cursor.getColumn(masterSheet, startCol)

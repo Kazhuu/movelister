@@ -1,5 +1,3 @@
-# from com.sun.star.table.CellHoriJustify import HoriJustify
-
 from movelister import color, cursor, loop
 
 
@@ -23,6 +21,28 @@ def setTitleBarColor(sheet, optionsSheet, rowAmount):
     color = getTitleBarColor(optionsSheet)
     cellRange = sheet.getCellRangeByPosition(0, 0, len(row) - 1, 0 + rowAmount)
     cellRange.CellBackColor = color.value
+
+
+def setMasterListModifierColors(sheet, startCol, endCol, modifierListColors):
+    """
+    This function sets colors to all the individual columns in the modifier section of a master list.
+    """
+    offset = 0
+    tempCol = cursor.getColumn(sheet, startCol)
+    modifierListColors.append(0)
+
+    x = -1
+    for a in range(len(modifierListColors) - 1):
+        x = x + 1
+        currentColor = color.Color(modifierListColors[x])
+        nextColor = color.Color(modifierListColors[x + 1])
+
+        if currentColor.value == nextColor.value:
+            offset = offset + 1
+        else:
+            sheet.getCellRangeByPosition(startCol + x - offset, 0, startCol + x,
+                                               len(tempCol)).CellBackColor = currentColor.value
+            offset = 0
 
 
 def setHorizontalAlignmentToSheet(sheet, alignment):

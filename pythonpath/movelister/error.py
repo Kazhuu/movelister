@@ -8,7 +8,7 @@ def masterListProjectionErrorCheck(mda, nameCol):
         exit()
 
 
-def masterListGenerateNameCheck(document, sheetName):
+def listGenerationNameCheck(document, sheetName):
     if document.Sheets.hasByName(sheetName) == True:
         msgText = 'A Sheet of that name already exists. Would you like to update its contents?'
         result = messageBox.createMessage('YES_NO', 'Warning:', msgText)
