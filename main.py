@@ -14,8 +14,8 @@ if __name__ == '__main__':
 
 from movelister.context import Context  # noqa
 from movelister.sheet import Sheet  # noqa
-from movelister import color, conditionalFormat, cursor, delete, dev, error, generate, group, inputList, loop, \
-    masterList, mechanicsList, messageBox, modifierList, namedRanges, resultsList, test, validation  # noqa
+from movelister import color, conditionalFormat, cursor, error, generate, loop, \
+    masterList, mechanicsList, modifierList, namedRanges, resultsList  # noqa
 
 # Setup context automatically when macro is run from the LibreOffice.
 if __name__ != '__main__':
@@ -76,6 +76,7 @@ def generateOrRefreshMechanicsList():
     # look like. It's a multi-dimensional array where [0] lists action name, [1] lists modifiers, [2] lists
     # input list and [3] lists the expected location of the action in Mechanics List.
     projectionMaster = masterList.getMasterListProjection(masterSheet, modifierSheet, inputSheet)
+    print("projektion: " + str(projectionMaster))
 
     # Same thing for what is currently inside Mechanics List.
     projectionMechanics = mechanicsList.getMechanicsListProjection(mechanicsSheet, projectionMaster)
