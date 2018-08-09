@@ -52,6 +52,7 @@ def generateOrRefreshMechanicsList():
     If the project has multiple views / Mechanics Lists, there would probably be some drop down menu
     pointing the code to the correct List before the code is ran.
     """
+    document = Context.getDocument()
     masterSheet = Sheet.getMasterActionList()
     inputSheet = Sheet.getInputList()
     mechanicsSheet = Sheet.getMechanicsList()
@@ -198,4 +199,4 @@ def createConditionalFormatting():
 # Run when executed from the command line.
 if __name__ == '__main__':
     Context.setup(host='localhost', port=2002)
-    generateOrRefreshMasterList()
+    generateOrRefreshMechanicsList()

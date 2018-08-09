@@ -1,5 +1,9 @@
 from movelister import convert, cursor, formatting, loop, modifierList
 
+SPACE_VIEW = ' ' * 11
+SPACE_INPUT = ' ' * 5
+SPACE_NAME = ' ' * 15
+SPACE_NOTES = ' ' * 52
 
 def generateMasterList(document, modifierSheet, aboutSheet, sheetName):
     """
@@ -12,12 +16,10 @@ def generateMasterList(document, modifierSheet, aboutSheet, sheetName):
     # Create the text for the title bar and makes it into a nested tuple.
     # The first version of the text has a lot of unnecessary space in it to make column width the right size.
     modifiers = modifierList.getModifierListProjection(modifierSheet)
-    titleBarStart = ['View           ', 'Input List    ', 'Action Name               ', 'Color', 'Hit', 'Frames',
-                     'Phase', 'DEF']
-    titleBarEnd = ['Full Name', 'In-Game Description',
-                   'Notes 1                                                    ',
-                   'Notes 2                                                    ',
-                   'Notes 3                                                    ']
+    titleBarStart = ['View' + SPACE_VIEW, 'Input List' + SPACE_INPUT, 'Action Name' + SPACE_NAME, 'Color', 'Hit',
+                     'Frames', 'Phase', 'DEF']
+    titleBarEnd = ['Full Name', 'In-Game Description', 'Notes 1' + SPACE_NOTES, 'Notes 2' + SPACE_NOTES,
+                   'Notes 3' + SPACE_NOTES]
     titleBarFinal = titleBarStart + modifiers + titleBarEnd
     titleBarTuple = convert.convertIntoNestedTuple(titleBarFinal)
 
