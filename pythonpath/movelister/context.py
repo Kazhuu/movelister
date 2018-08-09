@@ -22,13 +22,13 @@ class Context(Singleton):
             if 'host' in kwargs and 'port' in kwargs:
                 try:
                     # Create the UnoUrlResolver with context.
-                    resolver = cls.context.ServiceManager.createInstanceWithContext(
+                    cls.resolver = cls.context.ServiceManager.createInstanceWithContext(
                         'com.sun.star.bridge.UnoUrlResolver', cls.context)
                     # Connect to the running office.
                     uri = 'uno:socket,host={0},port={1};urp;StarOffice.ComponentContext'.format(
                         kwargs['host'], kwargs['port']
                     )
-                    cls.context = resolver.resolve(uri)
+                    cls.context = cls.resolver.resolve(uri)
                     cls.serviceManager = cls.context.ServiceManager
                     # Get the central desktop object.
                     cls.desktop = cls.serviceManager.createInstanceWithContext(
@@ -77,3 +77,21 @@ class Context(Singleton):
         RunTimeError is raised if setup() is not called before this.
         """
         return cls.getDesktop().getCurrentComponent()
+
+    @classmethod
+    def getServiceManager(cls):
+        """
+        Returns ServiceManager.
+        """
+        if not hasattr(cls, 'desktop'):
+            raise RuntimeError(cls.EXCEPTION_MESSAGE)
+        return cls.serviceManager
+
+    @classmethod
+    def getContext(cls):
+        """
+        Returns context.
+        """
+        if not hasattr(cls, 'desktop'):
+            raise RuntimeError(cls.EXCEPTION_MESSAGE)
+        return cls.context

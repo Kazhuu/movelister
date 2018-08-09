@@ -15,7 +15,7 @@ if __name__ == '__main__':
 from movelister.context import Context  # noqa
 from movelister.sheet import Sheet  # noqa
 from movelister import color, conditionalFormat, cursor, delete, dev, error, generate, group, inputList, loop, \
-    masterList, mechanicsList, messageBox, modifierList, namedRanges, resultsList, test, validation  # noqa
+    masterList, mechanicsList, messageBox, modifierList, namedRanges, resultsList, test, ui, validation  # noqa
 
 # Setup context automatically when macro is run from the LibreOffice.
 if __name__ != '__main__':
@@ -130,6 +130,19 @@ def namedRangeTest():
     namedRanges.createNewNamedRange(mechanicsSheet, namedRange)
 
 
+def generateButtonTest():
+    """
+    Quick test with generating a button.
+    """
+    masterSheet = Sheet.getMasterActionList()
+
+    buttonModel = ui.generateButton(masterSheet, 'Button', 'Jee', 200, 400, 5000, 1000)
+
+    # TO DO: adding event listener to button still doesn't work.
+    ui.addEventListenerToButton(buttonModel)
+
+
+
 def refreshPhases():
     """
     A test function for removing or adding phases in Mechanics List. Seems to work,
@@ -199,4 +212,4 @@ def createConditionalFormatting():
 # Run when executed from the command line.
 if __name__ == '__main__':
     Context.setup(host='localhost', port=2002)
-    generateOrRefreshMechanicsList()
+    generateButtonTest()
