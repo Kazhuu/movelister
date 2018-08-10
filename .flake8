@@ -4,4 +4,4 @@ exclude =
     .git,
     __pycache__,
     templates
-max-complexity = 10
+max-complexity = 100
