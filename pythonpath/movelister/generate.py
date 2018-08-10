@@ -27,8 +27,16 @@ def generateMasterList(document, modifierSheet, aboutSheet, sheetName):
     cursor.setSheetContent(newMasterSheet, titleBarTuple)
     formatting.setOptimalWidthToRange(newMasterSheet, 0, len(titleBarTuple[0]))
 
-    # To do: update text with space with regular text that doesn't have space.
+    # Update text with space with regular text that doesn't have space.
+    titleBarStart = ['View', 'Input List', 'Action Name', 'Color', 'Hit',
+                     'Frames', 'Phase', 'DEF']
+    titleBarEnd = ['Full Name', 'In-Game Description', 'Notes 1', 'Notes 2',
+                   'Notes 3']
+    titleBarFinal = titleBarStart + modifiers + titleBarEnd
+    titleBarTuple = convert.convertIntoNestedTuple(titleBarFinal)
+
     # To do: set data from Overview into the sheet as well.
+    cursor.setSheetContent(newMasterSheet, titleBarTuple)
 
     startCol = loop.getColumnPosition(newMasterSheet, 'DEF') + 1
     endCol = loop.getColumnPosition(newMasterSheet, 'Full Name')
