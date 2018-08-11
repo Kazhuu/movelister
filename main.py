@@ -46,7 +46,7 @@ def copySheet():
     cursor.setSheetContent(newSheet, data)
 
 
-def generateOrRefreshMechanicsList():
+def generateOrRefreshMechanicsList(*args):
     """
     A very general function that creates / refreshes full mechanics list up to date with a single button.
     If the project has multiple views / Mechanics Lists, there would probably be some drop down menu

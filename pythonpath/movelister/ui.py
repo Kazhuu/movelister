@@ -41,20 +41,32 @@ def generateButton(sheet, name, label, positionX, positionY, sizeWidth, sizeHeig
     drawPage = sheet.DrawPage
     drawPage.add(shape)
 
+    aEvent = uno.createUnoStruct("com.sun.star.script.ScriptEventDescriptor")
+    aEvent.AddListenerParam = ""
+    aEvent.EventMethod = "actionPerformed"
+    aEvent.ListenerType = "XActionListener"
+    aEvent.ScriptCode = "movelister|main.py$generateOrRefreshMechanicsList (share, Python)"
+    aEvent.ScriptType = "Script"
+
+    oForm = drawPage.getForms().getByIndex(0)
+    oForm.getCount()
+    oForm.registerScriptEvent(0, aEvent)
+
     return buttonModel
 
 
 def addEventListenerToButton(button):
+    pass
     # To do: code doesn't work on each run?
     # To do: does the actionlistener even work on the button?
 
-    document = Context.getDocument()
-    controller = document.getCurrentController()
+    # document = Context.getDocument()
+    # controller = document.getCurrentController()
 
-    print(controller)
+    # print(controller)
 
-    listener = MyActionListener()
+    # listener = MyActionListener()
 
     # button.addActionListener(listener)
 
-    controller.getControl(button).addActionListener(listener)
+    # controller.getControl(button).addActionListener(listener)
