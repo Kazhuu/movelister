@@ -75,14 +75,16 @@ def getRowPosition(sheet, text, column):
 def getColorArray(sheet):
     """
     This function creates an array of CellBackColor from the Color column in a chosen sheet.
-    The loop starts counting from 0 and thus skips the top row with labels on it.
+    The loop starts counting from after the position of the header.
     """
+    headerRowPosition = getHeaderRowPosition(sheet)
+
     sheetLength = cursor.getColumn(sheet, 0)
     colPosition = loop.getColumnPosition(sheet, 'Color')
     colorList = []
 
-    x = 0
-    while x < len(sheetLength) - 1:
+    x = 0 + headerRowPosition
+    while x < len(sheetLength) - 1 + headerRowPosition:
         x = x + 1
         colorList.append(sheet.getCellByPosition(colPosition, x).CellBackColor)
 

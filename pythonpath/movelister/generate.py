@@ -10,7 +10,6 @@ def generateMasterList(document, modifierSheet, aboutSheet, sheetName):
     """
     This function generates an entire Master List sheet from nothing.
     """
-
     document.Sheets.insertNewByName(sheetName, 1)
     newMasterSheet = document.Sheets.getByIndex(1)
 
@@ -33,7 +32,7 @@ def generateMasterList(document, modifierSheet, aboutSheet, sheetName):
     titleBarTuple = convert.convertIntoNestedTuple(titleBarFinal)
 
     # To do: set data from Overview into the sheet as well.
-    cursor.setSheetContent(newMasterSheet, titleBarTuple)
+    # To do: leave 1 empty row at the top to leave room for HUD.
 
     startCol = loop.getColumnPosition(newMasterSheet, 'DEF') + 1
     endCol = loop.getColumnPosition(newMasterSheet, 'Notes 1')
@@ -51,6 +50,28 @@ def generateMasterList(document, modifierSheet, aboutSheet, sheetName):
     # To DO: create a button for user interface?
 
 
-def generateMechanicsList(document):
-    print()
-    # To do...
+def generateMechanicsList(document, aboutSheet, sheetName):
+    """
+    This function generates an entire Mechanics / Details List from nothing.
+    """
+    document.Sheets.insertNewByName(sheetName, 1)
+    newDetailsSheet = document.Sheets.getByIndex(1)
+
+    # TO DO: the rest.
+
+
+def generateEmptyTupleRow(length):
+    """
+    The purpose of this code is to create an empty row that is as wide as the current
+    sheet and also compatible with the cursor module.
+    """
+    emptyList = []
+    x = length
+
+    for i in range(x):
+        emptyList.append([])
+
+    emptyTupleRow = convert.convertIntoNestedTuple(emptyList)
+
+    print(emptyTupleRow)
+    return emptyTupleRow

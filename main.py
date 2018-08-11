@@ -212,4 +212,4 @@ def createConditionalFormatting():
 # Run when executed from the command line.
 if __name__ == '__main__':
     Context.setup(host='localhost', port=2002)
-    generateButtonTest()
+    generateOrRefreshMechanicsList()
