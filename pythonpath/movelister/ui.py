@@ -1,16 +1,17 @@
-from movelister.context import Context
+import uno
+import unohelper
 
-import uno, unohelper
 from com.sun.star.awt import XActionListener
+from movelister.context import Context
 
 
 class MyActionListener(unohelper.Base, XActionListener):
 
     def __init__(self):
-      print("ok1")
+        print("ok1")
 
     def actionPerformed(self, actionEvent):
-      print("ok2")
+        print("ok2")
 
 
 def generateButton(sheet, name, label, positionX, positionY, sizeWidth, sizeHeight):
@@ -21,7 +22,7 @@ def generateButton(sheet, name, label, positionX, positionY, sizeWidth, sizeHeig
     services = Context.getServiceManager()
     context = Context.getContext()
 
-    shape  = document.createInstance("com.sun.star.drawing.ControlShape")
+    shape = document.createInstance("com.sun.star.drawing.ControlShape")
     point = uno.createUnoStruct('com.sun.star.awt.Point')
     size = uno.createUnoStruct('com.sun.star.awt.Size')
     point.X = positionX
@@ -50,4 +51,10 @@ def addEventListenerToButton(button):
     document = Context.getDocument()
     controller = document.getCurrentController()
 
-    controller.getControl(button).addActionListener(MyActionListener())
+    print(controller)
+
+    listener = MyActionListener()
+
+    # button.addActionListener(listener)
+
+    controller.getControl(button).addActionListener(listener)

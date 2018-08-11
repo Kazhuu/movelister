@@ -143,7 +143,6 @@ def generateButtonTest():
     ui.addEventListenerToButton(buttonModel)
 
 
-
 def refreshPhases():
     """
     A test function for removing or adding phases in Mechanics List. Seems to work,

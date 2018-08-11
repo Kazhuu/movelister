@@ -5,6 +5,7 @@ SPACE_INPUT = ' ' * 5
 SPACE_NAME = ' ' * 15
 SPACE_NOTES = ' ' * 52
 
+
 def generateMasterList(document, modifierSheet, aboutSheet, sheetName):
     """
     This function generates an entire Master List sheet from nothing.
@@ -16,10 +17,8 @@ def generateMasterList(document, modifierSheet, aboutSheet, sheetName):
     # Create the text for the title bar and makes it into a nested tuple.
     # The first version of the text has a lot of unnecessary space in it to make column width the right size.
     modifiers = modifierList.getModifierListProjection(modifierSheet)
-    titleBarStart = ['View' + SPACE_VIEW, 'Input List' + SPACE_INPUT, 'Action Name' + SPACE_NAME, 'Color', 'Hit',
-                     'Frames', 'Phase', 'DEF']
-    titleBarEnd = ['Full Name', 'In-Game Description', 'Notes 1' + SPACE_NOTES, 'Notes 2' + SPACE_NOTES,
-                   'Notes 3' + SPACE_NOTES]
+    titleBarStart = ['Action Name' + SPACE_NAME, 'Color', 'Hit', 'Frames', 'Phase', 'DEF']
+    titleBarEnd = ['Notes 1' + SPACE_NOTES, 'Notes 2' + SPACE_NOTES, 'Notes 3' + SPACE_NOTES]
     titleBarFinal = titleBarStart + modifiers + titleBarEnd
     titleBarTuple = convert.convertIntoNestedTuple(titleBarFinal)
 
@@ -28,10 +27,8 @@ def generateMasterList(document, modifierSheet, aboutSheet, sheetName):
     formatting.setOptimalWidthToRange(newMasterSheet, 0, len(titleBarTuple[0]))
 
     # Update text with space with regular text that doesn't have space.
-    titleBarStart = ['View', 'Input List', 'Action Name', 'Color', 'Hit',
-                     'Frames', 'Phase', 'DEF']
-    titleBarEnd = ['Full Name', 'In-Game Description', 'Notes 1', 'Notes 2',
-                   'Notes 3']
+    titleBarStart = ['Action Name', 'Color', 'Hit', 'Frames', 'Phase', 'DEF']
+    titleBarEnd = ['Notes 1', 'Notes 2', 'Notes 3']
     titleBarFinal = titleBarStart + modifiers + titleBarEnd
     titleBarTuple = convert.convertIntoNestedTuple(titleBarFinal)
 
@@ -39,7 +36,7 @@ def generateMasterList(document, modifierSheet, aboutSheet, sheetName):
     cursor.setSheetContent(newMasterSheet, titleBarTuple)
 
     startCol = loop.getColumnPosition(newMasterSheet, 'DEF') + 1
-    endCol = loop.getColumnPosition(newMasterSheet, 'Full Name')
+    endCol = loop.getColumnPosition(newMasterSheet, 'Notes 1')
     modifierColors = loop.getColorArray(modifierSheet)
 
     # Set formatting.
