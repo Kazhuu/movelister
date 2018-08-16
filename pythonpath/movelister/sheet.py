@@ -2,13 +2,11 @@ from movelister.context import Context
 
 
 OVERVIEW_SHEET_NAME = 'Overview'
-MASTER_ACTION_LIST_SHEET_NAME = 'Master Action List'
+MASTER_LIST_SHEET_NAME = 'Master List'
 INPUT_LIST_SHEET_NAME = 'Input Lists'
-MECHANICS_LIST_SHEET_NAME = 'Mechanics Test'
-SIMULTANEOUS_TEST_SHEET_NAME = 'Simultaneous Test'
+DETAILS_SHEET_NAME = 'Details'
 MODIFIER_LIST_SHEET_NAME = 'Modifier List'
 RESULT_LIST_SHEET_NAME = 'Results List'
-TARGET_LIST_SHEET_NAME = 'Target List'
 ABOUT_SHEET_NAME = 'About'
 
 
@@ -19,39 +17,31 @@ class Sheet():
     """
 
     @classmethod
-    def getOverviewList(cls):
+    def getOverviewSheet(cls):
         return Context.getDocument().Sheets.getByName(OVERVIEW_SHEET_NAME)
 
     @classmethod
-    def getMasterActionList(cls):
-        return Context.getDocument().Sheets.getByName(MASTER_ACTION_LIST_SHEET_NAME)
+    def getMasterSheet(cls):
+        return Context.getDocument().Sheets.getByName(MASTER_LIST_SHEET_NAME)
 
     @classmethod
-    def getInputList(cls):
+    def getInputSheet(cls):
         return Context.getDocument().Sheets.getByName(INPUT_LIST_SHEET_NAME)
 
     @classmethod
-    def getMechanicsList(cls):
-        return Context.getDocument().Sheets.getByName(MECHANICS_LIST_SHEET_NAME)
+    def getDetailsSheet(cls):
+        return Context.getDocument().Sheets.getByName(DETAILS_SHEET_NAME)
 
     @classmethod
-    def getSimultaneousTest(cls):
-        return Context.getDocument().Sheets.getByName(SIMULTANEOUS_TEST_SHEET_NAME)
-
-    @classmethod
-    def getModifierList(cls):
+    def getModifierSheet(cls):
         return Context.getDocument().Sheets.getByName(MODIFIER_LIST_SHEET_NAME)
 
     @classmethod
-    def getResultsList(cls):
+    def getResultSheet(cls):
         return Context.getDocument().Sheets.getByName(RESULT_LIST_SHEET_NAME)
 
     @classmethod
-    def getTargetList(cls):
-        return Context.getDocument().Sheets.getByName(TARGET_LIST_SHEET_NAME)
-
-    @classmethod
-    def getAbout(cls):
+    def getAboutSheet(cls):
         return Context.getDocument().Sheets.getByName(ABOUT_SHEET_NAME)
 
     @classmethod

@@ -14,8 +14,8 @@ if __name__ == '__main__':
 
 from movelister.context import Context  # noqa
 from movelister.sheet import Sheet  # noqa
-from movelister import color, conditionalFormat, cursor, error, generate, loop, \
-    masterList, mechanicsList, modifierList, namedRanges, ui, resultsList  # noqa
+from movelister import color, conditionalFormat, details, error, formatting, generate, loop, \
+    overview, modifierList, namedRanges, ui, resultsList  # noqa
 
 # Setup context automatically when macro is run from the LibreOffice.
 if __name__ != '__main__':
@@ -26,7 +26,7 @@ def setColor():
     """
     Test macro to test Color class and setting color.
     """
-    modifierSheet = Sheet.getModifierList()
+    modifierSheet = Sheet.getModifierListSheet()
     c = color.Color(modifierSheet.getCellByPosition(0, 0).CellBackColor)
     c.alpha = 0
     c.red = 0
@@ -36,88 +36,78 @@ def setColor():
     modifierSheet.getCellByPosition(0, 0).CellBackColor = c.value
 
 
-def copySheet():
-    """
-    Test macro to copy entire sheet to another one using cursor.
-    """
-    sheet = Sheet.getMasterActionList()
-    newSheet = Sheet.newSheet('copy', 1)
-    data = cursor.getSheetContent(sheet)
-    cursor.setSheetContent(newSheet, data)
-
-
-def generateOrRefreshMechanicsList(*args):
+def generateOrRefreshDetailsSheet(*args):
     """
     A very general function that creates / refreshes full mechanics list up to date with a single button.
-    If the project has multiple views / Mechanics Lists, there would probably be some drop down menu
+    If the project has multiple Details views, there would probably be some drop down menu
     pointing the code to the correct List before the code is ran.
     """
     document = Context.getDocument()
-    masterSheet = Sheet.getMasterActionList()
-    inputSheet = Sheet.getInputList()
-    mechanicsSheet = Sheet.getMechanicsList()
-    modifierSheet = Sheet.getModifierList()
+    overviewSheet = Sheet.getOverviewSheet()
+    inputSheet = Sheet.getInputSheet()
+    detailsSheet = Sheet.getDetailsSheet()
+    modifierSheet = Sheet.getModifierSheet()
 
     # TO DO: name is a placeholder value. Eventually, once UI is implemented, user can choose it.
     name = 'Default'
-    sheetName = 'Mechanics List (' + name + ')'
+    sheetName = 'Details (' + name + ')'
 
     # A bit of error checking at the start.
     result = error.listGenerationNameCheck(document, sheetName)
 
     if result == 'GENERATE':
         print()
-        # TO DO: a function that generates the template of Mechanics List from nothing.
+        # TO DO: a function that generates the template of Details sheet from nothing.
         # The code then segues into the usual "refresh" code that updates the info inside the List.
     elif result == 'NO':
         exit()
 
-    # The code goes through Master Action List and makes a "projection" of what the Mechanics List should
+    # The code goes through Overview and makes a "projection" of what the Details sheet should
     # look like. It's a multi-dimensional array where [0] lists action name, [1] lists modifiers, [2] lists
-    # input list and [3] lists the expected location of the action in Mechanics List.
-    projectionMaster = masterList.getMasterListProjection(masterSheet, modifierSheet, inputSheet)
-    print("projektion: " + str(projectionMaster))
+    # input list and [3] lists the expected location of the action in Details list.
+    projectionOverview = overview.getOverviewProjection(overviewSheet, modifierSheet, inputSheet)
+    print("projektion: " + str(projectionOverview))
 
     # Same thing for what is currently inside Mechanics List.
-    projectionMechanics = mechanicsList.getMechanicsListProjection(mechanicsSheet, projectionMaster)
+    projectionDetails = details.getDetailsSheetProjection(detailsSheet, projectionOverview)
 
-    # Code creates a new Array which is eventually pasted on mechanicsList, replacing it
+    # Code creates a new Array which is eventually pasted on Details Sheet, replacing it
     # entirely in a single swoop. (It's faster to do it like this than generate row-by-row.)
-    mechanicsList.refreshMechanicsList(mechanicsSheet, inputSheet, projectionMaster, projectionMechanics)
+    details.refreshDetailsSheet(detailsSheet, inputSheet, projectionOverview, projectionDetails)
 
     # TO DO: regenerate conditional formatting.
     # TO DO: color cell backgrounds according to info. There are basically three types of coloring:
     # action colors, modifier colors and input colors.
-    actionColors = loop.getColorArray(masterSheet)
+    actionColors = loop.getColorArray(overviewSheet)
     modifierColors = loop.getColorArray(modifierSheet)
     inputColors = loop.getColorArray(inputSheet)
 
-    mechanicsList.setColors(mechanicsSheet, actionColors, modifierColors, inputColors)
+    formatting.setDetailsSheetColors(detailsSheet, actionColors, modifierColors, inputColors)
 
     # TO DO: group rows according to info in Input List.
 
 
-def generateOrRefreshMasterList():
+def generateOrRefreshOverview():
     document = Context.getDocument()
-    aboutSheet = Sheet.getAbout()
-    modifierSheet = Sheet.getModifierList()
+    aboutSheet = Sheet.getAboutSheet()
+    modifierSheet = Sheet.getModifierSheet()
 
     # TO DO: name is a placeholder value. Eventually, once UI is implemented, user can choose it.
     name = 'Default'
-    sheetName = 'Master List (' + name + ')'
+    sheetName = 'Overview (' + name + ')'
 
     # A bit of error checking at the start.
     result = error.listGenerationNameCheck(document, sheetName)
 
     if result == 'GENERATE':
-        generate.generateMasterList(document, modifierSheet, aboutSheet, sheetName)
+        generate.generateOverview(document, modifierSheet, aboutSheet, sheetName)
     elif result == 'YES':
         print()
-        # To do: go to Master List refresh function.
+        # To do: go to Overview refresh function.
     else:
         exit()
 
-    # How to define the position of the new document? Group it with other Master Action Lists?
+    # How to define the position of the new document? Group it with other Overviews?
     # Leave it up to the user to move it?
 
 
@@ -125,19 +115,19 @@ def namedRangeTest():
     """
     Quick tests with named ranges.
     """
-    mechanicsSheet = Sheet.getMechanicsList()
+    detailsSheet = Sheet.getDetailsSheet()
     namedRange = Context.getDocument().NamedRanges
     namedRanges.deleteNamedRanges(namedRange)
-    namedRanges.createNewNamedRange(mechanicsSheet, namedRange)
+    namedRanges.createNewNamedRange(detailsSheet, namedRange)
 
 
 def generateButtonTest():
     """
     Quick test with generating a button.
     """
-    masterSheet = Sheet.getMasterActionList()
+    overviewSheet = Sheet.getOverviewSheet()
 
-    buttonModel = ui.generateButton(masterSheet, 'Button', 'Jee', 200, 400, 5000, 1000)
+    buttonModel = ui.generateButton(overviewSheet, 'Button', 'Jee', 200, 400, 5000, 1000)
 
     # TO DO: adding event listener to button still doesn't work.
     ui.addEventListenerToButton(buttonModel)
@@ -148,56 +138,56 @@ def refreshPhases():
     A test function for removing or adding phases in Mechanics List. Seems to work,
     but the code could probably be more elegant.
     """
-    masterSheet = Sheet.getMasterActionList()
-    mechanicsSheet = Sheet.getMechanicsList()
+    overviewSheet = Sheet.getOverviewSheet()
+    detailsSheet = Sheet.getDetailsSheet()
 
-    # A function that fetches Master Action List to fetch its highest phase number.
+    # A function that fetches the highest phase number in Overview.
     # To do: to be more flexible, the code should also take into account if the high phase numbers
     # are actually USED at all in the Mechanics List.
-    masterDataArray = masterList.getMasterList(masterSheet)
-    highestPhase = masterList.getHighestPhaseNumber(masterSheet, len(masterDataArray))
+    masterDataArray = overview.getOverview(overviewSheet)
+    highestPhase = overview.getHighestPhaseNumber(overviewSheet, len(masterDataArray))
 
-    # A function that counts the phases in the Mechanics List.
-    phaseCount = mechanicsList.countPhases(mechanicsSheet)
+    # A function that counts the phases in the Details Sheet.
+    phaseCount = details.countPhases(detailsSheet)
 
-    # Comparing the highest known Phase number in Master Action List vs Mechanics List phase number
+    # Comparing the highest known Phase number in Overview vs Details Sheet phase number
     # and determining if new phases have to be added or deleted.
     if highestPhase == phaseCount:
         print('No need to add or delete phases.')
     if highestPhase > phaseCount:
-        mechanicsList.generatePhases(mechanicsSheet, highestPhase, phaseCount)
+        details.generatePhases(detailsSheet, highestPhase, phaseCount)
     if highestPhase < phaseCount:
-        mechanicsList.deletePhases(mechanicsSheet, highestPhase, phaseCount)
+        details.deletePhases(detailsSheet, highestPhase, phaseCount)
 
     # To do: a function may have to re-generate Conditional Formatting for the sheet.
 
 
 def refreshModifiers():
     """
-    A function that refreshes the modifier block of Master List based on the data
+    A function that refreshes the modifier block of Overview based on the data
     the user has set inside Modifier List. This includes the number and position of
     various modifiers as well as their color.
     """
-    masterSheet = Sheet.getMasterActionList()
-    modifierSheet = Sheet.getModifierList()
+    overviewSheet = Sheet.getOverviewSheet()
+    modifierSheet = Sheet.getModifierSheet()
 
     # A function that creates a Data Array of the whole Modifier List.
     # A separate array is created for the cell background color data.
     modifierListModifiers = modifierList.getModifierListProjection(modifierSheet)
     modifierColors = loop.getColorArray(modifierSheet)
 
-    # Function compares this data to the Modifiers columns in Master Action List.
-    # It then deletes unnecessary Modifier columns or add necessary Modifier Columns in Master Action List.
+    # Function compares this data to the Modifiers columns in an Overview.
+    # It then deletes unnecessary Modifier columns or add necessary Modifier Columns in the Overview.
     # It then colors the cell background of the columns.
-    masterList.updateMasterListModifiers(masterSheet, modifierListModifiers, modifierColors)
+    overview.updateOverviewModifiers(overviewSheet, modifierListModifiers, modifierColors)
 
 
 def createConditionalFormatting():
     """
     A test function for just setting up quick conditional formatting.
     """
-    mechanicsSheet = Sheet.getMechanicsList()
-    resultsSheet = Sheet.getResultsList()
+    detailsSheet = Sheet.getDetailsSheet()
+    resultsSheet = Sheet.getResultsSheet()
 
     # A function that gets all relevant data from the Results Sheet.
     resultsDataArray = resultsList.getResultsList(resultsSheet)
@@ -205,11 +195,11 @@ def createConditionalFormatting():
 
     # A function that uses the gathered data and generates the formatting.
     # Note: still incomplete! See conditionalFormat.py
-    conditionalFormat.applyConditionalFormatting(mechanicsSheet, resultsDataArray, resultsColors)
-    # conditionalFormat.clearConditionalFormatting(mechanicsSheet)
+    conditionalFormat.applyConditionalFormatting(detailsSheet, resultsDataArray, resultsColors)
+    # conditionalFormat.clearConditionalFormatting(detailsSheet)
 
 
 # Run when executed from the command line.
 if __name__ == '__main__':
     Context.setup(host='localhost', port=2002)
-    generateOrRefreshMechanicsList()
+    generateOrRefreshOverview()

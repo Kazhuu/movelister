@@ -69,7 +69,7 @@ def getAntiVariations(mda, modifierSheet, mode):
     if mode == 'XNOR':
         XNORList = [[], []]
         XNORStartCol = loop.getColumnPosition(modifierSheet, 'XNOR Group:')
-        XNOREndCol = loop.getColumnPosition(modifierSheet, 'Notes 1:') - 1
+        XNOREndCol = loop.getColumnPosition(modifierSheet, 'Notes 1') - 1
         XNORAmount = XNOREndCol - XNORStartCol
         loopAmount = XNORAmount
         startCol = XNORStartCol

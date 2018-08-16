@@ -1,9 +1,9 @@
 from movelister import messageBox
 
 
-def masterListProjectionErrorCheck(mda, nameCol):
+def overviewProjectionErrorCheck(mda, nameCol):
     if len(mda) <= 2 and mda[1][nameCol] == '':
-        msgText = 'Master Action List seems to be empty. Unable to generate.'
+        msgText = 'Overview seems to be empty. Unable to generate.'
         messageBox.createMessage('OK', 'Warning:', msgText)
         exit()
 

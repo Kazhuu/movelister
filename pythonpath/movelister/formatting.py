@@ -23,9 +23,9 @@ def setTitleBarColor(sheet, optionsSheet, rowAmount):
     cellRange.CellBackColor = color.value
 
 
-def setMasterListModifierColors(sheet, startCol, endCol, modifierListColors):
+def setOverviewModifierColors(sheet, startCol, endCol, modifierListColors):
     """
-    This function sets colors to all the individual columns in the modifier section of a master list.
+    This function sets colors to all the individual columns in the modifier section of an Overview.
     """
     offset = 0
     tempCol = cursor.getColumn(sheet, startCol)
@@ -41,8 +41,12 @@ def setMasterListModifierColors(sheet, startCol, endCol, modifierListColors):
             offset = offset + 1
         else:
             sheet.getCellRangeByPosition(startCol + x - offset, 0, startCol + x,
-                                               len(tempCol)).CellBackColor = currentColor.value
+                                         len(tempCol)).CellBackColor = currentColor.value
             offset = 0
+
+
+def setDetailsSheetColors(detailsSheet, actionColors, modifierColors, inputColors):
+    print('TO DO')
 
 
 def setHorizontalAlignmentToSheet(sheet, alignment):

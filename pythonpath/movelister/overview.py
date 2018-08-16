@@ -4,17 +4,17 @@ from movelister import color, convert, cursor, delete, error, formatting, \
     inputList, loop, messageBox, modifierList, test
 
 
-def getMasterList(masterSheet):
-    masterDataArray = cursor.getSheetContent(masterSheet)
+def getOverview(overviewSheet):
+    masterDataArray = cursor.getSheetContent(overviewSheet)
 
     return masterDataArray
 
 
-def getMasterListProjection(masterSheet, modifierSheet, inputSheet):
-    mda = getMasterList(masterSheet)
-    nameCol = loop.getColumnPosition(masterSheet, 'Action Name')
-    modStartCol = loop.getColumnPosition(masterSheet, 'DEF')
-    modEndCol = loop.getColumnPosition(masterSheet, 'Full Name') - 1
+def getOverviewProjection(overviewSheet, modifierSheet, inputSheet):
+    mda = getOverview(overviewSheet)
+    nameCol = loop.getColumnPosition(overviewSheet, 'Action Name')
+    modStartCol = loop.getColumnPosition(overviewSheet, 'DEF')
+    modEndCol = loop.getColumnPosition(overviewSheet, 'Full Name') - 1
     modAmount = modEndCol - modStartCol
     currentName = mda[1][nameCol]
     currentInputList = mda[1][nameCol - 1]
@@ -27,7 +27,7 @@ def getMasterListProjection(masterSheet, modifierSheet, inputSheet):
     prereqsString = ''
 
     # A bit of error checking before starting.
-    error.masterListProjectionErrorCheck(mda, nameCol)
+    error.overviewProjectionErrorCheck(mda, nameCol)
 
     # Get an array of impossible variations (derived from Modifier rules) to compare with the action list later on.
     antiVariationOR = modifierList.getImpossibleVariations(modifierSheet, 'OR')
@@ -38,7 +38,7 @@ def getMasterListProjection(masterSheet, modifierSheet, inputSheet):
     print('All impossible variations based on XNOR-rules: ' + str(antiVariationXNOR[0]))
     print('Protected variations (XNOR): ' + str(antiVariationXNOR[1]))
 
-    # Loop through rows of Master Action List (represented as the multi-dimensional List mda).
+    # Loop through rows of Overview (represented as the multi-dimensional List mda).
     x = 0
     while x < len(mda) - 1:
         x = x + 1
@@ -108,7 +108,7 @@ def getMasterListProjection(masterSheet, modifierSheet, inputSheet):
     projection = estimateActionPositionsForProjection(inputSheet, projection)
 
     # A quick test that prints out the contents of the projection.
-    test.printProjectionTest(projection, masterSheet)
+    test.printProjectionTest(projection, overviewSheet)
 
     return projection
 
@@ -290,54 +290,54 @@ def makePrereqsString(currentActionPrereqs, prereqsString):
     return prereqsString
 
 
-def updateMasterListModifiers(masterSheet, modifierListModifiers, modifierListColors):
+def updateoverviewModifiers(overviewSheet, modifierListModifiers, modifierListColors):
     """
     This function updates the section with Modifiers in the Master List using the data from Modifier List.
     """
-    mda = getMasterList(masterSheet)
-    topRowArray = cursor.getRow(masterSheet, 0)
-    startCol = loop.getColumnPosition(masterSheet, 'DEF') + 1
-    endCol = loop.getColumnPosition(masterSheet, 'Full Name')
-    masterListModifiers = topRowArray[startCol:endCol]
+    mda = getOverview(overviewSheet)
+    topRowArray = cursor.getRow(overviewSheet, 0)
+    startCol = loop.getColumnPosition(overviewSheet, 'DEF') + 1
+    endCol = loop.getColumnPosition(overviewSheet, 'Full Name')
+    overviewModifiers = topRowArray[startCol:endCol]
     finalList = []
 
-    # Compare if Master List modifiers match Modifier List modifiers. If yes, function ends.
-    compareModifierLists(modifierListModifiers, masterListModifiers)
+    # Compare if Overview modifiers match Modifier List modifiers. If yes, function ends.
+    compareModifierLists(modifierListModifiers, overviewModifiers)
 
-    # If function continues beyond this point, then the modifiers of Master Action List will be
-    # updated to match the modifiers of Modifier List. Master List columns are copied or
+    # If function continues beyond this point, then the modifiers of Overview will be
+    # updated to match the modifiers of Modifier List. Overview columns are copied or
     # generated to a new array, which is then pasted to replace the previous columns.
-    newModifierArray = createNewModifierArray(mda, masterSheet, startCol, modifierListModifiers, masterListModifiers)
+    newModifierArray = createNewModifierArray(mda, overviewSheet, startCol, modifierListModifiers, overviewModifiers)
 
     # newModifierArray has to be turned sideways with iteration first.
     finalList = convert.turnArraySideways(newModifierArray)
 
-    # Delete existing Modifier Block from Master List.
-    delete.deleteColumns(masterSheet, startCol, len(masterListModifiers))
+    # Delete existing Modifier Block from Overview.
+    delete.deleteColumns(overviewSheet, startCol, len(overviewModifiers))
 
     # Create a new number of columns for pasting the newModifierArray array into.
-    masterSheet.Columns.insertByIndex(startCol, len(modifierListModifiers))
-    range = masterSheet.getCellRangeByPosition(startCol, 0, startCol + len(modifierListModifiers) - 1, len(mda) - 1)
+    overviewSheet.Columns.insertByIndex(startCol, len(modifierListModifiers))
+    range = overviewSheet.getCellRangeByPosition(startCol, 0, startCol + len(modifierListModifiers) - 1, len(mda) - 1)
 
     range.setDataArray(finalList)
 
     # Fix column width.
-    formatting.setOptimalWidthToRange(masterSheet, startCol, len(modifierListModifiers))
+    formatting.setOptimalWidthToRange(overviewSheet, startCol, len(modifierListModifiers))
 
     # Fix column colors.
-    setColorsToModifierBlock(masterSheet, startCol, endCol, modifierListColors)
+    setColorsToModifierBlock(overviewSheet, startCol, endCol, modifierListColors)
 
 
-def compareModifierLists(modifierListModifiers, masterListModifiers):
+def compareModifierLists(modifierListModifiers, overviewModifiers):
     """
     This function compares both modifier lists. If they're identical, the function is ended.
     """
-    if modifierListModifiers == masterListModifiers:
+    if modifierListModifiers == overviewModifiers:
         messageBox.createMessage('OK', "Note:", "Modifier lists are already up to date.")
         exit()
 
 
-def createNewModifierArray(mda, masterSheet, startCol, modifierListModifiers, masterListModifiers):
+def createNewModifierArray(mda, overviewSheet, startCol, modifierListModifiers, overviewModifiers):
     """
     This function creates the new array which is pasted in the Modifier block of Master List sheet.
     """
@@ -350,10 +350,10 @@ def createNewModifierArray(mda, masterSheet, startCol, modifierListModifiers, ma
         match = 0
 
         y = -1
-        for mod in masterListModifiers:
+        for mod in overviewModifiers:
             y = y + 1
             if mod == col:
-                tempCol = cursor.getColumn(masterSheet, startCol + y)
+                tempCol = cursor.getColumn(overviewSheet, startCol + y)
                 match = 1
                 break
 
@@ -373,12 +373,12 @@ def createNewModifierArray(mda, masterSheet, startCol, modifierListModifiers, ma
     return newList
 
 
-def setColorsToModifierBlock(masterSheet, startCol, endCol, modifierListColors):
+def setColorsToModifierBlock(overviewSheet, startCol, endCol, modifierListColors):
     """
-    This function sets colors to all the individual columns in the modifier block of a master list.
+    This function sets colors to all the individual columns in the modifier block of an Overview.
     """
     offset = 0
-    tempCol = cursor.getColumn(masterSheet, startCol)
+    tempCol = cursor.getColumn(overviewSheet, startCol)
     modifierListColors.append(0)
 
     x = -1
@@ -390,18 +390,18 @@ def setColorsToModifierBlock(masterSheet, startCol, endCol, modifierListColors):
         if currentColor.value == nextColor.value:
             offset = offset + 1
         else:
-            masterSheet.getCellRangeByPosition(startCol + x - offset, 0, startCol + x,
-                                               len(tempCol)).CellBackColor = currentColor.value
+            overviewSheet.getCellRangeByPosition(startCol + x - offset, 0, startCol + x,
+                                                 len(tempCol)).CellBackColor = currentColor.value
             offset = 0
 
 
-def getHighestPhaseNumber(masterSheet, listLength):
+def getHighestPhaseNumber(overviewSheet, listLength):
     """
     The loop iterates through the Phase column and finds the highest number in sequence.
     """
     x = -1
     phase = 0
-    phaseCol = loop.getColumnPosition(masterSheet, 'Phase')
+    phaseCol = loop.getColumnPosition(overviewSheet, 'Phase')
 
     # Warning: loop cannot find high phase numbers that are out of sequence.
     # But something like that shouldn't happen in normal use, right?
@@ -409,7 +409,7 @@ def getHighestPhaseNumber(masterSheet, listLength):
     # (as indicated by the Modifiers columns) so it doesn't do everything it's supposed to yet.
     while x <= listLength:
         x = x + 1
-        if masterSheet.getCellByPosition(phaseCol, x).getValue() == phase:
+        if overviewSheet.getCellByPosition(phaseCol, x).getValue() == phase:
             phase = phase + 1
             x = -1
 
