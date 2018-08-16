@@ -54,6 +54,23 @@ def getColumn(sheet, columnIndex):
     return [i[0] for i in data]
 
 
+def getColumns(sheet, startIndex, endIndex):
+    """
+    Slice data by columns from sheet used area starting from startIndex and
+    including endIndex.
+    """
+    if startIndex > endIndex:
+        raise IndexError('startIndex {0} cannot be bigger than endIndex {1}'.format(startIndex, endIndex))
+    content = getSheetContent(sheet)
+    if endIndex > len(content[0]):
+        raise IndexError('endIndex {0} bigger than used area index {1}'.format(endIndex, len(content[0])))
+    area = slice(startIndex, endIndex + 1)
+    result = []
+    for row in content:
+        result.append(list(row[area]))
+    return result
+
+
 def getRow(sheet, rowIndex):
     """
     Return row used content from given index as one-dimensional array.
