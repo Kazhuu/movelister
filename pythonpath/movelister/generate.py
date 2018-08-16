@@ -6,6 +6,12 @@ SPACE_NAME = ' ' * 15
 SPACE_NOTES = ' ' * 52
 
 
+def generateOverviewFromTemplate(document, modifierSheet, sheetName):
+    document.Sheets.copyByName('Master List', sheetName, 1)
+
+    # To do: the rest of the function.
+
+
 def generateOverview(document, modifierSheet, aboutSheet, sheetName):
     """
     This function generates an entire Overview sheet from nothing.

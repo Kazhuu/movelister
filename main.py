@@ -87,20 +87,20 @@ def generateOrRefreshDetailsSheet(*args):
     # TO DO: group rows according to info in Input List.
 
 
-def generateOrRefreshOverview():
+def generateOrRefreshOverview(*args):
     document = Context.getDocument()
-    aboutSheet = Sheet.getAboutSheet()
     modifierSheet = Sheet.getModifierSheet()
+    masterSheet = Sheet.getMasterSheet()
 
-    # TO DO: name is a placeholder value. Eventually, once UI is implemented, user can choose it.
-    name = 'Default'
+    # Get the name of the Overview that is generated or refreshed.
+    name = masterSheet.getCellByPosition(0, 2).getString()
     sheetName = 'Overview (' + name + ')'
 
     # A bit of error checking at the start.
     result = error.listGenerationNameCheck(document, sheetName)
 
     if result == 'GENERATE':
-        generate.generateOverview(document, modifierSheet, aboutSheet, sheetName)
+        generate.generateOverviewFromTemplate(document, modifierSheet, sheetName)
     elif result == 'YES':
         print()
         # To do: go to Overview refresh function.
@@ -202,4 +202,4 @@ def createConditionalFormatting():
 # Run when executed from the command line.
 if __name__ == '__main__':
     Context.setup(host='localhost', port=2002)
-    generateOrRefreshOverview()
+    generateOrRefreshDetailsSheet()

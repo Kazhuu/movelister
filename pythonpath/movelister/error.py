@@ -9,7 +9,7 @@ def overviewProjectionErrorCheck(mda, nameCol):
 
 
 def listGenerationNameCheck(document, sheetName):
-    if document.Sheets.hasByName(sheetName) == True:
+    if document.Sheets.hasByName(sheetName) is True:
         msgText = 'A Sheet of that name already exists. Would you like to update its contents?'
         result = messageBox.createMessage('YES_NO', 'Warning:', msgText)
         if result == 'YES':

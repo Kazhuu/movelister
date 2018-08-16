@@ -1,10 +1,10 @@
 from movelister.context import Context
 
 
-OVERVIEW_SHEET_NAME = 'Overview'
+OVERVIEW_SHEET_NAME = 'Overview (Old)'
 MASTER_LIST_SHEET_NAME = 'Master List'
 INPUT_LIST_SHEET_NAME = 'Input Lists'
-DETAILS_SHEET_NAME = 'Details'
+DETAILS_SHEET_NAME = 'Details (Old)'
 MODIFIER_LIST_SHEET_NAME = 'Modifier List'
 RESULT_LIST_SHEET_NAME = 'Results List'
 ABOUT_SHEET_NAME = 'About'
