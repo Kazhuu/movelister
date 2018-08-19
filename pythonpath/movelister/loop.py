@@ -18,7 +18,8 @@ def getHeaderRowPosition(sheet):
 
     # Error message if it wasn't found.
     if row == - 1:
-        messageBox.createMessage('OK', 'Warning:', "Program couldn't find the header row.")
+        msg = "Program couldn't find the header row from {0}.".format(sheet.getName())
+        messageBox.createMessage('OK', 'Warning:', msg)
         exit()
 
     return row
@@ -44,7 +45,8 @@ def getColumnPosition(sheet, columnName):
 
     # Error message if it wasn't found.
     if column == - 1:
-        messageBox.createMessage('OK', 'Warning:', "Program couldn't find the column " + columnName + '.')
+        msg = "Program couldn't find the column {0} from {1}".format(columnName, sheet.getName())
+        messageBox.createMessage('OK', 'Warning:', msg)
         exit()
 
     return column

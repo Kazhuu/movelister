@@ -1,6 +1,22 @@
 import itertools
 
 from movelister import cursor, error, loop
+from movelister.sheet import Sheet
+
+
+BOOLEAN_AREA_START_COLUMN_NAME = 'Color'
+BOOLEAN_AREA_END_COLUMN_NAME = 'Chain'
+
+
+def getBooleanColumns():
+    """
+    Function returns boolean columns in two-dimensional array. Columns include
+    all user provided boolean columns, not, math and chain columns.
+    """
+    sheet = Sheet.getModifierSheet()
+    startCol = loop.getColumnPosition(sheet, BOOLEAN_AREA_START_COLUMN_NAME) + 1
+    endCol = loop.getColumnPosition(sheet, BOOLEAN_AREA_END_COLUMN_NAME)
+    return cursor.getColumns(sheet, startCol, endCol)
 
 
 def getModifierList(modifierSheet):
