@@ -15,7 +15,7 @@ if __name__ == '__main__':
 from movelister.context import Context  # noqa
 from movelister.sheet import Sheet  # noqa
 from movelister import color, conditionalFormat, details, error, formatting, generate, loop, \
-    overview, modifierList, namedRanges, ui, resultsList  # noqa
+    overview, modifierList, namedRanges, selection, ui, resultsList  # noqa
 
 # Setup context automatically when macro is run from the LibreOffice.
 if __name__ != '__main__':
@@ -111,6 +111,15 @@ def generateOrRefreshOverview(*args):
     # Leave it up to the user to move it?
 
 
+def selectionTest():
+    """
+    A quick test for getting active Selection from the sheet.
+    """
+    selectionA = selection.getCurrentSelection()
+    result = selection.determineSelectionType(selectionA)
+    print(result)
+
+
 def namedRangeTest():
     """
     Quick tests with named ranges.
@@ -202,4 +211,4 @@ def createConditionalFormatting():
 # Run when executed from the command line.
 if __name__ == '__main__':
     Context.setup(host='localhost', port=2002)
-    generateOrRefreshDetailsSheet()
+    selectionTest()
