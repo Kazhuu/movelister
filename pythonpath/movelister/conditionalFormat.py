@@ -1,30 +1,45 @@
-from movelister import cursor
-
 import uno
+from com.sun.star.beans import XPropertySet
 from com.sun.star.beans import PropertyValue
-from com.sun.star.sheet.ConditionOperator import LESS
+from com.sun.star.sheet import XSheetConditionalEntries
+from com.sun.star.sheet.ConditionOperator import NONE, EQUAL, NOT_EQUAL, GREATER, \
+                                                 GREATER_EQUAL, LESS, LESS_EQUAL, BETWEEN, NOT_BETWEEN, FORMULA
+
+from movelister import convert, cursor
 
 
 def applyConditionalFormatting(sheet, resultsDataArray, resultsListColors):
 
     # To do: finish this function. It does nothing so far.
-    # range = sheet.getCellRangeByPosition(1, 1, 12, 12)
-    # conForm = range.ConditionalFormat
+    # info can be found here:
+    # https://wiki.openoffice.org/wiki/Documentation/DevGuide/Spreadsheets/Conditional_Formats
 
-    print(resultsDataArray)
-    print(resultsListColors)
+    # Problems so far:
+    # 1, it's not possible to clear existing conditional format entries by accessing
+    #    through a specific range. An alternative solution has to be available.
+    # 2, when trying to add a new condition to conForm (accessed via range), it says conversion
+    #    not possible for some reason.
+    # 3, a conForm (created as a XSheetConditionalEntries) doesn't seem to work at all
+    #    like intended. It doesn't recognize the commands it should have.
 
-    condition = uno.createUnoStruct('com.sun.star.beans.PropertyValue')
+    cra = cursor.getUsedAreaSize(sheet)
+    range = convert.cellRangeAddressIntoCellRange(cra)
+
+    conForm = range.ConditionalFormat
+
+    # print(resultsDataArray)
+    # print(resultsListColors)
+
+    xPropSet = XPropertySet()
+    # conForm = XSheetConditionalEntries()
+
+    # condition = uno.createUnoStruct('com.sun.star.beans.PropertyValue')
+    condition = PropertyValue()
 
     condition.Name = 'Operator'
     condition.Value = (LESS)
 
     # conForm.addNew(condition)
-
-    # condition1 = PropertyValue()
-    # condition1.value = 1
-
-    # conForm.addNew(condition1)
 
 
 def clearConditionalFormatting(sheet):

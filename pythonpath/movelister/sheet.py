@@ -6,6 +6,7 @@ MASTER_LIST_SHEET_NAME = 'Master List'
 INPUT_LIST_SHEET_NAME = 'Input Lists'
 DETAILS_SHEET_NAME = 'Details (Old)'
 MODIFIER_LIST_SHEET_NAME = 'Modifier List'
+MODIFIER_LIST_OLD_SHEET_NAME = 'Modifier List (Old)'
 RESULT_LIST_SHEET_NAME = 'Results List'
 ABOUT_SHEET_NAME = 'About'
 
@@ -35,6 +36,10 @@ class Sheet():
     @classmethod
     def getModifierSheet(cls):
         return Context.getDocument().Sheets.getByName(MODIFIER_LIST_SHEET_NAME)
+
+    @classmethod
+    def getModifierSheetOld(cls):
+        return Context.getDocument().Sheets.getByName(MODIFIER_LIST_OLD_SHEET_NAME)
 
     @classmethod
     def getResultSheet(cls):

@@ -15,7 +15,7 @@ if __name__ == '__main__':
 from movelister.context import Context  # noqa
 from movelister.sheet import Sheet  # noqa
 from movelister import color, conditionalFormat, details, error, formatting, generate, loop, \
-    overview, modifierList, namedRanges, selection, ui, resultsList  # noqa
+    overview, modifierList, namedRanges, selection, ui, resultsList, validation  # noqa
 
 # Setup context automatically when macro is run from the LibreOffice.
 if __name__ != '__main__':
@@ -196,7 +196,7 @@ def createConditionalFormatting():
     A test function for just setting up quick conditional formatting.
     """
     detailsSheet = Sheet.getDetailsSheet()
-    resultsSheet = Sheet.getResultsSheet()
+    resultsSheet = Sheet.getResultSheet()
 
     # A function that gets all relevant data from the Results Sheet.
     resultsDataArray = resultsList.getResultsList(resultsSheet)
@@ -208,7 +208,15 @@ def createConditionalFormatting():
     # conditionalFormat.clearConditionalFormatting(detailsSheet)
 
 
+def createValidation():
+    """
+    A test function for creating some data validation.
+    """
+    overview = Sheet.getByName('Overview (Default)')
+    validation.setDataValidationToColumn(overview, 0, 'disable')
+
+
 # Run when executed from the command line.
 if __name__ == '__main__':
     Context.setup(host='localhost', port=2002)
-    selectionTest()
+    createValidation()
