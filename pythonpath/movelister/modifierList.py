@@ -21,7 +21,6 @@ def getBooleanColumns():
 
 def getModifierList(modifierSheet):
     modifierDataArray = cursor.getSheetContent(modifierSheet)
-
     return modifierDataArray
 
 
