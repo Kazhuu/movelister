@@ -11,7 +11,12 @@ def setDataValidationToColumn(sheet, column, type):
                              (6) LESS_EQUAL, (7) BETWEEN, (8) NOT_BETWEEN, (9) FORMULA
     """
     area = cursor.getUsedAreaSize(sheet)
-    range = sheet.getCellRangeByPosition(column, 1, column, area.EndRow)
+    lastRow = area.EndRow
+
+    if lastRow == 0:
+        lastRow = 100
+
+    range = sheet.getCellRangeByPosition(column, 1, column, lastRow)
     validation = range.Validation
 
     if type == "phase":
@@ -30,7 +35,8 @@ def setDataValidationToColumn(sheet, column, type):
         validation.ErrorAlertStyle = 0
         validation.setOperator(1)
 
-        validation.ErrorMessage = 'The content of this column are generated automatically. Don\'t modify it by hand.'
+        validation.ErrorMessage = 'The content of this column is generated automatically. ' + \
+                                  'Please don\'t modify it manually.'
         validation.ShowErrorMessage = True
 
         validation.setFormula1(0.0)
