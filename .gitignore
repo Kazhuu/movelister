@@ -4,3 +4,4 @@ __pycache__/
 /python.bat
 *~
 /python_t.bat
+*.swp
