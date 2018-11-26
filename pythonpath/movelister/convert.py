@@ -1,3 +1,16 @@
+from movelister.context import Context
+
+
+def cellRangeAddressIntoCellRange(cra):
+    """
+    This code converts a Cell Range Address into a more useable Cell Range object.
+    """
+    model = Context.getDocument()
+    sheet = model.Sheets.getByIndex(cra.Sheet)
+    range = sheet.getCellRangeByPosition(cra.StartColumn, cra.StartRow, cra.EndColumn, cra.EndRow)
+    return range
+
+
 def convertIntoNestedTuple(list):
     """
     This code converts an 1d List into a 2d Tuple that is compatible with a data array of a sheet.
