@@ -6,7 +6,6 @@ from movelister import color, convert, cursor, delete, error, formatting, \
 
 def getOverview(overviewSheet):
     masterDataArray = cursor.getSheetContent(overviewSheet)
-
     return masterDataArray
 
 

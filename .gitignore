@@ -5,3 +5,4 @@ __pycache__/
 *~
 /python_t.bat
 *.swp
+.tags

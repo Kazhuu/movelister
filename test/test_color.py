@@ -1,4 +1,4 @@
-from test.test_helper import OfficeTestCase
+from test import OfficeTestCase
 from movelister import color
 from movelister.sheet import Sheet
 
@@ -10,7 +10,7 @@ class ColorTestCase(OfficeTestCase):
         Test setting cell back color with Color class value and then reading it
         back again. And then assert the values read back.
         """
-        sheet = Sheet.getModifierList()
+        sheet = Sheet.getModifierSheetOld()
         cell = sheet.getCellByPosition(0, 0)
         c = color.Color(0)
         c.alpha = 0
@@ -29,6 +29,7 @@ class ColorTestCase(OfficeTestCase):
         """
         Test reading cell default white cell color and check that Color.value
         returns the same value. Also assert individual colors too.
+
         TODO: Does't work yet. Fix the color class.
         """
         self.skipTest('Color.value not workin properly')
