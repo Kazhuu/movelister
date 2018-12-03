@@ -15,7 +15,7 @@ if __name__ == '__main__':
 from movelister.context import Context  # noqa
 from movelister.sheet import Sheet  # noqa
 from movelister import color, conditionalFormat, details, error, formatting, generate, loop, \
-    overview, modifierList, namedRanges, selection, ui, resultsList, validation  # noqa
+    overview, modifierList, namedRanges, selection, ui, resultsList, text, validation  # noqa
 
 # Setup context automatically when macro is run from the LibreOffice.
 if __name__ != '__main__':
@@ -36,32 +36,35 @@ def setColor():
     modifierSheet.getCellByPosition(0, 0).CellBackColor = c.value
 
 
-def generateOrRefreshDetailsSheet(*args):
+def generateOrRefreshDetails(*args):
     """
-    A very general function that creates / refreshes full mechanics list up to date with a single button.
+    A very general function that creates / refreshes full Details view up to date with a single button.
     If the project has multiple Details views, there would probably be some drop down menu
     pointing the code to the correct List before the code is ran.
     """
     document = Context.getDocument()
-    overviewSheet = Sheet.getOverviewSheet()
     inputSheet = Sheet.getInputSheet()
     detailsSheet = Sheet.getDetailsSheet()
     modifierSheet = Sheet.getModifierSheet()
 
-    # TO DO: name is a placeholder value. Eventually, once UI is implemented, user can choose it.
-    name = 'Default'
+    name = text.getActiveSheetView(document)
     sheetName = 'Details (' + name + ')'
+    templateName = 'Details Template'
 
     # A bit of error checking at the start.
-    result = error.listGenerationNameCheck(document, sheetName)
+    error.generateSheetTemplateCheck(document, templateName)
+    result = error.generateSheetNameCheck(document, sheetName)
 
     if result == 'GENERATE':
-        print()
-        # TO DO: a function that generates the template of Details sheet from nothing.
+        generate.generateSheetFromTemplate(document, templateName, sheetName)
         # The code then segues into the usual "refresh" code that updates the info inside the List.
+    elif result == 'YES':
+        print()
+        # To do: go to Details refresh function.
     elif result == 'NO':
-        exit()
+        print('Exiting function...')
 
+    '''
     # The code goes through Overview and makes a "projection" of what the Details sheet should
     # look like. It's a multi-dimensional array where [0] lists action name, [1] lists modifiers, [2] lists
     # input list and [3] lists the expected location of the action in Details list.
@@ -83,29 +86,31 @@ def generateOrRefreshDetailsSheet(*args):
     inputColors = loop.getColorArray(inputSheet)
 
     formatting.setDetailsSheetColors(detailsSheet, actionColors, modifierColors, inputColors)
+    '''
 
     # TO DO: group rows according to info in Input List.
 
 
 def generateOrRefreshOverview(*args):
     document = Context.getDocument()
-    modifierSheet = Sheet.getModifierSheet()
     masterSheet = Sheet.getMasterSheet()
 
     # Get the name of the Overview that is generated or refreshed.
-    name = masterSheet.getCellByPosition(0, 2).getString()
-    sheetName = 'Overview (' + name + ')'
+    target = masterSheet.getCellByPosition(2, 0).getString()
+    sheetName = 'Overview (' + target + ')'
+    templateName = 'Overview Template'
 
     # A bit of error checking at the start.
-    result = error.listGenerationNameCheck(document, sheetName)
+    error.generateSheetTemplateCheck(document, templateName)
+    result = error.generateSheetNameCheck(document, sheetName)
 
     if result == 'GENERATE':
-        generate.generateOverviewFromTemplate(document, modifierSheet, sheetName)
+        generate.generateSheetFromTemplate(document, templateName, sheetName)
     elif result == 'YES':
         print()
         # To do: go to Overview refresh function.
     else:
-        exit()
+        print('Exiting function...')
 
     # How to define the position of the new document? Group it with other Overviews?
     # Leave it up to the user to move it?
@@ -144,6 +149,8 @@ def generateButtonTest():
 
 def refreshPhases():
     """
+    Old code...
+
     A test function for removing or adding phases in Mechanics List. Seems to work,
     but the code could probably be more elegant.
     """
@@ -173,6 +180,8 @@ def refreshPhases():
 
 def refreshModifiers():
     """
+    Old code...
+
     A function that refreshes the modifier block of Overview based on the data
     the user has set inside Modifier List. This includes the number and position of
     various modifiers as well as their color.
@@ -212,11 +221,11 @@ def createValidation():
     """
     A test function for creating some data validation.
     """
-    overview = Sheet.getByName('Overview (Default)')
-    validation.setDataValidationToColumn(overview, 0, 'disable')
+    sheet = Sheet.getByName('Overview Template')
+    validation.setDataValidationToColumn(sheet, 3, 'phase')
 
 
 # Run when executed from the command line.
 if __name__ == '__main__':
     Context.setup(host='localhost', port=2002)
-    generateOrRefreshDetailsSheet()
+    generateOrRefreshOverview()
