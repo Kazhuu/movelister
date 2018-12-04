@@ -23,13 +23,15 @@ def setTitleBarColor(sheet, optionsSheet, rowAmount):
     cellRange.CellBackColor = color.value
 
 
-def setOverviewModifierColors(sheet, startCol, endCol, modifierListColors):
+def setOverviewModifierColors(overviewSheet, startCol, endCol, modifierListColors):
     """
-    This function sets colors to all the individual columns in the modifier section of an Overview.
+    This function sets colors to all the individual columns in the modifier block of an Overview.
     """
     offset = 0
-    tempCol = cursor.getColumn(sheet, startCol)
+    tempCol = cursor.getColumn(overviewSheet, startCol)
     modifierListColors.append(0)
+
+    headerRowPosition = loop.getHeaderRowPosition(overviewSheet)
 
     x = -1
     for a in range(len(modifierListColors) - 1):
@@ -40,8 +42,8 @@ def setOverviewModifierColors(sheet, startCol, endCol, modifierListColors):
         if currentColor.value == nextColor.value:
             offset = offset + 1
         else:
-            sheet.getCellRangeByPosition(startCol + x - offset, 0, startCol + x,
-                                         len(tempCol)).CellBackColor = currentColor.value
+            overviewSheet.getCellRangeByPosition(startCol + x - offset, headerRowPosition, startCol + x,
+                                                 len(tempCol) - headerRowPosition).CellBackColor = currentColor.value
             offset = 0
 
 

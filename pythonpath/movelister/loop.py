@@ -4,7 +4,9 @@ from movelister import cursor, loop, messageBox
 def getHeaderRowPosition(sheet):
     """
     This function figures out at what position the header row is. This may vary between sheets
-    because of UI. The code is simple and basically looks for the first non-empty cell on first column.
+    because of UI. The code is simple and basically looks for the first non-empty cell on second column.
+
+    Note: This only works as long as the second column will be empty in all sheets with a header.
     """
     mda = cursor.getSheetContent(sheet)
     row = -1
@@ -12,7 +14,7 @@ def getHeaderRowPosition(sheet):
     x = -1
     while x < len(mda) - 1:
         x = x + 1
-        if mda[x][0] != '':
+        if mda[x][1] != '':
             row = x
             break
 
@@ -29,7 +31,7 @@ def getColumnPosition(sheet, columnName):
     """
     This function iterates through the row 0 of a List to find where a certain Column is.
 
-    Known bugs: using cursor to get first row of About-sheet gives an out of bounds exception.
+    Known bugs: using cursor on a sheet with an empty first row can crash.
     """
     headerRowPosition = getHeaderRowPosition(sheet)
 

@@ -38,3 +38,15 @@ def impossibleVariationsErrorCheck(mode, loopAmount):
     if mode == 'OR' and loopAmount > 1:
         msgText = 'The Sheet has more than 1 OR rule column. Be aware that this may create faulty results.'
         messageBox.createMessage('OK', 'Warning:', msgText)
+
+
+def compareModifierLists(modifierListModifiers, overviewModifiers):
+    """
+    This function compares both modifier lists. If they're identical, returns True.
+    """
+
+    if modifierListModifiers == overviewModifiers:
+        messageBox.createMessage('OK', "Note:", "Modifier lists are already up to date.")
+        return True
+    else:
+        return False

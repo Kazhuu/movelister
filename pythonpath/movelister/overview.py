@@ -289,51 +289,53 @@ def makePrereqsString(currentActionPrereqs, prereqsString):
     return prereqsString
 
 
-def updateoverviewModifiers(overviewSheet, modifierListModifiers, modifierListColors):
+def getOverviewModifiers(overviewSheet):
+    """
+    This function returns the list of modifiers from a chosen Overview as a list.
+    It will probably be replaced by a function from Overview class sooner or later.
+    """
+    headerRowPosition = loop.getHeaderRowPosition(overviewSheet)
+    topRowArray = cursor.getRow(overviewSheet, headerRowPosition)
+    startCol = loop.getColumnPosition(overviewSheet, 'DEF') + 1
+    endCol = loop.getColumnPosition(overviewSheet, 'Notes 1')
+    overviewModifiers = topRowArray[startCol:endCol]
+
+    return overviewModifiers
+
+
+def updateOverviewModifiers(overviewSheet, overviewModifiers, modifierListModifiers, modifierListColors):
     """
     This function updates the section with Modifiers in the Master List using the data from Modifier List.
     """
     mda = getOverview(overviewSheet)
-    topRowArray = cursor.getRow(overviewSheet, 0)
     startCol = loop.getColumnPosition(overviewSheet, 'DEF') + 1
-    endCol = loop.getColumnPosition(overviewSheet, 'Full Name')
-    overviewModifiers = topRowArray[startCol:endCol]
+    endCol = loop.getColumnPosition(overviewSheet, 'Notes 1')
     finalList = []
 
-    # Compare if Overview modifiers match Modifier List modifiers. If yes, function ends.
-    compareModifierLists(modifierListModifiers, overviewModifiers)
-
-    # If function continues beyond this point, then the modifiers of Overview will be
-    # updated to match the modifiers of Modifier List. Overview columns are copied or
-    # generated to a new array, which is then pasted to replace the previous columns.
+    # The modifier columns of the existing Overview are copied or generated to a new array, which is then
+    # pasted to replace the previous columns.
     newModifierArray = createNewModifierArray(mda, overviewSheet, startCol, modifierListModifiers, overviewModifiers)
 
     # newModifierArray has to be turned sideways with iteration first.
     finalList = convert.turnArraySideways(newModifierArray)
+    print(finalList)
 
-    # Delete existing Modifier Block from Overview.
-    delete.deleteColumns(overviewSheet, startCol, len(overviewModifiers))
+    # Delete existing Modifier Block from Overview, if there is one.
+    if endCol - startCol > 1:
+        delete.deleteColumns(overviewSheet, startCol, len(overviewModifiers))
 
     # Create a new number of columns for pasting the newModifierArray array into.
     overviewSheet.Columns.insertByIndex(startCol, len(modifierListModifiers))
     range = overviewSheet.getCellRangeByPosition(startCol, 0, startCol + len(modifierListModifiers) - 1, len(mda) - 1)
 
+    # Set data to sheet.
     range.setDataArray(finalList)
 
     # Fix column width.
     formatting.setOptimalWidthToRange(overviewSheet, startCol, len(modifierListModifiers))
 
     # Fix column colors.
-    setColorsToModifierBlock(overviewSheet, startCol, endCol, modifierListColors)
-
-
-def compareModifierLists(modifierListModifiers, overviewModifiers):
-    """
-    This function compares both modifier lists. If they're identical, the function is ended.
-    """
-    if modifierListModifiers == overviewModifiers:
-        messageBox.createMessage('OK', "Note:", "Modifier lists are already up to date.")
-        exit()
+    formatting.setOverviewModifierColors(overviewSheet, startCol, endCol, modifierListColors)
 
 
 def createNewModifierArray(mda, overviewSheet, startCol, modifierListModifiers, overviewModifiers):
@@ -356,12 +358,13 @@ def createNewModifierArray(mda, overviewSheet, startCol, modifierListModifiers, 
                 match = 1
                 break
 
-        # If there's no match, code has to generate one extra row.
+        # If there's no match, code has to generate two extra rows: one for UI, one for header.
         if match == 0:
             tempCol.clear()
+            tempCol.append('')
             tempCol.append(col)
 
-            for a in range(len(mda) - 1):
+            for a in range(len(mda) - 2):
                 tempCol.append('')
 
         # Creating a copy of tempCol to prevent data from being overwritten from
@@ -370,28 +373,6 @@ def createNewModifierArray(mda, overviewSheet, startCol, modifierListModifiers, 
         newList.append(tempCol2)
 
     return newList
-
-
-def setColorsToModifierBlock(overviewSheet, startCol, endCol, modifierListColors):
-    """
-    This function sets colors to all the individual columns in the modifier block of an Overview.
-    """
-    offset = 0
-    tempCol = cursor.getColumn(overviewSheet, startCol)
-    modifierListColors.append(0)
-
-    x = -1
-    for a in range(len(modifierListColors) - 1):
-        x = x + 1
-        currentColor = color.Color(modifierListColors[x])
-        nextColor = color.Color(modifierListColors[x + 1])
-
-        if currentColor.value == nextColor.value:
-            offset = offset + 1
-        else:
-            overviewSheet.getCellRangeByPosition(startCol + x - offset, 0, startCol + x,
-                                                 len(tempCol)).CellBackColor = currentColor.value
-            offset = 0
 
 
 def getHighestPhaseNumber(overviewSheet, listLength):

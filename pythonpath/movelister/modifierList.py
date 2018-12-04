@@ -28,13 +28,13 @@ def getModifierListProjection(modifierSheet):
     """
     This function returns a one-dimensional List of all the existing modifiers.
     """
-    modifierDataArray = getModifierList(modifierSheet)
+    modifierSheet = cursor.getSheetContent(modifierSheet)
     modifierList = []
 
     x = 0
-    for z in modifierDataArray:
+    for z in modifierSheet[1:]:
         x = x + 1
-        if z[0] != '' and x > 1:
+        if z[0] != '':
             modifierList.append(z[0])
 
     return modifierList

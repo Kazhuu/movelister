@@ -180,24 +180,29 @@ def refreshPhases():
 
 def refreshModifiers():
     """
-    Old code...
-
     A function that refreshes the modifier block of Overview based on the data
     the user has set inside Modifier List. This includes the number and position of
     various modifiers as well as their color.
     """
-    overviewSheet = Sheet.getOverviewSheet()
-    modifierSheet = Sheet.getModifierSheet()
+    overviewSheet = Sheet.getByName('Overview (Default)')
+    modifierSheet = Sheet.getByName('Modifier List')
 
-    # A function that creates a Data Array of the whole Modifier List.
+    # Getting the list of modifiers from a chosen Overview.
+    overviewModifiers = overview.getOverviewModifiers(overviewSheet)
+
+    # Getting the list of modifiers from the Modifiers list.
     # A separate array is created for the cell background color data.
     modifierListModifiers = modifierList.getModifierListProjection(modifierSheet)
     modifierColors = loop.getColorArray(modifierSheet)
 
+    # Compare if Overview modifiers match Modifier List modifiers. Returns False if the two lists are different.
+    result = error.compareModifierLists(modifierListModifiers, overviewModifiers)
+
     # Function compares this data to the Modifiers columns in an Overview.
     # It then deletes unnecessary Modifier columns or add necessary Modifier Columns in the Overview.
     # It then colors the cell background of the columns.
-    overview.updateOverviewModifiers(overviewSheet, modifierListModifiers, modifierColors)
+    if result is False:
+        overview.updateOverviewModifiers(overviewSheet, overviewModifiers, modifierListModifiers, modifierColors)
 
 
 def createConditionalFormatting():
@@ -228,4 +233,4 @@ def createValidation():
 # Run when executed from the command line.
 if __name__ == '__main__':
     Context.setup(host='localhost', port=2002)
-    generateOrRefreshOverview()
+    refreshModifiers()
