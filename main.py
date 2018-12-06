@@ -235,10 +235,7 @@ def testingClasses():
     masterList = Master('Master List')
     actions = masterList.getActions('Target')
 
-    modifierList = modifiers('Modifier List')
-    modifiers = modifierList.getModifiers()
-
-    for row in modifiers:
+    for row in actions:
         print(row.name)
 
 
