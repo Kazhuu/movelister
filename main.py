@@ -14,6 +14,7 @@ if __name__ == '__main__':
 
 from movelister.context import Context  # noqa
 from movelister.sheet import Sheet  # noqa
+from movelister.sheet import Master # noqa
 from movelister import color, conditionalFormat, details, error, formatting, generate, loop, \
     overview, modifierList, namedRanges, selection, ui, resultsList, text, validation  # noqa
 
@@ -230,7 +231,18 @@ def createValidation():
     validation.setDataValidationToColumn(sheet, 3, 'phase')
 
 
+def testingClasses():
+    masterList = Master('Master List')
+    actions = masterList.getActions('Target')
+
+    modifierList = modifiers('Modifier List')
+    modifiers = modifierList.getModifiers()
+
+    for row in modifiers:
+        print(row.name)
+
+
 # Run when executed from the command line.
 if __name__ == '__main__':
     Context.setup(host='localhost', port=2002)
-    refreshModifiers()
+    testingClasses()

@@ -6,7 +6,7 @@ from movelister.action import Action
 HEADER_ROW = 1
 DATA_BEGIN_ROW = 2
 
-SHEET_COLUMN = 0
+VIEW_COLUMN = 0
 INPUTS_COLUMN = 1
 NAME_COLUMN = 2
 COLOR_COLUMN = 3
@@ -22,10 +22,18 @@ class Master:
         self.dataHeader = self.data[HEADER_ROW]
         self.dataRows = self.data[DATA_BEGIN_ROW:]
 
-    def getActions(self):
+    def getAllActions(self):
         actions = []
         for row in self.dataRows:
             if row[NAME_COLUMN] != '':
+                name, kwargs = self._rowToKwargs(row)
+                actions.append(Action(name, **kwargs))
+        return actions
+
+    def getActions(self, viewName):
+        actions = []
+        for row in self.dataRows:
+            if row[VIEW_COLUMN] == viewName:
                 name, kwargs = self._rowToKwargs(row)
                 actions.append(Action(name, **kwargs))
         return actions
