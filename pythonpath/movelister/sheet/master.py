@@ -1,6 +1,7 @@
 from movelister import cursor
 from movelister.sheet import Sheet
 from movelister.action import Action
+from movelister.format import filter
 
 
 HEADER_ROW = 1
@@ -22,18 +23,13 @@ class Master:
         self.dataHeader = self.data[HEADER_ROW]
         self.dataRows = self.data[DATA_BEGIN_ROW:]
 
-    def getAllActions(self):
+    def getActions(self, view=None):
         actions = []
-        for row in self.dataRows:
+        rows = self.dataRows
+        if view:
+            rows = filter.filterRows(lambda row: row[VIEW_COLUMN] == view, self.data)
+        for row in rows:
             if row[NAME_COLUMN] != '':
-                name, kwargs = self._rowToKwargs(row)
-                actions.append(Action(name, **kwargs))
-        return actions
-
-    def getActions(self, viewName):
-        actions = []
-        for row in self.dataRows:
-            if row[VIEW_COLUMN] == viewName:
                 name, kwargs = self._rowToKwargs(row)
                 actions.append(Action(name, **kwargs))
         return actions

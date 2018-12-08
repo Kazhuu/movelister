@@ -21,3 +21,8 @@ class MasterTestCase(OfficeTestCase):
         self.assertIsInstance(actions, list)
         for action in actions:
             self.assertIsInstance(action, Action)
+
+    def testGetDefaultActions(self):
+        master = Master(self.name)
+        actions = master.getActions('Default')
+        self.assertNotEqual(len(master.getActions()), len(actions))
