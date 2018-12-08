@@ -1,7 +1,7 @@
 from test import OfficeTestCase
 from movelister.sheet import Master
 from movelister.sheet.master import COLOR_COLUMN, DATA_BEGIN_ROW
-from movelister.action import Action
+from movelister.model import Action
 
 
 class MasterTestCase(OfficeTestCase):

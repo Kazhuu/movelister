@@ -1,6 +1,6 @@
 from movelister.core import cursor
 from movelister.sheet import Sheet
-from movelister.action import Action
+from movelister.model import Action
 from movelister.format import filter
 
 
