@@ -1,14 +1,14 @@
 from test import OfficeTestCase
 from movelister.sheet import Master
-from movelister.sheet import master
+from movelister.sheet.master import VIEW_COLUMN
 from movelister.format import filter
 
 
 class FilterTestCase(OfficeTestCase):
 
     def testFilterBy(self):
-        masterSheet = Master('Master List')
-        filteredRows = filter.filterRows(lambda row: row[master.VIEW_COLUMN] == 'Default', masterSheet.dataRows)
+        master = Master('Master List')
+        filteredRows = filter.filterRows(lambda row: row[VIEW_COLUMN] == 'Default', master.dataRows)
         self.assertTrue(filteredRows)
         for row in filteredRows:
-            self.assertEqual(row[master.VIEW_COLUMN], 'Default')
+            self.assertEqual(row[VIEW_COLUMN], 'Default')

@@ -1,5 +1,6 @@
 from test import OfficeTestCase
 from movelister.sheet import Master
+from movelister.sheet.master import COLOR_COLUMN, DATA_BEGIN_ROW
 from movelister.action import Action
 
 
@@ -14,6 +15,7 @@ class MasterTestCase(OfficeTestCase):
         master = Master(self.name)
         self.assertIsInstance(master.data, tuple)
         self.assertEqual(self.name, master.name)
+        self.assertEqual(len(master.actionColors), len(master.dataRows))
 
     def testGetActions(self):
         master = Master(self.name)
@@ -26,3 +28,9 @@ class MasterTestCase(OfficeTestCase):
         master = Master(self.name)
         actions = master.getActions('Default')
         self.assertNotEqual(len(master.getActions()), len(actions))
+
+    def testActionColor(self):
+        master = Master(self.name)
+        actions = master.getActions()
+        firstActionColor = master.sheet.getCellByPosition(COLOR_COLUMN, DATA_BEGIN_ROW).CellBackColor
+        self.assertEqual(firstActionColor, actions[0].color)
