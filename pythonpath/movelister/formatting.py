@@ -1,4 +1,5 @@
-from movelister import color, cursor, loop
+from movelister import color, loop
+from movelister.core import cursor
 
 
 def getTitleBarColor(optionsSheet):

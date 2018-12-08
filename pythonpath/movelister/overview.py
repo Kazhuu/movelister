@@ -1,7 +1,8 @@
 import itertools
 
-from movelister import color, convert, cursor, delete, error, formatting, \
-    inputList, loop, messageBox, modifierList, test
+from movelister import convert, delete, error, formatting, \
+    inputList, loop, modifierList, test
+from movelister.core import cursor
 
 
 def getOverview(overviewSheet):

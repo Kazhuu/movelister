@@ -5,7 +5,8 @@ from com.sun.star.sheet import XSheetConditionalEntries
 from com.sun.star.sheet.ConditionOperator import NONE, EQUAL, NOT_EQUAL, GREATER, \
                                                  GREATER_EQUAL, LESS, LESS_EQUAL, BETWEEN, NOT_BETWEEN, FORMULA
 
-from movelister import convert, cursor
+from movelister.core import cursor
+from movelister import convert
 
 
 def applyConditionalFormatting(sheet, resultsDataArray, resultsListColors):

@@ -1,4 +1,5 @@
-from movelister import convert, cursor, delete, group, inputList, loop, messageBox
+from movelister import convert, delete, group, inputList, loop, messageBox
+from movelister.core import cursor
 
 
 def refreshDetailsSheet(detailsSheet, inputSheet, projectionOverview, projectionDetails):

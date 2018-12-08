@@ -1,4 +1,4 @@
-from movelister import cursor
+from movelister.core import cursor
 from movelister.sheet import Sheet
 
 HEADER_ROW = 0

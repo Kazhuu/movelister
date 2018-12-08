@@ -1,4 +1,5 @@
-from movelister import convert, cursor, formatting, loop, modifierList
+from movelister import convert, formatting, loop, modifierList
+from movelister.core import cursor
 
 SPACE_VIEW = ' ' * 11
 SPACE_INPUT = ' ' * 5

@@ -2,7 +2,7 @@
 Main file for the all usable LibreOffice macros. Can also be executed from the
 command line and connect to opened LibreOffice socket.
 """
-import uno  # noqa
+import uno # noqa
 import os
 import sys
 
@@ -12,8 +12,8 @@ import sys
 if __name__ == '__main__':
     sys.path.append(os.path.join(os.path.dirname('__file__'), 'pythonpath'))
 
-from movelister.context import Context  # noqa
-from movelister.sheet import Sheet  # noqa
+from movelister.core import Context # noqa
+from movelister.sheet import Sheet # noqa
 from movelister.sheet import Master # noqa
 from movelister import color, conditionalFormat, details, error, formatting, generate, loop, \
     overview, modifierList, namedRanges, selection, ui, resultsList, text, validation  # noqa

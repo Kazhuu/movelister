@@ -1,4 +1,3 @@
-
 def createNewNamedRange(sheet, namedRanges):
     """
     A function that creates a new Named Range based on user requirements.

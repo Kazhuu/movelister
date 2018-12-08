@@ -1,4 +1,3 @@
-
 def getUsedAreaSize(sheet):
     """
     Returns used sheet area as a CellRangeAddress object.

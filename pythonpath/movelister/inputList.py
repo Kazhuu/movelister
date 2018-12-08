@@ -1,4 +1,5 @@
-from movelister import cursor, messageBox
+from movelister import messageBox
+from movelister.core import cursor
 
 
 def getInputList(inputSheet):
