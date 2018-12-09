@@ -1,4 +1,5 @@
-from movelister import cursor, loop, messageBox
+from movelister import loop, messageBox
+from movelister.core import cursor
 
 
 def getHeaderRowPosition(sheet):

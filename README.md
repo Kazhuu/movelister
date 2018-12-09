@@ -1,16 +1,16 @@
 # Movelister
-Movelister is (or: will be) a tool for creating various types of in-depth notes
+Movelister is a tool for creating various types of in-depth notes
 about video game mechanics data in sheet form. This could include simple
-movelists, detailed mechanics notes for glitchers or other type of tables which
+move lists, detailed mechanics notes for glitchers or other type of tables which
 model the limits of a game's potential interactivity.
 
 
-## Dependancies
-It's necessary for the user to install LibreOffice 5 and Python 3.x to be able
-to use the Movelister scripts. Python is automatically included in a
+## Dependencies
+It's necessary for the user to install LibreOffice 5 or newer and Python 3.x to be able
+to use the Movelister scripts. Python is typically automatically included in a
 LibreOffice installation on Windows but not on Linux. Linux users have to
 install LibreOffice Python support packages separately. On Windows Python is
-located with reqular installation at `C:\Program Files\LibreOffice
+located with regular installation at `C:\Program Files\LibreOffice
 5\program\python-core-3.5.0\bin\python.exe`. On Linux, install following
 packages to enable Python for LibreOffice:
 ```
@@ -21,14 +21,36 @@ On Linux distros that has both Python 2 and 3 versions available and command
 `python3` in this readme instead.
 
 
-## Setup development environment
+## How to use
+TODO: Write guide how to setup this project in order to use the template and
+
+LibreOffice 5 has a specific directory where it searches for Python scripts -
+something along the lines of *LibreOffice 5/share/Scripts/python*. If you copy
+any Python scripts there, you are able to find & use them inside LibreOffice
+via *Tools -> Macros -> Run Macro...* It's not a bad idea to copy the entire
+Movelister directory inside *Scripts/Python* if you want to have access to all
+the scripts and ensure that Movelister finds all its dependencies too.
+
+__Note:__ so far the scripts are designed to be used together with the
+Movelister template, so make sure that it's open in LibreOffice Calc before you
+run scripts or you most likely get some errors.
+
+__Note 2:__ since this project is still at its early stages, the scripts don't
+offer a full functionality yet. Feel free to admire the template and give some
+feedback or ideas on it, though.
+
+
+rovided scripts.
+
+
+## Development
 To have a good development environment and with debugging abilities. It's
 easier to develop scripts using a separate Python process which then connects
 to an external LibreOffice process. After you are done with the development,
 you can run working scripts inside the LibreOffice process. [This Christopher
 Bourez's blog
 post](http://christopher5106.github.io/office/2015/12/06/openoffice-libreoffice-automate-your-office-tasks-with-python-macros.html)
-explains the idea.
+explains the idea and this same idea is used with this project.
 
 
 ### Linux
@@ -46,7 +68,8 @@ socket is open.
 
 
 ### Windows
-TODO: Write this again with better guidelines.  To use LibreOffice Calc with a
+TODO: Write this again with better guidelines. To use LibreOffice Calc with a
+
 socket open, you have to start LibreOffice using the parameter listed below.
 For convenience's sake, you might want to include this parameter inside some
 shortcut that starts LibreOffice.
@@ -68,37 +91,32 @@ example:
 ```
 
 
-## For normal users
-LibreOffice 5 has a specific directory where it searches for Python scripts -
-something along the lines of *LibreOffice 5/share/Scripts/python*. If you copy
-any Python scripts there, you are able to find & use them inside LibreOffice
-via *Tools -> Macros -> Run Macro...* It's not a bad idea to copy the entire
-Movelister directory inside *Scripts/Python* if you want to have access to all
-the scripts and ensure that Movelister finds all its dependencies too.
-
-__Note:__ so far the scripts are designed to be used together with the
-Movelister template, so make sure that it's open in LibreOffice Calc before you
-run scripts or you most likely get some errors.
-
-__Note 2:__ since this project is still at its early stages, the scripts don't
-offer a full functionality yet. Feel free to admire the template and give some
-feedback or ideas on it, though.
-
-
-## Running tests
-TODO: Write about new env variable here and how to set it up.
-Test are located under test folder at the project root. Test suite opens a
-headless LibreOffice instance with project template .ods file. Then between
-each test the file is reopened. To run tests run command below at project root
-with LibreOffice that has internal Python installation. Verbose option -v can be
-omitted if not needed.
+## Testing
+Before running tests you need to set `LB_MV_BIN` environment variable to point
+to the LibreOffice executable. This is used to run LibreOffice during test. On
+linux for example:
 ```
-python -m unittest -v
+export LB_MV_BIN="libreoffice"
 ```
-On Windows make following .bat file.
+and on Windows:
 ```
 set MV_LB_BIN="C:\Program Files\LibreOffice 5\program\soffice.exe"
+```
 
+Test are located under test folder at the project root. Test suite opens a
+headless LibreOffice instance with project template `.ods` file. Then between
+each test the file is reopened. How to run tests depends your LibreOffice
+installation. If you have separate Python that your LibreOffice is installation
+is using. Then go to project root and run:
+```
+python -m unittest
+```
+If your LibreOffice has internal Python installation then. From project root you
+need to traverse path to LibreOffice Python executable. In this case it might be
+easier to make command line script to run tests. On Windows for example  make
+following `.bat` at project root
+file.
+```
 ..\..\..\..\program\python -m unittest -v
 ```
 

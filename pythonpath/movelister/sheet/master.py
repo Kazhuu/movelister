@@ -1,6 +1,7 @@
-from movelister import cursor
-from movelister.sheet import Sheet
-from movelister.action import Action
+from movelister.core import cursor
+from .sheet import Sheet
+from movelister.model import Action
+from movelister.format import filter
 
 
 HEADER_ROW = 1
@@ -21,29 +22,34 @@ class Master:
         self.data = cursor.getSheetContent(self.sheet)
         self.dataHeader = self.data[HEADER_ROW]
         self.dataRows = self.data[DATA_BEGIN_ROW:]
+        self.actionColors = self._getActionColors()
 
-    def getAllActions(self):
+    def getActions(self, view=None):
         actions = []
-        for row in self.dataRows:
-            if row[NAME_COLUMN] != '':
-                name, kwargs = self._rowToKwargs(row)
-                actions.append(Action(name, **kwargs))
+        rows = self.dataRows
+        if view:
+            rows = filter.filterRows(lambda row: row[VIEW_COLUMN] == view, self.dataRows)
+        for index, row in enumerate(rows):
+            if self._isValidRow(row):
+                kwargs = self._rowToKwargs(row)
+                kwargs['color'] = self.actionColors[index]
+                actions.append(Action(**kwargs))
         return actions
 
-    def getActions(self, viewName):
-        actions = []
-        for row in self.dataRows:
-            if row[VIEW_COLUMN] == viewName:
-                name, kwargs = self._rowToKwargs(row)
-                actions.append(Action(name, **kwargs))
-        return actions
+    def _isValidRow(self, row):
+        return row[NAME_COLUMN] != ''
 
     def _rowToKwargs(self, row):
-        kwargs = {}
+        kwargs = {'name': row[NAME_COLUMN]}
         if row[INPUTS_COLUMN] != '':
             kwargs['inputs'] = row[INPUTS_COLUMN]
-        if row[COLOR_COLUMN] != '':
-            kwargs['color'] = row[COLOR_COLUMN]
         if row[PHASE_COLUMN] != '':
             kwargs['phases'] = int(row[PHASE_COLUMN])
-        return [row[NAME_COLUMN], kwargs]
+        return kwargs
+
+    def _getActionColors(self):
+        colors = []
+        colorRange = self.sheet.getCellRangeByPosition(COLOR_COLUMN, DATA_BEGIN_ROW, COLOR_COLUMN, len(self.data))
+        for index, row in enumerate(self.dataRows):
+            colors.append(colorRange.getCellByPosition(0, index).CellBackColor)
+        return colors

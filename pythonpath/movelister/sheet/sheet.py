@@ -1,4 +1,4 @@
-from movelister.context import Context
+from movelister.core import Context
 
 
 OVERVIEW_SHEET_NAME = 'Overview (Old)'
@@ -63,3 +63,25 @@ class Sheet():
         """
         Context.getDocument().Sheets.insertNewByName(name, position)
         return cls.getByName(name)
+
+    @classmethod
+    def newSheetRightOf(cls, rightOfName, newName):
+        position = cls.getPosition(rightOfName)
+        return cls.newSheet(newName, position + 1)
+
+    @classmethod
+    def newSheetLeftOf(cls, leftOfName, newName):
+        position = cls.getPosition(leftOfName)
+        return cls.newSheet(newName, position)
+
+    @classmethod
+    def getPosition(cls, name):
+        sheets = cls.getSheetNames()
+        return sheets.index(name)
+
+    @classmethod
+    def getSheetNames(cls):
+        """
+        Return list of sheet names in current file.
+        """
+        return Context.getDocument().Sheets.getElementNames()

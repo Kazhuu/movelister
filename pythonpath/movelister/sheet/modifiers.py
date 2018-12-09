@@ -1,5 +1,6 @@
-from movelister import cursor
-from movelister.sheet import Sheet
+from .sheet import Sheet
+from movelister.core import cursor
+
 
 HEADER_ROW = 0
 DATA_BEGIN_ROW = 1

@@ -6,6 +6,8 @@ class OverViewTestCase(OfficeTestCase):
 
     def testOverViewInstance(self):
         name = 'Overview (default)'
-        overview = Overview(name)
+        overview = Overview.fromSheet(name)
         self.assertIsInstance(overview.data, tuple)
+        self.assertTrue(overview.data)
+        print(overview.data)
         self.assertEqual(name, overview.name)

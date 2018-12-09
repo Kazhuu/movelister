@@ -1,7 +1,7 @@
 import uno
 from com.sun.star.connection import NoConnectException
 
-from movelister.meta import Singleton
+from .meta import Singleton
 
 
 class Context(Singleton):

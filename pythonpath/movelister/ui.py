@@ -2,7 +2,7 @@ import uno
 import unohelper
 
 from com.sun.star.awt import XActionListener
-from movelister.context import Context
+from movelister.core import Context
 
 
 class MyActionListener(unohelper.Base, XActionListener):

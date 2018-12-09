@@ -1,6 +1,7 @@
 import itertools
 
-from movelister import cursor, error, loop
+from movelister import error, loop
+from movelister.core import cursor
 from movelister.sheet import Sheet
 
 

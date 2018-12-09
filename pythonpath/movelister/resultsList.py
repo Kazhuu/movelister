@@ -1,4 +1,4 @@
-from movelister import cursor
+from movelister.core import cursor
 
 
 def getResultsList(resultsSheet):
