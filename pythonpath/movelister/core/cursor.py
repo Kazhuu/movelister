@@ -18,7 +18,7 @@ def getSheetContent(sheet):
     cursor = sheet.createCursor()
     cursor.gotoStartOfUsedArea(False)
     cursor.gotoEndOfUsedArea(True)
-    return cursor.getDataArray()
+    return [list(row) for row in cursor.getDataArray()]
 
 
 def setSheetContent(sheet, data):
