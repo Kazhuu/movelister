@@ -1,7 +1,7 @@
 from test import OfficeTestCase
 from movelister.sheet import Master
-from movelister.sheet.master import COLOR_COLUMN, DATA_BEGIN_ROW
 from movelister.model import Action
+from movelister.sheet.master import COLOR_COLUMN, DATA_BEGIN_ROW
 
 
 class MasterTestCase(OfficeTestCase):
@@ -21,6 +21,7 @@ class MasterTestCase(OfficeTestCase):
         master = Master(self.name)
         actions = master.getActions()
         self.assertIsInstance(actions, list)
+        self.assertTrue(actions)
         for action in actions:
             self.assertIsInstance(action, Action)
 

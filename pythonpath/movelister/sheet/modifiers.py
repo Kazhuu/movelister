@@ -1,5 +1,5 @@
-from movelister.core import cursor
-from movelister.sheet import Sheet
+from .base import BaseSheet
+
 
 HEADER_ROW = 0
 DATA_BEGIN_ROW = 1
@@ -7,12 +7,10 @@ DATA_BEGIN_ROW = 1
 NAME_COLUMN = 2
 
 
-class Modifiers:
+class Modifiers(BaseSheet):
 
     def __init__(self, sheetName):
-        self.name = sheetName
-        self.sheet = Sheet.getByName(sheetName)
-        self.data = cursor.getSheetContent(self.sheet)
+        super().__init__(sheetName)
         self.dataHeader = self.data[HEADER_ROW]
         self.dataRows = self.data[DATA_BEGIN_ROW:]
 
