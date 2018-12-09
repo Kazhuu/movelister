@@ -12,9 +12,9 @@ import sys
 if __name__ == '__main__':
     sys.path.append(os.path.join(os.path.dirname('__file__'), 'pythonpath'))
 
-from movelister.core import Context # noqa
+from movelister.core import Context, cursor # noqa
 from movelister.sheet import helper, Master, Modifiers, Sheet # noqa
-from movelister import color, conditionalFormat, details, error, formatting, generate, \
+from movelister import color, conditionalFormat, details, error, generate, \
     overview, modifierList, namedRanges, selection, ui, resultsList, validation  # noqa
 
 # Setup context automatically when macro is run from the LibreOffice.
@@ -241,10 +241,14 @@ def testingClasses():
         print(row.name)
 
     for row in modifiers:
-        print(row)
+        print(row.name)
+
+    sheetData = cursor.getSheetContent(Sheet.getByName('Master List'))
+    number = helper.getColumnPosition(sheetData, 'Action Name')
+    print(number)
 
 
 # Run when executed from the command line.
 if __name__ == '__main__':
     Context.setup(host='localhost', port=2002)
-    refreshModifiers()
+    testingClasses()

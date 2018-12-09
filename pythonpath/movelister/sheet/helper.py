@@ -1,13 +1,12 @@
 from movelister import error
-from movelister.ui import messageBox
 from movelister.core import cursor
+from movelister.ui import messageBox
 
 
 def getHeaderRowPosition(sheetData):
     """
-    This function figures out at what position the header row is. This may vary
-    between sheets because of UI. The code is simple and basically looks for
-    the first non-empty cell on second column.
+    This function figures out at what position the header row is. This may vary between sheets because of UI.
+    The code is simple and basically looks for the first non-empty cell on second column.
     """
     for index, row in enumerate(sheetData):
         if row[1] != '':
@@ -17,12 +16,11 @@ def getHeaderRowPosition(sheetData):
 
 def getColumnPosition(sheetData, columnName):
     """
-    This function iterates through the row 0 of a List to find where a certain Column is.
-    Known bugs: using cursor on a sheet with an empty first row can crash.
+    This function iterates through the header row of a List to find where a chosen Column is.
     """
-    headerRowPosition = getHeaderRowPosition(sheet)
+    headerRowPosition = getHeaderRowPosition(sheetData)
 
-    columnRow = cursor.getRow(sheet, headerRowPosition)
+    columnRow = sheetData[headerRowPosition]
     column = -1
 
     x = -1
@@ -34,7 +32,7 @@ def getColumnPosition(sheetData, columnName):
 
     # Error message if it wasn't found.
     if column == - 1:
-        msg = "Program couldn't find the column {0} from {1}".format(columnName, sheet.getName())
+        msg = "Program couldn't find the column {0}.".format(columnName)
         messageBox.createMessage('OK', 'Warning:', msg)
         exit()
 
