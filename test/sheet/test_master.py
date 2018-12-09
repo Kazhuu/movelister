@@ -13,8 +13,8 @@ class MasterTestCase(OfficeTestCase):
 
     def testMasterInstance(self):
         master = Master(self.name)
-        self.assertIsInstance(master.data, tuple)
-        self.assertEqual(self.name, master.name)
+        self.assertIsInstance(master.data, list)
+        self.assertEqual(master.name, self.name)
         self.assertEqual(len(master.actionColors), len(master.dataRows))
 
     def testGetActions(self):
@@ -34,4 +34,4 @@ class MasterTestCase(OfficeTestCase):
         master = Master(self.name)
         actions = master.getActions()
         firstActionColor = master.sheet.getCellByPosition(COLOR_COLUMN, DATA_BEGIN_ROW).CellBackColor
-        self.assertEqual(firstActionColor, actions[0].color)
+        self.assertEqual(actions[0].color, firstActionColor)

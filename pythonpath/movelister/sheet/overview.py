@@ -9,16 +9,15 @@ class Overview:
 
     @classmethod
     def fromSheet(cls, sheetName):
-        instance = cls()
-        instance.readSheetContent(sheetName)
+        instance = cls(sheetName)
+        instance.readSheetContent()
         return instance
 
     def setActions(self, actions):
         self.actions = actions
 
-    def readSheetContent(self, sheetName):
-        self.name = sheetName
-        self.sheet = Sheet.getByName(sheetName)
+    def readSheetContent(self):
+        self.sheet = Sheet.getByName(self.name)
         self.data = cursor.getSheetContent(self.sheet)
 
     def getSheetContent(self):
