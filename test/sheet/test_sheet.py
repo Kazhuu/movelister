@@ -1,3 +1,5 @@
+from com.sun.star.uno import RuntimeException
+
 from test import OfficeTestCase
 from movelister.core import Context
 from movelister.sheet import Sheet
@@ -5,10 +7,14 @@ from movelister.sheet import Sheet
 
 class SheetTestCase(OfficeTestCase):
 
-    def testCreateNewSheet(self):
-        Sheet.newSheet('test sheet', 0)
-        sheet = Sheet.getByName('test sheet')
-        self.assertEqual(sheet.getName(), 'test sheet')
+    def testNewSheet(self):
+        newName = 'test sheet'
+        sheet = Sheet.newSheet(newName, 0)
+        self.assertEqual(sheet.getName(), newName)
+
+    def testNewSheetWithExistingName(self):
+        with self.assertRaises(RuntimeException):
+            Sheet.newSheet('Master List', 0)
 
     def testGetPosition(self):
         position = Sheet.getPosition('Modifier List')
@@ -27,19 +33,19 @@ class SheetTestCase(OfficeTestCase):
         rightOfName = 'Master List'
         name = 'test sheet'
         sheet = Sheet.newSheetRightOf(rightOfName, name)
-        self.assertEqual(name, sheet.getName())
+        self.assertEqual(sheet.getName(), name)
         names = Context.getDocument().Sheets.getElementNames()
         index = names.index(rightOfName)
-        self.assertEqual(index + 1, names.index(name))
+        self.assertEqual(names.index(name), index + 1)
 
     def testNewSheetLeftOf(self):
         leftOfName = 'Modifier List'
         name = 'test sheet'
         sheet = Sheet.newSheetLeftOf(leftOfName, name)
-        self.assertEqual(name, sheet.getName())
+        self.assertEqual(sheet.getName(), name)
         names = Context.getDocument().Sheets.getElementNames()
         index = names.index(leftOfName)
-        self.assertEqual(index - 1, names.index(name))
+        self.assertEqual(names.index(name), index - 1)
 
     def testNewSheetRightOfWithWrongName(self):
         rightOfName = 'fail'
