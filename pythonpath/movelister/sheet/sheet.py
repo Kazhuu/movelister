@@ -59,7 +59,7 @@ class Sheet():
     @classmethod
     def newSheet(cls, name, position):
         """
-        Creates new sheet with given name to given position and returns is.
+        Creates new sheet with given name to given position and returns it.
         """
         Context.getDocument().Sheets.insertNewByName(name, position)
         return cls.getByName(name)
