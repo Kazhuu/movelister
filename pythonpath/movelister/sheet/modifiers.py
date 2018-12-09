@@ -4,7 +4,7 @@ from movelister.sheet import Sheet
 HEADER_ROW = 0
 DATA_BEGIN_ROW = 1
 
-NAME_COLUMN = 2
+NAME_COLUMN = 0
 
 
 class Modifiers:
