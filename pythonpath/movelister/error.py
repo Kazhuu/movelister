@@ -1,4 +1,4 @@
-from movelister import messageBox
+from movelister.ui import messageBox
 
 
 def overviewProjectionErrorCheck(mda, nameCol):

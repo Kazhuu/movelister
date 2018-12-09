@@ -1,4 +1,5 @@
-from movelister import convert, delete, group, inputList, loop, messageBox
+from movelister import convert, delete, group, inputList, loop
+from movelister.ui import messageBox
 from movelister.core import cursor
 
 
