@@ -1,3 +1,4 @@
+from movelister import error
 from movelister.ui import messageBox
 from movelister.core import cursor
 
@@ -94,3 +95,20 @@ def getColorArray(sheet):
         colorList.append(sheet.getCellByPosition(colPosition, x).CellBackColor)
 
     return colorList
+
+
+def getActiveViewName(document):
+    '''
+    This function splices the string between () from the current active sheet.
+    Used in generating Details view.
+    '''
+    activeSheet = document.getCurrentController().getActiveSheet()
+    activeSheetName = activeSheet.Name
+
+    # A bit of error checking.
+    error.sheetNameSplitCheck(activeSheetName)
+
+    splitName1 = activeSheetName.split('(')
+    splitName2 = splitName1[1].split(')')
+
+    return splitName2[0]

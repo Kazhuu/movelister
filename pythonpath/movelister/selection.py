@@ -6,9 +6,9 @@ def getCurrentSelection():
     This function just gets the current active Selection and returns it.
     """
     model = Context.getDocument()
-    sel = model.getCurrentSelection()
+    selection = model.getCurrentSelection()
 
-    return sel
+    return selection
 
 
 def determineSelectionType(selection):

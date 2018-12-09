@@ -1,8 +1,8 @@
 import itertools
 
-from movelister import convert, delete, error, formatting, \
-    inputList, loop, modifierList, test
+from movelister import convert, delete, error, formatting, inputList, modifierList
 from movelister.core import cursor
+from movelister.sheet import helper
 
 
 def getOverview(overviewSheet):
@@ -12,9 +12,9 @@ def getOverview(overviewSheet):
 
 def getOverviewProjection(overviewSheet, modifierSheet, inputSheet):
     mda = getOverview(overviewSheet)
-    nameCol = loop.getColumnPosition(overviewSheet, 'Action Name')
-    modStartCol = loop.getColumnPosition(overviewSheet, 'DEF')
-    modEndCol = loop.getColumnPosition(overviewSheet, 'Full Name') - 1
+    nameCol = helper.getColumnPosition(overviewSheet, 'Action Name')
+    modStartCol = helper.getColumnPosition(overviewSheet, 'DEF')
+    modEndCol = helper.getColumnPosition(overviewSheet, 'Full Name') - 1
     modAmount = modEndCol - modStartCol
     currentName = mda[1][nameCol]
     currentInputList = mda[1][nameCol - 1]
@@ -106,9 +106,6 @@ def getOverviewProjection(overviewSheet, modifierSheet, inputSheet):
 
     # Estimate the position of each action in Mechanics List.
     projection = estimateActionPositionsForProjection(inputSheet, projection)
-
-    # A quick test that prints out the contents of the projection.
-    test.printProjectionTest(projection, overviewSheet)
 
     return projection
 
@@ -295,10 +292,10 @@ def getOverviewModifiers(overviewSheet):
     This function returns the list of modifiers from a chosen Overview as a list.
     It will probably be replaced by a function from Overview class sooner or later.
     """
-    headerRowPosition = loop.getHeaderRowPosition(overviewSheet)
+    headerRowPosition = helper.getHeaderRowPosition(overviewSheet)
     topRowArray = cursor.getRow(overviewSheet, headerRowPosition)
-    startCol = loop.getColumnPosition(overviewSheet, 'DEF') + 1
-    endCol = loop.getColumnPosition(overviewSheet, 'Notes 1')
+    startCol = helper.getColumnPosition(overviewSheet, 'DEF') + 1
+    endCol = helper.getColumnPosition(overviewSheet, 'Notes 1')
     overviewModifiers = topRowArray[startCol:endCol]
 
     return overviewModifiers
@@ -309,8 +306,8 @@ def updateOverviewModifiers(overviewSheet, overviewModifiers, modifierListModifi
     This function updates the section with Modifiers in the Master List using the data from Modifier List.
     """
     mda = getOverview(overviewSheet)
-    startCol = loop.getColumnPosition(overviewSheet, 'DEF') + 1
-    endCol = loop.getColumnPosition(overviewSheet, 'Notes 1')
+    startCol = helper.getColumnPosition(overviewSheet, 'DEF') + 1
+    endCol = helper.getColumnPosition(overviewSheet, 'Notes 1')
     finalList = []
 
     # The modifier columns of the existing Overview are copied or generated to a new array, which is then
@@ -382,7 +379,7 @@ def getHighestPhaseNumber(overviewSheet, listLength):
     """
     x = -1
     phase = 0
-    phaseCol = loop.getColumnPosition(overviewSheet, 'Phase')
+    phaseCol = helper.getColumnPosition(overviewSheet, 'Phase')
 
     # Warning: loop cannot find high phase numbers that are out of sequence.
     # But something like that shouldn't happen in normal use, right?

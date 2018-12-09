@@ -13,11 +13,9 @@ if __name__ == '__main__':
     sys.path.append(os.path.join(os.path.dirname('__file__'), 'pythonpath'))
 
 from movelister.core import Context # noqa
-from movelister.sheet import Sheet # noqa
-from movelister.sheet import Master # noqa
-from movelister.sheet import Modifiers # noqa
-from movelister import color, conditionalFormat, details, error, formatting, generate, loop, \
-    overview, modifierList, namedRanges, selection, ui, resultsList, text, validation  # noqa
+from movelister.sheet import helper, Master, Modifiers, Sheet # noqa
+from movelister import color, conditionalFormat, details, error, formatting, generate, \
+    overview, modifierList, namedRanges, selection, ui, resultsList, validation  # noqa
 
 # Setup context automatically when macro is run from the LibreOffice.
 if __name__ != '__main__':
@@ -49,7 +47,7 @@ def generateOrRefreshDetails(*args):
     detailsSheet = Sheet.getDetailsSheet()
     modifierSheet = Sheet.getModifierSheet()
 
-    name = text.getActiveSheetView(document)
+    name = helper.getActiveViewName(document)
     sheetName = 'Details (' + name + ')'
     templateName = 'Details Template'
 
@@ -83,9 +81,9 @@ def generateOrRefreshDetails(*args):
     # TO DO: regenerate conditional formatting.
     # TO DO: color cell backgrounds according to info. There are basically three types of coloring:
     # action colors, modifier colors and input colors.
-    actionColors = loop.getColorArray(overviewSheet)
-    modifierColors = loop.getColorArray(modifierSheet)
-    inputColors = loop.getColorArray(inputSheet)
+    actionColors = helper.getColorArray(overviewSheet)
+    modifierColors = helper.getColorArray(modifierSheet)
+    inputColors = helper.getColorArray(inputSheet)
 
     formatting.setDetailsSheetColors(detailsSheet, actionColors, modifierColors, inputColors)
     '''
@@ -195,7 +193,7 @@ def refreshModifiers():
     # Getting the list of modifiers from the Modifiers list.
     # A separate array is created for the cell background color data.
     modifierListModifiers = modifierList.getModifierListProjection(modifierSheet)
-    modifierColors = loop.getColorArray(modifierSheet)
+    modifierColors = helper.getColorArray(modifierSheet)
 
     # Compare if Overview modifiers match Modifier List modifiers. Returns False if the two lists are different.
     result = error.compareModifierLists(modifierListModifiers, overviewModifiers)
@@ -216,7 +214,7 @@ def createConditionalFormatting():
 
     # A function that gets all relevant data from the Results Sheet.
     resultsDataArray = resultsList.getResultsList(resultsSheet)
-    resultsColors = loop.getColorArray(resultsSheet)
+    resultsColors = helper.getColorArray(resultsSheet)
 
     # A function that uses the gathered data and generates the formatting.
     # Note: still incomplete! See conditionalFormat.py

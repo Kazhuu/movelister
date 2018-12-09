@@ -1,5 +1,6 @@
-from movelister import convert, formatting, loop, modifierList
+from movelister import convert, formatting, modifierList
 from movelister.core import cursor
+from movelister.sheet import helper
 
 SPACE_VIEW = ' ' * 11
 SPACE_INPUT = ' ' * 5
@@ -42,9 +43,9 @@ def generateOverview(document, modifierSheet, aboutSheet, sheetName):
     # To do: leave 1 empty row at the top to leave room for HUD.
     cursor.setSheetContent(newOverview, titleBarTuple)
 
-    startCol = loop.getColumnPosition(newOverview, 'DEF') + 1
-    endCol = loop.getColumnPosition(newOverview, 'Notes 1')
-    modifierColors = loop.getColorArray(modifierSheet)
+    startCol = helper.getColumnPosition(newOverview, 'DEF') + 1
+    endCol = helper.getColumnPosition(newOverview, 'Notes 1')
+    modifierColors = helper.getColorArray(modifierSheet)
 
     # Set formatting.
     formatting.setHorizontalAlignmentToSheet(newOverview, 'CENTER')

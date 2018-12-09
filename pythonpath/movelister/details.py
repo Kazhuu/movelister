@@ -1,6 +1,7 @@
-from movelister import convert, delete, group, inputList, loop
+from movelister import convert, delete, group, inputList
 from movelister.ui import messageBox
 from movelister.core import cursor
+from movelister.sheet import helper
 
 
 def refreshDetailsSheet(detailsSheet, inputSheet, projectionOverview, projectionDetails):
@@ -280,7 +281,7 @@ def generateGroupsFromArray(detailsSheet, inputGroups, startRow):
 
 
 def generatePhases(detailsSheet, highestPhase, phaseCount):
-    phasesStart = loop.getColumnPosition(detailsSheet, '> Phase 0 result') - 1
+    phasesStart = helper.getColumnPosition(detailsSheet, '> Phase 0 result') - 1
     amount = (highestPhase - phaseCount) * 3
     startCol = phasesStart + ((phaseCount + 1) * 3)
     str1 = '> Phase '
@@ -315,7 +316,7 @@ def generatePhases(detailsSheet, highestPhase, phaseCount):
 
 
 def deletePhases(detailsSheet, highestPhase, phaseCount):
-    phasesStart = loop.getColumnPosition(detailsSheet, '> Phase 0 result') - 1
+    phasesStart = helper.getColumnPosition(detailsSheet, '> Phase 0 result') - 1
     amount = (phaseCount - highestPhase) * 3
     startCol = phasesStart + (((phaseCount + 1) * 3)) - (amount)
     titleText = 'Warning:'
@@ -330,8 +331,8 @@ def deletePhases(detailsSheet, highestPhase, phaseCount):
 
 def countPhases(detailsSheet):
     # Mechanics Sheet top row is iterated through twice to figure out how many columns are taken by Phases.
-    phasesStart = loop.getColumnPosition(detailsSheet, '> Phase 0 result')
-    phasesEnd = loop.getColumnPosition(detailsSheet, 'Notes 1')
+    phasesStart = helper.getColumnPosition(detailsSheet, '> Phase 0 result')
+    phasesEnd = helper.getColumnPosition(detailsSheet, 'Notes 1')
 
     # Small math operation to get the actual number of phases.
     phaseNum = (phasesEnd - phasesStart - 2) / 3

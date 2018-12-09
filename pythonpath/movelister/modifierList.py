@@ -1,8 +1,8 @@
 import itertools
 
-from movelister import error, loop
+from movelister import error
 from movelister.core import cursor
-from movelister.sheet import Sheet
+from movelister.sheet import helper, Sheet
 
 
 BOOLEAN_AREA_START_COLUMN_NAME = 'Color'
@@ -15,8 +15,8 @@ def getBooleanColumns():
     all user provided boolean columns, not, math and chain columns.
     """
     sheet = Sheet.getModifierSheet()
-    startCol = loop.getColumnPosition(sheet, BOOLEAN_AREA_START_COLUMN_NAME) + 1
-    endCol = loop.getColumnPosition(sheet, BOOLEAN_AREA_END_COLUMN_NAME)
+    startCol = helper.getColumnPosition(sheet, BOOLEAN_AREA_START_COLUMN_NAME) + 1
+    endCol = helper.getColumnPosition(sheet, BOOLEAN_AREA_END_COLUMN_NAME)
     return cursor.getColumns(sheet, startCol, endCol)
 
 
@@ -70,22 +70,22 @@ def getAntiVariations(mda, modifierSheet, mode):
     # It can be increased by increasing the size of the currentRowGroups array.
 
     if mode == 'OR':
-        ORStartCol = loop.getColumnPosition(modifierSheet, 'OR Group:')
-        OREndCol = loop.getColumnPosition(modifierSheet, 'NAND Group:') - 1
+        ORStartCol = helper.getColumnPosition(modifierSheet, 'OR Group:')
+        OREndCol = helper.getColumnPosition(modifierSheet, 'NAND Group:') - 1
         ORAmount = OREndCol - ORStartCol
         loopAmount = ORAmount
         startCol = ORStartCol
         ORList = []
     if mode == 'NAND':
-        NANDStartCol = loop.getColumnPosition(modifierSheet, 'NAND Group:')
-        NANDEndCol = loop.getColumnPosition(modifierSheet, 'XNOR Group:') - 1
+        NANDStartCol = helper.getColumnPosition(modifierSheet, 'NAND Group:')
+        NANDEndCol = helper.getColumnPosition(modifierSheet, 'XNOR Group:') - 1
         NANDAmount = NANDEndCol - NANDStartCol
         loopAmount = NANDAmount
         startCol = NANDStartCol
     if mode == 'XNOR':
         XNORList = [[], []]
-        XNORStartCol = loop.getColumnPosition(modifierSheet, 'XNOR Group:')
-        XNOREndCol = loop.getColumnPosition(modifierSheet, 'Notes 1') - 1
+        XNORStartCol = helper.getColumnPosition(modifierSheet, 'XNOR Group:')
+        XNOREndCol = helper.getColumnPosition(modifierSheet, 'Notes 1') - 1
         XNORAmount = XNOREndCol - XNORStartCol
         loopAmount = XNORAmount
         startCol = XNORStartCol

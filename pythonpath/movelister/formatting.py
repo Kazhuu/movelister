@@ -1,12 +1,13 @@
-from movelister import color, loop
+from movelister import color
 from movelister.core import cursor
+from movelister.sheet import helper
 
 
 def getTitleBarColor(optionsSheet):
     """
     This function gets the value of the cell background color from the Options-section.
     """
-    titleBarRow = loop.getRowPosition(optionsSheet, 'Title Bar Color:', 0)
+    titleBarRow = helper.getRowPosition(optionsSheet, 'Title Bar Color:', 0)
 
     c = color.Color(optionsSheet.getCellByPosition(1, titleBarRow).CellBackColor)
     return c
@@ -32,7 +33,7 @@ def setOverviewModifierColors(overviewSheet, startCol, endCol, modifierListColor
     tempCol = cursor.getColumn(overviewSheet, startCol)
     modifierListColors.append(0)
 
-    headerRowPosition = loop.getHeaderRowPosition(overviewSheet)
+    headerRowPosition = helper.getHeaderRowPosition(overviewSheet)
 
     x = -1
     for a in range(len(modifierListColors) - 1):

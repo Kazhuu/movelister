@@ -1,5 +1,6 @@
 from test import OfficeTestCase
-from movelister.sheet import draw, Master, Overview
+from movelister.format import generate
+from movelister.sheet import Master, Overview
 
 
 class GenerateTestCase(OfficeTestCase):
@@ -8,4 +9,4 @@ class GenerateTestCase(OfficeTestCase):
         master = Master('Master List')
         overview = Overview('Test overview')
         overview.setActions(master.getActions())
-        draw.drawSheet(overview, 0)
+        generate.drawSheet(overview, 0)
