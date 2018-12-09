@@ -1,6 +1,5 @@
 from movelister.core import cursor
 from .sheet import Sheet
-from .base import BaseSheet
 from movelister.model import Action
 from movelister.format import filter
 
@@ -15,10 +14,12 @@ COLOR_COLUMN = 3
 PHASE_COLUMN = 4
 
 
-class Master(BaseSheet):
+class Master:
 
     def __init__(self, sheetName):
-        super().__init__(sheetName)
+        self.name = sheetName
+        self.sheet = Sheet.getByName(sheetName)
+        self.data = cursor.getSheetContent(self.sheet)
         self.dataHeader = self.data[HEADER_ROW]
         self.dataRows = self.data[DATA_BEGIN_ROW:]
         self.actionColors = self._getActionColors()
