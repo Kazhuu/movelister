@@ -1,4 +1,4 @@
-from movelister import loop, messageBox
+from movelister.ui import messageBox
 from movelister.core import cursor
 
 
@@ -85,7 +85,7 @@ def getColorArray(sheet):
     headerRowPosition = getHeaderRowPosition(sheet)
 
     sheetLength = cursor.getColumn(sheet, 0)
-    colPosition = loop.getColumnPosition(sheet, 'Color')
+    colPosition = getColumnPosition(sheet, 'Color')
     colorList = []
 
     x = 0 + headerRowPosition
