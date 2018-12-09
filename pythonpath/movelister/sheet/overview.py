@@ -4,16 +4,24 @@ from .sheet import Sheet
 
 class Overview:
 
-    def __init__(self):
-        pass
+    def __init__(self, sheetName):
+        self.name = sheetName
 
     @classmethod
     def fromSheet(cls, sheetName):
-        instance = cls()
-        instance.readSheetContent(sheetName)
+        instance = cls(sheetName)
+        instance.readSheetContent()
         return instance
 
-    def readSheetContent(self, sheetName):
-        self.name = sheetName
-        self.sheet = Sheet.getByName(sheetName)
+    def setActions(self, actions):
+        self.actions = actions
+
+    def readSheetContent(self):
+        self.sheet = Sheet.getByName(self.name)
         self.data = cursor.getSheetContent(self.sheet)
+
+    def getSheetContent(self):
+        data = []
+        for action in self.actions:
+            data.append([action.name, action.phases])
+        return data

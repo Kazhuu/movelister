@@ -5,9 +5,8 @@ from movelister.sheet import Overview
 class OverViewTestCase(OfficeTestCase):
 
     def testOverViewInstance(self):
-        name = 'Overview (default)'
+        name = 'Overview (Default)'
         overview = Overview.fromSheet(name)
-        self.assertIsInstance(overview.data, tuple)
+        self.assertIsInstance(overview.data, list)
         self.assertTrue(overview.data)
-        print(overview.data)
-        self.assertEqual(name, overview.name)
+        self.assertEqual(overview.name, name)
