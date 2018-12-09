@@ -3,36 +3,21 @@ from movelister.ui import messageBox
 from movelister.core import cursor
 
 
-def getHeaderRowPosition(sheet):
+def getHeaderRowPosition(sheetData):
     """
-    This function figures out at what position the header row is. This may vary between sheets
-    because of UI. The code is simple and basically looks for the first non-empty cell on second column.
-
-    Note: This only works as long as the second column will be empty in all sheets with a header.
+    This function figures out at what position the header row is. This may vary
+    between sheets because of UI. The code is simple and basically looks for
+    the first non-empty cell on second column.
     """
-    mda = cursor.getSheetContent(sheet)
-    row = -1
-
-    x = -1
-    while x < len(mda) - 1:
-        x = x + 1
-        if mda[x][1] != '':
-            row = x
-            break
-
-    # Error message if it wasn't found.
-    if row == - 1:
-        msg = "Program couldn't find the header row from {0}.".format(sheet.getName())
-        messageBox.createMessage('OK', 'Warning:', msg)
-        exit()
-
-    return row
+    for index, row in enumerate(sheetData):
+        if row[1] != '':
+            return index
+    return 0
 
 
-def getColumnPosition(sheet, columnName):
+def getColumnPosition(sheetData, columnName):
     """
     This function iterates through the row 0 of a List to find where a certain Column is.
-
     Known bugs: using cursor on a sheet with an empty first row can crash.
     """
     headerRowPosition = getHeaderRowPosition(sheet)
