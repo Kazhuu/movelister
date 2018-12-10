@@ -1,7 +1,8 @@
 import itertools
 
-from movelister import convert, delete, error, formatting, inputList, modifierList
+from movelister import convert, error, formatting, inputList, modifierList
 from movelister.core import cursor
+from movelister.format import delete
 from movelister.sheet import helper
 
 
@@ -287,15 +288,17 @@ def makePrereqsString(currentActionPrereqs, prereqsString):
     return prereqsString
 
 
-def getOverviewModifiers(overviewSheet):
+def getOverviewModifiers(overviewData):
     """
     This function returns the list of modifiers from a chosen Overview as a list.
     It will probably be replaced by a function from Overview class sooner or later.
+
+    Note: broken at the moment. Replace with Overview class ASAP.
     """
-    headerRowPosition = helper.getHeaderRowPosition(overviewSheet)
-    topRowArray = cursor.getRow(overviewSheet, headerRowPosition)
-    startCol = helper.getColumnPosition(overviewSheet, 'DEF') + 1
-    endCol = helper.getColumnPosition(overviewSheet, 'Notes 1')
+    headerRowPosition = helper.getHeaderRowPosition(overviewData)
+    topRowArray = cursor.getRow(overviewData, headerRowPosition)
+    startCol = helper.getColumnPosition(overviewData, 'DEF') + 1
+    endCol = helper.getColumnPosition(overviewData, 'Notes 1')
     overviewModifiers = topRowArray[startCol:endCol]
 
     return overviewModifiers

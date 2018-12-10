@@ -13,7 +13,7 @@ if __name__ == '__main__':
     sys.path.append(os.path.join(os.path.dirname('__file__'), 'pythonpath'))
 
 from movelister.core import Context, cursor # noqa
-from movelister.sheet import helper, Master, Modifiers, Sheet # noqa
+from movelister.sheet import helper, Inputs, Master, Modifiers, Sheet # noqa
 from movelister import color, conditionalFormat, details, error, generate, \
     overview, modifierList, namedRanges, selection, ui, resultsList, validation  # noqa
 
@@ -187,8 +187,10 @@ def refreshModifiers():
     overviewSheet = Sheet.getByName('Overview (Default)')
     modifierSheet = Sheet.getByName('Modifier List')
 
+    overviewModifierData = cursor.getSheetContent(Sheet.getByName('Overview (Default)'))
+
     # Getting the list of modifiers from a chosen Overview.
-    overviewModifiers = overview.getOverviewModifiers(overviewSheet)
+    overviewModifiers = overview.getOverviewModifiers(overviewModifierData)
 
     # Getting the list of modifiers from the Modifiers list.
     # A separate array is created for the cell background color data.
@@ -234,14 +236,20 @@ def testingClasses():
     masterList = Master('Master List')
     actions = masterList.getActions('Default')
 
-    modifierList = Modifiers('Modifier List')
+    modifierList = Modifiers('Modifiers')
     modifiers = modifierList.getModifiers()
 
+    inputList = Inputs('Inputs')
+    inputs = inputList.getInputList('Default')
+
     for row in actions:
-        print(row.name)
+        print(row.__dict__)
 
     for row in modifiers:
-        print(row.name)
+        print(row.__dict__)
+
+    for row in inputs:
+        print(row.__dict__)
 
     sheetData = cursor.getSheetContent(Sheet.getByName('Master List'))
     number = helper.getColumnPosition(sheetData, 'Action Name')

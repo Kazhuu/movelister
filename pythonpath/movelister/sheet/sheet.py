@@ -3,9 +3,9 @@ from movelister.core import Context
 
 OVERVIEW_SHEET_NAME = 'Overview (Old)'
 MASTER_LIST_SHEET_NAME = 'Master List'
-INPUT_LIST_SHEET_NAME = 'Input Lists'
+INPUT_LIST_SHEET_NAME = 'Inputs'
 DETAILS_SHEET_NAME = 'Details (Old)'
-MODIFIER_LIST_SHEET_NAME = 'Modifier List'
+MODIFIER_LIST_SHEET_NAME = 'Modifiers'
 MODIFIER_LIST_OLD_SHEET_NAME = 'Modifier List (Old)'
 RESULT_LIST_SHEET_NAME = 'Results List'
 ABOUT_SHEET_NAME = 'About'

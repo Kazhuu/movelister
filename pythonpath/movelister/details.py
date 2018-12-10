@@ -1,7 +1,8 @@
-from movelister import convert, delete, group, inputList
-from movelister.ui import messageBox
+from movelister import convert, inputList
 from movelister.core import cursor
+from movelister.format import delete, group
 from movelister.sheet import helper
+from movelister.ui import messageBox
 
 
 def refreshDetailsSheet(detailsSheet, inputSheet, projectionOverview, projectionDetails):
