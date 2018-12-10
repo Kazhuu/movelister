@@ -1,12 +1,11 @@
 from test import OfficeTestCase
-from movelister.sheet import Overview
+from movelister.sheet import Overview, OVERVIEW_SHEET_NAME
 
 
 class OverViewTestCase(OfficeTestCase):
 
     def testOverViewInstance(self):
-        name = 'Overview (Default)'
-        overview = Overview.fromSheet(name)
+        overview = Overview.fromSheet(OVERVIEW_SHEET_NAME)
         self.assertIsInstance(overview.data, list)
         self.assertTrue(overview.data)
-        self.assertEqual(overview.name, name)
+        self.assertEqual(overview.name, OVERVIEW_SHEET_NAME)

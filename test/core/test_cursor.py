@@ -1,12 +1,12 @@
 from test import OfficeTestCase
 from movelister.core import cursor
-from movelister.sheet import Sheet
+from movelister.sheet import Sheet, MASTER_LIST_SHEET_NAME
 
 
 class CursorTestCase(OfficeTestCase):
 
     def testGetSheetContent(self):
-        sheet = Sheet.getByName('Master List')
-        data = cursor.getSheetContent(sheet)
+        masterSheet = Sheet.getByName(MASTER_LIST_SHEET_NAME)
+        data = cursor.getSheetContent(masterSheet)
         for row in data:
             self.assertIsInstance(row, list)

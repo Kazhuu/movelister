@@ -2,7 +2,7 @@ from com.sun.star.uno import RuntimeException
 
 from test import OfficeTestCase
 from movelister.core import Context
-from movelister.sheet import Sheet
+from movelister.sheet import Sheet, MASTER_LIST_SHEET_NAME, MODIFIER_LIST_SHEET_NAME
 
 
 class SheetTestCase(OfficeTestCase):
@@ -14,10 +14,10 @@ class SheetTestCase(OfficeTestCase):
 
     def testNewSheetWithExistingName(self):
         with self.assertRaises(RuntimeException):
-            Sheet.newSheet('Master List', 0)
+            Sheet.newSheet(MASTER_LIST_SHEET_NAME, 0)
 
     def testGetPosition(self):
-        position = Sheet.getPosition('Modifier List')
+        position = Sheet.getPosition(MODIFIER_LIST_SHEET_NAME)
         self.assertEqual(position, 4)
 
     def testGetWrongPosition(self):
@@ -30,7 +30,7 @@ class SheetTestCase(OfficeTestCase):
             self.assertIsInstance(name, str)
 
     def testNewSheetRightOf(self):
-        rightOfName = 'Master List'
+        rightOfName = MASTER_LIST_SHEET_NAME
         name = 'test sheet'
         sheet = Sheet.newSheetRightOf(rightOfName, name)
         self.assertEqual(sheet.getName(), name)
@@ -39,7 +39,7 @@ class SheetTestCase(OfficeTestCase):
         self.assertEqual(names.index(name), index + 1)
 
     def testNewSheetLeftOf(self):
-        leftOfName = 'Modifier List'
+        leftOfName = MODIFIER_LIST_SHEET_NAME
         name = 'test sheet'
         sheet = Sheet.newSheetLeftOf(leftOfName, name)
         self.assertEqual(sheet.getName(), name)
