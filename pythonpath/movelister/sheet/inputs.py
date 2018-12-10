@@ -1,4 +1,5 @@
 from .sheet import Sheet
+from . import helper
 from movelister.core import cursor
 from movelister.model import Input
 from movelister.format import filter
@@ -21,7 +22,7 @@ class Inputs:
         self.data = cursor.getSheetContent(self.sheet)
         self.dataHeader = self.data[HEADER_ROW]
         self.dataRows = self.data[DATA_BEGIN_ROW:]
-        self.inputColors = self._getInputColors()
+        self.inputColors = helper.getCellColorsFromColumn(self.sheet, COLOR_COLUMN, DATA_BEGIN_ROW, len(self.data))
 
     def getInputList(self, name):
         inputGroup = []
@@ -41,10 +42,3 @@ class Inputs:
         if row[INPUT_GROUP_COLUMN] != '':
             kwargs['group'] = row[INPUT_GROUP_COLUMN]
         return kwargs
-
-    def _getInputColors(self):
-        colors = []
-        colorRange = self.sheet.getCellRangeByPosition(COLOR_COLUMN, DATA_BEGIN_ROW, COLOR_COLUMN, len(self.data))
-        for index, row in enumerate(self.dataRows):
-            colors.append(colorRange.getCellByPosition(0, index).CellBackColor)
-        return colors
