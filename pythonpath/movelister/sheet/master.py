@@ -1,5 +1,6 @@
 from movelister.core import cursor
 from .sheet import Sheet
+from . import helper
 from movelister.model import Action
 from movelister.format import filter
 
@@ -22,7 +23,7 @@ class Master:
         self.data = cursor.getSheetContent(self.sheet)
         self.dataHeader = self.data[HEADER_ROW]
         self.dataRows = self.data[DATA_BEGIN_ROW:]
-        self.actionColors = self._getActionColors()
+        self.actionColors = helper.getCellColorsFromColumn(self.sheet, COLOR_COLUMN, DATA_BEGIN_ROW, len(self.data))
 
     def getActions(self, view=None):
         actions = []
@@ -46,10 +47,3 @@ class Master:
         if row[PHASE_COLUMN] != '':
             kwargs['phases'] = int(row[PHASE_COLUMN])
         return kwargs
-
-    def _getActionColors(self):
-        colors = []
-        colorRange = self.sheet.getCellRangeByPosition(COLOR_COLUMN, DATA_BEGIN_ROW, COLOR_COLUMN, len(self.data))
-        for index, row in enumerate(self.dataRows):
-            colors.append(colorRange.getCellByPosition(0, index).CellBackColor)
-        return colors

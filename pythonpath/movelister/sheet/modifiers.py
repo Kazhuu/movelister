@@ -1,4 +1,5 @@
 from .sheet import Sheet
+from . import helper
 from movelister.core import cursor
 from movelister.model import Modifier
 
@@ -18,7 +19,7 @@ class Modifiers:
         self.data = cursor.getSheetContent(self.sheet)
         self.dataHeader = self.data[HEADER_ROW]
         self.dataRows = self.data[DATA_BEGIN_ROW:]
-        self.modifierColors = self._getModifierColors()
+        self.modifierColors = helper.getCellColorsFromColumn(self.sheet, COLOR_COLUMN, DATA_BEGIN_ROW, len(self.data))
 
     def getModifiers(self):
         modifiers = []
@@ -34,10 +35,3 @@ class Modifiers:
         kwargs = {'name': row[NAME_COLUMN]}
         kwargs['color'] = self.modifierColors[index]
         return kwargs
-
-    def _getModifierColors(self):
-        colors = []
-        colorRange = self.sheet.getCellRangeByPosition(COLOR_COLUMN, DATA_BEGIN_ROW, COLOR_COLUMN, len(self.data))
-        for index, row in enumerate(self.dataRows):
-            colors.append(colorRange.getCellByPosition(0, index).CellBackColor)
-        return colors
