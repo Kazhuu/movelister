@@ -45,26 +45,58 @@ rovided scripts.
 
 ## Development
 To have a good development environment and with debugging abilities. It's
-easier to develop scripts using a separate Python process which then connects
-to an external LibreOffice process. After you are done with the development,
-you can run working scripts inside the LibreOffice process. [This Christopher
+easier to develop scripts using a separate Python process which then connects to
+an external LibreOffice process using sockets. After you are done with the
+development, you can run working scripts inside the LibreOffice process. [This
+Christopher
 Bourez's blog
 post](http://christopher5106.github.io/office/2015/12/06/openoffice-libreoffice-automate-your-office-tasks-with-python-macros.html)
 explains the idea and this same idea is used with this project.
 
+Movelister is developed so that is support running macros from separate Python
+process and from the LibreOffice itself. When running macros from separate
+Python process, it doesn't matter where Movelister project is located because
+Python connects to LibreOffice process through socket. When running macros from
+LibreOffice itself, you need to tell LibreOffice where to find them. Easiest way
+to do this is clone Movelister to your wanted location where you normally do
+your development and then make symbolic link from LibreOffice user Python macros
+folder to Movelister folder. This varies a little bit between the platforms and
+is explained below for each platform.
+
 
 ### Linux
-First, start LibreOffice Calc process with:
+
+
+#### Running macros from LibreOffice
+LibreOffice user Python macros are located under
+`~/.config/libreoffice/<version_number>/user/Scripts/python/`. If you only have
+folders up to `.../user/` then you can make folders `Scripts` and `python` with
+`mkdir` program. After this `cd` into just created python folder. You path now
+should be something like this:
+`/home/kazooie/.config/libreoffice/4/user/Scripts/python`. Now make symbolic
+link to cloned Movelister folder with following and change `path_to_movelister`
+to point to your cloned Movelister folder:
+```
+ln -s <path_to_movelister> movelister
+```
+Now in LibraOffice when you go to **Tools -> Macros -> Run Macro** and open **My
+Macros**. You should see **movelister** as a listed macro package. Now open
+**movelister** and select **main**. Then on the right you should see list of all
+available macros which can be executed or mapped to keys.
+
+
+#### Running macros from separate Python process
+In project root folder, start LibreOffice Calc process with:
 ```
 libreoffice templates/movelister_template.ods --accept="socket,host=localhost,port=2002;urp;StarOffice.ServiceManager"
 ```
-Then start a separate Python process and get access to LibreOffice process
-using the opened socket. Test the created connection by running `main.py` with:
+This opens socket with port 2002 which Python process then connects. Then start
+a separate Python process by running `main.py` with:
 ```
 python main.py
 ```
 This script should run without errors. If you see error messages, make sure the
-socket is open.
+socket is open or follow error message instructions.
 
 
 ### Windows
@@ -128,7 +160,7 @@ for main knowledge about OpenOffice UNO (Universal Network Objects) technology a
 * [LibreOffice 6.0 SDK API documentation](https://api.libreoffice.org/docs/idl/ref/index.html).
 * [Jamie Boyle’s Cookbook](https://documenthacker.files.wordpress.com/2013/07/writing_documents-_for_software_engineers_v0002.pdf).
 * [Christopher Bourez's](http://christopher5106.github.io/office/2015/12/06/openoffice-libreoffice-automate-your-office-tasks-with-python-macros.html)
-blog post about writing Python macros.
+	blog post about writing Python macros.
 * [Jannie Theunissen's](https://onesheep.org/scripting-libreoffice-python/) blog
-post about scripting LibreOffice with Python.
+	post about scripting LibreOffice with Python.
 * [Development enviroment setup using pyenv](https://gist.github.com/thekalinga/b74056272cb1afdabf529a332ff0f517).
