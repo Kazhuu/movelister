@@ -294,6 +294,7 @@ def getOverviewModifiers(overviewData):
     It will probably be replaced by a function from Overview class sooner or later.
 
     Note: broken at the moment. Replace with Overview class ASAP.
+    Method implemented. This can be deleted when deleted from main.py
     """
     headerRowPosition = helper.getHeaderRowPosition(overviewData)
     topRowArray = cursor.getRow(overviewData, headerRowPosition)

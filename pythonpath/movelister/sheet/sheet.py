@@ -1,7 +1,7 @@
 from movelister.core import Context
 
 
-OVERVIEW_SHEET_NAME = 'Overview (Old)'
+OVERVIEW_SHEET_NAME = 'Overview (Default)'
 MASTER_LIST_SHEET_NAME = 'Master List'
 INPUT_LIST_SHEET_NAME = 'Inputs'
 DETAILS_SHEET_NAME = 'Details (Old)'
