@@ -61,23 +61,16 @@ def getRowPosition(sheet, text, column):
     return row
 
 
-def getColorArray(sheet):
+def getCellColorsFromColumn(sheet, column, top, bottom):
     """
-    This function creates an array of CellBackColor from the Color column in a chosen sheet.
-    The loop starts counting from after the position of the header.
+    This function creates an array of CellBackColor values from given column
+    and includes cells from top to bottom.
     """
-    headerRowPosition = getHeaderRowPosition(sheet)
-
-    sheetLength = cursor.getColumn(sheet, 0)
-    colPosition = getColumnPosition(sheet, 'Color')
-    colorList = []
-
-    x = 0 + headerRowPosition
-    while x < len(sheetLength) - 1 + headerRowPosition:
-        x = x + 1
-        colorList.append(sheet.getCellByPosition(colPosition, x).CellBackColor)
-
-    return colorList
+    colors = []
+    colorRange = sheet.getCellRangeByPosition(column, top, column, bottom)
+    for index in range(0, bottom - top):
+        colors.append(colorRange.getCellByPosition(0, index).CellBackColor)
+    return colors
 
 
 def getActiveViewName(document):
