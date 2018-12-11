@@ -1,27 +1,34 @@
 from test import OfficeTestCase
+from movelister.model import ModifiedAction
 from movelister.sheet import Overview, OVERVIEW_SHEET_NAME
-from movelister.sheet.overview import MODIFIER_START_COLUM_NAME
 
 
 class OverViewTestCase(OfficeTestCase):
 
+    @classmethod
+    def setUpClass(cls):
+        super().setUpClass()
+        cls.overview = Overview.fromSheet(OVERVIEW_SHEET_NAME)
+
     def testOverViewInstance(self):
-        overview = Overview.fromSheet(OVERVIEW_SHEET_NAME)
-        self.assertIsInstance(overview.data, list)
-        self.assertTrue(overview.data)
-        self.assertEqual(overview.name, OVERVIEW_SHEET_NAME)
+        self.assertIsInstance(self.overview.data, list)
+        self.assertTrue(self.overview.data)
+        self.assertEqual(self.overview.name, OVERVIEW_SHEET_NAME)
 
     def testModifiersNames(self):
-        overview = Overview.fromSheet(OVERVIEW_SHEET_NAME)
-        modifiers = overview.modifiers
-        self.assertTrue(modifiers)
-        self.assertTrue(MODIFIER_START_COLUM_NAME not in modifiers)
-        for modifier in modifiers:
-            self.assertIsInstance(modifier, str)
+        names = ['WPN1', 'WPN2', 'WPN3', 'Super', 'FL1', 'FL2', 'PG', 'LAM', 'PAM', 's b', 't b']
+        modifiers = self.overview.modifiers
+        self.assertTrue(all(name in modifiers for name in names))
 
     def testActionNames(self):
-        overview = Overview.fromSheet(OVERVIEW_SHEET_NAME)
-        actionNames = overview.actionNames
+        actionNames = self.overview.actionNames
         self.assertTrue(actionNames)
         for action in actionNames:
             self.assertIsInstance(action, str)
+
+    def testGetModifiedActions(self):
+        modifiedActions = self.overview.modifiedActions
+        self.assertTrue(modifiedActions)
+        for modifiedAction in modifiedActions:
+            print(modifiedAction)
+            self.assertIsInstance(modifiedAction, ModifiedAction)

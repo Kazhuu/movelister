@@ -19,6 +19,7 @@ MODIFIER_END_COLUM_NAME = 'Notes 1'
 class Overview:
 
     def __init__(self, sheetName):
+        # TODO: Init instance variables here to default values.
         self.name = sheetName
         self.modifiedActions = []
 
@@ -38,6 +39,7 @@ class Overview:
         self.dataRows = self.data[DATA_BEGIN_ROW:]
         self.modifiers = self._readModifierNames()
         self.actionNames = self._getUniqueActionNames()
+        self.modifiedActions = self._readModifierAction()
 
     def getSheetContent(self):
         data = []
@@ -63,6 +65,5 @@ class Overview:
                 names.append(row[NAME_COLUMN])
         return names
 
-    def _readModifierAction(self, actionRows):
-        # TODO: Write this next
+    def _readModifierAction(self):
         pass
