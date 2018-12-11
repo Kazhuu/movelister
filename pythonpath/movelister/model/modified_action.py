@@ -4,10 +4,10 @@ from .action import Action
 class ModifiedAction(Action):
 
     def __init__(self, name, **kwargs):
-        super().__ini__(name, **kwargs)
+        super().__init__(name, **kwargs)
         self.default = kwargs.get('default', False)
         self.hitPhase = kwargs.get('hitPhase', None)
-        self.modifiers = {}
+        self.modifiers = kwargs.get('modifiers', {})
 
     def setModifiers(self, phase, modifiers):
         self._checkPhaseRange(phase)

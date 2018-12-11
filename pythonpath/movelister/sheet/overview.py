@@ -1,6 +1,7 @@
 from movelister.core import cursor
 from .sheet import Sheet
 from movelister.format import filter
+from movelister.model import Modifier, ModifiedAction
 
 
 HEADER_ROW = 1
@@ -37,7 +38,9 @@ class Overview:
         self.data = cursor.getSheetContent(self.sheet)
         self.dataHeader = self.data[HEADER_ROW]
         self.dataRows = self.data[DATA_BEGIN_ROW:]
-        self.modifiers = self._readModifierNames()
+        self.modifierStartColumn = self.dataHeader.index(MODIFIER_START_COLUM_NAME) + 1
+        self.modifierEndColumn = self.dataHeader.index(MODIFIER_END_COLUM_NAME)
+        self.modifiers = self.dataHeader[self.modifierStartColumn:self.modifierEndColumn]
         self.actionNames = self._getUniqueActionNames()
         self.modifiedActions = self._readModifierAction()
 
@@ -46,11 +49,6 @@ class Overview:
         for action in self.actions:
             data.append([action.name, action.phases])
         return data
-
-    def _readModifierNames(self):
-        start = self.dataHeader.index(MODIFIER_START_COLUM_NAME)
-        end = self.dataHeader.index(MODIFIER_END_COLUM_NAME)
-        return self.dataHeader[start + 1:end]
 
     def _readModifiedActions(self):
         names = self._getUniqueActionNames()
@@ -66,4 +64,25 @@ class Overview:
         return names
 
     def _readModifierAction(self):
-        pass
+        groups = filter.groupRows(self.dataRows, NAME_COLUMN)
+        for group in groups:
+            self.modifiedActions.append(self._rowGroupToModifiedAction(group))
+
+    def _rowGroupToModifiedAction(self, rowGroup):
+        kwargs = {'name': rowGroup[0][NAME_COLUMN], 'phases': len(rowGroup)}
+        modifiers = {}
+        for phase, row in enumerate(rowGroup):
+            if row[HIT_COLUMN] != '':
+                kwargs['hitPhase'] = phase
+            if row[DEFAULT_COLUMN] != '':
+                kwargs['default'] = True
+            modifiers[phase] = self._modifiersFromRow(row)
+        return ModifiedAction(**kwargs)
+
+    def _modifiersFromRow(self, row):
+        mods = row[self.modifierStartColumn:self.modifierEndColumn]
+        modifiers = []
+        for index, value in enumerate(mods):
+            if value != '':
+                modifiers.append(Modifier(self.modifiers[index]))
+        return modifiers

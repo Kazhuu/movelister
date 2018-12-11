@@ -10,8 +10,7 @@ def groupRows(rows, column):
     """
     Group rows from given column so that they contain the same column data.
     Consecutive data from given column is appended to same group. When data
-    changes, new group is made. Groups is returned as a generator. Cell with no
-    data are excluded from groups.
+    changes, new group is made. Cell with no data are excluded from groups.
     """
     filteredRows = filterRows(lambda row: row[column] != '', rows)
     groups = [[]]
