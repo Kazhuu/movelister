@@ -22,6 +22,10 @@ class ModifiedAction(Action):
             self.modifiers[phase] = [modifier]
         return self.modifiers
 
+    def phaseModifiers(self, phase):
+        self._checkPhaseRange(phase)
+        return self.modifiers[phase]
+
     def clearModifiers(self, phase):
         self._checkPhaseRange(phase)
         return self.modifiers.pop(phase, [])

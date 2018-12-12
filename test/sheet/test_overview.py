@@ -30,5 +30,14 @@ class OverViewTestCase(OfficeTestCase):
         modifiedActions = self.overview.modifiedActions
         self.assertTrue(modifiedActions)
         for modifiedAction in modifiedActions:
-            print(modifiedAction)
             self.assertIsInstance(modifiedAction, ModifiedAction)
+
+    def testModifiedActionModifiers(self):
+        """
+        Test ModifiedAction modifiers for phase 2 that data is formed according
+        to data set in the overview sheet.
+        """
+        names = ['WPN1', 's b', 't b']
+        modifiedActions = self.overview.modifiedActions
+        modifiers = modifiedActions[0].phaseModifiers(2)
+        self.assertTrue(all(modifier.name in names for modifier in modifiers))

@@ -42,19 +42,13 @@ class Overview:
         self.modifierEndColumn = self.dataHeader.index(MODIFIER_END_COLUM_NAME)
         self.modifiers = self.dataHeader[self.modifierStartColumn:self.modifierEndColumn]
         self.actionNames = self._getUniqueActionNames()
-        self.modifiedActions = self._readModifierAction()
+        self.modifiedActions = self._readModifiedActions()
 
     def getSheetContent(self):
         data = []
         for action in self.actions:
             data.append([action.name, action.phases])
         return data
-
-    def _readModifiedActions(self):
-        names = self._getUniqueActionNames()
-        for name in names:
-            rows = filter.filterRows(lambda row: row[NAME_COLUMN] == name, self.dataRows)
-            self.modifiedActions.append(self._readModifierAction(rows))
 
     def _getUniqueActionNames(self):
         names = []
@@ -63,20 +57,24 @@ class Overview:
                 names.append(row[NAME_COLUMN])
         return names
 
-    def _readModifierAction(self):
+    def _readModifiedActions(self):
+        modifiedActions = []
         groups = filter.groupRows(self.dataRows, NAME_COLUMN)
         for group in groups:
-            self.modifiedActions.append(self._rowGroupToModifiedAction(group))
+            modifiedActions.append(self._rowGroupToModifiedAction(group))
+        return modifiedActions
 
     def _rowGroupToModifiedAction(self, rowGroup):
-        kwargs = {'name': rowGroup[0][NAME_COLUMN], 'phases': len(rowGroup)}
         modifiers = {}
+        kwargs = {'name': rowGroup[0][NAME_COLUMN], 'phases': len(rowGroup), 'modifiers': modifiers}
         for phase, row in enumerate(rowGroup):
             if row[HIT_COLUMN] != '':
                 kwargs['hitPhase'] = phase
             if row[DEFAULT_COLUMN] != '':
                 kwargs['default'] = True
-            modifiers[phase] = self._modifiersFromRow(row)
+            modInstances = self._modifiersFromRow(row)
+            if modInstances:
+                modifiers[phase] = modInstances
         return ModifiedAction(**kwargs)
 
     def _modifiersFromRow(self, row):
