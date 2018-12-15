@@ -1,4 +1,9 @@
-from movelister import error
+def getActiveSheet(document):
+    '''
+    This function gets the sheet that is currently active in the document.
+    '''
+    activeSheet = document.getCurrentController().getActiveSheet()
+    return activeSheet
 
 
 def getHeaderRowPosition(sheetData):
@@ -46,18 +51,12 @@ def getCellColorsFromColumn(sheet, column, top, bottom):
     return colors
 
 
-def getActiveViewName(document):
+def getViewName(string):
     '''
-    This function splices the string between () from the current active sheet.
+    This function splits the contents of a string that's inside parentheses, usually a View name.
     Used in generating Details view.
     '''
-    activeSheet = document.getCurrentController().getActiveSheet()
-    activeSheetName = activeSheet.Name
-
-    # A bit of error checking.
-    error.sheetNameSplitCheck(activeSheetName)
-
-    splitName1 = activeSheetName.split('(')
+    splitName1 = string.split('(')
     splitName2 = splitName1[1].split(')')
 
     return splitName2[0]

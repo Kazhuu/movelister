@@ -3,14 +3,14 @@ from movelister.model import ModifiedAction
 from movelister.sheet import Overview, OVERVIEW_SHEET_NAME
 
 
-class OverViewTestCase(OfficeTestCase):
+class OverviewTestCase(OfficeTestCase):
 
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
         cls.overview = Overview.fromSheet(OVERVIEW_SHEET_NAME)
 
-    def testOverViewInstance(self):
+    def testOverviewInstance(self):
         self.assertIsInstance(self.overview.data, list)
         self.assertTrue(self.overview.data)
         self.assertEqual(self.overview.name, OVERVIEW_SHEET_NAME)

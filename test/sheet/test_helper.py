@@ -6,9 +6,11 @@ from movelister.sheet.master import COLOR_COLUMN, DATA_BEGIN_ROW
 
 class SheetHelperTestCase(OfficeTestCase):
 
+    def setUp(self):
+        self.master = Master(MASTER_LIST_SHEET_NAME)
+
     def testGetCellColorsFromColumn(self):
-        masterSheet = Master(MASTER_LIST_SHEET_NAME)
-        colors = helper.getCellColorsFromColumn(masterSheet.sheet, COLOR_COLUMN, DATA_BEGIN_ROW, len(masterSheet.data))
+        colors = helper.getCellColorsFromColumn(self.master.sheet, COLOR_COLUMN, DATA_BEGIN_ROW, len(self.master.data))
         self.assertTrue(colors)
         for color in colors:
             self.assertIsInstance(color, int)

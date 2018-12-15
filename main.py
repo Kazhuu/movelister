@@ -43,11 +43,14 @@ def generateOrRefreshDetails(*args):
     pointing the code to the correct List before the code is ran.
     """
     document = Context.getDocument()
-    inputSheet = Sheet.getInputSheet()
-    detailsSheet = Sheet.getDetailsSheet()
-    modifierSheet = Sheet.getModifierSheet()
+    # inputSheet = Sheet.getInputSheet()
+    # detailsSheet = Sheet.getDetailsSheet()
+    # modifierSheet = Sheet.getModifierSheet()
 
-    name = helper.getActiveViewName(document)
+    activeSheet = helper.getActiveSheet(document)
+    error.sheetNameSplitCheck(activeSheet.Name)
+    name = helper.getViewName(activeSheet.Name)
+
     sheetName = 'Details (' + name + ')'
     templateName = 'Details Template'
 
@@ -259,4 +262,4 @@ def testingClasses():
 # Run when executed from the command line.
 if __name__ == '__main__':
     Context.setup(host='localhost', port=2002)
-    testingClasses()
+    generateOrRefreshDetails()

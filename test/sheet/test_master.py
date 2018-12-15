@@ -6,27 +6,25 @@ from movelister.sheet.master import COLOR_COLUMN, DATA_BEGIN_ROW
 
 class MasterTestCase(OfficeTestCase):
 
+    def setUp(self):
+        self.master = Master(MASTER_LIST_SHEET_NAME)
+        self.actions = self.master.getActions()
+
     def testMasterInstance(self):
-        master = Master(MASTER_LIST_SHEET_NAME)
-        self.assertIsInstance(master.data, list)
-        self.assertEqual(master.name, MASTER_LIST_SHEET_NAME)
-        self.assertEqual(len(master.actionColors), len(master.dataRows))
+        self.assertIsInstance(self.master.data, list)
+        self.assertEqual(self.master.name, MASTER_LIST_SHEET_NAME)
+        self.assertEqual(len(self.master.actionColors), len(self.master.dataRows))
 
     def testGetActions(self):
-        master = Master(MASTER_LIST_SHEET_NAME)
-        actions = master.getActions()
-        self.assertIsInstance(actions, list)
-        self.assertTrue(actions)
-        for action in actions:
+        self.assertIsInstance(self.actions, list)
+        self.assertTrue(self.actions)
+        for action in self.actions:
             self.assertIsInstance(action, Action)
 
     def testGetDefaultActions(self):
-        master = Master(MASTER_LIST_SHEET_NAME)
-        actions = master.getActions('Default')
-        self.assertNotEqual(len(master.getActions()), len(actions))
+        actions = self.master.getActions('Default')
+        self.assertNotEqual(len(self.master.getActions()), len(actions))
 
     def testActionColor(self):
-        master = Master(MASTER_LIST_SHEET_NAME)
-        actions = master.getActions()
-        firstActionColor = master.sheet.getCellByPosition(COLOR_COLUMN, DATA_BEGIN_ROW).CellBackColor
-        self.assertEqual(actions[0].color, firstActionColor)
+        firstActionColor = self.master.sheet.getCellByPosition(COLOR_COLUMN, DATA_BEGIN_ROW).CellBackColor
+        self.assertEqual(self.actions[0].color, firstActionColor)

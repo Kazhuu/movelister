@@ -24,9 +24,11 @@ class Inputs:
         self.dataRows = self.data[DATA_BEGIN_ROW:]
         self.inputColors = helper.getCellColorsFromColumn(self.sheet, COLOR_COLUMN, DATA_BEGIN_ROW, len(self.data))
 
-    def getInputList(self, name):
+    def getInputs(self, listName=None):
         inputGroup = []
-        rows = filter.filterRows(lambda row: row[INPUT_LIST_NAME_COLUMN] == name, self.dataRows)
+        rows = self.dataRows
+        if listName:
+            rows = filter.filterRows(lambda row: row[INPUT_LIST_NAME_COLUMN] == listName, self.dataRows)
         for index, row in enumerate(rows):
             if self._isValidRow(row):
                 kwargs = self._rowToKwargs(row)
