@@ -13,8 +13,8 @@ FRAMES_COLUMN = 2
 PHASE_COLUMN = 3
 DEFAULT_COLUMN = 4
 
-MODIFIER_START_COLUM_NAME = 'DEF'
-MODIFIER_END_COLUM_NAME = 'Notes 1'
+MODIFIER_START_COLUMN_NAME = 'DEF'
+MODIFIER_END_COLUMN_NAME = 'Notes 1'
 
 
 class Overview:
@@ -38,8 +38,8 @@ class Overview:
         self.data = cursor.getSheetContent(self.sheet)
         self.dataHeader = self.data[HEADER_ROW]
         self.dataRows = self.data[DATA_BEGIN_ROW:]
-        self.modifierStartColumn = self.dataHeader.index(MODIFIER_START_COLUM_NAME) + 1
-        self.modifierEndColumn = self.dataHeader.index(MODIFIER_END_COLUM_NAME)
+        self.modifierStartColumn = self.dataHeader.index(MODIFIER_START_COLUMN_NAME) + 1
+        self.modifierEndColumn = self.dataHeader.index(MODIFIER_END_COLUMN_NAME)
         self.modifiers = self.dataHeader[self.modifierStartColumn:self.modifierEndColumn]
         self.actionNames = self._getUniqueActionNames()
         self.modifiedActions = self._readModifiedActions()

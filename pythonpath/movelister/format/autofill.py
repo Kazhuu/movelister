@@ -39,7 +39,7 @@ def autoFillInputs(inputList):
 
 def generateDefaultInputs(inputList):
     '''
-    A function that creates an Input List called 'Default' if the Input List is currently empty.
+    A function that creates an Input List called 'Default' if the Inputs is currently empty.
     '''
     if len(inputList.dataRows) == 0:
         length = len(inputList.data[0])

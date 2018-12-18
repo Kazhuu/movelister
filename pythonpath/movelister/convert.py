@@ -11,18 +11,6 @@ def cellRangeAddressIntoCellRange(cra):
     return range
 
 
-def convertIntoNestedTuple(list):
-    """
-    This code converts an 1d List into a 2d Tuple that is compatible with a data array of a sheet.
-    """
-    tempTuple = tuple(list)
-    tempList = [[]]
-    tempList[0] = tempTuple
-    tempTuple2 = tuple(tempList)
-
-    return tempTuple2
-
-
 def turnArraySideways(array):
     """
     This code turns a 2d-array so that its columns become rows and vice-versa.

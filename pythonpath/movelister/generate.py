@@ -57,30 +57,3 @@ def generateOverview(document, modifierSheet, aboutSheet, sheetName):
     # To do: Set freeze? (model).freezeAtPosition(nCol, nRow)
 
     # To DO: create a button for user interface?
-
-
-def generateDetailsSheet(document, aboutSheet, sheetName):
-    """
-    This function generates an entire Mechanics / Details List from nothing.
-    """
-    document.Sheets.insertNewByName(sheetName, 1)
-    newDetailsSheet = document.Sheets.getByIndex(1)
-
-    # TO DO: the rest.
-
-
-def generateEmptyTupleRow(length):
-    """
-    The purpose of this code is to create an empty row that is as wide as the current
-    sheet and also compatible with the cursor module.
-    """
-    emptyList = []
-    x = length
-
-    for i in range(x):
-        emptyList.append([])
-
-    emptyTupleRow = convert.convertIntoNestedTuple(emptyList)
-
-    print(emptyTupleRow)
-    return emptyTupleRow

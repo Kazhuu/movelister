@@ -13,10 +13,10 @@ if __name__ == '__main__':
     sys.path.append(os.path.join(os.path.dirname('__file__'), 'pythonpath'))
 
 from movelister.core import Context, cursor # noqa
-from movelister.format import autofill # noqa
-from movelister.sheet import helper, Inputs, Master, Modifiers, Sheet # noqa
+from movelister.format import autofill, validation # noqa
+from movelister.sheet import helper, Inputs, Master, Modifiers, Overview, Sheet # noqa
 from movelister import color, conditionalFormat, details, error, generate, \
-    overview, modifierList, namedRanges, selection, ui, resultsList, validation  # noqa
+    overview, modifierList, namedRanges, selection, ui, resultsList  # noqa
 
 # Setup context automatically when macro is run from the LibreOffice.
 if __name__ != '__main__':
@@ -120,15 +120,6 @@ def generateOrRefreshOverview(*args):
     # Leave it up to the user to move it?
 
 
-def selectionTest():
-    """
-    A quick test for getting active Selection from the sheet.
-    """
-    selectionA = selection.getCurrentSelection()
-    result = selection.determineSelectionType(selectionA)
-    print(result)
-
-
 def namedRangeTest():
     """
     Quick tests with named ranges.
@@ -188,44 +179,25 @@ def refreshModifiers():
     the user has set inside Modifier List. This includes the number and position of
     various modifiers as well as their color.
     """
-    overviewSheet = Sheet.getByName('Overview (Default)')
-    modifierSheet = Sheet.getByName('Modifier List')
+    overviewSheet = Overview('Overview (Default)')
+    modifierList = Modifiers('Modifiers')
 
-    overviewModifierData = cursor.getSheetContent(Sheet.getByName('Overview (Default)'))
+    # overviewModifierData = cursor.getSheetContent(Sheet.getByName('Overview (Default)'))
 
     # Getting the list of modifiers from a chosen Overview.
-    overviewModifiers = overview.getOverviewModifiers(overviewModifierData)
+    # overviewModifiers = overview.getOverviewModifiers(overviewModifierData)
 
-    # Getting the list of modifiers from the Modifiers list.
-    # A separate array is created for the cell background color data.
-    modifierListModifiers = modifierList.getModifierListProjection(modifierSheet)
-    modifierColors = helper.getColorArray(modifierSheet)
+    # Getting the list of modifiers from the Modifier list.
+    modifiersListModifiers = modifierList.getModifiers()
 
     # Compare if Overview modifiers match Modifier List modifiers. Returns False if the two lists are different.
-    result = error.compareModifierLists(modifierListModifiers, overviewModifiers)
+    # result = error.compareModifierLists(modifierListModifiers, overviewModifiers)
 
     # Function compares this data to the Modifiers columns in an Overview.
     # It then deletes unnecessary Modifier columns or add necessary Modifier Columns in the Overview.
     # It then colors the cell background of the columns.
-    if result is False:
-        overview.updateOverviewModifiers(overviewSheet, overviewModifiers, modifierListModifiers, modifierColors)
-
-
-def createConditionalFormatting():
-    """
-    A test function for just setting up quick conditional formatting.
-    """
-    detailsSheet = Sheet.getDetailsSheet()
-    resultsSheet = Sheet.getResultSheet()
-
-    # A function that gets all relevant data from the Results Sheet.
-    resultsDataArray = resultsList.getResultsList(resultsSheet)
-    resultsColors = helper.getColorArray(resultsSheet)
-
-    # A function that uses the gathered data and generates the formatting.
-    # Note: still incomplete! See conditionalFormat.py
-    conditionalFormat.applyConditionalFormatting(detailsSheet, resultsDataArray, resultsColors)
-    # conditionalFormat.clearConditionalFormatting(detailsSheet)
+    # if result is False:
+        # overview.updateOverviewModifiers(overviewSheet, overviewModifiers, modifierListModifiers, modifierColors)
 
 
 def createValidation():
@@ -248,6 +220,9 @@ def testingClasses():
     autofill.generateDefaultInputs(inputList)
     autofill.autoFillInputs(inputList)
     inputs = inputList.getInputs('Default')
+
+    overviewSheet = Overview('Overview (Default)')
+    # Overview still WIP
 
     for row in actions:
         print(row.__dict__)

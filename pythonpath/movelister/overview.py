@@ -288,23 +288,6 @@ def makePrereqsString(currentActionPrereqs, prereqsString):
     return prereqsString
 
 
-def getOverviewModifiers(overviewData):
-    """
-    This function returns the list of modifiers from a chosen Overview as a list.
-    It will probably be replaced by a function from Overview class sooner or later.
-
-    Note: broken at the moment. Replace with Overview class ASAP.
-    Method implemented. This can be deleted when deleted from main.py
-    """
-    headerRowPosition = helper.getHeaderRowPosition(overviewData)
-    topRowArray = cursor.getRow(overviewData, headerRowPosition)
-    startCol = helper.getColumnPosition(overviewData, 'DEF') + 1
-    endCol = helper.getColumnPosition(overviewData, 'Notes 1')
-    overviewModifiers = topRowArray[startCol:endCol]
-
-    return overviewModifiers
-
-
 def updateOverviewModifiers(overviewSheet, overviewModifiers, modifierListModifiers, modifierListColors):
     """
     This function updates the section with Modifiers in the Master List using the data from Modifier List.
