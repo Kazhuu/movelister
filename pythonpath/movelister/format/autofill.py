@@ -1,10 +1,21 @@
-def autoFillMasterList():
+from movelister.core import cursor
+from movelister.sheet import master
+
+
+def autoFillMasterList(masterList):
     '''
-    A function that goes through the 'name' column of Master List. When finding a name, it will
-    check if other fields on the same row have empty fields to them. If View or Input List fields
-    are empty, the function adds 'Default'. If Phases field is empty, the function adds 1.
+    This function looks at the rows in Master List and fills certain empty fields.
+    It's mainly for user convenience if they work with 'Default' values.
     '''
-    print()
+    for row in masterList.data[master.DATA_BEGIN_ROW:]:
+        if row[master.NAME_COLUMN] != '':
+            if row[master.VIEW_COLUMN] == '':
+                row[master.VIEW_COLUMN] = 'Default'
+            if row[master.INPUTS_COLUMN] == '':
+                row[master.INPUTS_COLUMN] = 'Default'
+            if row[master.PHASE_COLUMN] == '':
+                row[master.PHASE_COLUMN] = '0'
+    cursor.setSheetContent(masterList.sheet, masterList.data)
 
 
 def autoFillOverview():

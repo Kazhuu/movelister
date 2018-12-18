@@ -13,6 +13,7 @@ if __name__ == '__main__':
     sys.path.append(os.path.join(os.path.dirname('__file__'), 'pythonpath'))
 
 from movelister.core import Context, cursor # noqa
+from movelister.format import autofill # noqa
 from movelister.sheet import helper, Inputs, Master, Modifiers, Sheet # noqa
 from movelister import color, conditionalFormat, details, error, generate, \
     overview, modifierList, namedRanges, selection, ui, resultsList, validation  # noqa
@@ -237,13 +238,14 @@ def createValidation():
 
 def testingClasses():
     masterList = Master('Master List')
+    autofill.autoFillMasterList(masterList)
     actions = masterList.getActions('Default')
 
     modifierList = Modifiers('Modifiers')
     modifiers = modifierList.getModifiers()
 
     inputList = Inputs('Inputs')
-    inputs = inputList.getInputList('Default')
+    inputs = inputList.getInputs('Default')
 
     for row in actions:
         print(row.__dict__)
@@ -262,4 +264,4 @@ def testingClasses():
 # Run when executed from the command line.
 if __name__ == '__main__':
     Context.setup(host='localhost', port=2002)
-    generateOrRefreshDetails()
+    testingClasses()
