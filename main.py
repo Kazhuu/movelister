@@ -245,6 +245,8 @@ def testingClasses():
     modifiers = modifierList.getModifiers()
 
     inputList = Inputs('Inputs')
+    autofill.generateDefaultInputs(inputList)
+    autofill.autoFillInputs(inputList)
     inputs = inputList.getInputs('Default')
 
     for row in actions:
@@ -258,7 +260,6 @@ def testingClasses():
 
     sheetData = cursor.getSheetContent(Sheet.getByName('Master List'))
     number = helper.getColumnPosition(sheetData, 'Action Name')
-    print(number)
 
 
 # Run when executed from the command line.

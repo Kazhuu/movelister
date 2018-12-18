@@ -60,3 +60,16 @@ def getViewName(string):
     splitName2 = splitName1[1].split(')')
 
     return splitName2[0]
+
+
+def createEmptyRow(length):
+    '''
+    The purpose of this function is to generate an empty list that is as long as specified
+    as well as compatible with cursor functions. Used in expanding existing data rows arrays.
+    '''
+    emptyList = []
+
+    for i in range(length):
+        emptyList.append('')
+
+    return emptyList
