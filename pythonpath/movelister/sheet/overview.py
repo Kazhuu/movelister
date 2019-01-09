@@ -22,6 +22,7 @@ class Overview:
     def __init__(self, sheetName):
         # TODO: Init instance variables here to default values.
         self.name = sheetName
+        self.modifiers = []
         self.modifiedActions = []
 
     @classmethod
@@ -40,7 +41,7 @@ class Overview:
         self.dataRows = self.data[DATA_BEGIN_ROW:]
         self.modifierStartColumn = self.dataHeader.index(MODIFIER_START_COLUMN_NAME) + 1
         self.modifierEndColumn = self.dataHeader.index(MODIFIER_END_COLUMN_NAME)
-        self.modifiers = self.dataHeader[self.modifierStartColumn:self.modifierEndColumn]
+        self.modifiers = self._readModifiers()
         self.actionNames = self._getUniqueActionNames()
         self.modifiedActions = self._readModifiedActions()
 
@@ -49,6 +50,13 @@ class Overview:
         for action in self.actions:
             data.append([action.name, action.phases])
         return data
+
+    def _readModifiers(self):
+        modifiers = []
+        mods = self.dataHeader[self.modifierStartColumn:self.modifierEndColumn]
+        for mod in mods:
+            modifiers.append(Modifier(mod))
+        return modifiers
 
     def _getUniqueActionNames(self):
         names = []
@@ -79,8 +87,9 @@ class Overview:
 
     def _modifiersFromRow(self, row):
         mods = row[self.modifierStartColumn:self.modifierEndColumn]
+        modifierNames = self.dataHeader[self.modifierStartColumn:self.modifierEndColumn]
         modifiers = []
         for index, value in enumerate(mods):
             if value != '':
-                modifiers.append(Modifier(self.modifiers[index]))
+                modifiers.append(Modifier(modifierNames[index]))
         return modifiers

@@ -15,10 +15,10 @@ class OverviewTestCase(OfficeTestCase):
         self.assertTrue(self.overview.data)
         self.assertEqual(self.overview.name, OVERVIEW_SHEET_NAME)
 
-    def testModifiersNames(self):
+    def testModifiers(self):
         names = ['WPN1', 'WPN2', 'WPN3', 'Super', 'FL1', 'FL2', 'PG', 'LAM', 'PAM', 's b', 't b']
         modifiers = self.overview.modifiers
-        self.assertTrue(all(name in modifiers for name in names))
+        self.assertTrue(all(modifier.name in names for modifier in modifiers))
 
     def testActionNames(self):
         actionNames = self.overview.actionNames

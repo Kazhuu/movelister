@@ -51,3 +51,10 @@ class SheetTestCase(OfficeTestCase):
         rightOfName = 'fail'
         with self.assertRaises(ValueError):
             Sheet.newSheetRightOf(rightOfName, 'will fail')
+
+    def testNewOverview(self):
+        name = 'test'
+        overViewName = 'Overview ({0})'.format(name)
+        sheet = Sheet.newOverview(name)
+        self.assertEqual(sheet.Name, overViewName)
+        self.assertTrue(overViewName in Sheet.getSheetNames())

@@ -1,7 +1,10 @@
 from movelister.core import Context
 
 
-OVERVIEW_SHEET_NAME = 'Overview (Default)'
+OVERVIEW_TEMPLATE_NAME = 'Overview Template'
+DETAILS_TEMPLATE_NAME = 'Details Template'
+
+OVERVIEW_SHEET_NAME = 'Overview'
 MASTER_LIST_SHEET_NAME = 'Master List'
 INPUT_LIST_SHEET_NAME = 'Inputs'
 DETAILS_SHEET_NAME = 'Details (Old)'
@@ -17,6 +20,7 @@ class Sheet():
     document.
     """
 
+    # TODO: Delete old sheet functions that are not needed anymore.
     @classmethod
     def getOverviewSheet(cls):
         return Context.getDocument().Sheets.getByName(OVERVIEW_SHEET_NAME)
@@ -57,6 +61,13 @@ class Sheet():
         return Context.getDocument().Sheets.getByName(name)
 
     @classmethod
+    def getByPosition(cls, position):
+        """
+        Return sheet by given position.
+        """
+        return Context.getDocument().Sheets.getByIndex(position)
+
+    @classmethod
     def newSheet(cls, name, position):
         """
         Creates new sheet with given name to given position and returns it.
@@ -73,6 +84,17 @@ class Sheet():
     def newSheetLeftOf(cls, leftOfName, newName):
         position = cls.getPosition(leftOfName)
         return cls.newSheet(newName, position)
+
+    @classmethod
+    def newOverview(cls, name):
+        """
+        Insert new overview sheet right of master sheet with given name put
+        inside of parentheses. Returns created sheet.
+        """
+        position = cls.getPosition(MASTER_LIST_SHEET_NAME) + 1
+        sheetName = '{0} ({1})'.format(OVERVIEW_SHEET_NAME, name)
+        Context.getDocument().Sheets.copyByName(OVERVIEW_TEMPLATE_NAME, sheetName, position)
+        return cls.getByPosition(position)
 
     @classmethod
     def getPosition(cls, name):
