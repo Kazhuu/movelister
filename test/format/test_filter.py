@@ -1,5 +1,5 @@
 from test import OfficeTestCase
-from movelister.sheet import Master, MASTER_LIST_SHEET_NAME, Overview, OVERVIEW_SHEET_NAME
+from movelister.sheet import Master, MASTER_LIST_SHEET_NAME, Overview
 from movelister.sheet.master import VIEW_COLUMN
 from movelister.sheet.overview import NAME_COLUMN
 from movelister.format import filter
@@ -18,7 +18,7 @@ class FilterTestCase(OfficeTestCase):
         """
         Test that rows from overview are grouped together with same action name with
         """
-        overview = Overview.fromSheet(OVERVIEW_SHEET_NAME)
+        overview = Overview.fromSheet('Overview (default)')
         actionNames = overview.actionNames
         column = NAME_COLUMN
         groups = filter.groupRows(overview.dataRows, column)

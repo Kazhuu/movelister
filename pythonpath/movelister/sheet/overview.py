@@ -45,12 +45,6 @@ class Overview:
         self.actionNames = self._getUniqueActionNames()
         self.modifiedActions = self._readModifiedActions()
 
-    def getSheetContent(self):
-        data = []
-        for action in self.actions:
-            data.append([action.name, action.phases])
-        return data
-
     def _readModifiers(self):
         modifiers = []
         mods = self.dataHeader[self.modifierStartColumn:self.modifierEndColumn]

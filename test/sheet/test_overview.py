@@ -1,6 +1,6 @@
 from test import OfficeTestCase
 from movelister.model import ModifiedAction
-from movelister.sheet import Overview, OVERVIEW_SHEET_NAME
+from movelister.sheet import Overview
 
 
 class OverviewTestCase(OfficeTestCase):
@@ -8,12 +8,13 @@ class OverviewTestCase(OfficeTestCase):
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
-        cls.overview = Overview.fromSheet(OVERVIEW_SHEET_NAME)
+        cls.overviewName = 'Overview (default)'
+        cls.overview = Overview.fromSheet(cls.overviewName)
 
     def testOverviewInstance(self):
         self.assertIsInstance(self.overview.data, list)
         self.assertTrue(self.overview.data)
-        self.assertEqual(self.overview.name, OVERVIEW_SHEET_NAME)
+        self.assertEqual(self.overview.name, self.overviewName)
 
     def testModifiers(self):
         names = ['WPN1', 'WPN2', 'WPN3', 'Super', 'FL1', 'FL2', 'PG', 'LAM', 'PAM', 's b', 't b']
