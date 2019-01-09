@@ -1,7 +1,6 @@
 from test import OfficeTestCase
 from movelister.sheet import Modifiers, MODIFIER_LIST_SHEET_NAME
 from movelister.model import Modifier
-from movelister.sheet.modifiers import COLOR_COLUMN, DATA_BEGIN_ROW
 
 
 class ModifiersTestCase(OfficeTestCase):
@@ -16,5 +15,5 @@ class ModifiersTestCase(OfficeTestCase):
             self.assertIsInstance(mod, Modifier)
 
     def testModifierColor(self):
-        firstActionColor = self.modifier.sheet.getCellByPosition(COLOR_COLUMN, DATA_BEGIN_ROW).CellBackColor
+        firstActionColor = self.modifier.sheet.getCellByPosition(self.modifier.colorColumnIndex, self.modifier.dataBeginRow).CellBackColor
         self.assertEqual(self.modifiers[0].color, firstActionColor)

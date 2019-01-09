@@ -2,16 +2,8 @@ from movelister.core import cursor
 from .sheet import Sheet
 from movelister.format import filter
 from movelister.model import Modifier, ModifiedAction
+from movelister.sheet import helper
 
-
-HEADER_ROW = 1
-DATA_BEGIN_ROW = 2
-
-NAME_COLUMN = 0
-HIT_COLUMN = 1
-FRAMES_COLUMN = 2
-PHASE_COLUMN = 3
-DEFAULT_COLUMN = 4
 
 MODIFIER_START_COLUMN_NAME = 'DEF'
 MODIFIER_END_COLUMN_NAME = 'Notes 1'
@@ -37,8 +29,15 @@ class Overview:
     def readSheetContent(self):
         self.sheet = Sheet.getByName(self.name)
         self.data = cursor.getSheetContent(self.sheet)
-        self.dataHeader = self.data[HEADER_ROW]
-        self.dataRows = self.data[DATA_BEGIN_ROW:]
+        self.headerRowIndex = helper.getHeaderRowPosition(self.data)
+        self.dataBeginRow = self.headerRowIndex + 1
+        self.nameColumnIndex = helper.getColumnPosition(self.data, 'Action Name')
+        self.hitColumnIndex = helper.getColumnPosition(self.data, 'Hit')
+        self.framesColumnIndex = helper.getColumnPosition(self.data, 'Frames')
+        self.phaseColumnIndex = helper.getColumnPosition(self.data, 'Phase')
+        self.defaultColumnIndex = helper.getColumnPosition(self.data, 'DEF')
+        self.dataHeader = self.data[self.headerRowIndex]
+        self.dataRows = self.data[self.dataBeginRow:]
         self.modifierStartColumn = self.dataHeader.index(MODIFIER_START_COLUMN_NAME) + 1
         self.modifierEndColumn = self.dataHeader.index(MODIFIER_END_COLUMN_NAME)
         self.modifiers = self._readModifiers()
@@ -54,25 +53,25 @@ class Overview:
 
     def _getUniqueActionNames(self):
         names = []
-        for row in filter.filterRows(lambda row: row[NAME_COLUMN] != '', self.dataRows):
-            if row[NAME_COLUMN] not in names:
-                names.append(row[NAME_COLUMN])
+        for row in filter.filterRows(lambda row: row[self.nameColumnIndex] != '', self.dataRows):
+            if row[self.nameColumnIndex] not in names:
+                names.append(row[self.nameColumnIndex])
         return names
 
     def _readModifiedActions(self):
         modifiedActions = []
-        groups = filter.groupRows(self.dataRows, NAME_COLUMN)
+        groups = filter.groupRows(self.dataRows, self.nameColumnIndex)
         for group in groups:
             modifiedActions.append(self._rowGroupToModifiedAction(group))
         return modifiedActions
 
     def _rowGroupToModifiedAction(self, rowGroup):
         modifiers = {}
-        kwargs = {'name': rowGroup[0][NAME_COLUMN], 'phases': len(rowGroup), 'modifiers': modifiers}
+        kwargs = {'name': rowGroup[0][self.nameColumnIndex], 'phases': len(rowGroup), 'modifiers': modifiers}
         for phase, row in enumerate(rowGroup):
-            if row[HIT_COLUMN] != '':
+            if row[self.hitColumnIndex] != '':
                 kwargs['hitPhase'] = phase
-            if row[DEFAULT_COLUMN] != '':
+            if row[self.defaultColumnIndex] != '':
                 kwargs['default'] = True
             modInstances = self._modifiersFromRow(row)
             if modInstances:
