@@ -1,5 +1,5 @@
 from movelister.core import cursor
-from movelister.sheet import helper, master, inputs
+from movelister.sheet import helper
 
 
 def autoFillMasterList(masterList):
@@ -7,14 +7,14 @@ def autoFillMasterList(masterList):
     This function looks at the rows in Master List and fills certain empty fields.
     It's mainly for user convenience if they work with 'Default' values.
     '''
-    for row in masterList.data[master.DATA_BEGIN_ROW:]:
-        if row[master.NAME_COLUMN] != '':
-            if row[master.VIEW_COLUMN] == '':
-                row[master.VIEW_COLUMN] = 'Default'
-            if row[master.INPUTS_COLUMN] == '':
-                row[master.INPUTS_COLUMN] = 'Default'
-            if row[master.PHASE_COLUMN] == '':
-                row[master.PHASE_COLUMN] = '0'
+    for row in masterList.data[masterList.dataBeginRow:]:
+        if row[masterList.nameColumnIndex] != '':
+            if row[masterList.viewColumnIndex] == '':
+                row[masterList.viewColumnIndex] = 'Default'
+            if row[masterList.inputsColumnIndex] == '':
+                row[masterList.inputsColumnIndex] = 'Default'
+            if row[masterList.phaseColumnIndex] == '':
+                row[masterList.phaseColumnIndex] = '0'
     cursor.setSheetContent(masterList.sheet, masterList.data)
 
 
@@ -30,10 +30,10 @@ def autoFillInputs(inputList):
     A function that checks if Input List column is properly filled in Inputs before generating.
     If a row has a Name but no Input List, then the latter field is filled with 'Default'.
     '''
-    for row in inputList.data[inputs.DATA_BEGIN_ROW:]:
-        if row[inputs.NAME_COLUMN] != '':
-            if row[inputs.INPUT_LIST_NAME_COLUMN] == '':
-                row[inputs.INPUT_LIST_NAME_COLUMN] = 'Default'
+    for row in inputList.data[inputList.dataBeginRow:]:
+        if row[inputList.nameColumnIndex] != '':
+            if row[inputList.inputsColumnIndex] == '':
+                row[inputList.inputsColumnIndex] = 'Default'
     cursor.setSheetContent(inputList.sheet, inputList.data)
 
 
@@ -50,14 +50,14 @@ def generateDefaultInputs(inputList):
         input5 = helper.createEmptyRow(length)
         input6 = helper.createEmptyRow(length)
 
-        input1[inputs.NAME_COLUMN] = 'Letting go of input'
-        input2[inputs.NAME_COLUMN] = 'Move'
-        input2[inputs.INPUT_COLUMN] = 'WASD / L-stick'
-        input3[inputs.NAME_COLUMN] = 'Jump'
-        input3[inputs.INPUT_COLUMN] = 'Space / X'
-        input4[inputs.NAME_COLUMN] = 'Roll'
-        input5[inputs.NAME_COLUMN] = 'Attack'
-        input6[inputs.NAME_COLUMN] = 'Block'
+        input1[inputList.nameColumnIndex] = 'Letting go of input'
+        input2[inputList.nameColumnIndex] = 'Move'
+        input2[inputList.buttonColumnIndex] = 'WASD / L-stick'
+        input3[inputList.nameColumnIndex] = 'Jump'
+        input3[inputList.buttonColumnIndex] = 'Space / X'
+        input4[inputList.nameColumnIndex] = 'Roll'
+        input5[inputList.nameColumnIndex] = 'Attack'
+        input6[inputList.nameColumnIndex] = 'Block'
 
         inputList.data.append(input1)
         inputList.data.append(input2)

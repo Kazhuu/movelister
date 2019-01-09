@@ -1,7 +1,6 @@
 from test import OfficeTestCase
 from movelister.sheet import Inputs, INPUT_LIST_SHEET_NAME
 from movelister.model import Input
-from movelister.sheet.inputs import COLOR_COLUMN, DATA_BEGIN_ROW
 
 
 class InputsTestCase(OfficeTestCase):
@@ -16,5 +15,5 @@ class InputsTestCase(OfficeTestCase):
             self.assertIsInstance(mod, Input)
 
     def testInputColor(self):
-        firstActionColor = self.input.sheet.getCellByPosition(COLOR_COLUMN, DATA_BEGIN_ROW).CellBackColor
+        firstActionColor = self.input.sheet.getCellByPosition(self.input.colorColumnIndex, self.input.dataBeginRow).CellBackColor
         self.assertEqual(self.inputList[0].color, firstActionColor)

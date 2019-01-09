@@ -21,15 +21,22 @@ class Inputs:
         self.name = sheetName
         self.sheet = Sheet.getByName(sheetName)
         self.data = cursor.getSheetContent(self.sheet)
-        self.dataHeader = self.data[HEADER_ROW]
-        self.dataRows = self.data[DATA_BEGIN_ROW:]
-        self.inputColors = helper.getCellColorsFromColumn(self.sheet, COLOR_COLUMN, DATA_BEGIN_ROW, len(self.data))
+        self.headerRowIndex = helper.getHeaderRowPosition(self.data)
+        self.dataBeginRow = self.headerRowIndex + 1
+        self.inputsColumnIndex = helper.getColumnPosition(self.data, 'Input List')
+        self.nameColumnIndex = helper.getColumnPosition(self.data, 'Input Name')
+        self.buttonColumnIndex = helper.getColumnPosition(self.data, 'Button')
+        self.inputGroupIndex = helper.getColumnPosition(self.data, 'Group')
+        self.colorColumnIndex = helper.getColumnPosition(self.data, 'Color')
+        self.dataHeader = self.data[self.headerRowIndex]
+        self.dataRows = self.data[self.dataBeginRow:]
+        self.inputColors = helper.getCellColorsFromColumn(self.sheet, self.colorColumnIndex, self.dataBeginRow, len(self.data))
 
     def getInputs(self, listName=None):
         inputGroup = []
         rows = self.dataRows
         if listName:
-            rows = filter.filterRows(lambda row: row[INPUT_LIST_NAME_COLUMN] == listName, self.dataRows)
+            rows = filter.filterRows(lambda row: row[self.inputsColumnIndex] == listName, self.dataRows)
         for index, row in enumerate(rows):
             if self._isValidRow(row):
                 kwargs = self._rowToKwargs(row)
@@ -38,10 +45,10 @@ class Inputs:
         return inputGroup
 
     def _isValidRow(self, row):
-        return row[NAME_COLUMN] != ''
+        return row[self.nameColumnIndex] != ''
 
     def _rowToKwargs(self, row):
-        kwargs = {'name': row[NAME_COLUMN]}
-        if row[INPUT_GROUP_COLUMN] != '':
-            kwargs['group'] = row[INPUT_GROUP_COLUMN]
+        kwargs = {'name': row[self.nameColumnIndex]}
+        if row[self.inputGroupIndex] != '':
+            kwargs['group'] = row[self.inputGroupIndex]
         return kwargs

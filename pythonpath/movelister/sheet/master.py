@@ -5,31 +5,28 @@ from movelister.model import Action
 from movelister.format import filter
 
 
-HEADER_ROW = 1
-DATA_BEGIN_ROW = 2
-
-VIEW_COLUMN = 0
-INPUTS_COLUMN = 1
-NAME_COLUMN = 2
-COLOR_COLUMN = 3
-PHASE_COLUMN = 4
-
-
 class Master:
 
     def __init__(self, sheetName):
         self.name = sheetName
         self.sheet = Sheet.getByName(sheetName)
         self.data = cursor.getSheetContent(self.sheet)
-        self.dataHeader = self.data[HEADER_ROW]
-        self.dataRows = self.data[DATA_BEGIN_ROW:]
-        self.actionColors = helper.getCellColorsFromColumn(self.sheet, COLOR_COLUMN, DATA_BEGIN_ROW, len(self.data))
+        self.headerRowIndex = helper.getHeaderRowPosition(self.data)
+        self.dataBeginRow = self.headerRowIndex + 1
+        self.viewColumnIndex = helper.getColumnPosition(self.data, 'View')
+        self.inputsColumnIndex = helper.getColumnPosition(self.data, 'Input List')
+        self.nameColumnIndex = helper.getColumnPosition(self.data, 'Action Name')
+        self.colorColumnIndex = helper.getColumnPosition(self.data, 'Color')
+        self.phaseColumnIndex = helper.getColumnPosition(self.data, 'Phases')
+        self.dataHeader = self.data[self.headerRowIndex]
+        self.dataRows = self.data[self.dataBeginRow:]
+        self.actionColors = helper.getCellColorsFromColumn(self.sheet, self.colorColumnIndex, self.dataBeginRow, len(self.data))
 
     def getActions(self, view=None):
         actions = []
         rows = self.dataRows
         if view:
-            rows = filter.filterRows(lambda row: row[VIEW_COLUMN] == view, self.dataRows)
+            rows = filter.filterRows(lambda row: row[self.viewColumnIndex] == view, self.dataRows)
         for index, row in enumerate(rows):
             if self._isValidRow(row):
                 kwargs = self._rowToKwargs(row)
@@ -38,12 +35,12 @@ class Master:
         return actions
 
     def _isValidRow(self, row):
-        return row[NAME_COLUMN] != ''
+        return row[self.nameColumnIndex] != ''
 
     def _rowToKwargs(self, row):
-        kwargs = {'name': row[NAME_COLUMN]}
-        if row[INPUTS_COLUMN] != '':
-            kwargs['inputs'] = row[INPUTS_COLUMN]
-        if row[PHASE_COLUMN] != '':
-            kwargs['phases'] = int(row[PHASE_COLUMN])
+        kwargs = {'name': row[self.nameColumnIndex]}
+        if row[self.inputsColumnIndex] != '':
+            kwargs['inputs'] = row[self.inputsColumnIndex]
+        if row[self.phaseColumnIndex] != '':
+            kwargs['phases'] = int(row[self.phaseColumnIndex])
         return kwargs
