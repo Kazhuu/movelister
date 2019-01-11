@@ -12,7 +12,6 @@ MODIFIER_END_COLUMN_NAME = 'Notes 1'
 class Overview:
 
     def __init__(self, sheetName):
-        # TODO: Init instance variables here to default values.
         self.name = sheetName
         self.modifiers = []
         self.modifiedActions = []
@@ -22,9 +21,6 @@ class Overview:
         instance = cls(sheetName)
         instance.readSheetContent()
         return instance
-
-    def setActions(self, actions):
-        self.actions = actions
 
     def readSheetContent(self):
         self.sheet = Sheet.getByName(self.name)
