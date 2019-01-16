@@ -1,10 +1,10 @@
 from test import OfficeTestCase
-from movelister.format import FormatModifiedAction
+from movelister.format import ModifiedActionFormatter
 from movelister.sheet import Overview
 from movelister.model import ModifiedAction, Modifier
 
 
-class FormatModifiedActionTestCase(OfficeTestCase):
+class ModifiedActionFormatterTestCase(OfficeTestCase):
 
     def setUp(self):
         super().setUp()
@@ -16,12 +16,11 @@ class FormatModifiedActionTestCase(OfficeTestCase):
         self.overview.modifiedActions = [self.modAct1]
 
     def testFormatingModifiedAction(self):
-        self.skipTest('modified action formatter not yet fully implemented')
-        formatter = FormatModifiedAction(self.overview, self.modAct1)
+        formatter = ModifiedActionFormatter(self.overview, self.modAct1, 3)
         data = formatter.format()
-        # name, hit, frames, phase, def, aa, bb, cc
+        # name, hit, frames, phase, def, aa, bb, cc, Notes1, Notes2, Notes3
         result = [
-            ['attack 1', '', '', '0', 'x', 'x', '', ''],
-            ['attack 1', 'x', '', '1', 'x', '', 'x', '']
+            ['attack 1', 'x', '', '0', 'x', 'x', '', '', '', '', ''],
+            ['attack 1', '', '', '1', 'x', '', 'x', '', '', '', '']
         ]
         self.assertEqual(data, result)
