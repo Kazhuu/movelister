@@ -13,7 +13,7 @@ class ModifiedActionFormatterTestCase(OfficeTestCase):
         self.modAct1 = ModifiedAction('attack 1', phases=2, hitPhase=1, default=True)
         self.modAct1.addModifier(0, Modifier('aa'))
         self.modAct1.addModifier(1, Modifier('bb'))
-        self.overview.modifiedActions = [self.modAct1]
+        self.overview.addModifiedAction(self.modAct1)
 
     def testFormatingModifiedAction(self):
         formatter = ModifiedActionFormatter(self.overview, self.modAct1, 3)

@@ -28,7 +28,7 @@ class OverviewFormatterTestCase(OfficeTestCase):
         modAct1 = ModifiedAction('attack 1', phases=2, hitPhase=1, default=True)
         modAct1.addModifier(0, Modifier('aa'))
         modAct1.addModifier(1, Modifier('bb'))
-        self.overview.modifiedActions = [modAct1]
+        self.overview.addModifiedAction(modAct1)
 
         formatter = OverviewFormatter(self.overview)
         data = formatter.formatModifiedActions()
@@ -46,7 +46,7 @@ class OverviewFormatterTestCase(OfficeTestCase):
         modAct1 = ModifiedAction('attack 1', phases=2, hitPhase=1, default=True)
         modAct1.addModifier(0, Modifier('aa'))
         modAct1.addModifier(1, Modifier('bb'))
-        self.overview.modifiedActions = [modAct1]
+        self.overview.addModifiedAction(modAct1)
 
         formatter = OverviewFormatter(self.overview)
         data = formatter.format()
@@ -70,7 +70,7 @@ class OverviewFormatterTestCase(OfficeTestCase):
         modAct1 = ModifiedAction('attack 1', phases=2, hitPhase=1, default=True)
         modAct1.addModifier(0, Modifier('aa'))
         modAct1.addModifier(1, Modifier('bb'))
-        self.overview.modifiedActions = [modAct1]
+        self.overview.addModifiedAction(modAct1)
 
         formatter = OverviewFormatter(self.overview)
         formatter.generate()
