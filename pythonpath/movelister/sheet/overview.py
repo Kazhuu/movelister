@@ -13,14 +13,36 @@ class Overview:
 
     def __init__(self, sheetName):
         self.name = sheetName
-        self.modifiers = []
-        self.modifiedActions = []
+        self._modifiers = []
+        self._modifiedActions = []
+
+    @property
+    def modifiers(self):
+        return self._modifiers
+
+    @modifiers.setter
+    def modifiers(self, value):
+        self._modifiers = value
 
     @classmethod
     def fromSheet(cls, sheetName):
         instance = cls(sheetName)
         instance.readSheetContent()
         return instance
+
+    @property
+    def modifiedActions(self):
+        return self._modifiedActions
+
+    @modifiedActions.setter
+    def modifiedAction(self, value):
+        self._modifiedActions = value
+
+    def addModifier(self, modifier):
+        self._modifiers.append(modifier)
+
+    def addModifiedAction(self, modifiedAction):
+        self._modifiedActions.append(modifiedAction)
 
     def readSheetContent(self):
         self.sheet = Sheet.getByName(self.name)
@@ -38,7 +60,7 @@ class Overview:
         self.modifierEndColumn = self.dataHeader.index(MODIFIER_END_COLUMN_NAME)
         self.modifiers = self._readModifiers()
         self.actionNames = self._getUniqueActionNames()
-        self.modifiedActions = self._readModifiedActions()
+        self._modifiedActions = self._readModifiedActions()
 
     def _readModifiers(self):
         modifiers = []

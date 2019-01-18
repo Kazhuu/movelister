@@ -1,5 +1,5 @@
 from test import OfficeTestCase
-from movelister.model import ModifiedAction
+from movelister.model import ModifiedAction, Modifier
 from movelister.sheet import Overview
 
 
@@ -20,6 +20,22 @@ class OverviewTestCase(OfficeTestCase):
         names = ['WPN1', 'WPN2', 'WPN3', 'Super', 'FL1', 'FL2', 'PG', 'LAM', 'PAM', 's b', 't b']
         modifiers = self.overview.modifiers
         self.assertTrue(all(modifier.name in names for modifier in modifiers))
+
+    def testAddModifier(self):
+        modifier1 = Modifier('mods1')
+        modifier2 = Modifier('mods2')
+        overview = Overview('test')
+        overview.addModifier(modifier1)
+        overview.addModifier(modifier2)
+        self.assertEqual(overview.modifiers, [modifier1, modifier2])
+
+    def testAddModifiedAction(self):
+        modifiedAction1 = ModifiedAction('modAction1')
+        modifiedAction2 = ModifiedAction('modAction2')
+        overview = Overview('test')
+        overview.addModifiedAction(modifiedAction1)
+        overview.addModifiedAction(modifiedAction2)
+        self.assertEqual(overview.modifiedActions, [modifiedAction1, modifiedAction2])
 
     def testActionNames(self):
         actionNames = self.overview.actionNames
