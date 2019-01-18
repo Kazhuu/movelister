@@ -1,6 +1,6 @@
 class ModifiedActionFormatter:
     """
-    Class responsible formatting ModifiedAction class intance to two
+    Class responsible for formatting ModifiedAction class instance to two
     dimensional array.
     """
 

@@ -1,5 +1,5 @@
 from test import OfficeTestCase
-from movelister import color
+from movelister.model import color
 from movelister.sheet import Sheet
 
 
