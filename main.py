@@ -12,10 +12,11 @@ import sys
 if __name__ == '__main__':
     sys.path.append(os.path.join(os.path.dirname('__file__'), 'pythonpath'))
 
-from movelister.core import Context, cursor # noqa
-from movelister.format import autofill, validation # noqa
+from movelister.core import Alignment, Context, cursor # noqa
+from movelister.format import autofill, color, format, overview, OverviewFormatter, validation # noqa
+from movelister.model import Color
 from movelister.sheet import helper, Inputs, Master, Modifiers, Overview, Sheet # noqa
-from movelister import color, conditionalFormat, details, error, generate, \
+from movelister import conditionalFormat, details, error, generate, \
     overview, modifierList, namedRanges, selection, ui, resultsList  # noqa
 
 # Setup context automatically when macro is run from the LibreOffice.
@@ -237,7 +238,17 @@ def testingClasses():
     number = helper.getColumnPosition(sheetData, 'Action Name')
 
 
+def testingFormatting():
+    masterSheet = Sheet.getByName('Master List')
+    aboutSheet = Sheet.getByName('About')
+    format.setHorizontalAlignmentToRange(masterSheet, Alignment.RIGHT, 1, 4)
+    c = color.getTitleBarColor(aboutSheet)
+
+    range = masterSheet.getCellRangeByPosition(1, 1, 4, 4)
+    color.setColorToRange(c, range)
+
+
 # Run when executed from the command line.
 if __name__ == '__main__':
     Context.setup(host='localhost', port=2002)
-    testingClasses()
+    testingFormatting()

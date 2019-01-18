@@ -9,7 +9,7 @@ header_postfix = ['Notes 1', 'Notes 2', 'Notes 3']
 
 class OverviewFormatter:
     """
-    Class responsible formatting Overview class instance to two dimensional
+    Class responsible for formatting Overview class instance to two dimensional
     array.
     """
 
