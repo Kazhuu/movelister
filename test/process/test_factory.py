@@ -1,5 +1,5 @@
 from test import OfficeTestCase
-from movelister.factory import OverviewFactory
+from movelister.process.factory import OverviewFactory
 from movelister.sheet import Master
 from movelister.sheet.sheet import MASTER_LIST_SHEET_NAME
 
