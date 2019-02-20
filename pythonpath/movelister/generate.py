@@ -1,4 +1,4 @@
-from movelister import convert, formatting, modifierList
+from movelister import convert, modifierList
 from movelister.core import cursor
 from movelister.sheet import helper
 
@@ -6,6 +6,11 @@ SPACE_VIEW = ' ' * 11
 SPACE_INPUT = ' ' * 5
 SPACE_NAME = ' ' * 15
 SPACE_NOTES = ' ' * 52
+
+"""
+Note: this file can be deleted if it's decided that the code for generating an
+entire sheet from nothing is not needed. Besides that, it's work-in-progress as well.
+"""
 
 
 def generateSheetFromTemplate(document, templateName, sheetName):
@@ -31,7 +36,7 @@ def generateOverview(document, modifierSheet, aboutSheet, sheetName):
 
     # Sets text with space into the sheet and sets column lengths right.
     cursor.setSheetContent(newOverview, titleBarTuple)
-    formatting.setOptimalWidthToRange(newOverview, 0, len(titleBarTuple[0]))
+    # formatting.setOptimalWidthToRange(newOverview, 0, len(titleBarTuple[0]))
 
     # Update text with space with regular text that doesn't have space.
     titleBarStart = ['Action Name', 'Color', 'Hit', 'Frames', 'Phase', 'DEF']
@@ -48,9 +53,9 @@ def generateOverview(document, modifierSheet, aboutSheet, sheetName):
     modifierColors = helper.getColorArray(modifierSheet)
 
     # Set formatting.
-    formatting.setHorizontalAlignmentToSheet(newOverview, 'CENTER')
-    formatting.setTitleBarColor(newOverview, aboutSheet, 0)
-    formatting.setOverviewModifierColors(newOverview, startCol, endCol, modifierColors)
+    # formatting.setHorizontalAlignmentToSheet(newOverview, 'CENTER')
+    # formatting.setTitleBarColor(newOverview, aboutSheet, 0)
+    # formatting.setOverviewModifierColors(newOverview, startCol, endCol, modifierColors)
 
     # TO DO: set Bold text. Needs some textCursor object?
 

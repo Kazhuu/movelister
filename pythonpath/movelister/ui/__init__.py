@@ -1,1 +1,1 @@
-from movelister.ui import messageBox # noqa
+from movelister.ui import message_box # noqa

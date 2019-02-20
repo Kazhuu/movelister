@@ -1,5 +1,6 @@
 from movelister.core import Alignment, cursor
 
+
 def setHorizontalAlignmentToRange(sheet, alignment, startColumn, amount):
     """
     This function sets the horizontal alignment of columns in a given range
@@ -16,6 +17,7 @@ def setHorizontalAlignmentToRange(sheet, alignment, startColumn, amount):
         cellRange.HoriJustify = 3
     else:
         cellRange.HoriJustify = 0
+
 
 def setOptimalWidthToRange(sheet, startColumn, amount):
     """

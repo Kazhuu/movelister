@@ -14,10 +14,10 @@ if __name__ == '__main__':
 
 from movelister.core import Alignment, Context, cursor # noqa
 from movelister.format import autofill, color, format, overview, OverviewFormatter, validation # noqa
-from movelister.model import Color
+from movelister.model import Color # noqa
+from movelister.process import OverviewFactory # noqa
 from movelister.sheet import helper, Inputs, Master, Modifiers, Overview, Sheet # noqa
-from movelister import conditionalFormat, details, error, generate, \
-    overview, modifierList, namedRanges, selection, ui, resultsList  # noqa
+from movelister import conditionalFormat, details, error, generate, overview, modifierList, namedRanges, selection, ui, resultsList  # noqa
 
 # Setup context automatically when macro is run from the LibreOffice.
 if __name__ != '__main__':
@@ -117,9 +117,6 @@ def generateOrRefreshOverview(*args):
     else:
         print('Exiting function...')
 
-    # How to define the position of the new document? Group it with other Overviews?
-    # Leave it up to the user to move it?
-
 
 def namedRangeTest():
     """
@@ -198,7 +195,7 @@ def refreshModifiers():
     # It then deletes unnecessary Modifier columns or add necessary Modifier Columns in the Overview.
     # It then colors the cell background of the columns.
     # if result is False:
-        # overview.updateOverviewModifiers(overviewSheet, overviewModifiers, modifierListModifiers, modifierColors)
+    # overview.updateOverviewModifiers(overviewSheet, overviewModifiers, modifierListModifiers, modifierColors)
 
 
 def createValidation():
@@ -234,9 +231,6 @@ def testingClasses():
     for row in inputs:
         print(row.__dict__)
 
-    sheetData = cursor.getSheetContent(Sheet.getByName('Master List'))
-    number = helper.getColumnPosition(sheetData, 'Action Name')
-
 
 def testingFormatting():
     masterSheet = Sheet.getByName('Master List')
@@ -248,7 +242,26 @@ def testingFormatting():
     color.setColorToRange(c, range)
 
 
+def testingModifiers():
+    overview = Overview.fromSheet('Overview (Default)')
+    overviewFormat = OverviewFormatter(overview)
+
+    masterList = Master('Master List')
+    modifierList = Modifiers('Modifiers')
+
+    overviewSheet = Sheet.getByName('Overview (Default)')
+    masterSheet = Sheet.getByName('Master List')
+
+    # factory = OverviewFactory()
+    # testOverview = factory.createOverview(masterList, 'Default')
+
+    overviewFormat.setOverviewModifierColors()
+
+    for a in overviewFormat.instance.modifiers:
+        print(a.color)
+
+
 # Run when executed from the command line.
 if __name__ == '__main__':
     Context.setup(host='localhost', port=2002)
-    testingFormatting()
+    testingModifiers()
