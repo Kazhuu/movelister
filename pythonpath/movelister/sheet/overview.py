@@ -35,7 +35,7 @@ class Overview:
         return self._modifiedActions
 
     @modifiedActions.setter
-    def modifiedAction(self, value):
+    def modifiedActions(self, value):
         self._modifiedActions = value
 
     def addModifier(self, modifier):
@@ -43,6 +43,14 @@ class Overview:
 
     def addModifiedAction(self, modifiedAction):
         self._modifiedActions.append(modifiedAction)
+
+    def findModifiedAction(self, modifiedAction):
+        """
+        Find given modified action from the set modified actions. If none is
+        found, None is returned. ModifiedActions are considered equal if their
+        names are equal.
+        """
+        return next((modAction for modAction in self._modifiedActions if modAction == modifiedAction), None)
 
     def readSheetContent(self):
         self.sheet = Sheet.getByName(self.name)

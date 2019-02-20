@@ -37,6 +37,17 @@ class OverviewTestCase(OfficeTestCase):
         overview.addModifiedAction(modifiedAction2)
         self.assertEqual(overview.modifiedActions, [modifiedAction1, modifiedAction2])
 
+    def testFindModifiedAction(self):
+        modifiedAction1 = ModifiedAction('modAction1')
+        modifiedAction2 = ModifiedAction('modAction2')
+        modifiedAction3 = ModifiedAction('modAction3')
+        overview = Overview('test')
+        overview.addModifiedAction(modifiedAction1)
+        overview.addModifiedAction(modifiedAction2)
+        overview.addModifiedAction(modifiedAction3)
+        self.assertTrue(modifiedAction2.name == overview.findModifiedAction(modifiedAction2).name)
+        self.assertIsNone(overview.findModifiedAction(ModifiedAction('cannot find')))
+
     def testActionNames(self):
         actionNames = self.overview.actionNames
         self.assertTrue(actionNames)
