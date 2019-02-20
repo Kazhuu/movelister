@@ -1,4 +1,4 @@
-from movelister.ui import messageBox
+from movelister.ui import message_box
 from movelister.core import cursor
 
 
@@ -26,7 +26,7 @@ def getSpecificInputList(inputSheet, inputGroupName):
             break
 
     if startRow == -1:
-        messageBox.createMessage('OK', 'Warning:', 'Program was not able to find a desired input list.')
+        message_box.createMessage('OK', 'Warning:', 'Program was not able to find a desired input list.')
         exit()
 
     # The four attributes for CellRangeByPosition are: left, top, right, bottom.

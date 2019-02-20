@@ -1,4 +1,6 @@
 from movelister.core import cursor
+from movelister.format import color
+from movelister.model import Modifier
 from movelister.sheet.sheet import Sheet
 from .modified_action import ModifiedActionFormatter
 
@@ -57,7 +59,34 @@ class OverviewFormatter:
 
     def formatFirstLine(self):
         """
-        Returns empty row before actual header row. In template this includes buttons.
+        Returns empty row before actual header row. In the template this row contains the buttons.
         """
         length = len(header_prefix) + len(header_postfix) + len(self.instance.modifiers)
         return ['' for _ in range(0, length)]
+
+    def setOverviewModifierColors(self):
+        """
+        This function sets colors to all the columns in the modifier block of an Overview.
+        Note: code should work but it hasn't been tested with colors yet.
+        """
+        offset = 0
+        columnLength = len(cursor.getColumn(self.instance.sheet, 0))
+        startCol = self.instance.modifierStartColumn
+        headerRow = self.instance.headerRowIndex
+
+        tempModifier = Modifier('temp')
+        self.instance.modifiers.append(tempModifier)
+
+        x = -1
+        for a in range(len(self.instance.modifiers) - 1):
+            x = x + 1
+            currentColor = color.Color(self.instance.modifiers[x].color)
+            nextColor = color.Color(self.instance.modifiers[x + 1].color)
+
+            if currentColor.value == nextColor.value:
+                offset = offset + 1
+            else:
+                self.instance.sheet.getCellRangeByPosition(
+                    startCol + x - offset, headerRow, startCol + x, columnLength - headerRow
+                    ).CellBackColor = currentColor.value
+                offset = 0

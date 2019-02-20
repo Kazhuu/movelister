@@ -1,6 +1,6 @@
 import itertools
 
-from movelister import convert, error, formatting, inputList, modifierList
+from movelister import convert, error, inputList, modifierList
 from movelister.core import cursor
 from movelister.format import delete
 from movelister.sheet import helper
@@ -317,10 +317,10 @@ def updateOverviewModifiers(overviewSheet, overviewModifiers, modifierListModifi
     range.setDataArray(finalList)
 
     # Fix column width.
-    formatting.setOptimalWidthToRange(overviewSheet, startCol, len(modifierListModifiers))
+    # formatting.setOptimalWidthToRange(overviewSheet, startCol, len(modifierListModifiers))
 
     # Fix column colors.
-    formatting.setOverviewModifierColors(overviewSheet, startCol, endCol, modifierListColors)
+    # formatting.setOverviewModifierColors(overviewSheet, startCol, endCol, modifierListColors)
 
 
 def createNewModifierArray(mda, overviewSheet, startCol, modifierListModifiers, overviewModifiers):

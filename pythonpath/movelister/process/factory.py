@@ -9,7 +9,7 @@ class OverviewFactory:
     def createOverview(masterSheet, viewName):
         """
         Factory to build Overview class instance from Master sheet instance and
-        from given view name. Modifers from Modifier sheet will also be used.
+        from given view name. Modifiers from Modifier sheet will also be used.
         """
         modifiers = Modifiers(MODIFIER_LIST_SHEET_NAME)
         actions = masterSheet.getActions(viewName)

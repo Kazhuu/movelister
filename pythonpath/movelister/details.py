@@ -2,7 +2,7 @@ from movelister import convert, inputList
 from movelister.core import cursor
 from movelister.format import delete, group
 from movelister.sheet import helper
-from movelister.ui import messageBox
+from movelister.ui import message_box
 
 
 def refreshDetailsSheet(detailsSheet, inputSheet, projectionOverview, projectionDetails):
@@ -323,8 +323,8 @@ def deletePhases(detailsSheet, highestPhase, phaseCount):
     titleText = 'Warning:'
     messageText = 'Phase columns are about to be deleted and data may become lost. Do you want to continue?'
 
-    # A messagebox warning user that some data may become lost.
-    result = messageBox.createMessage('YES_NO', titleText, messageText)
+    # A message_box warning user that some data may become lost.
+    result = message_box.createMessage('YES_NO', titleText, messageText)
 
     if result == 'YES':
         delete.deleteColumns(detailsSheet, startCol, amount)
