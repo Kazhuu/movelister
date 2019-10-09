@@ -130,7 +130,8 @@ def namedRangeTest():
 
 def generateButtonTest():
     """
-    Quick test with generating a button.
+    Quick test with generating a button. This code may remain unused since the
+    current plan involves using generated templates.
     """
     overviewSheet = Sheet.getOverviewSheet()
 
@@ -171,22 +172,29 @@ def refreshPhases():
     # To do: a function may have to re-generate Conditional Formatting for the sheet.
 
 
-def refreshModifiers():
+def refreshModifiers(args):
     """
     A function that refreshes the modifier block of Overview based on the data
     the user has set inside Modifier List. This includes the number and position of
     various modifiers as well as their color.
+
+    This code is always ran through the 'Refresh'-button on the Overview Template.
     """
-    overviewSheet = Overview('Overview (Default)')
+    document = Context.getDocument()
+    activeSheet = helper.getActiveSheet(document)
     modifierList = Modifiers('Modifiers')
 
-    # overviewModifierData = cursor.getSheetContent(Sheet.getByName('Overview (Default)'))
+    sheetName = 'Overview (' + helper.getViewName(activeSheet.Name) + ')'
+    overview = Overview.fromSheet(sheetName)
+
+    print(overview.modifiers)
 
     # Getting the list of modifiers from a chosen Overview.
     # overviewModifiers = overview.getOverviewModifiers(overviewModifierData)
 
     # Getting the list of modifiers from the Modifier list.
     modifiersListModifiers = modifierList.getModifiers()
+
 
     # Compare if Overview modifiers match Modifier List modifiers. Returns False if the two lists are different.
     # result = error.compareModifierLists(modifierListModifiers, overviewModifiers)
@@ -264,4 +272,4 @@ def testingModifiers():
 # Run when executed from the command line.
 if __name__ == '__main__':
     Context.setup(host='localhost', port=2002)
-    testingModifiers()
+    refreshModifiers(1)
