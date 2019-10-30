@@ -128,7 +128,7 @@ Before running tests you need to set `LB_MV_BIN` environment variable to point
 to the LibreOffice executable. This is used to run LibreOffice during test. On
 linux for example:
 ```
-export LB_MV_BIN="libreoffice"
+export MV_LB_BIN="libreoffice"
 ```
 and on Windows:
 ```
