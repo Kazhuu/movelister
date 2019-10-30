@@ -107,11 +107,10 @@ def generateOrRefreshOverview(*args):
 
     # A bit of error checking at the start.
     error.generateSheetTemplateCheck(document, templateName)
-    result = error.generateSheetNameCheck(document, sheetName)
 
-    if result == 'GENERATE':
-        generate.generateSheetFromTemplate(document, templateName, sheetName)
-    elif result == 'YES':
+    # TODO: Write rest of this function here. Just added getting it by name.
+    sheet = Sheet.getByName(sheetName)
+    if sheet:
         print()
         # To do: go to Overview refresh function.
     else:
@@ -272,4 +271,4 @@ def testingModifiers():
 # Run when executed from the command line.
 if __name__ == '__main__':
     Context.setup(host='localhost', port=2002)
-    refreshModifiers(1)
+    generateOrRefreshOverview()

@@ -1,4 +1,5 @@
 from movelister.core import Context
+from com.sun.star.container import NoSuchElementException
 
 
 OVERVIEW_TEMPLATE_NAME = 'Overview Template'
@@ -56,9 +57,12 @@ class Sheet():
     @classmethod
     def getByName(cls, name):
         """
-        Get sheet by given name.
+        Get sheet by given name, if not found return None.
         """
-        return Context.getDocument().Sheets.getByName(name)
+        try:
+            return Context.getDocument().Sheets.getByName(name)
+        except NoSuchElementException:
+            return None
 
     @classmethod
     def getByPosition(cls, position):

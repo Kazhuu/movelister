@@ -1,7 +1,7 @@
 class UpdateOverview:
     """
     Class which takes care of updating two overview class instances to one
-    instance.  This is used when existing overview and new overview need to be
+    instance. This is used when existing overview and new overview need to be
     synced and data updated.
     """
 

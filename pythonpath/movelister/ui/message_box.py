@@ -25,3 +25,11 @@ def createMessage(type, titleText, messageText):
         return 'YES'
     if result == MessageBoxResults.NO:
         return 'NO'
+
+
+def showSheetUpdateWarning():
+    msgText = 'A Sheet of that name already exists. Would you like to update its contents?'
+    result = createMessage('YES_NO', 'Warning:', msgText)
+    if result == 'YES':
+        return True
+    return False
