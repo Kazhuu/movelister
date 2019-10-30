@@ -13,11 +13,11 @@ if __name__ == '__main__':
     sys.path.append(os.path.join(os.path.dirname('__file__'), 'pythonpath'))
 
 from movelister.core import Alignment, Context, cursor # noqa
-from movelister.format import autofill, color, format, overview, OverviewFormatter, validation # noqa
+from movelister.format import autofill, color, format, namedRanges, overview, OverviewFormatter, validation # noqa
 from movelister.model import Color # noqa
 from movelister.process import OverviewFactory # noqa
 from movelister.sheet import helper, Inputs, Master, Modifiers, Overview, Sheet # noqa
-from movelister import conditionalFormat, details, error, generate, overview, modifierList, namedRanges, selection, ui, resultsList  # noqa
+from movelister import conditionalFormat, details, error, overview, modifierList, selection, ui  # noqa
 
 # Setup context automatically when macro is run from the LibreOffice.
 if __name__ != '__main__':
@@ -122,23 +122,12 @@ def namedRangeTest():
     """
     Quick tests with named ranges.
     """
-    detailsSheet = Sheet.getDetailsSheet()
+    document = Context.getDocument()
+    activeSheet = helper.getActiveSheet(document)
+
     namedRange = Context.getDocument().NamedRanges
     namedRanges.deleteNamedRanges(namedRange)
-    namedRanges.createNewNamedRange(detailsSheet, namedRange)
-
-
-def generateButtonTest():
-    """
-    Quick test with generating a button. This code may remain unused since the
-    current plan involves using generated templates.
-    """
-    overviewSheet = Sheet.getOverviewSheet()
-
-    buttonModel = ui.generateButton(overviewSheet, 'Button', 'Jee', 200, 400, 5000, 1000)
-
-    # TO DO: adding event listener to button still doesn't work.
-    ui.addEventListenerToButton(buttonModel)
+    namedRanges.createNewNamedRange(activeSheet, namedRange)
 
 
 def refreshPhases():
@@ -178,22 +167,25 @@ def refreshModifiers(args):
     the user has set inside Modifier List. This includes the number and position of
     various modifiers as well as their color.
 
-    This code is always ran through the 'Refresh'-button on the Overview Template.
+    This code is always ran through the 'Refresh'-button on the Overview Template,
+    so it expects the active sheet to be one of the Overviews.
     """
     document = Context.getDocument()
     activeSheet = helper.getActiveSheet(document)
-    modifierList = Modifiers('Modifiers')
 
     sheetName = 'Overview (' + helper.getViewName(activeSheet.Name) + ')'
     overview = Overview.fromSheet(sheetName)
 
-    print(overview.modifiers)
+    modifiers = Modifiers("Modifiers").getModifiers()
+
+    if overview.modifiers == modifiers:
+        print('Modifiers are already up to date in this Overview.')
+        exit()
 
     # Getting the list of modifiers from a chosen Overview.
     # overviewModifiers = overview.getOverviewModifiers(overviewModifierData)
 
     # Getting the list of modifiers from the Modifier list.
-    modifiersListModifiers = modifierList.getModifiers()
 
 
     # Compare if Overview modifiers match Modifier List modifiers. Returns False if the two lists are different.
@@ -272,4 +264,4 @@ def testingModifiers():
 # Run when executed from the command line.
 if __name__ == '__main__':
     Context.setup(host='localhost', port=2002)
-    refreshModifiers(1)
+    namedRangeTest()

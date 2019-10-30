@@ -17,7 +17,8 @@ def applyConditionalFormatting(sheet, resultsDataArray, resultsListColors):
 
     # Problems so far:
     # 1, it's not possible to clear existing conditional format entries by accessing
-    #    through a specific range. An alternative solution has to be available.
+    #    through a specific range. However, this doesn't matter with the newest version
+    #    where sheets are generated anew entirely each time.
     # 2, when trying to add a new condition to conForm (accessed via range), it says conversion
     #    not possible for some reason.
     # 3, a conForm (created as a XSheetConditionalEntries) doesn't seem to work at all
