@@ -1,11 +1,20 @@
 # Movelister
+
 Movelister is a tool for creating various types of in-depth notes
 about video game mechanics data in sheet form. This could include simple
 move lists, detailed mechanics notes for glitchers or other type of tables which
 model the limits of a game's potential interactivity.
 
+**Movelister is still a work in progress and not ready for use.**
+
+## How It Works
+
+Movelister is implemented on LibreOffice Calc (spreadsheet) and is used with
+Python macros. Macros call further Python code which is responsible for
+manipulating tables and sheets underneath.
 
 ## Dependencies
+
 It's necessary for the user to install LibreOffice 5 or newer and Python 3.x to be able
 to use the Movelister scripts. Python is typically automatically included in a
 LibreOffice installation on Windows but not on Linux. Linux users have to
@@ -20,8 +29,8 @@ On Linux distros that has both Python 2 and 3 versions available and command
 `python` points to Python 2. Developers can change `python` commands to
 `python3` in this readme instead.
 
+## How To Use
 
-## How to use
 TODO: Write guide how to setup this project in order to use the template and
 
 LibreOffice 5 has a specific directory where it searches for Python scripts -
@@ -39,11 +48,8 @@ __Note 2:__ since this project is still at its early stages, the scripts don't
 offer a full functionality yet. Feel free to admire the template and give some
 feedback or ideas on it, though.
 
-
-rovided scripts.
-
-
 ## Development
+
 To have a good development environment and with debugging abilities. It's
 easier to develop scripts using a separate Python process which then connects to
 an external LibreOffice process using sockets. After you are done with the
@@ -63,11 +69,10 @@ your development and then make symbolic link from LibreOffice user Python macros
 folder to Movelister folder. This varies a little bit between the platforms and
 is explained below for each platform.
 
-
 ### Linux
 
+#### Running Macros From LibreOffice
 
-#### Running macros from LibreOffice
 LibreOffice user Python macros are located under
 `~/.config/libreoffice/<version_number>/user/Scripts/python/`. If you only have
 folders up to `.../user/` then you can make folders `Scripts` and `python` with
@@ -84,8 +89,8 @@ Macros**. You should see **movelister** as a listed macro package. Now open
 **movelister** and select **main**. Then on the right you should see list of all
 available macros which can be executed or mapped to keys.
 
+#### Running Macros From Separate Python Process
 
-#### Running macros from separate Python process
 In project root folder, start LibreOffice Calc process with:
 ```
 libreoffice templates/movelister_template.ods --accept="socket,host=localhost,port=2002;urp;StarOffice.ServiceManager"
@@ -98,8 +103,8 @@ python main.py
 This script should run without errors. If you see error messages, make sure the
 socket is open or follow error message instructions.
 
-
 ### Windows
+
 TODO: Write this again with better guidelines. To use LibreOffice Calc with a
 
 socket open, you have to start LibreOffice using the parameter listed below.
@@ -110,7 +115,7 @@ shortcut that starts LibreOffice.
 ```
 If you use command line to run scripts, it's the easiest to just use
 LibreOffice's own installed version of Python to run any Python scripts.
-Otherwise Python may have difficulties finding the important Uno library. In
+Otherwise Python may have difficulties finding the important UNO library. In
 addition, you need to start running the scripts from the main Movelister
 directory so that Python can find any related Movelister-modules as well.
 
@@ -122,15 +127,25 @@ example:
 ..\..\..\..\program\python main.py
 ```
 
-
 ## Testing
-Before running tests you need to set `LB_MV_BIN` environment variable to point
+
+Movelister has unit tests to test application functionality and is implemented
+using Python's own [unittests](https://docs.python.org/3/library/unittest.html)
+library. Unit tests uses external LibreOffice process through UNO API to access
+it.
+
+### Running Tests
+
+Before running tests you need to set `MV_LB_BIN` environment variable to point
 to the LibreOffice executable. This is used to run LibreOffice during test. On
 linux for example:
+
 ```
 export MV_LB_BIN="libreoffice"
 ```
+
 and on Windows:
+
 ```
 set MV_LB_BIN="C:\Program Files\LibreOffice 5\program\soffice.exe"
 ```
@@ -140,20 +155,24 @@ headless LibreOffice instance with project template `.ods` file. Then between
 each test the file is reopened. How to run tests depends your LibreOffice
 installation. If you have separate Python that your LibreOffice is installation
 is using. Then go to project root and run:
+
 ```
 python -m unittest
 ```
+
+TODO: Write this to be more clear.
 If your LibreOffice has internal Python installation then. From project root you
 need to traverse path to LibreOffice Python executable. In this case it might be
 easier to make command line script to run tests. On Windows for example  make
 following `.bat` at project root
 file.
+
 ```
 ..\..\..\..\program\python -m unittest -v
 ```
 
-
 ## Resources
+
 * [PyUno documentation](http://www.openoffice.org/udk/python/python-bridge.html).
 * [Apache OpenOffice Developer's Guide](https://wiki.openoffice.org/wiki/Documentation/DevGuide/OpenOffice.org_Developers_Guide)
 for main knowledge about OpenOffice UNO (Universal Network Objects) technology and how to use it.
