@@ -14,10 +14,13 @@ if __name__ == '__main__':
 
 from movelister.core import Alignment, Context, cursor # noqa
 from movelister.format import autofill, color, format, namedRanges, overview, OverviewFormatter, validation # noqa
+from movelister.format import OverviewFormatter  # noqa
 from movelister.model import Color # noqa
-from movelister.process import OverviewFactory # noqa
+from movelister.process import OverviewFactory, UpdateOverview # noqa
 from movelister.sheet import helper, Inputs, Master, Modifiers, Overview, Sheet # noqa
-from movelister import conditionalFormat, details, error, overview, modifierList, selection, ui  # noqa
+from movelister import conditionalFormat, details, error, overview, modifierList, selection  # noqa
+from movelister.sheet import Master, MASTER_LIST_SHEET_NAME  # noqa
+from movelister.ui import message_box  # noqa
 
 # Setup context automatically when macro is run from the LibreOffice.
 if __name__ != '__main__':
@@ -97,24 +100,27 @@ def generateOrRefreshDetails(*args):
 
 
 def generateOrRefreshOverview(*args):
-    document = Context.getDocument()
-    masterSheet = Sheet.getMasterSheet()
+    if not error.checkTemplatesExists():
+        message_box.showWarningWithOk('This file doesn\'t seem to have all necessary templates. Can\'t generate.')
+        return
 
-    # Get the name of the Overview that is generated or refreshed.
-    target = masterSheet.getCellByPosition(2, 0).getString()
-    sheetName = 'Overview (' + target + ')'
-    templateName = 'Overview Template'
+    # Get name of the overview which user wants to generate.
+    masterSheet = Master(MASTER_LIST_SHEET_NAME)
+    overviewName = masterSheet.getOverviewName()
+    if not overviewName:
+        message_box.showWarningWithOk('Provide overview name to generate or refresh')
+        return
 
-    # A bit of error checking at the start.
-    error.generateSheetTemplateCheck(document, templateName)
+    if Sheet.hasByName('Overview ({})'.format(overviewName)):
+        # Check if user wants to update existing overview.
+        if not message_box.showSheetUpdateWarning():
+            return
 
-    # TODO: Write rest of this function here. Just added getting it by name.
-    sheet = Sheet.getByName(sheetName)
-    if sheet:
-        print()
-        # To do: go to Overview refresh function.
-    else:
-        print('Exiting function...')
+    overview = Overview(overviewName)
+    # TODO: Fill overview and take data from old one to new.
+    # UpdateOverview.update(old, new)
+    formatter = OverviewFormatter(overview)
+    formatter.generate()
 
 
 def namedRangeTest():
@@ -263,4 +269,4 @@ def testingModifiers():
 # Run when executed from the command line.
 if __name__ == '__main__':
     Context.setup(host='localhost', port=2002)
-    namedRangeTest()
+    generateOrRefreshOverview()

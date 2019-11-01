@@ -1,4 +1,5 @@
 from movelister.ui import message_box
+from movelister.sheet import Sheet
 
 
 def overviewProjectionErrorCheck(mda, nameCol):
@@ -8,11 +9,11 @@ def overviewProjectionErrorCheck(mda, nameCol):
         exit()
 
 
-def generateSheetTemplateCheck(document, templateName):
-    if document.Sheets.hasByName(templateName) is False:
-        msgText = 'This file doesn\'t seem to have all necessary templates. Can\'t generate.'
-        message_box.createMessage('OK', 'Warning:', msgText)
-        exit()
+def checkTemplatesExists():
+    """
+    Return true if all needed template sheets exists for this document, false otherwise.
+    """
+    return Sheet.hasByName('Overview Template') and Sheet.hasByName('Details Template')
 
 
 def sheetNameSplitCheck(name):
