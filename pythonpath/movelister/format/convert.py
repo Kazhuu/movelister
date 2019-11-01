@@ -1,3 +1,4 @@
+import string
 from movelister.core import Context
 
 
@@ -9,6 +10,24 @@ def cellRangeAddressIntoCellRange(cra):
     sheet = model.Sheets.getByIndex(cra.Sheet)
     range = sheet.getCellRangeByPosition(cra.StartColumn, cra.StartRow, cra.EndColumn, cra.EndRow)
     return range
+
+
+def convertIntoBaseAddress(num):
+    """
+    This code converts column number into base address since some LibreOffice features need it.
+    """
+    chars = []
+    while num > 0:
+        num, d = divmodFunction(num)
+        chars.append(string.ascii_uppercase[d - 1])
+    return ''.join(reversed(chars))
+
+
+def divmodFunction(n):
+    a, b = divmod(n, 26)
+    if b == 0:
+        return a - 1, b + 26
+    return a, b
 
 
 def turnArraySideways(array):

@@ -30,7 +30,7 @@ class ColorTestCase(OfficeTestCase):
         Test reading cell default white cell color and check that Color.value
         returns the same value. Also assert individual colors too.
 
-        TODO: Does't work yet. Fix the color class.
+        TODO: Doesn't work yet. Fix the color class.
         """
         self.skipTest('Color.value not workin properly')
         sheet = Sheet.getAbout()

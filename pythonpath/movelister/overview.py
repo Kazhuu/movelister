@@ -1,8 +1,8 @@
 import itertools
 
-from movelister import convert, error, inputList, modifierList
+from movelister import error, inputList, modifierList
 from movelister.core import cursor
-from movelister.format import delete
+from movelister.format import convert, delete
 from movelister.sheet import helper
 
 

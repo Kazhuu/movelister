@@ -6,7 +6,7 @@ from com.sun.star.sheet.ConditionOperator import NONE, EQUAL, NOT_EQUAL, GREATER
                                                  GREATER_EQUAL, LESS, LESS_EQUAL, BETWEEN, NOT_BETWEEN, FORMULA
 
 from movelister.core import cursor
-from movelister import convert
+from movelister.format import convert
 
 
 def applyConditionalFormatting(sheet, resultsDataArray, resultsListColors):

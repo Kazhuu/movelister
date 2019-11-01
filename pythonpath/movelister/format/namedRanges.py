@@ -1,8 +1,10 @@
+from movelister.format import convert
+
+
 def createNewNamedRange(sheet, namedRanges):
     """
     A function that creates a new Named Range based on user requirements.
-    TO DO: code for cell range conversion to create base address.
-    The CellAddress doesn't seem to do much (other than determine sheet?).
+    TO DO: build function using the base address converting function.
     """
 
     cellAddress = sheet.getCellByPosition(1, 1).getCellAddress()

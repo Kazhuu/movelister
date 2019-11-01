@@ -15,5 +15,6 @@ class InputsTestCase(OfficeTestCase):
             self.assertIsInstance(mod, Input)
 
     def testInputColor(self):
-        firstActionColor = self.input.sheet.getCellByPosition(self.input.colorColumnIndex, self.input.dataBeginRow).CellBackColor
+        firstActionColor = self.input.sheet.getCellByPosition(self.input.colorColumnIndex,
+                                                              self.input.dataBeginRow).CellBackColor
         self.assertEqual(self.inputList[0].color, firstActionColor)

@@ -1,6 +1,6 @@
-from movelister import convert, inputList
+from movelister import inputList
 from movelister.core import cursor
-from movelister.format import delete, group
+from movelister.format import convert, delete, group
 from movelister.sheet import helper
 from movelister.ui import message_box
 

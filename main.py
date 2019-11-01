@@ -13,7 +13,7 @@ if __name__ == '__main__':
     sys.path.append(os.path.join(os.path.dirname('__file__'), 'pythonpath'))
 
 from movelister.core import Alignment, Context, cursor # noqa
-from movelister.format import autofill, color, format, namedRanges, overview, OverviewFormatter, validation # noqa
+from movelister.format import autofill, color, convert, format, namedRanges, overview, OverviewFormatter, validation # noqa
 from movelister.model import Color # noqa
 from movelister.process import OverviewFactory # noqa
 from movelister.sheet import helper, Inputs, Master, Modifiers, Overview, Sheet # noqa
@@ -127,6 +127,17 @@ def namedRangeTest():
     namedRange = Context.getDocument().NamedRanges
     namedRanges.deleteNamedRanges(namedRange)
     namedRanges.createNewNamedRange(activeSheet, namedRange)
+
+    rowStart = 20
+    rowEnd = 50
+    colStart = 15
+    colEnd = 60
+
+    char1 = convert.convertIntoBaseAddress(colStart)
+    char2 = convert.convertIntoBaseAddress(colEnd)
+
+    address = char1 + str(rowStart) + ":" + char2 + str(rowEnd)
+    print(address)
 
 
 def refreshPhases():
