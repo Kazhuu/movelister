@@ -35,6 +35,13 @@ class Master:
                 actions.append(Action(**kwargs))
         return actions
 
+    def getOverviewName(self):
+        """
+        Return name from user input field on Master List sheet.
+        """
+        name = self.data[0][2]
+        return name
+
     def _isValidRow(self, row):
         return row[self.nameColumnIndex] != ''
 

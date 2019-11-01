@@ -27,6 +27,13 @@ def createMessage(type, titleText, messageText):
         return 'NO'
 
 
+def showWarningWithOk(message):
+    """
+    Show warning message box to user with given message.
+    """
+    createMessage('OK', 'Warning', message)
+
+
 def showSheetUpdateWarning():
     msgText = 'A Sheet of that name already exists. Would you like to update its contents?'
     result = createMessage('YES_NO', 'Warning:', msgText)
