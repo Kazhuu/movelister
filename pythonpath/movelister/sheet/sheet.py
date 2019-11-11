@@ -56,6 +56,18 @@ class Sheet():
         return Context.getDocument().Sheets.getByName(ABOUT_SHEET_NAME)
 
     @classmethod
+    def deleteSheetByName(cls, name):
+        """
+        Delete sheet from the document by given name. Return true on success,
+        false otherwise.
+        """
+        try:
+            Context.getDocument().Sheets.removeByName(name)
+            return True
+        except NoSuchElementException:
+            return False
+
+    @classmethod
     def getByName(cls, name):
         """
         Get sheet by given name, if not found raise NoSuchElementException.
@@ -103,6 +115,9 @@ class Sheet():
         """
         Insert new overview sheet right of master sheet with given name put
         inside of parentheses. Returns created sheet.
+
+        Sheet with given name must not exist, otherwise RuntimeException is
+        raised.
         """
         position = cls.getPosition(MASTER_LIST_SHEET_NAME) + 1
         sheetName = '{0} ({1})'.format(OVERVIEW_SHEET_NAME, name)
