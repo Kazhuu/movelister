@@ -11,7 +11,7 @@ from movelister.format import convert
 
 def applyConditionalFormatting(sheet, resultsDataArray, resultsListColors):
 
-    # To do: finish this function. It does nothing so far.
+    # TODO: finish this function. It does nothing so far.
     # info can be found here:
     # https://wiki.openoffice.org/wiki/Documentation/DevGuide/Spreadsheets/Conditional_Formats
 

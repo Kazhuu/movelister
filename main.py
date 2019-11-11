@@ -18,7 +18,7 @@ from movelister.format import OverviewFormatter  # noqa
 from movelister.model import Color # noqa
 from movelister.process import OverviewFactory, UpdateOverview # noqa
 from movelister.sheet import helper, Inputs, Master, Modifiers, Overview, Sheet # noqa
-from movelister import conditionalFormat, details, error, overview, modifierList, selection  # noqa
+from movelister import error, selection  # noqa
 from movelister.sheet import Master, MASTER_LIST_SHEET_NAME  # noqa
 from movelister.ui import message_box  # noqa
 
@@ -27,30 +27,13 @@ if __name__ != '__main__':
     Context.setup()
 
 
-def setColor():
-    """
-    Test macro to test Color class and setting color.
-    """
-    modifierSheet = Sheet.getModifierListSheet()
-    c = color.Color(modifierSheet.getCellByPosition(0, 0).CellBackColor)
-    c.alpha = 0
-    c.red = 0
-    c.green = 0
-    c.blue = 255
-    print(hex(c.value))
-    modifierSheet.getCellByPosition(0, 0).CellBackColor = c.value
-
-
 def generateOrRefreshDetails(*args):
     """
     A very general function that creates / refreshes full Details view up to date with a single button.
-    If the project has multiple Details views, there would probably be some drop down menu
-    pointing the code to the correct List before the code is ran.
+    The project can have multiple Details-views and the user directs the code to the correct one with
+    a name in the Overview-sheet.
     """
     document = Context.getDocument()
-    # inputSheet = Sheet.getInputSheet()
-    # detailsSheet = Sheet.getDetailsSheet()
-    # modifierSheet = Sheet.getModifierSheet()
 
     activeSheet = helper.getActiveSheet(document)
     error.sheetNameSplitCheck(activeSheet.Name)
@@ -73,30 +56,11 @@ def generateOrRefreshDetails(*args):
         print('Exiting function...')
 
     '''
-    # The code goes through Overview and makes a "projection" of what the Details sheet should
-    # look like. It's a multi-dimensional array where [0] lists action name, [1] lists modifiers, [2] lists
-    # input list and [3] lists the expected location of the action in Details list.
-    projectionOverview = overview.getOverviewProjection(overviewSheet, modifierSheet, inputSheet)
-    print("projektion: " + str(projectionOverview))
-
-    # Same thing for what is currently inside Mechanics List.
-    projectionDetails = details.getDetailsSheetProjection(detailsSheet, projectionOverview)
-
-    # Code creates a new Array which is eventually pasted on Details Sheet, replacing it
-    # entirely in a single swoop. (It's faster to do it like this than generate row-by-row.)
-    details.refreshDetailsSheet(detailsSheet, inputSheet, projectionOverview, projectionDetails)
-
-    # TO DO: regenerate conditional formatting.
-    # TO DO: color cell backgrounds according to info. There are basically three types of coloring:
-    # action colors, modifier colors and input colors.
-    actionColors = helper.getColorArray(overviewSheet)
-    modifierColors = helper.getColorArray(modifierSheet)
-    inputColors = helper.getColorArray(inputSheet)
-
-    formatting.setDetailsSheetColors(detailsSheet, actionColors, modifierColors, inputColors)
+    # TODO: adjust wideness of the Details-view based on maximum number of phases?
+    # TODO: color cell backgrounds with conditional formatting.
+    # TODO: group rows according to info in Input List?
+    # TODO: create a named range of all Actions in Details-view?
     '''
-
-    # TO DO: group rows according to info in Input List.
 
 
 def generateOrRefreshOverview(*args):
@@ -145,36 +109,15 @@ def namedRangeTest():
     address = char1 + str(rowStart) + ":" + char2 + str(rowEnd)
     print(address)
 
+    sheet = Master(MASTER_LIST_SHEET_NAME).sheet
 
-def refreshPhases():
-    """
-    Old code...
+    format.setHorizontalAlignmentToRange(sheet, Alignment.RIGHT, 1, 4)
 
-    A test function for removing or adding phases in Mechanics List. Seems to work,
-    but the code could probably be more elegant.
-    """
-    overviewSheet = Sheet.getOverviewSheet()
-    detailsSheet = Sheet.getDetailsSheet()
-
-    # A function that fetches the highest phase number in Overview.
-    # To do: to be more flexible, the code should also take into account if the high phase numbers
-    # are actually USED at all in the Mechanics List.
-    masterDataArray = overview.getOverview(overviewSheet)
-    highestPhase = overview.getHighestPhaseNumber(overviewSheet, len(masterDataArray))
-
-    # A function that counts the phases in the Details Sheet.
-    phaseCount = details.countPhases(detailsSheet)
-
-    # Comparing the highest known Phase number in Overview vs Details Sheet phase number
-    # and determining if new phases have to be added or deleted.
-    if highestPhase == phaseCount:
-        print('No need to add or delete phases.')
-    if highestPhase > phaseCount:
-        details.generatePhases(detailsSheet, highestPhase, phaseCount)
-    if highestPhase < phaseCount:
-        details.deletePhases(detailsSheet, highestPhase, phaseCount)
-
-    # To do: a function may have to re-generate Conditional Formatting for the sheet.
+    area = cursor.getSheetContent(sheet)
+    cellRange = sheet.getCellRangeByPosition(1, 0, 1 + 4, len(area) - 1)
+    print(cellRange.HoriJustify)
+    if cellRange.HoriJustify == 3:
+        print("NO jes!")
 
 
 def refreshModifiers(args):
@@ -202,7 +145,6 @@ def refreshModifiers(args):
     # overviewModifiers = overview.getOverviewModifiers(overviewModifierData)
 
     # Getting the list of modifiers from the Modifier list.
-
 
     # Compare if Overview modifiers match Modifier List modifiers. Returns False if the two lists are different.
     # result = error.compareModifierLists(modifierListModifiers, overviewModifiers)
@@ -281,4 +223,3 @@ def testingModifiers():
 if __name__ == '__main__':
     Context.setup(host='localhost', port=2002)
     namedRangeTest()
-    generateOrRefreshOverview()

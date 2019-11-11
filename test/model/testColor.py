@@ -1,16 +1,18 @@
 from test import OfficeTestCase
 from movelister.model import color
-from movelister.sheet import Sheet
+from movelister.sheet import Modifiers
 
 
 class ColorTestCase(OfficeTestCase):
 
     def testSettingCellBackColor(self):
         """
-        Test setting cell back color with Color class value and then reading it
+        Test setting CellBackColor with values from Color class and then reading it
         back again. And then assert the values read back.
+
+        Note: this test will fail on Windows because test opens Document in read-only.
         """
-        sheet = Sheet.getModifierSheetOld()
+        sheet = Modifiers('Modifiers').sheet
         cell = sheet.getCellByPosition(0, 0)
         c = color.Color(0)
         c.alpha = 0
@@ -27,18 +29,15 @@ class ColorTestCase(OfficeTestCase):
 
     def testRead(self):
         """
-        Test reading cell default white cell color and check that Color.value
-        returns the same value. Also assert individual colors too.
-
-        TODO: Doesn't work yet. Fix the color class.
+        Test reading color value from a cell and check that Color.value
+        returns the same value. Also asserts individual colors.
         """
-        self.skipTest('Color.value not workin properly')
-        sheet = Sheet.getAbout()
-        cell = sheet.getCellByPosition(1, 1)
+        sheet = Modifiers('Modifiers').sheet
+        cell = sheet.getCellByPosition(0, 0)
         c = color.Color(cell.CellBackColor)
-        print(cell.CellBackColor)
+        # print(cell.CellBackColor)
         self.assertEqual(c.value, cell.CellBackColor)
-        self.assertEqual(c.red, 204)
-        self.assertEqual(c.green, 204)
-        self.assertEqual(c.blue, 204)
-        self.assertEqual(c.alpha, 204)
+        self.assertEqual(c.red, 230)
+        self.assertEqual(c.green, 230)
+        self.assertEqual(c.blue, 255)
+        self.assertEqual(c.alpha, 0)

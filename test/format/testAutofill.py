@@ -27,7 +27,6 @@ class AutoFillTestCase(OfficeTestCase):
         self.assertEqual(cell2.getString(), 'Default')
         self.assertEqual(cell3.getString(), '0')
 
-
     def testAutoFillInputs(self):
         self.skipTest('Gives a runtime error every time?')
         inputList = Inputs(INPUT_LIST_SHEET_NAME)

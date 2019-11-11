@@ -59,7 +59,7 @@ class OverviewFormatterTestCase(OfficeTestCase):
 
     def testGenerate(self):
         """
-        Test generating new overview sheet from template and after that assert that
+        Test generating new Overview-sheet from template, then assert that the
         sheet really exists and has generated content in it.
         """
         modifier1 = Modifier('aa')
