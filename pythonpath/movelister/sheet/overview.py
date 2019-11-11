@@ -97,7 +97,6 @@ class Overview:
 
     def _readModifiedActions(self):
         modifiedActions = []
-        import ipdb; ipdb.set_trace()
         groups = filter.groupRows(self.dataRows, self.nameColumnIndex)
         for group in groups:
             modifiedActions.append(self._rowGroupToModifiedAction(group))
