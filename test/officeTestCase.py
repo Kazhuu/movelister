@@ -10,10 +10,15 @@ from movelister.core import Context, file
 class OfficeTestCase(unittest.TestCase):
     """
     TestCase class to handle LibreOffice file opening and reloading between
-    tests. LibreOffice is oppened in headless mode. Running tests also work
-    when LibreOffice process is oppened normally.
+    tests. LibreOffice is opened in headless mode. Running tests also works
+    when LibreOffice process is opened normally.
+
+    TODO: certain tests which modify the sheet don't work on Windows, because
+    the document is re-opened between tests in read-only mode. This seems to
+    happen because of reopenCurrentFile function.
     """
-    EXCEPTION_MESSAGE = 'set environment variable MV_LB_BIN to point to LibreOffice executable before running tests'
+    EXCEPTION_MESSAGE = 'Set environment variable MV_LB_BIN to point to the \
+                        LibreOffice executable before running tests.'
 
     @classmethod
     def setUpClass(cls):
@@ -43,5 +48,5 @@ class OfficeTestCase(unittest.TestCase):
         super().tearDownClass()
 
     def setUp(self):
-        # Between each test case, reopen the same file.
+        # Reopen the same file between each test case.
         file.reopenCurrentFile()
