@@ -63,12 +63,23 @@ class Overview:
         self.phaseColumnIndex = helper.getColumnPosition(self.data, 'Phase')
         self.defaultColumnIndex = helper.getColumnPosition(self.data, 'DEF')
         self.dataHeader = self.data[self.headerRowIndex]
-        self.dataRows = self.data[self.dataBeginRow:]
+        self.dataRows = self._dataRows()
         self.modifierStartColumn = self.dataHeader.index(MODIFIER_START_COLUMN_NAME) + 1
         self.modifierEndColumn = self.dataHeader.index(MODIFIER_END_COLUMN_NAME)
         self.modifiers = self._readModifiers()
         self.actionNames = self._getUniqueActionNames()
         self._modifiedActions = self._readModifiedActions()
+
+    def _dataRows(self):
+        data = self.data[self.dataBeginRow:]
+        return self._stripEmptyRowsFromEnd(data)
+
+    def _stripEmptyRowsFromEnd(self, data):
+        # TODO: Doesn't work yet.
+        for index, row in reversed(list(enumerate(self.data))):
+            if row[0] != '':
+                return data[:index - 1]
+        return data
 
     def _readModifiers(self):
         modifiers = []
@@ -86,6 +97,7 @@ class Overview:
 
     def _readModifiedActions(self):
         modifiedActions = []
+        import ipdb; ipdb.set_trace()
         groups = filter.groupRows(self.dataRows, self.nameColumnIndex)
         for group in groups:
             modifiedActions.append(self._rowGroupToModifiedAction(group))
