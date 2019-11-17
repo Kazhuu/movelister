@@ -17,8 +17,9 @@ class UpdateOverview:
         return new
 
     def _updateModifiedActions(old, new):
-        for modAction in new.modifiedActions:
+        for modAction in old.modifiedActions:
             # Find modifiedAction from old overview and take modifiers from it.
+            import ipdb; ipdb.set_trace()
             oldModAction = old.findModifiedAction(modAction)
             if oldModAction:
                 modAction.modifiers = oldModAction.modifiers

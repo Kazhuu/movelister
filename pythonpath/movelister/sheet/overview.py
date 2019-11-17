@@ -72,14 +72,16 @@ class Overview:
 
     def _dataRows(self):
         data = self.data[self.dataBeginRow:]
-        return self._stripEmptyRowsFromEnd(data)
+        return self._stripTrailingEmptyRows(data)
 
-    def _stripEmptyRowsFromEnd(self, data):
-        # TODO: Doesn't work yet.
-        for index, row in reversed(list(enumerate(self.data))):
-            if row[0] != '':
-                return data[:index - 1]
-        return data
+    def _stripTrailingEmptyRows(self, data):
+        endIndex = len(data)
+        for index, row in reversed(list(enumerate(data))):
+            if row[0] == '':
+                endIndex = endIndex - 1
+            else:
+                break
+        return data[:endIndex]
 
     def _readModifiers(self):
         modifiers = []

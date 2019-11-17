@@ -10,6 +10,13 @@ def getUsedAreaSize(sheet):
     return cursor.getRangeAddress()
 
 
+def getColumLength(sheet):
+    """
+    Get amount of columns in given sheet.
+    """
+    return getUsedAreaSize(sheet).EndColumn
+
+
 def getSheetContent(sheet):
     """
     Returns two dimensional array of all non empty content of the given
