@@ -3,10 +3,13 @@ from movelister.sheet import helper
 
 
 def autoFillMasterList(masterList):
-    '''
+    """
+    NOTE: this entire module is old code that is incompatible with the current vision of Movelister.
+    But the basic idea is good, should be incorporated into the list generating.
+
     This function looks at the rows in Master List and fills certain empty fields.
     It's mainly for user convenience if they work with 'Default' values.
-    '''
+    """
     for row in masterList.data[masterList.dataBeginRow:]:
         if row[masterList.nameColumnIndex] != '':
             if row[masterList.viewColumnIndex] == '':
@@ -19,17 +22,17 @@ def autoFillMasterList(masterList):
 
 
 def autoFillOverview():
-    '''
+    """
     A function that checks if the Phases column is correctly filled in an Overview before generating.
-    '''
+    """
     print()
 
 
 def autoFillInputs(inputList):
-    '''
+    """
     A function that checks if Input List column is properly filled in Inputs before generating.
     If a row has a Name but no Input List, then the latter field is filled with 'Default'.
-    '''
+    """
     for row in inputList.data[inputList.dataBeginRow:]:
         if row[inputList.nameColumnIndex] != '':
             if row[inputList.inputsColumnIndex] == '':
@@ -38,9 +41,9 @@ def autoFillInputs(inputList):
 
 
 def generateDefaultInputs(inputList):
-    '''
+    """
     A function that creates an Input List called 'Default' if the Inputs is currently empty.
-    '''
+    """
     if len(inputList.dataRows) == 0:
         length = len(inputList.data[0])
         input1 = helper.createEmptyRow(length)

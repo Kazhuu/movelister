@@ -7,7 +7,7 @@ from movelister.sheet import Master, MASTER_LIST_SHEET_NAME, Inputs, INPUT_LIST_
 class AutoFillTestCase(OfficeTestCase):
 
     def testAutoFillMasterList(self):
-        self.skipTest('Last cell gives a wrong result, no idea why.')
+        self.skipTest('Outdated code, doesn\'t need to be tested.')
         master = Master(MASTER_LIST_SHEET_NAME)
 
         # Change some values to empty in the Master List.
@@ -28,7 +28,7 @@ class AutoFillTestCase(OfficeTestCase):
         self.assertEqual(cell3.getString(), '0')
 
     def testAutoFillInputs(self):
-        self.skipTest('Gives a runtime error every time?')
+        self.skipTest('Outdated code, doesn\'t need to be tested.')
         inputList = Inputs(INPUT_LIST_SHEET_NAME)
 
         # Change some values to empty in Inputs.

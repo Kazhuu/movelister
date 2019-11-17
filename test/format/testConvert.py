@@ -5,6 +5,9 @@ from movelister.format import convert
 class ConvertTestCase(OfficeTestCase):
 
     def testConvertIntoBaseAddress(self):
+        """
+        Tests that the code to convert a number into Base 26 works like intended.
+        """
         num1 = 26
         num2 = 27
         num3 = 702

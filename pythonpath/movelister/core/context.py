@@ -47,7 +47,7 @@ class Context(Singleton):
         """
         Resets the current context setup by setup() method. Remember to call
         setup() again after this. This can be used to reset context if LibreOffice
-        process has restarted. Usefull for unit tests.
+        process has restarted. Useful for unit tests.
         """
         if hasattr(cls, 'desktop'):
             del cls.desktop

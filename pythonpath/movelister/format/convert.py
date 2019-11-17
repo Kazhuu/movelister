@@ -14,7 +14,7 @@ def cellRangeAddressIntoCellRange(cra):
 
 def convertIntoBaseAddress(num):
     """
-    This code converts column number into base address since some LibreOffice features need it.
+    This code converts column number into base address (Base 26) since some LibreOffice features need it.
     """
     chars = []
     while num > 0:

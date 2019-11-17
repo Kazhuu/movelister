@@ -100,29 +100,10 @@ def namedRangeTest():
     activeSheet = helper.getActiveSheet(document)
 
     namedRange = Context.getDocument().NamedRanges
-    namedRanges.deleteNamedRanges(namedRange)
-    namedRanges.createNewNamedRange(activeSheet, namedRange)
-
-    rowStart = 20
-    rowEnd = 50
-    colStart = 15
-    colEnd = 60
-
-    char1 = convert.convertIntoBaseAddress(colStart)
-    char2 = convert.convertIntoBaseAddress(colEnd)
-
-    address = char1 + str(rowStart) + ":" + char2 + str(rowEnd)
-    print(address)
-
-    sheet = Master(MASTER_LIST_SHEET_NAME).sheet
-
-    format.setHorizontalAlignmentToRange(sheet, Alignment.RIGHT, 1, 4)
-
-    area = cursor.getSheetContent(sheet)
-    cellRange = sheet.getCellRangeByPosition(1, 0, 1 + 4, len(area) - 1)
-    print(cellRange.HoriJustify)
-    if cellRange.HoriJustify == 3:
-        print("NO jes!")
+    # namedRanges.deleteNamedRanges(namedRange)
+    # namedRanges.createNewNamedRange(activeSheet, "Test Name", namedRange, 5, 20, 1, 3)
+    # namedRanges.createNewNamedRange(activeSheet, "Tast Name", namedRange, 50, 70, 1, 3)
+    namedRanges.deleteFilteredNamedRanges(namedRange, 'Details (Default)')
 
 
 def refreshModifiers(args):
@@ -171,15 +152,12 @@ def createValidation():
 
 def testingClasses():
     masterList = Master('Master List')
-    autofill.autoFillMasterList(masterList)
     actions = masterList.getActions('Default')
 
     modifierList = Modifiers('Modifiers')
     modifiers = modifierList.getModifiers()
 
     inputList = Inputs('Inputs')
-    autofill.generateDefaultInputs(inputList)
-    autofill.autoFillInputs(inputList)
     inputs = inputList.getInputs('Default')
 
     overviewSheet = Overview('Overview (Default)')
@@ -227,3 +205,4 @@ def testingModifiers():
 # Run when executed from the command line.
 if __name__ == '__main__':
     Context.setup(host='localhost', port=2002)
+    namedRangeTest()

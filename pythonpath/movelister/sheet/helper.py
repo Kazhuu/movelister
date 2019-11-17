@@ -1,7 +1,7 @@
 def getActiveSheet(document):
-    '''
+    """
     This function gets the sheet that is currently active in the document.
-    '''
+    """
     activeSheet = document.getCurrentController().getActiveSheet()
     return activeSheet
 
@@ -52,10 +52,10 @@ def getCellColorsFromColumn(sheet, column, top, bottom):
 
 
 def getViewName(string):
-    '''
+    """
     This function splits the contents of a string that's inside parentheses, usually a View name.
     Used in generating Details view.
-    '''
+    """
     splitName1 = string.split('(')
     splitName2 = splitName1[1].split(')')
 
@@ -63,10 +63,10 @@ def getViewName(string):
 
 
 def createEmptyRow(length):
-    '''
+    """
     The purpose of this function is to generate an empty list that is as long as specified
     as well as compatible with cursor functions. Used in expanding existing data rows arrays.
-    '''
+    """
     emptyList = []
 
     for i in range(length):

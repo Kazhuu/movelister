@@ -2,16 +2,16 @@ from movelister.core import cursor
 from movelister.format import color
 from movelister.model import Modifier
 from movelister.sheet.sheet import Sheet
-from .modified_action import ModifiedActionFormatter
+from .modifiedAction import ModifiedActionFormatter
 
 
-header_prefix = ['Action Name', 'Hit', 'Frames', 'Phase', 'DEF']
-header_postfix = ['Notes 1', 'Notes 2', 'Notes 3']
+headerPrefix = ['Action Name', 'Hit', 'Frames', 'Phase', 'DEF']
+headerPostfix = ['Notes 1', 'Notes 2', 'Notes 3']
 
 
 class OverviewFormatter:
     """
-    Class responsible for formatting Overview class instance to two dimensional
+    Class responsible for formatting Overview class instance into a two dimensional
     array.
     """
 
@@ -20,7 +20,7 @@ class OverviewFormatter:
 
     def generate(self):
         """
-        Generate new overview sheet by copying template sheet and placing
+        Generate new Overview sheet by copying template sheet and placing
         formatted Overview class instance data in it.
         """
         sheet = Sheet.newOverview(self.instance.name)
@@ -29,7 +29,7 @@ class OverviewFormatter:
 
     def format(self):
         """
-        Format whole overview and returns two dimensional data array which
+        Format whole Overview and returns two dimensional data array which
         can be put to sheet. It also includes empty row before header row.
         """
         data = []
@@ -40,28 +40,28 @@ class OverviewFormatter:
 
     def formatHeader(self):
         """
-        Format overview header information with modifier data in it and
-        returns it as an array.
+        Format Overview header information with modifier data in it and
+        return it as an array.
         """
         modifiers = []
         for mod in self.instance.modifiers:
             modifiers.append(mod.name)
-        return header_prefix + modifiers + header_postfix
+        return headerPrefix + modifiers + headerPostfix
 
     def formatModifiedActions(self):
         """
-        Format modified actions and returns it as two dimensional array.
+        Format modified actions and return it as two dimensional array.
         """
         rows = []
         for modifiedAction in self.instance.modifiedActions:
-            rows = rows + ModifiedActionFormatter(self.instance, modifiedAction, len(header_postfix)).format()
+            rows = rows + ModifiedActionFormatter(self.instance, modifiedAction, len(headerPostfix)).format()
         return rows
 
     def formatFirstLine(self):
         """
-        Returns empty row before actual header row. In the template this row contains the buttons.
+        Return the empty row before actual header row. In the template this row contains the buttons.
         """
-        length = len(header_prefix) + len(header_postfix) + len(self.instance.modifiers)
+        length = len(headerPrefix) + len(headerPostfix) + len(self.instance.modifiers)
         return ['' for _ in range(0, length)]
 
     def setOverviewModifierColors(self):
