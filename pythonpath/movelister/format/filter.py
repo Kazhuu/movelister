@@ -13,6 +13,8 @@ def groupRows(rows, column):
     changes, new group is made. Cell with no data are excluded from groups.
     """
     filteredRows = filterRows(lambda row: row[column] != '', rows)
+    if not filteredRows:
+        return []
     groups = [[]]
     index = 0
     lastData = filteredRows[0][column]

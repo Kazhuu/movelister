@@ -19,7 +19,7 @@ from movelister.model import Color # noqa
 from movelister.process import OverviewFactory, UpdateOverview # noqa
 from movelister.sheet import helper, Inputs, Master, Modifiers, Overview, Sheet # noqa
 from movelister import error, selection  # noqa
-from movelister.sheet import Master, MASTER_LIST_SHEET_NAME  # noqa
+from movelister.sheet import Master, MASTER_LIST_SHEET_NAME, MODIFIER_LIST_SHEET_NAME  # noqa
 from movelister.ui import message_box  # noqa
 
 # Setup context automatically when macro is run from the LibreOffice.
@@ -72,7 +72,7 @@ def generateOrRefreshOverview(*args):
     masterSheet = Master(MASTER_LIST_SHEET_NAME)
     overviewName = masterSheet.getOverviewName()
     completeOverviewName = 'Overview ({})'.format(overviewName)
-    newOverviewSheet = Overview(overviewName)
+    newOverview = Overview(overviewName)
 
     if not overviewName:
         message_box.showWarningWithOk('Provide overview name to generate or refresh')
@@ -82,14 +82,20 @@ def generateOrRefreshOverview(*args):
         # Check if user wants to update existing overview.
         if not message_box.showSheetUpdateWarning():
             return
+        # Get lates modifiers from modifiers sheet.
+        newOverview.modifiers = Modifiers(MODIFIER_LIST_SHEET_NAME).getModifiers()
         oldOverview = Overview.fromSheet(completeOverviewName)
-        newOverviewSheet = UpdateOverview.update(oldOverview, newOverviewSheet)
+        # Update new overview to with the data from the old overview.
+        newOverview = UpdateOverview.update(oldOverview, newOverview)
 
     # Delete old sheet.
     Sheet.deleteSheetByName(completeOverviewName)
     # Generate a new one.
-    formatter = OverviewFormatter(newOverviewSheet)
-    formatter.generate()
+    formatter = OverviewFormatter(newOverview)
+    overviewSheet = formatter.generate()
+    # Make columns width optimal.
+    length = cursor.getColumLength(overviewSheet)
+    format.setOptimalWidthToRange(overviewSheet, 0, length)
 
 
 def namedRangeTest():
