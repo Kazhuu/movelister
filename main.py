@@ -72,7 +72,6 @@ def generateOrRefreshOverview(*args):
     masterSheet = Master(MASTER_LIST_SHEET_NAME)
     overviewName = masterSheet.getOverviewName()
     completeOverviewName = 'Overview ({})'.format(overviewName)
-    newOverview = Overview(overviewName)
 
     if not overviewName:
         message_box.showWarningWithOk('Provide overview name to generate or refresh')
@@ -82,11 +81,10 @@ def generateOrRefreshOverview(*args):
         # Check if user wants to update existing overview.
         if not message_box.showSheetUpdateWarning():
             return
-        # Get lates modifiers from modifiers sheet.
-        newOverview.modifiers = Modifiers(MODIFIER_LIST_SHEET_NAME).getModifiers()
         oldOverview = Overview.fromSheet(completeOverviewName)
-        # Update new overview to with the data from the old overview.
-        newOverview = UpdateOverview.update(oldOverview, newOverview)
+        newOverview = UpdateOverview.update(oldOverview, overviewName)
+    else:
+        newOverview = Overview(overviewName)
 
     # Delete old sheet.
     Sheet.deleteSheetByName(completeOverviewName)
@@ -211,4 +209,4 @@ def testingModifiers():
 # Run when executed from the command line.
 if __name__ == '__main__':
     Context.setup(host='localhost', port=2002)
-    namedRangeTest()
+    generateOrRefreshOverview()

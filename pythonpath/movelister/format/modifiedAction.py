@@ -20,7 +20,10 @@ class ModifiedActionFormatter:
         # name
         row.append(self.modifiedAction.name)
         # hit
-        row.append('x' if self.modifiedAction.hitPhase - 1 == phase else '')
+        if self.modifiedAction.hitPhase is not None:
+            row.append('x' if self.modifiedAction.hitPhase - 1 == phase else '')
+        else:
+            row.append('x')
         # frames
         row.append('')
         # phase number
