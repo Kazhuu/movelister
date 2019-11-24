@@ -1,26 +1,50 @@
+from movelister.sheet import MODIFIER_LIST_SHEET_NAME, Modifiers, Overview, Master, MASTER_LIST_SHEET_NAME
+
+
 class UpdateOverview:
     """
-    Class which takes care of updating two overview class instances to one
-    instance. This is used when existing overview and new overview need to be
-    synced and data updated.
+    TODO: Generate one less phase than original.
     """
+    @classmethod
+    def update(cls, previousOverview, name):
+        """
+        """
+        cls.newOverview = Overview(name)
+        cls._updateLatestModifiers()
+        cls._updateLatestModifiedActions(name)
+        cls._updateModifiedActions(previousOverview)
+        return cls.newOverview
 
     @classmethod
-    def update(cls, old, new):
-        """
-        TODO: Implement this update order.
-        update:
-            modifiedActions user data from old to new
-            add user content from old to new
-        """
-        cls. _updateModifiedActions(old, new)
-        return new
-
-    def _updateModifiedActions(old, new):
-        for modAction in old.modifiedActions:
+    def _updateModifiedActions(cls, previousOverview):
+        for modAction in cls.newOverview.modifiedActions:
             # Find modifiedAction from old overview and take modifiers from it.
-            oldModAction = old.findModifiedAction(modAction)
-            if oldModAction:
-                modAction.modifiers = oldModAction.modifiers
-                modAction.hitPhase = oldModAction.hitPhase
-                modAction.default = oldModAction.default
+            previousModAction = previousOverview.findModifiedAction(modAction)
+            if previousModAction:
+                modAction.modifiers = cls._deleteOldModifiersFromAction(previousModAction)
+                modAction.hitPhase = previousModAction.hitPhase
+                modAction.default = previousModAction.default
+
+    @classmethod
+    def _updateLatestModifiers(cls):
+        """
+        Update latest modifiers from sheet which defines them to the new
+        overview.
+        """
+        cls.newOverview.modifiers = Modifiers(MODIFIER_LIST_SHEET_NAME).getModifiers()
+
+    @classmethod
+    def _updateLatestModifiedActions(cls, viewName):
+        """
+        Update latest modified actions filtered by given view name and add them
+        to new overview.
+        """
+        masterSheet = Master(MASTER_LIST_SHEET_NAME)
+        cls.newOverview.modifiedActions = masterSheet.getModifiedActions(viewName)
+
+    def _deleteOldModifiersFromAction(action):
+        """
+        Delete non existing modifiers from given action that doesn't exist on
+        new overview anymore.
+        """
+        return action.modifiers

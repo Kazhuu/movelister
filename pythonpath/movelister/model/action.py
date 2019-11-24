@@ -1,4 +1,8 @@
 class Action:
+    """
+    TODO: Remove ModifiedAction from codebase and refactor it as a Action class
+    instead.
+    """
 
     def __init__(self, name, **kwargs):
         if not isinstance(name, str):

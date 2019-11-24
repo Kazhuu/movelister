@@ -2,6 +2,10 @@ from .action import Action
 
 
 class ModifiedAction(Action):
+    """
+    TODO: Remove ModifiedAction from codebase and refactor it as a Action class
+    instead.
+    """
 
     def __init__(self, name, **kwargs):
         super().__init__(name, **kwargs)
@@ -24,7 +28,7 @@ class ModifiedAction(Action):
 
     def phaseModifiers(self, phase):
         self._checkPhaseRange(phase)
-        return self.modifiers[phase]
+        return self.modifiers.get(phase, [])
 
     def clearModifiers(self, phase):
         self._checkPhaseRange(phase)
