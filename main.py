@@ -12,7 +12,7 @@ import sys
 if __name__ == '__main__':
     sys.path.append(os.path.join(os.path.dirname('__file__'), 'pythonpath'))
 
-from movelister.core import Alignment, Context, cursor # noqa
+from movelister.core import HorizontalAlignment, VerticalAlignment, Context, cursor # noqa
 from movelister.format import autofill, color, convert, format, namedRanges, overview, OverviewFormatter, validation # noqa
 from movelister.format import OverviewFormatter  # noqa
 from movelister.model import Color # noqa
@@ -98,20 +98,6 @@ def generateOrRefreshOverview(*args):
     format.setOptimalWidthToRange(overviewSheet, 0, length)
 
 
-def namedRangeTest():
-    """
-    Quick tests with named ranges.
-    """
-    document = Context.getDocument()
-    activeSheet = helper.getActiveSheet(document)
-
-    namedRange = Context.getDocument().NamedRanges
-    # namedRanges.deleteNamedRanges(namedRange)
-    # namedRanges.createNewNamedRange(activeSheet, "Test Name", namedRange, 5, 20, 1, 3)
-    # namedRanges.createNewNamedRange(activeSheet, "Tast Name", namedRange, 50, 70, 1, 3)
-    namedRanges.deleteFilteredNamedRanges(namedRange, 'Details (Default)')
-
-
 def refreshModifiers(args):
     """
     A function that refreshes the modifier block of Overview based on the data
@@ -182,7 +168,8 @@ def testingClasses():
 def testingFormatting():
     masterSheet = Sheet.getByName('Master List')
     aboutSheet = Sheet.getByName('About')
-    format.setHorizontalAlignmentToRange(masterSheet, Alignment.RIGHT, 1, 4)
+    format.setHorizontalAlignmentToRange(masterSheet, HorizontalAlignment.RIGHT, 1, 4)
+    format.setVerticalAlignmentToRange(masterSheet, VerticalAlignment.CENTER, 1, 10, 20, 25)
     c = color.getTitleBarColor(aboutSheet)
 
     range = masterSheet.getCellRangeByPosition(1, 1, 4, 4)
@@ -196,9 +183,6 @@ def testingModifiers():
     masterList = Master('Master List')
     modifierList = Modifiers('Modifiers')
 
-    overviewSheet = Sheet.getByName('Overview (Default)')
-    masterSheet = Sheet.getByName('Master List')
-
     # factory = OverviewFactory()
     # testOverview = factory.createOverview(masterList, 'Default')
 
@@ -211,4 +195,4 @@ def testingModifiers():
 # Run when executed from the command line.
 if __name__ == '__main__':
     Context.setup(host='localhost', port=2002)
-    namedRangeTest()
+    testingFormatting()

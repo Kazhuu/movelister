@@ -23,10 +23,16 @@ def deleteNamedRanges(namedRanges):
 
 def deleteFilteredNamedRanges(namedRanges, sheetName):
     """
-    A function that deletes all named ranges of a named sheet.
-    TODO: still in progress.
+    A function that deletes all named ranges of a user-named sheet.
     """
-    string = '$\'' + sheetName + '\'.'
-    for item in namedRanges.getElementNames():
-        if item.startswith(string) == True:
-            namedRanges.removeByName(item)
+    deleteArray = []
+    string = '$\'' + sheetName + '\''
+
+    # Filter through namedRanges to find which ranges to delete.
+    for item in namedRanges:
+        if str(item.getContent()).startswith(string) == True:
+            deleteArray.append((str(item.getName())))
+
+    # Delete the ranges.
+    for item in deleteArray:
+        namedRanges.removeByName(item)
