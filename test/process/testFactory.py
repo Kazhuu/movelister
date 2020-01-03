@@ -11,7 +11,7 @@ class OverviewFactoryTestCase(OfficeTestCase):
         viewName = 'Default'
         overview = OverviewFactory.createOverview(master, viewName)
         modifiers = ['WPN1', 'WPN2', 'WPN3', 'Super', 'FL1', 'FL2', 'PG', 'LAM', 'PAM', 's b', 't b']
-        modifiedActions = ['Attack s1', 'Attack s2', 'Attack s3', 'Attack s4', 'Swim', 'Rush']
+        actions = ['Attack s1', 'Attack s2', 'Attack s3', 'Attack s4', 'Swim', 'Rush']
         self.assertEqual(overview.name, viewName)
         self.assertTrue(all(modifier.name in modifiers for modifier in overview.modifiers))
-        self.assertTrue(all(modAction.name in modifiedActions for modAction in overview.modifiedActions))
+        self.assertTrue(all(modAction.name in actions for modAction in overview.actions))

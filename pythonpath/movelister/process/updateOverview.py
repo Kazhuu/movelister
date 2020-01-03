@@ -11,19 +11,19 @@ class UpdateOverview:
         """
         cls.newOverview = Overview(name)
         cls._updateLatestModifiers()
-        cls._updateLatestModifiedActions(name)
-        cls._updateModifiedActions(previousOverview)
+        cls._updateLatestActions(name)
+        cls._updateActions(previousOverview)
         return cls.newOverview
 
     @classmethod
-    def _updateModifiedActions(cls, previousOverview):
-        for modAction in cls.newOverview.modifiedActions:
-            # Find modifiedAction from old overview and take modifiers from it.
-            previousModAction = previousOverview.findModifiedAction(modAction)
-            if previousModAction:
-                modAction.modifiers = cls._deleteOldModifiersFromAction(previousModAction)
-                modAction.hitPhase = previousModAction.hitPhase
-                modAction.default = previousModAction.default
+    def _updateActions(cls, previousOverview):
+        for action in cls.newOverview.actions:
+            # Find action from old overview and take modifiers from it.
+            previousAction = previousOverview.findAction(action)
+            if previousAction:
+                action.modifiers = cls._deleteOldModifiersFromAction(previousAction)
+                action.hitPhase = previousAction.hitPhase
+                action.default = previousAction.default
 
     @classmethod
     def _updateLatestModifiers(cls):
@@ -34,13 +34,12 @@ class UpdateOverview:
         cls.newOverview.modifiers = Modifiers(MODIFIER_LIST_SHEET_NAME).getModifiers()
 
     @classmethod
-    def _updateLatestModifiedActions(cls, viewName):
+    def _updateLatestActions(cls, viewName):
         """
-        Update latest modified actions filtered by given view name and add them
-        to new overview.
+        Update latest actions filtered by given view name and add them to new overview.
         """
         masterSheet = Master(MASTER_LIST_SHEET_NAME)
-        cls.newOverview.modifiedActions = masterSheet.getModifiedActions(viewName)
+        cls.newOverview.actions = masterSheet.getActions(viewName)
 
     def _deleteOldModifiersFromAction(action):
         """

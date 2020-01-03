@@ -2,7 +2,7 @@ from movelister.core import cursor
 from movelister.format import color
 from movelister.model import Modifier
 from movelister.sheet.sheet import Sheet
-from .modifiedAction import ModifiedActionFormatter
+from .action import ActionFormatter
 
 
 headerPrefix = ['Action Name', 'Hit', 'Frames', 'Phase', 'DEF']
@@ -35,7 +35,7 @@ class OverviewFormatter:
         data = []
         data.append(self.formatFirstLine())
         data.append(self.formatHeader())
-        data = data + self.formatModifiedActions()
+        data = data + self.formatActions()
         return data
 
     def formatHeader(self):
@@ -48,13 +48,13 @@ class OverviewFormatter:
             modifiers.append(mod.name)
         return headerPrefix + modifiers + headerPostfix
 
-    def formatModifiedActions(self):
+    def formatActions(self):
         """
-        Format modified actions and return it as two dimensional array.
+        Format actions and return it as two dimensional array.
         """
         rows = []
-        for modifiedAction in self.instance.modifiedActions:
-            rows = rows + ModifiedActionFormatter(self.instance, modifiedAction, len(headerPostfix)).format()
+        for action in self.instance.actions:
+            rows = rows + ActionFormatter(self.instance, action, len(headerPostfix)).format()
         return rows
 
     def formatFirstLine(self):

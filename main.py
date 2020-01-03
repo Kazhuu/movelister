@@ -13,9 +13,8 @@ if __name__ == '__main__':
     sys.path.append(os.path.join(os.path.dirname('__file__'), 'pythonpath'))
 
 from movelister.core import HorizontalAlignment, VerticalAlignment, Context, cursor # noqa
-from movelister.format import autofill, color, convert, format, namedRanges, overview, OverviewFormatter, validation # noqa
-from movelister.format import OverviewFormatter  # noqa
-from movelister.model import Color # noqa
+from movelister.format import autofill, color, convert, format, namedRanges, overview, action, validation # noqa
+from movelister.model import Action, Color # noqa
 from movelister.process import OverviewFactory, UpdateOverview # noqa
 from movelister.sheet import helper, Inputs, Master, Modifiers, Overview, Sheet # noqa
 from movelister import error, selection  # noqa
@@ -149,9 +148,6 @@ def testingClasses():
 
     inputList = Inputs('Inputs')
     inputs = inputList.getInputs('Default')
-
-    overviewSheet = Overview('Overview (Default)')
-    # Overview still WIP
 
     for row in actions:
         print(row.__dict__)

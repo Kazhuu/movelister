@@ -1,7 +1,7 @@
 from movelister.core import cursor
 from .sheet import Sheet
 from . import helper
-from movelister.model import Action, ModifiedAction
+from movelister.model import Action
 from movelister.format import filter
 
 
@@ -24,9 +24,6 @@ class Master:
             self.sheet, self.colorColumnIndex, self.dataBeginRow, len(self.data))
 
     def getActions(self, view=None):
-        return self.getModifiedActions(view)
-
-    def getModifiedActions(self, view=None):
         actions = []
         rows = self.dataRows
         if view:
@@ -35,7 +32,7 @@ class Master:
             if self._isValidRow(row):
                 kwargs = self._rowToKwargs(row)
                 kwargs['color'] = self.actionColors[index]
-                actions.append(ModifiedAction(**kwargs))
+                actions.append(Action(**kwargs))
         return actions
 
     def getOverviewName(self):

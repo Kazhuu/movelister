@@ -1,2 +1,2 @@
-from .modifiedAction import ModifiedActionFormatter # noqa
+from .action import ActionFormatter # noqa
 from .overview import OverviewFormatter # noqa

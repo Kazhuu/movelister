@@ -1,5 +1,5 @@
 from test import OfficeTestCase
-from movelister.model import ModifiedAction, Modifier
+from movelister.model import Action, Modifier
 from movelister.sheet import Overview
 
 
@@ -29,24 +29,24 @@ class OverviewTestCase(OfficeTestCase):
         overview.addModifier(modifier2)
         self.assertEqual(overview.modifiers, [modifier1, modifier2])
 
-    def testAddModifiedAction(self):
-        modifiedAction1 = ModifiedAction('modAction1')
-        modifiedAction2 = ModifiedAction('modAction2')
+    def testAddAction(self):
+        action1 = Action('action1')
+        action2 = Action('action2')
         overview = Overview('test')
-        overview.addModifiedAction(modifiedAction1)
-        overview.addModifiedAction(modifiedAction2)
-        self.assertEqual(overview.modifiedActions, [modifiedAction1, modifiedAction2])
+        overview.addAction(action1)
+        overview.addAction(action2)
+        self.assertEqual(overview.actions, [action1, action2])
 
-    def testFindModifiedAction(self):
-        modifiedAction1 = ModifiedAction('modAction1')
-        modifiedAction2 = ModifiedAction('modAction2')
-        modifiedAction3 = ModifiedAction('modAction3')
+    def testFindAction(self):
+        action1 = Action('action1')
+        action2 = Action('action2')
+        action3 = Action('action3')
         overview = Overview('test')
-        overview.addModifiedAction(modifiedAction1)
-        overview.addModifiedAction(modifiedAction2)
-        overview.addModifiedAction(modifiedAction3)
-        self.assertTrue(modifiedAction2.name == overview.findModifiedAction(modifiedAction2).name)
-        self.assertIsNone(overview.findModifiedAction(ModifiedAction('cannot find')))
+        overview.addAction(action1)
+        overview.addAction(action2)
+        overview.addAction(action3)
+        self.assertTrue(action2.name == overview.findAction(action2).name)
+        self.assertIsNone(overview.findAction(Action('cannot find')))
 
     def testActionNames(self):
         actionNames = self.overview.actionNames
@@ -54,18 +54,18 @@ class OverviewTestCase(OfficeTestCase):
         for action in actionNames:
             self.assertIsInstance(action, str)
 
-    def testGetModifiedActions(self):
-        modifiedActions = self.overview.modifiedActions
-        self.assertTrue(modifiedActions)
-        for modifiedAction in modifiedActions:
-            self.assertIsInstance(modifiedAction, ModifiedAction)
+    def testGetActions(self):
+        actions = self.overview.actions
+        self.assertTrue(actions)
+        for action in actions:
+            self.assertIsInstance(action, Action)
 
-    def testModifiedActionModifiers(self):
+    def testActionModifiers(self):
         """
-        Test ModifiedAction modifiers for phase 2 that data is formed according
+        Test Action modifiers for phase 2 that data is formed according
         to data set in the overview sheet.
         """
         names = ['WPN1', 's b', 't b']
-        modifiedActions = self.overview.modifiedActions
-        modifiers = modifiedActions[0].phaseModifiers(2)
+        actions = self.overview.actions
+        modifiers = actions[0].phaseModifiers(2)
         self.assertTrue(all(modifier.name in names for modifier in modifiers))

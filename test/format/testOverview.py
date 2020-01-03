@@ -1,5 +1,5 @@
 from test import OfficeTestCase
-from movelister.model import Modifier, ModifiedAction
+from movelister.model import Modifier, Action
 from movelister.sheet import Overview, Sheet
 from movelister.core import cursor
 from movelister.format import OverviewFormatter
@@ -25,13 +25,13 @@ class OverviewFormatterTestCase(OfficeTestCase):
         modifier2 = Modifier('bb')
         self.overview.modifiers = [modifier1, modifier2]
 
-        modAct1 = ModifiedAction('attack 1', phases=2, hitPhase=1, default=True)
+        modAct1 = Action('attack 1', phases=2, hitPhase=1, default=True)
         modAct1.addModifier(0, Modifier('aa'))
         modAct1.addModifier(1, Modifier('bb'))
-        self.overview.addModifiedAction(modAct1)
+        self.overview.addAction(modAct1)
 
         formatter = OverviewFormatter(self.overview)
-        data = formatter.formatModifiedActions()
+        data = formatter.formatActions()
         self.assertEqual(data, [
             ['attack 1', 'x', '', '0', 'x', 'x', '', '', '', ''],
             ['attack 1', '', '', '1', 'x', '', 'x', '', '', '']]
@@ -43,10 +43,10 @@ class OverviewFormatterTestCase(OfficeTestCase):
         modifier3 = Modifier('cc')
         self.overview.modifiers = [modifier1, modifier2, modifier3]
 
-        modAct1 = ModifiedAction('attack 1', phases=2, hitPhase=1, default=True)
+        modAct1 = Action('attack 1', phases=2, hitPhase=1, default=True)
         modAct1.addModifier(0, Modifier('aa'))
         modAct1.addModifier(1, Modifier('bb'))
-        self.overview.addModifiedAction(modAct1)
+        self.overview.addAction(modAct1)
 
         formatter = OverviewFormatter(self.overview)
         data = formatter.format()
@@ -67,10 +67,10 @@ class OverviewFormatterTestCase(OfficeTestCase):
         modifier3 = Modifier('cc')
         self.overview.modifiers = [modifier1, modifier2, modifier3]
 
-        modAct1 = ModifiedAction('attack 1', phases=2, hitPhase=1, default=True)
+        modAct1 = Action('attack 1', phases=2, hitPhase=1, default=True)
         modAct1.addModifier(0, Modifier('aa'))
         modAct1.addModifier(1, Modifier('bb'))
-        self.overview.addModifiedAction(modAct1)
+        self.overview.addAction(modAct1)
 
         formatter = OverviewFormatter(self.overview)
         formatter.generate()

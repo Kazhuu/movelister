@@ -1,6 +1,6 @@
 from movelister.sheet.sheet import MODIFIER_LIST_SHEET_NAME
 from movelister.sheet import Modifiers, Overview
-from movelister.model import ModifiedAction
+from movelister.model import Action
 
 
 class OverviewFactory:
@@ -16,5 +16,5 @@ class OverviewFactory:
         overview = Overview(viewName)
         overview.modifiers = modifiers.getModifiers()
         for action in actions:
-            overview.addModifiedAction(ModifiedAction(action.name, color=action.color, phases=action.phases))
+            overview.addAction(Action(action.name, color=action.color, phases=action.phases))
         return overview

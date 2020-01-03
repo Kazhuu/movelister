@@ -1,6 +1,6 @@
 from test import OfficeTestCase
 from movelister.sheet import Master, MASTER_LIST_SHEET_NAME
-from movelister.model import Action, ModifiedAction
+from movelister.model import Action
 
 
 class MasterTestCase(OfficeTestCase):
@@ -8,7 +8,7 @@ class MasterTestCase(OfficeTestCase):
     def setUp(self):
         self.master = Master(MASTER_LIST_SHEET_NAME)
         self.actions = self.master.getActions()
-        self.modifiedActions = self.master.getModifiedActions()
+        self.actions = self.master.getActions()
 
     def testMasterInstance(self):
         self.assertIsInstance(self.master.data, list)
@@ -20,12 +20,6 @@ class MasterTestCase(OfficeTestCase):
         self.assertTrue(self.actions)
         for action in self.actions:
             self.assertIsInstance(action, Action)
-
-    def testGetModifiedActions(self):
-        self.assertIsInstance(self.modifiedActions, list)
-        self.assertTrue(self.modifiedActions)
-        for modifiedAction in self.modifiedActions:
-            self.assertIsInstance(modifiedAction, ModifiedAction)
 
     def testGetDefaultActions(self):
         actions = self.master.getActions('Default')

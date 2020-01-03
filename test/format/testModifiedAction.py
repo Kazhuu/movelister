@@ -1,22 +1,22 @@
 from test import OfficeTestCase
-from movelister.format import ModifiedActionFormatter
+from movelister.format import ActionFormatter
 from movelister.sheet import Overview
-from movelister.model import ModifiedAction, Modifier
+from movelister.model import Action, Modifier
 
 
-class ModifiedActionFormatterTestCase(OfficeTestCase):
+class ActionFormatterTestCase(OfficeTestCase):
 
     def setUp(self):
         super().setUp()
         self.overview = Overview('test sheet')
         self.overview.modifiers = [Modifier('aa'), Modifier('bb'), Modifier('cc')]
-        self.modAct1 = ModifiedAction('attack 1', phases=2, hitPhase=1, default=True)
-        self.modAct1.addModifier(0, Modifier('aa'))
-        self.modAct1.addModifier(1, Modifier('bb'))
-        self.overview.addModifiedAction(self.modAct1)
+        self.action = Action('attack 1', phases=2, hitPhase=1, default=True)
+        self.action.addModifier(0, Modifier('aa'))
+        self.action.addModifier(1, Modifier('bb'))
+        self.overview.addAction(self.action)
 
-    def testFormatingModifiedAction(self):
-        formatter = ModifiedActionFormatter(self.overview, self.modAct1, 3)
+    def testFormattingAction(self):
+        formatter = ActionFormatter(self.overview, self.action, 3)
         data = formatter.format()
         # name, hit, frames, phase, def, aa, bb, cc, Notes1, Notes2, Notes3
         result = [

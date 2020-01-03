@@ -1,7 +1,7 @@
 from movelister.core import cursor
 from .sheet import Sheet
 from movelister.format import filter
-from movelister.model import Modifier, ModifiedAction
+from movelister.model import Modifier, Action
 from movelister.sheet import helper
 
 
@@ -14,7 +14,7 @@ class Overview:
     def __init__(self, sheetName):
         self.name = sheetName
         self._modifiers = []
-        self._modifiedActions = []
+        self._actions = []
 
     @property
     def modifiers(self):
@@ -31,26 +31,25 @@ class Overview:
         return instance
 
     @property
-    def modifiedActions(self):
-        return self._modifiedActions
+    def actions(self):
+        return self._actions
 
-    @modifiedActions.setter
-    def modifiedActions(self, value):
-        self._modifiedActions = value
+    @actions.setter
+    def actions(self, value):
+        self._actions = value
 
     def addModifier(self, modifier):
         self._modifiers.append(modifier)
 
-    def addModifiedAction(self, modifiedAction):
-        self._modifiedActions.append(modifiedAction)
+    def addAction(self, action):
+        self._actions.append(action)
 
-    def findModifiedAction(self, modifiedAction):
+    def findAction(self, comparedAction):
         """
-        Find given modified action from the set modified actions. If none is
-        found, None is returned. ModifiedActions are considered equal if their
-        names are equal.
+        Find given action from the set of actions. If none is found, None is
+        returned. Actions are considered equal if their names are equal.
         """
-        return next((modAction for modAction in self._modifiedActions if modAction == modifiedAction), None)
+        return next((action for action in self._actions if action == comparedAction), None)
 
     def readSheetContent(self):
         self.sheet = Sheet.getByName(self.name)
@@ -68,7 +67,7 @@ class Overview:
         self.modifierEndColumn = self.dataHeader.index(MODIFIER_END_COLUMN_NAME)
         self.modifiers = self._readModifiers()
         self.actionNames = self._getUniqueActionNames()
-        self._modifiedActions = self._readModifiedActions()
+        self._actions = self._readActions()
 
     def _dataRows(self):
         data = self.data[self.dataBeginRow:]
@@ -97,14 +96,14 @@ class Overview:
                 names.append(row[self.nameColumnIndex])
         return names
 
-    def _readModifiedActions(self):
-        modifiedActions = []
+    def _readActions(self):
+        actions = []
         groups = filter.groupRows(self.dataRows, self.nameColumnIndex)
         for group in groups:
-            modifiedActions.append(self._rowGroupToModifiedAction(group))
-        return modifiedActions
+            actions.append(self._rowGroupToAction(group))
+        return actions
 
-    def _rowGroupToModifiedAction(self, rowGroup):
+    def _rowGroupToAction(self, rowGroup):
         modifiers = {}
         kwargs = {'name': rowGroup[0][self.nameColumnIndex], 'phases': len(rowGroup), 'modifiers': modifiers}
         for phase, row in enumerate(rowGroup):
@@ -115,7 +114,7 @@ class Overview:
             modInstances = self._modifiersFromRow(row)
             if modInstances:
                 modifiers[phase] = modInstances
-        return ModifiedAction(**kwargs)
+        return Action(**kwargs)
 
     def _modifiersFromRow(self, row):
         mods = row[self.modifierStartColumn:self.modifierEndColumn]

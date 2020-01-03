@@ -1,8 +1,4 @@
 class Action:
-    """
-    TODO: Remove ModifiedAction from codebase and refactor it as a Action class
-    instead.
-    """
 
     def __init__(self, name, **kwargs):
         if not isinstance(name, str):
@@ -11,6 +7,9 @@ class Action:
         self.inputs = kwargs.get('inputs', 'Default')
         self.color = kwargs.get('color', -1)
         self.phases = kwargs.get('phases', 1)
+        self.default = kwargs.get('default', False)
+        self.hitPhase = kwargs.get('hitPhase', None)
+        self.modifiers = kwargs.get('modifiers', {})
 
     def __eq__(self, other):
         """
@@ -23,3 +22,31 @@ class Action:
         Test object nonequality.
         """
         return not self == other
+
+    def setModifiers(self, phase, modifiers):
+        self._checkPhaseRange(phase)
+        self.modifiers[phase] = modifiers
+        return self.modifiers
+
+    def addModifier(self, phase, modifier):
+        self._checkPhaseRange(phase)
+        try:
+            self.modifiers[phase].append(modifier)
+        except KeyError:
+            self.modifiers[phase] = [modifier]
+        return self.modifiers
+
+    def phaseModifiers(self, phase):
+        self._checkPhaseRange(phase)
+        return self.modifiers.get(phase, [])
+
+    def clearModifiers(self, phase):
+        self._checkPhaseRange(phase)
+        return self.modifiers.pop(phase, [])
+
+    def clearAllModifiers(self):
+        self.modifiers = {}
+
+    def _checkPhaseRange(self, phase):
+        if phase < 0 or phase > self.phases - 1:
+            raise ValueError('phase {0} out of range, must be from 0 to {1}'.format(phase, self.phases - 1))
