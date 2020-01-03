@@ -76,16 +76,17 @@ def generateOrRefreshOverview(*args):
         message_box.showWarningWithOk('Provide overview name to generate or refresh')
         return
 
+    oldOverview = Overview(overviewName)
+    # If document has existing overview, then that is set as previous instead.
     if Sheet.hasByName(completeOverviewName):
         # Check if user wants to update existing overview.
         if not message_box.showSheetUpdateWarning():
             return
         oldOverview = Overview.fromSheet(completeOverviewName)
-        newOverview = UpdateOverview.update(oldOverview, overviewName)
-    else:
-        newOverview = Overview(overviewName)
 
-    # Delete old sheet.
+    newOverview = UpdateOverview.update(oldOverview, overviewName)
+
+    # Delete old sheet if exist.
     Sheet.deleteSheetByName(completeOverviewName)
     # Generate a new one.
     formatter = OverviewFormatter(newOverview)
@@ -189,4 +190,4 @@ def testingModifiers():
 # Run when executed from the command line.
 if __name__ == '__main__':
     Context.setup(host='localhost', port=2002)
-    testingFormatting()
+    generateOrRefreshOverview()
