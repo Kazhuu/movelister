@@ -1,3 +1,5 @@
+import unittest
+
 from test import OfficeTestCase
 from movelister.model import Action
 from movelister.sheet import Overview, Master
@@ -7,7 +9,12 @@ from movelister.sheet.sheet import MASTER_LIST_SHEET_NAME
 
 class UpdateOverviewTestCase(OfficeTestCase):
 
+    @unittest.skip('use old functionality, refactor')
     def testUpdate(self):
+        """
+        Split this test to smaller ones and test adding different things like modifiers
+        and see they are updated corretly
+        """
         overviewName = 'Default'
         oldOverviewName = 'Overview (Default)'
         newActionName = 'test attack'
@@ -16,7 +23,7 @@ class UpdateOverviewTestCase(OfficeTestCase):
         oldOverview = Overview.fromSheet(oldOverviewName)
         # Add new action to new overview. This should appear on updated
         # overview alongside with old actions and their data.
-        newOverview.addAction(Action(newActionName, phases=2, hitPhase=1, default=False))
+        oldOverview.addAction(Action(newActionName, phases=2, hitPhase=1, default=False))
         updatedOverview = UpdateOverview.update(oldOverview, newOverview)
         actions = updatedOverview.actions
 
