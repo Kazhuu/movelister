@@ -23,7 +23,7 @@ class ModifiedActionFormatter:
         if self.modifiedAction.hitPhase is not None:
             row.append('x' if self.modifiedAction.hitPhase - 1 == phase else '')
         else:
-            row.append('x')
+            row.append('')
         # frames
         row.append('')
         # phase number
