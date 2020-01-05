@@ -24,7 +24,9 @@ class OverviewFormatter:
         formatted Overview class instance data in it.
         """
         sheet = Sheet.newOverview(self.instance.name)
-        cursor.setSheetContent(sheet, self.format())
+        data = self.format()
+        data = self._copyOverviewHeaderFromTemplate(sheet, data)
+        cursor.setSheetContent(sheet, data)
         return sheet
 
     def format(self):
@@ -90,3 +92,14 @@ class OverviewFormatter:
                     startCol + x - offset, headerRow, startCol + x, columnLength - headerRow
                     ).CellBackColor = currentColor.value
                 offset = 0
+
+    def _copyOverviewHeaderFromTemplate(self, sheet, data):
+        """
+        Copy header from given overview template sheet and place it into new
+        overview data. This is needed after formatted overview because overview
+        class doesn't hold this information.
+        """
+        for index, cell in enumerate(cursor.getRow(sheet, 0)):
+            data[0][index] = cell
+        cursor.setSheetContent(sheet, self.format())
+        return data

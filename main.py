@@ -13,7 +13,7 @@ if __name__ == '__main__':
     sys.path.append(os.path.join(os.path.dirname('__file__'), 'pythonpath'))
 
 from movelister.core import HorizontalAlignment, VerticalAlignment, Context, cursor # noqa
-from movelister.format import autofill, color, convert, format, namedRanges, overview, action, validation # noqa
+from movelister.format import autofill, color, convert, format, namedRanges, overview, OverviewFormatter, action, validation # noqa
 from movelister.model import Action, Color # noqa
 from movelister.process import OverviewFactory, UpdateOverview # noqa
 from movelister.sheet import helper, Inputs, Master, Modifiers, Overview, Sheet # noqa
