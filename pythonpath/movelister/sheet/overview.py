@@ -1,4 +1,5 @@
 from movelister.core import cursor
+from movelister.core.iterator import ActionsIterator
 from .sheet import Sheet
 from movelister.format import filter
 from movelister.model import Modifier, Action
@@ -27,7 +28,7 @@ class Overview:
     @classmethod
     def fromSheet(cls, sheetName):
         instance = cls(sheetName)
-        instance.readSheetContent()
+        instance._readSheetContent()
         return instance
 
     @property
@@ -51,7 +52,13 @@ class Overview:
         """
         return next((action for action in self._actions if action == comparedAction), None)
 
-    def readSheetContent(self):
+    def iterateActions(self):
+        """
+        Return iterator to iterate over actions.
+        """
+        return ActionsIterator(self.actions)
+
+    def _readSheetContent(self):
         self.sheet = Sheet.getByName(self.name)
         self.data = cursor.getSheetContent(self.sheet)
         self.headerRowIndex = helper.getHeaderRowPosition(self.data)
