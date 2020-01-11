@@ -24,6 +24,7 @@ class UpdateOverview:
                 action.modifiers = cls._deleteOldModifiersFromAction(previousAction)
                 action.hitPhase = previousAction.hitPhase
                 action.default = previousAction.default
+                action.notes = previousAction.notes
 
     @classmethod
     def _updateLatestModifiers(cls):

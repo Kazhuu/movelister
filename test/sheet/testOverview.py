@@ -63,9 +63,9 @@ class OverviewTestCase(OfficeTestCase):
     def testActionModifiers(self):
         """
         Test Action modifiers for phase 2 that data is formed according
-        to data set in the overview sheet.
+        to data set in the Overview sheet.
         """
         names = ['WPN1', 's b', 't b']
         actions = self.overview.actions
-        modifiers = actions[0].phaseModifiers(2)
+        modifiers = actions[0].getModifiersByPhase(2)
         self.assertTrue(all(modifier.name in names for modifier in modifiers))

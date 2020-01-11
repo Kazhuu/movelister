@@ -51,17 +51,6 @@ def getCellColorsFromColumn(sheet, column, top, bottom):
     return colors
 
 
-def getViewName(string):
-    """
-    This function splits the contents of a string that's inside parentheses, usually a View name.
-    Used in generating Details view.
-    """
-    splitName1 = string.split('(')
-    splitName2 = splitName1[1].split(')')
-
-    return splitName2[0]
-
-
 def createEmptyRow(length):
     """
     The purpose of this function is to generate an empty list that is as long as specified

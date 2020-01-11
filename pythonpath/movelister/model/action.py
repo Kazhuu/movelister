@@ -10,6 +10,7 @@ class Action:
         self.default = kwargs.get('default', False)
         self.hitPhase = kwargs.get('hitPhase', None)
         self.modifiers = kwargs.get('modifiers', {})
+        self.notes = kwargs.get('notes', {})
 
     def __eq__(self, other):
         """
@@ -36,16 +37,35 @@ class Action:
             self.modifiers[phase] = [modifier]
         return self.modifiers
 
-    def phaseModifiers(self, phase):
+    def getModifiersByPhase(self, phase):
         self._checkPhaseRange(phase)
         return self.modifiers.get(phase, [])
 
-    def clearModifiers(self, phase):
+    def clearModifiersByPhase(self, phase):
         self._checkPhaseRange(phase)
         return self.modifiers.pop(phase, [])
 
     def clearAllModifiers(self):
         self.modifiers = {}
+
+    # note: untested
+    def setNotes(self, phase, notes):
+        self._checkPhaseRange(phase)
+        self.notes[phase] = notes
+        return self.notes
+
+    # note: untested
+    def addNote(self, phase, notes):
+        self._checkPhaseRange(phase)
+        try:
+            self.notes[phase].append(notes)
+        except KeyError:
+            self.notes[phase] = [notes]
+        return self.notes
+
+    def getNotesByPhase(self, phase):
+        self._checkPhaseRange(phase)
+        return self.notes.get(phase, [])
 
     def _checkPhaseRange(self, phase):
         if phase < 0 or phase > self.phases - 1:
