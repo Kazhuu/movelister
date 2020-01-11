@@ -1,0 +1,16 @@
+from test import OfficeTestCase
+from movelister.sheet import Details
+
+
+class DetailsTestCase(OfficeTestCase):
+
+    @classmethod
+    def setUpClass(cls):
+        super().setUpClass()
+        cls.detailsName = 'Details (default)'
+        cls.details = Details.fromSheet(cls.detailsName)
+
+    def testDetailsInstance(self):
+        self.assertTrue(self.details.data)
+        self.assertEqual(self.details.modifiersColumIndex, 1)
+        self.assertEqual(self.details.inputToCompareColumIndex, 2)

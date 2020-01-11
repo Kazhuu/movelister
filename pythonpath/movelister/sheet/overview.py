@@ -1,4 +1,5 @@
 from movelister.core import cursor
+from movelister.core.iterator import ActionsIterator
 from .sheet import Sheet
 from movelister.format import filter
 from movelister.model import Modifier, Action
@@ -10,11 +11,29 @@ MODIFIER_END_COLUMN_NAME = 'Notes 1'
 
 
 class Overview:
+    """
+    Class representing overview sheet in the movelister document. Class
+    abstracts content presented from two dimensional array to more easily
+    understandable form.
+    """
 
     def __init__(self, sheetName):
+        """
+        Instantiate empty overview sheet with given name.
+        """
         self.name = sheetName
         self._modifiers = []
         self._actions = []
+
+    @classmethod
+    def fromSheet(cls, sheetName):
+        """
+        Instansiate this class by reading given overview sheet content and
+        extracting data from it.
+        """
+        instance = cls(sheetName)
+        instance._readSheetContent()
+        return instance
 
     @property
     def modifiers(self):
@@ -23,12 +42,6 @@ class Overview:
     @modifiers.setter
     def modifiers(self, value):
         self._modifiers = value
-
-    @classmethod
-    def fromSheet(cls, sheetName):
-        instance = cls(sheetName)
-        instance.readSheetContent()
-        return instance
 
     @property
     def actions(self):
@@ -51,7 +64,13 @@ class Overview:
         """
         return next((action for action in self._actions if action == comparedAction), None)
 
-    def readSheetContent(self):
+    def iterateActions(self):
+        """
+        Return iterator to iterate over actions.
+        """
+        return ActionsIterator(self.actions)
+
+    def _readSheetContent(self):
         self.sheet = Sheet.getByName(self.name)
         self.data = cursor.getSheetContent(self.sheet)
         self.headerRowIndex = helper.getHeaderRowPosition(self.data)

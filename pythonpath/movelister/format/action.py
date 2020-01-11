@@ -34,8 +34,11 @@ class ActionFormatter:
         currentPhaseModifiers = self.action.getModifiersByPhase(phase)
         for mod in self.overview.modifiers:
             row.append('x' if mod in currentPhaseModifiers else '')
-        # notes
+        # Always format three note columns.
         currentPhaseNotes = self.action.getNotesByPhase(phase)
-        for i in currentPhaseNotes:
-            row.append(i)
+        for i in range(3):
+            try:
+                row.append(currentPhaseNotes[i])
+            except IndexError:
+                row.append('')
         return row
