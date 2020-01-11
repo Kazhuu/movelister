@@ -33,8 +33,8 @@ class OverviewFormatterTestCase(OfficeTestCase):
         formatter = OverviewFormatter(self.overview)
         data = formatter.formatActions()
         self.assertEqual(data, [
-            ['attack 1', 'x', '', '0', 'x', 'x', ''],
-            ['attack 1', '', '', '1', 'x', '', 'x']]
+            ['attack 1', 'x', '', '0', 'x', 'x', '', '', '', ''],
+            ['attack 1', '', '', '1', 'x', '', 'x', '', '', '']]
         )
 
     def testFormat(self):
@@ -53,8 +53,8 @@ class OverviewFormatterTestCase(OfficeTestCase):
         self.assertEqual(data, [
             ['', '', '', '', '', '', '', '', '', '', ''],
             ['Action Name', 'Hit', 'Frames', 'Phase', 'DEF', 'aa', 'bb', 'cc', 'Notes 1', 'Notes 2', 'Notes 3'],
-            ['attack 1', 'x', '', '0', 'x', 'x', '', ''],
-            ['attack 1', '', '', '1', 'x', '', 'x', '']]
+            ['attack 1', 'x', '', '0', 'x', 'x', '', '', '', '', ''],
+            ['attack 1', '', '', '1', 'x', '', 'x', '', '', '', '']]
         )
 
     def testGenerate(self):

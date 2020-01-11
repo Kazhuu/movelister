@@ -6,7 +6,6 @@ from movelister.model import Action
 class ActionsIteratorTestCase(OfficeTestCase):
 
     def setUp(self):
-        super().setUp()
         self.names = ['test1', 'test2', 'test3']
         self.actions = [Action(name) for name in self.names]
 

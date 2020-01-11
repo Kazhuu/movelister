@@ -21,7 +21,7 @@ class ActionFormatterTestCase(OfficeTestCase):
         data = formatter.format()
         # name, hit, frames, phase, def, aa, bb, cc
         result = [
-            ['attack 1', 'x', '', '0', 'x', 'x', '', ''],
-            ['attack 1', '', '', '1', 'x', '', 'x', '']
+            ['attack 1', 'x', '', '0', 'x', 'x', '', '', '', '', ''],
+            ['attack 1', '', '', '1', 'x', '', 'x', '', '', '', '']
         ]
         self.assertEqual(data, result)
