@@ -1,6 +1,7 @@
 from movelister.core import cursor
 from movelister.format import color
 from movelister.model import Modifier
+from movelister.sheet import Modifiers, Overview
 from movelister.sheet.sheet import Sheet
 from .action import ActionFormatter
 
@@ -64,29 +65,31 @@ class OverviewFormatter:
         length = len(headerPrefix) + len(headerPostfix) + len(self.instance.modifiers)
         return ['' for _ in range(0, length)]
 
-    def setOverviewModifierColors(self):
+    def setOverviewModifierColors(self, sheetName):
         """
         This function sets colors to all the columns in the modifier block of an Overview.
-        Note: code should work but it hasn't been tested with colors yet.
         """
+        overview = Overview.fromSheet(sheetName)
+        modifiers = Modifiers('Modifiers')
+        columnLength = len(overview.data)
+        startCol = overview.modifierStartColumn
+        headerRow = overview.headerRowIndex
+
         offset = 0
-        columnLength = len(cursor.getColumn(self.instance.sheet, 0))
-        startCol = self.instance.modifierStartColumn
-        headerRow = self.instance.headerRowIndex
+        for a in range(len(overview.modifiers)):
+            currentColor = color.Color(modifiers.modifierColors[a])
+            nextColor = color.Color(0)
 
-        tempModifier = Modifier('temp')
-        self.instance.modifiers.append(tempModifier)
+            # Ensures that no runtime error is created from reading from a too high index.
+            if a != len(overview.modifiers) - 1:
+                nextColor = color.Color(modifiers.modifierColors[a + 1])
 
-        x = -1
-        for a in range(len(self.instance.modifiers) - 1):
-            x = x + 1
-            currentColor = color.Color(self.instance.modifiers[x].color)
-            nextColor = color.Color(self.instance.modifiers[x + 1].color)
-
+            # Compares the color value of the current and next column. If they're the same
+            # then they can be colored in the same CellRange to save time.
             if currentColor.value == nextColor.value:
                 offset = offset + 1
             else:
-                self.instance.sheet.getCellRangeByPosition(
-                    startCol + x - offset, headerRow, startCol + x, columnLength - headerRow
+                overview.sheet.getCellRangeByPosition(
+                    startCol + a - offset, headerRow, startCol + a, columnLength - headerRow
                     ).CellBackColor = currentColor.value
                 offset = 0

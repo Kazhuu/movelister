@@ -66,7 +66,7 @@ def generateOrRefreshOverview(*args):
         message_box.showWarningWithOk('This file doesn\'t seem to have all necessary templates. Can\'t generate.')
         return
 
-    # Get name of the overview which user wants to generate.
+    # Get name of the Overview which user wants to generate.
     masterSheet = Master(MASTER_LIST_SHEET_NAME)
     overviewName = masterSheet.getOverviewName()
     completeOverviewName = 'Overview ({})'.format(overviewName)
@@ -76,9 +76,9 @@ def generateOrRefreshOverview(*args):
         return
 
     oldOverview = Overview(overviewName)
-    # If document has existing overview, then that is set as previous instead.
+    # If document has existing Overview, then that is set as previous instead.
     if Sheet.hasByName(completeOverviewName):
-        # Check if user wants to update existing overview.
+        # Check if user wants to update existing Overview.
         if not message_box.showSheetUpdateWarning():
             return
         oldOverview = Overview.fromSheet(completeOverviewName)
@@ -93,42 +93,8 @@ def generateOrRefreshOverview(*args):
     # Make columns width optimal.
     length = cursor.getColumnLength(overviewSheet)
     format.setOptimalWidthToRange(overviewSheet, 0, length)
-
-
-def refreshModifiers(args):
-    """
-    A function that refreshes the modifier block of Overview based on the data
-    the user has set inside Modifier List. This includes the number and position of
-    various modifiers as well as their color.
-
-    This code is always ran through the 'Refresh'-button on the Overview Template,
-    so it expects the active sheet to be one of the Overviews.
-    """
-    document = Context.getDocument()
-    activeSheet = helper.getActiveSheet(document)
-
-    sheetName = 'Overview (' + helper.getViewName(activeSheet.Name) + ')'
-    overview = Overview.fromSheet(sheetName)
-
-    modifiers = Modifiers("Modifiers").getModifiers()
-
-    if overview.modifiers == modifiers:
-        print('Modifiers are already up to date in this Overview.')
-        exit()
-
-    # Getting the list of modifiers from a chosen Overview.
-    # overviewModifiers = overview.getOverviewModifiers(overviewModifierData)
-
-    # Getting the list of modifiers from the Modifier list.
-
-    # Compare if Overview modifiers match Modifier List modifiers. Returns False if the two lists are different.
-    # result = error.compareModifierLists(modifierListModifiers, overviewModifiers)
-
-    # Function compares this data to the Modifiers columns in an Overview.
-    # It then deletes unnecessary Modifier columns or add necessary Modifier Columns in the Overview.
-    # It then colors the cell background of the columns.
-    # if result is False:
-    # overview.updateOverviewModifiers(overviewSheet, overviewModifiers, modifierListModifiers, modifierColors)
+    # Fix sheet colors.
+    formatter.setOverviewModifierColors(completeOverviewName)
 
 
 def createValidation():
