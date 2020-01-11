@@ -32,27 +32,26 @@ def generateOrRefreshDetails(*args):
     The project can have multiple Details-views and the user directs the code to the correct one with
     a name in the Overview-sheet.
     """
-    document = Context.getDocument()
+    # document = Context.getDocument()
 
-    activeSheet = helper.getActiveSheet(document)
-    error.sheetNameSplitCheck(activeSheet.Name)
-    name = helper.getViewName(activeSheet.Name)
+    # activeSheet = helper.getActiveSheet(document)
 
-    sheetName = 'Details (' + name + ')'
-    templateName = 'Details Template'
+    # sheetName = 'Details (' + name + ')'
+    # templateName = 'Details Template'
 
     # A bit of error checking at the start.
-    error.generateSheetTemplateCheck(document, templateName)
-    result = error.generateSheetNameCheck(document, sheetName)
+    # error.generateSheetTemplateCheck(document, templateName)
+    # result = error.generateSheetNameCheck(document, sheetName)
 
-    if result == 'GENERATE':
-        generate.generateSheetFromTemplate(document, templateName, sheetName)
-        # The code then segues into the usual "refresh" code that updates the info inside the List.
-    elif result == 'YES':
-        print()
-        # To do: go to Details refresh function.
-    elif result == 'NO':
-        print('Exiting function...')
+    # if result == 'GENERATE':
+    # print()
+    # generate.generateSheetFromTemplate(document, templateName, sheetName)
+    # The code then segues into the usual "refresh" code that updates the info inside the List.
+    # elif result == 'YES':
+    # print()
+    # To do: go to Details refresh function.
+    # elif result == 'NO':
+    # print('Exiting function...')
 
     '''
     # TODO: adjust wideness of the Details-view based on maximum number of phases?
@@ -73,7 +72,7 @@ def generateOrRefreshOverview(*args):
     completeOverviewName = 'Overview ({})'.format(overviewName)
 
     if not overviewName:
-        message_box.showWarningWithOk('Provide overview name to generate or refresh')
+        message_box.showWarningWithOk('Provide Overview name to generate or refresh.')
         return
 
     oldOverview = Overview(overviewName)
@@ -92,7 +91,7 @@ def generateOrRefreshOverview(*args):
     formatter = OverviewFormatter(newOverview)
     overviewSheet = formatter.generate()
     # Make columns width optimal.
-    length = cursor.getColumLength(overviewSheet)
+    length = cursor.getColumnLength(overviewSheet)
     format.setOptimalWidthToRange(overviewSheet, 0, length)
 
 

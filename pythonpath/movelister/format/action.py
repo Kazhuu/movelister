@@ -31,8 +31,11 @@ class ActionFormatter:
         # default
         row.append('x' if self.action.default else '')
         # modifiers
-        phaseModifiers = self.action.phaseModifiers(phase)
+        currentPhaseModifiers = self.action.getModifiersByPhase(phase)
         for mod in self.overview.modifiers:
-            row.append('x' if mod in phaseModifiers else '')
-        # padding to fill cells without content
-        return row + ['' for _ in range(0, self.padding)]
+            row.append('x' if mod in currentPhaseModifiers else '')
+        # notes
+        currentPhaseNotes = self.action.getNotesByPhase(phase)
+        for i in currentPhaseNotes:
+            row.append(i)
+        return row

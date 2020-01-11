@@ -10,7 +10,7 @@ def getUsedAreaSize(sheet):
     return cursor.getRangeAddress()
 
 
-def getColumLength(sheet):
+def getColumnLength(sheet):
     """
     Get amount of columns in given sheet.
     """

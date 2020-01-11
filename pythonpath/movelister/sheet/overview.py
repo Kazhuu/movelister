@@ -68,6 +68,9 @@ class Overview:
         self.framesColumnIndex = helper.getColumnPosition(self.data, 'Frames')
         self.phaseColumnIndex = helper.getColumnPosition(self.data, 'Phase')
         self.defaultColumnIndex = helper.getColumnPosition(self.data, 'DEF')
+        self.notesIndex1 = helper.getColumnPosition(self.data, 'Notes 1')
+        self.notesIndex2 = helper.getColumnPosition(self.data, 'Notes 2')
+        self.notesIndex3 = helper.getColumnPosition(self.data, 'Notes 3')
         self.dataHeader = self.data[self.headerRowIndex]
         self.dataRows = self._dataRows()
         self.modifierStartColumn = self.dataHeader.index(MODIFIER_START_COLUMN_NAME) + 1
@@ -112,7 +115,9 @@ class Overview:
 
     def _rowGroupToAction(self, rowGroup):
         modifiers = {}
-        kwargs = {'name': rowGroup[0][self.nameColumnIndex], 'phases': len(rowGroup), 'modifiers': modifiers}
+        notes = {}
+        kwargs = {'name': rowGroup[0][self.nameColumnIndex], 'phases': len(rowGroup),
+                  'modifiers': modifiers, 'notes': notes}
         for phase, row in enumerate(rowGroup):
             if row[self.hitColumnIndex] != '':
                 kwargs['hitPhase'] = phase
@@ -121,6 +126,9 @@ class Overview:
             modInstances = self._modifiersFromRow(row)
             if modInstances:
                 modifiers[phase] = modInstances
+            noteInstances = self._notesFromRow(row)
+            if noteInstances:
+                notes[phase] = noteInstances
         return Action(**kwargs)
 
     def _modifiersFromRow(self, row):
@@ -131,3 +139,10 @@ class Overview:
             if value != '':
                 modifiers.append(Modifier(modifierNames[index]))
         return modifiers
+
+    def _notesFromRow(self, row):
+        notes = row[self.notesIndex1:self.notesIndex3 + 1]
+        noteList = []
+        for index, value in enumerate(notes):
+            noteList.append(value)
+        return noteList
