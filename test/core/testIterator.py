@@ -12,7 +12,7 @@ class ActionsIteratorTestCase(OfficeTestCase):
         self.actions[0].setModifiers(0, [Modifier('mod1'), Modifier('mod2')])
 
     def testIteratingDetail(self):
-        for index, action in enumerate(DetailsIterator(self.actions[:0])):
+        for index, detail in enumerate(DetailsIterator(self.actions[:0])):
             self.assertEqual(action.name, self.names[index])
 
     def testFilteringActions(self):
