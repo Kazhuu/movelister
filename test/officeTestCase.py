@@ -17,8 +17,7 @@ class OfficeTestCase(unittest.TestCase):
     the document is re-opened between tests in read-only mode. This seems to
     happen because of reopenCurrentFile function.
     """
-    EXCEPTION_MESSAGE = 'Set environment variable MV_LB_BIN to point to the \
-                        LibreOffice executable before running tests.'
+    EXCEPTION_MESSAGE = 'Set environment variable MV_LB_BIN to point to the LibreOffice executable before running tests.'
 
     @classmethod
     def setUpClass(cls):
