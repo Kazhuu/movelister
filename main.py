@@ -16,7 +16,7 @@ from movelister.core import HorizontalAlignment, VerticalAlignment, Context, cur
 from movelister.format import autofill, color, convert, format, namedRanges, overview, OverviewFormatter, action, validation # noqa
 from movelister.model import Action, Color # noqa
 from movelister.process import OverviewFactory, UpdateOverview # noqa
-from movelister.sheet import helper, Inputs, Master, Modifiers, Overview, Sheet # noqa
+from movelister.sheet import Details, helper, Inputs, Master, Modifiers, Overview, Sheet # noqa
 from movelister import error, selection  # noqa
 from movelister.sheet import Master, MASTER_LIST_SHEET_NAME, MODIFIER_LIST_SHEET_NAME  # noqa
 from movelister.ui import message_box  # noqa
@@ -32,26 +32,25 @@ def generateOrRefreshDetails(*args):
     The project can have multiple Details-views and the user directs the code to the correct one with
     a name in the Overview-sheet.
     """
+    if not error.checkTemplatesExists():
+        message_box.showWarningWithOk('This file doesn\'t seem to have all necessary templates. Can\'t generate.')
+        return
+
+    # Get name of the Details which user wants to generate.
+    # TO DO: the code for Details refreshing can be driven from Master sheet or Overview itself.
+    # The code should take that into account instead of just using the name from Master list.
+    masterSheet = Master(MASTER_LIST_SHEET_NAME)
+    detailsName = masterSheet.getOverviewName()
+    completeDetailsName = 'Details ({})'.format(detailsName)
+
+    if not detailsName:
+        message_box.showWarningWithOk('Provide Details name to generate or refresh.')
+        return
+
+    details = Details.fromSheet(completeDetailsName)
+
     # document = Context.getDocument()
-
     # activeSheet = helper.getActiveSheet(document)
-
-    # sheetName = 'Details (' + name + ')'
-    # templateName = 'Details Template'
-
-    # A bit of error checking at the start.
-    # error.generateSheetTemplateCheck(document, templateName)
-    # result = error.generateSheetNameCheck(document, sheetName)
-
-    # if result == 'GENERATE':
-    # print()
-    # generate.generateSheetFromTemplate(document, templateName, sheetName)
-    # The code then segues into the usual "refresh" code that updates the info inside the List.
-    # elif result == 'YES':
-    # print()
-    # To do: go to Details refresh function.
-    # elif result == 'NO':
-    # print('Exiting function...')
 
     '''
     # TODO: adjust wideness of the Details-view based on maximum number of phases?
@@ -95,6 +94,7 @@ def generateOrRefreshOverview(*args):
     format.setOptimalWidthToRange(overviewSheet, 0, length)
     # Fix sheet colors.
     formatter.setOverviewModifierColors(completeOverviewName)
+    formatter.setOverviewActionColors(completeOverviewName)
 
 
 def createValidation():
@@ -155,4 +155,4 @@ def testingModifiers():
 # Run when executed from the command line.
 if __name__ == '__main__':
     Context.setup(host='localhost', port=2002)
-    generateOrRefreshOverview()
+    generateOrRefreshDetails()

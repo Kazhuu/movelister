@@ -93,3 +93,10 @@ class OverviewFormatter:
                     startCol + a - offset, headerRow, startCol + a, columnLength - headerRow
                     ).CellBackColor = currentColor.value
                 offset = 0
+
+    def setOverviewActionColors(self, sheetName):
+        """
+        This function sets colors to all the actions in the action column on an Overview.
+        """
+        overview = Overview.fromSheet(sheetName)
+        print()

@@ -12,14 +12,14 @@ MODIFIER_END_COLUMN_NAME = 'Notes 1'
 
 class Overview:
     """
-    Class representing overview sheet in the movelister document. Class
+    Class representing Overview sheet in the movelister document. Class
     abstracts content presented from two dimensional array to more easily
     understandable form.
     """
 
     def __init__(self, sheetName):
         """
-        Instantiate empty overview sheet with given name.
+        Instantiate empty Overview sheet with given name.
         """
         self.name = sheetName
         self._modifiers = []
@@ -28,7 +28,7 @@ class Overview:
     @classmethod
     def fromSheet(cls, sheetName):
         """
-        Instansiate this class by reading given overview sheet content and
+        Instantiate this class by reading given Overview sheet content and
         extracting data from it.
         """
         instance = cls(sheetName)

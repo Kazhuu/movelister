@@ -1,5 +1,6 @@
 from .sheet import Sheet
 from movelister.core import cursor
+from movelister.model import Detail
 from movelister.sheet import helper
 
 
@@ -7,7 +8,7 @@ class Details:
 
     def __init__(self, sheetName):
         self.name = sheetName
-        self.details = []
+        self._details = []
 
     @classmethod
     def fromSheet(cls, sheetName):
@@ -19,9 +20,13 @@ class Details:
         self.sheet = Sheet.getByName(self.name)
         self.data = cursor.getSheetContent(self.sheet)
         self.nameColumnIndex = helper.getColumnPosition(self.data, 'Action Name')
-        self.modifiersColumIndex = helper.getColumnPosition(self.data, 'Modifiers')
-        self.inputToCompareColumIndex = helper.getColumnPosition(self.data, 'Input to Compare')
+        self.modifiersColumnIndex = helper.getColumnPosition(self.data, 'Modifiers')
+        self.inputToCompareColumnIndex = helper.getColumnPosition(self.data, 'Input to Compare')
+        self.notesIndex1 = helper.getColumnPosition(self.data, 'Notes 1')
+        self.notesIndex2 = helper.getColumnPosition(self.data, 'Notes 2')
+        self.notesIndex3 = helper.getColumnPosition(self.data, 'Notes 3')
         self.dataRows = self._dataRows()
+        self._details = self._readDetails()
 
     def _dataRows(self):
         data = self.data[1:]
@@ -38,3 +43,7 @@ class Details:
             else:
                 break
         return data[:endIndex]
+
+    def _readDetails(self):
+        details = []
+        print()

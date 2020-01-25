@@ -12,5 +12,5 @@ class DetailsTestCase(OfficeTestCase):
 
     def testDetailsInstance(self):
         self.assertTrue(self.details.data)
-        self.assertEqual(self.details.modifiersColumIndex, 1)
-        self.assertEqual(self.details.inputToCompareColumIndex, 2)
+        self.assertEqual(self.details.modifiersColumnIndex, 1)
+        self.assertEqual(self.details.inputToCompareColumnIndex, 2)
