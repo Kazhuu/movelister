@@ -45,6 +45,13 @@ class Action:
         self._checkPhaseRange(phase)
         return self.modifiers.pop(phase, [])
 
+    def modifierNamesAsList(self, phase):
+        self._checkPhaseRange(phase)
+        try:
+            return [mod.name for mod in self.modifiers.get(phase, [])]
+        except KeyError:
+            import ipdb; ipdb.set_trace()
+
     def clearAllModifiers(self):
         self.modifiers = {}
 
