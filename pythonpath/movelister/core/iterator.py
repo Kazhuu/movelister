@@ -1,7 +1,7 @@
 from itertools import chain, combinations
 
 
-class DetailsIterator:
+class ActionsIterator:
     """
     Iterator class to iterate over all possible combinations of given actions
     and their modifiers.
