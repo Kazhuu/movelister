@@ -1,5 +1,5 @@
 from movelister.core import cursor
-from movelister.core.iterator import ActionsIterator
+from movelister.core.iterator import DetailsIterator
 from .sheet import Sheet
 from movelister.format import filter
 from movelister.model import Modifier, Action

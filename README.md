@@ -17,17 +17,19 @@ manipulating tables and sheets underneath.
 
 It's necessary for the user to install LibreOffice 5 or newer and Python 3.x to be able
 to use the Movelister scripts. Python is typically automatically included in a
-LibreOffice installation on Windows but not on Linux. Linux users have to
-install LibreOffice Python support packages separately. On Windows Python is
-located with regular installation at `C:\Program Files\LibreOffice
-5\program\python-core-3.5.0\bin\python.exe`. On Linux, install following
-packages to enable Python for LibreOffice:
+LibreOffice installation on Windows but not always on Linux. If LibreOffice
+Python support is missing on Linux, you need install LibreOffice Python support
+packages separately. On Windows Python is located with regular installation at
+`C:\Program Files\LibreOffice 5\program\python-core-3.5.0\bin\python.exe`. On
+Ubuntu install following packages to enable Python for LibreOffice:
 ```
 sudo apt install libreoffice-script-provider-python uno-libs3 python3-uno
 ```
 On Linux distros that has both Python 2 and 3 versions available and command
 `python` points to Python 2. Developers can change `python` commands to
 `python3` in this readme instead.
+
+Arch installation has also been tested and out of the box.
 
 ## How To Use
 

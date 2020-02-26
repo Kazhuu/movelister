@@ -46,11 +46,11 @@ class Action:
         return self.modifiers.pop(phase, [])
 
     def modifierNamesAsList(self, phase):
+        """
+        Return modifiers names as a list.
+        """
         self._checkPhaseRange(phase)
-        try:
-            return [mod.name for mod in self.modifiers.get(phase, [])]
-        except KeyError:
-            import ipdb; ipdb.set_trace()
+        return [mod.name for mod in self.modifiers.get(phase, [])]
 
     def clearAllModifiers(self):
         self.modifiers = {}

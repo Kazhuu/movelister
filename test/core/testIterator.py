@@ -3,7 +3,7 @@ from movelister.core.iterator import DetailsIterator
 from movelister.model import Action, Modifier
 
 
-class ActionsIteratorTestCase(OfficeTestCase):
+class DetailsIteratorTestCase(OfficeTestCase):
 
     def setUp(self):
         self.names = ['test1', 'test2', 'test3']
@@ -13,10 +13,15 @@ class ActionsIteratorTestCase(OfficeTestCase):
 
     def testIteratingDetail(self):
         for index, detail in enumerate(DetailsIterator(self.actions[:0])):
-            self.assertEqual(action.name, self.names[index])
+            self.assertEqual(detail.action.name, self.names[index])
 
-    def testFilteringActions(self):
-        filteredActions = filter(lambda action: action.name == self.names[0], DetailsIterator(self.actions))
-        filteredActions = list(filteredActions)
-        self.assertEqual(len(filteredActions), 1)
-        self.assertListEqual(filteredActions, self.actions[:1])
+    def testFilteringDetails(self):
+        """
+        Test that filtered first detail includes all possible modifier combinations.
+        """
+        filteredDetails = filter(lambda detail: detail.action.name == self.names[0], DetailsIterator(self.actions))
+        filteredDetails = list(filteredDetails)
+        self.assertEqual(len(filteredDetails), 3)
+        self.assertEqual(filteredDetails[0].modifiers, ('mod1',))
+        self.assertEqual(filteredDetails[1].modifiers, ('mod2',))
+        self.assertEqual(filteredDetails[2].modifiers, ('mod1', 'mod2'))

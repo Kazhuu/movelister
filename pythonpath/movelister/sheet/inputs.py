@@ -21,10 +21,14 @@ class Inputs:
         self.dataHeader = self.data[self.headerRowIndex]
         self.dataRows = self.data[self.dataBeginRow:]
         self.inputColors = helper.getCellColorsFromColumn(
-            self.sheet, self.colorColumnIndex, self.dataBeginRow, len(self.data))
+            self.sheet, self.colorColumnIndex, self.dataBeginRow, len(self.data)
+        )
 
     def getInputs(self, listName=None):
-        inputGroup = []
+        """
+        Return list of Input class instances.
+        """
+        inputs = []
         rows = self.dataRows
         if listName:
             rows = filter.filterRows(lambda row: row[self.inputsColumnIndex] == listName, self.dataRows)
@@ -32,8 +36,8 @@ class Inputs:
             if self._isValidRow(row):
                 kwargs = self._rowToKwargs(row)
                 kwargs['color'] = self.inputColors[index]
-                inputGroup.append(Input(**kwargs))
-        return inputGroup
+                inputs.append(Input(**kwargs))
+        return inputs
 
     def _isValidRow(self, row):
         return row[self.nameColumnIndex] != ''
