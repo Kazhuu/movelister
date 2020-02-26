@@ -55,10 +55,23 @@ def createEmptyRow(length):
     """
     The purpose of this function is to generate an empty list that is as long as specified
     as well as compatible with cursor functions. Used in expanding existing data rows arrays.
+
+    Note: is this code even used anywhere in the current version of the program?
     """
     emptyList = []
-
     for i in range(length):
         emptyList.append('')
-
     return emptyList
+
+
+def stripTrailingEmptyRows(data):
+    """
+    This code is used when instantiating certain classes and the code reads from sheet.
+    """
+    endIndex = len(data)
+    for index, row in reversed(list(enumerate(data))):
+        if row[0] == '':
+            endIndex = endIndex - 1
+        else:
+            break
+    return data[:endIndex]
