@@ -1,3 +1,6 @@
+from movelister.core import cursor
+from movelister.sheet.sheet import Sheet
+
 
 class DetailFormatter:
     """
@@ -7,8 +10,13 @@ class DetailFormatter:
     TODO: write code.
     """
 
-    def __init__(self):
-        print()
+    def __init__(self, details):
+        self.instance = details
+
+    def generate(self):
+        sheet = Sheet.newOverview(self.instance.name)
+        cursor.setSheetContent(sheet, self.format())
+        return sheet
 
     def format(self):
         data = []

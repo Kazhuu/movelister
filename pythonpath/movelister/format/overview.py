@@ -97,6 +97,8 @@ class OverviewFormatter:
     def setOverviewActionColors(self, sheetName):
         """
         This function sets colors to all the actions in the action column on an Overview.
+
+        TO DO: seems to be in progress.
         """
         overview = Overview.fromSheet(sheetName)
         print()

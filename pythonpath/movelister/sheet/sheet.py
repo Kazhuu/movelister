@@ -9,7 +9,7 @@ DETAILS_TEMPLATE_NAME = 'Details Template'
 OVERVIEW_SHEET_NAME = 'Overview'
 MASTER_LIST_SHEET_NAME = 'Master List'
 INPUT_LIST_SHEET_NAME = 'Inputs'
-DETAILS_SHEET_NAME = 'Details (Old)'
+DETAILS_SHEET_NAME = 'Details'
 MODIFIER_LIST_SHEET_NAME = 'Modifiers'
 MODIFIER_LIST_OLD_SHEET_NAME = 'Modifier List (Old)'
 RESULT_LIST_SHEET_NAME = 'Results'
@@ -113,7 +113,7 @@ class Sheet():
     @classmethod
     def newOverview(cls, name):
         """
-        Insert new overview sheet right of master sheet with given name put
+        Insert new Overview sheet right of Master sheet with given name put
         inside of parentheses. Returns created sheet.
 
         Sheet with given name must not exist, otherwise RuntimeException is
@@ -122,6 +122,20 @@ class Sheet():
         position = cls.getPosition(MASTER_LIST_SHEET_NAME) + 1
         sheetName = '{0} ({1})'.format(OVERVIEW_SHEET_NAME, name)
         Context.getDocument().Sheets.copyByName(OVERVIEW_TEMPLATE_NAME, sheetName, position)
+        return cls.getByPosition(position)
+
+    @classmethod
+    def newDetails(cls, name):
+        """
+        Insert new Details sheet left of the Inputs sheet with given name put
+        inside of parentheses. Returns created sheet.
+
+        Sheet with given name must not exist, otherwise RuntimeException is
+        raised.
+        """
+        position = cls.getPosition(INPUT_LIST_SHEET_NAME) - 1
+        sheetName = '{0} ({1})'.format(DETAILS_SHEET_NAME, name)
+        Context.getDocument().Sheets.copyByName(DETAILS_TEMPLATE_NAME, sheetName, position)
         return cls.getByPosition(position)
 
     @classmethod
