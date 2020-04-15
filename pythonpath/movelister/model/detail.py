@@ -1,6 +1,6 @@
 class Detail:
 
-    def __init__(self, action, inputs=[], modifiers=[], phases={}, notes={}):
+    def __init__(self, action, modifiers, inputs=[], phases={}, notes={}):
         self.action = action
         self.inputs = inputs
         self.modifiers = modifiers

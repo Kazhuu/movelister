@@ -55,8 +55,6 @@ def createEmptyRow(length):
     """
     The purpose of this function is to generate an empty list that is as long as specified
     as well as compatible with cursor functions. Used in expanding existing data rows arrays.
-
-    Note: is this code even used anywhere in the current version of the program?
     """
     emptyList = []
     for i in range(length):

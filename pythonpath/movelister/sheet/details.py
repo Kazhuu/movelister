@@ -38,10 +38,11 @@ class Details:
         currentMod = ''
         tempArray = []
         details = []
-        # Create an unused action to the array so that the loop can register all legit actions.
         filteredData = filter.filterRows(lambda row: row[self.nameColumnIndex] != '', self.dataRows)
+        # Create an unused action to the array so that the loop can register all legit actions.
         emptyRow = helper.createEmptyRow(len(filteredData[0]))
         emptyRow[self.nameColumnIndex] = 'Unused'
+        emptyRow[self.inputToCompareColumnIndex] = 'Unused'
         filteredData.append(emptyRow)
         # Iterate through filteredData to find out which rows contain relevant data for a single Detail.
         # Then send the relevant rows to _parseArrayIntoDetail function.
@@ -52,14 +53,40 @@ class Details:
                 if tempArray != []:
                     details.append(self._parseArrayIntoDetail(tempArray))
                     tempArray = []
-                tempArray.append(row)
+            tempArray.append(row)
 
     def _parseArrayIntoDetail(self, data):
         """
-        This function goes through many rows in a table to parse everything that belongs to
-        a single Detail, then returns the Detail object.
-
-        TO DO: code should read rest of the values from the array.
+        This function goes through rows to parse everything that belongs to a single Detail,
+        then returns the data inside a Detail object.
         """
-        kwargs = {'action': data[0][self.nameColumnIndex], 'modifiers': data[0][self.modifiersColumnIndex]}
+        # collect Input column.
+        inputList = []
+        for line in data:
+            inputList.append(line[2])
+        # collect everything from the phases. Data won't be ordered.
+        phasesList = {}
+        notesList = {}
+        for line in data:
+            phaseNum = -1
+            cellNum = 2
+            counter = -1
+            for cell in line:
+                counter = counter + 1
+                cellNum = cellNum + 1
+                # stops the loop and gathers notes-related data once the phases end.
+                if cellNum == self.notesIndex1:
+                    notesList[line[2]] = [line[self.notesIndex1], line[self.notesIndex2], line[self.notesIndex3]]
+                    break
+                # ensures the data is taken from the first column of a phase.
+                if counter == 3:
+                    counter = 0
+                # takes data from the three cells of a single phase and places them in a list inside the dict.
+                if counter == 0:
+                    phaseNum = phaseNum + 1
+                    if line[2] not in phasesList:
+                        phasesList[line[2]] = {}
+                    phasesList[line[2]][str(phaseNum)] = [line[cellNum], line[cellNum + 1], line[cellNum + 2]]
+        kwargs = {'action': data[0][self.nameColumnIndex], 'modifiers': data[0][self.modifiersColumnIndex],
+                  'inputs': inputList, 'phases': phasesList, 'notes': notesList}
         return Detail(**kwargs)
