@@ -7,6 +7,9 @@ class Detail:
         self.phases = phases
         self.notes = notes
 
+    def modifiersAsDict(self):
+        return {modifier.name: True for modifier in self.modifiers}
+
     def __eq__(self, other):
             """
             Test object equality. Compares both action name and modifier name.
