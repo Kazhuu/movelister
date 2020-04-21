@@ -21,4 +21,6 @@ class DetailFormatter:
         row.append(self.detail.modifiers)
         # Input to Compare
         row.append(self.detail.inputs)
+        # Phase 0
+        row.append(self.detail.phases[self.detail.inputs][0])
         return row

@@ -42,18 +42,3 @@ def applyConditionalFormatting(sheet, resultsDataArray, resultsListColors):
     condition.Value = (LESS)
 
     # conForm.addNew(condition)
-
-
-def clearConditionalFormatting(sheet):
-
-    # Test. Doesn't actually do what you'd expect it to do?
-    range = sheet.getCellRangeByPosition(1, 1, 100, 100)
-    range.ConditionalFormat.clear()
-
-    print('Nothing here yet.')
-    # To do: a function that deletes all existing Conditional Formatting in a sheet.
-
-    # Explanation: making changes to a document usually fractures Conditional Formatting into many small ranges.
-    # Having to deal with dozens or hundreds of small ranges slows down some LibreOffice functions a LOT.
-    # Deleting all the ranges and then programmatically creating one intact big range is one way to optimize,
-    # and it should probably be done after every large change in the file.
