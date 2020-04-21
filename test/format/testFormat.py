@@ -1,3 +1,5 @@
+from com.sun.star.table.CellHoriJustify import RIGHT
+
 from test import OfficeTestCase
 from movelister.core import HorizontalAlignment, VerticalAlignment, cursor
 from movelister.sheet import Master, MASTER_LIST_SHEET_NAME
@@ -10,19 +12,17 @@ class FormatTestCase(OfficeTestCase):
         """
         A test that sets horizontal alignment to a range and then tests if it's what it should be.
         """
-        self.skipTest('Test is unfinished because you have to compare the result to an uno Enum-object.')
         sheet = Master(MASTER_LIST_SHEET_NAME).sheet
         format.setHorizontalAlignmentToRange(sheet, HorizontalAlignment.RIGHT, 1, 4)
 
         area = cursor.getSheetContent(sheet)
         cellRange = sheet.getCellRangeByPosition(1, 0, 1 + 4, len(area) - 1)
-        self.assertEqual(cellRange.HoriJustify, 3)
+        self.assertEqual(cellRange.HoriJustify, CellHoriJustify.RIGHT)
 
     def testSetVerticalAlignmentToRange(self):
         """
         A test that sets vertical alignment to a range and then tests if it's what it should be.
         """
-        self.skipTest('Test is unfinished because you have to compare the result to an uno Enum-object.')
         sheet = Master(MASTER_LIST_SHEET_NAME).sheet
         format.setVerticalAlignmentToRange(sheet, VerticalAlignment.CENTER, 1, 10, 20, 25)
 

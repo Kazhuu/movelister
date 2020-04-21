@@ -34,8 +34,6 @@ class Modifiers:
 
     def isValidDetail(self, detail):
         for equation in self.booleanEquations:
-            print(self._substituteEquation(equation, detail))
-            print(eval(self._substituteEquation(equation, detail)))
             if eval(self._substituteEquation(equation, detail)):
                 return True
         return False

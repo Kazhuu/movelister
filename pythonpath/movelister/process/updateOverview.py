@@ -8,6 +8,9 @@ class UpdateOverview:
     @classmethod
     def update(cls, previousOverview, name):
         """
+        Create new Overview class instance with given name. Created Overview
+        will use latest modifier and action data filled to by the user. New
+        data is combined with existing data user filled data.
         """
         cls.newOverview = Overview(name)
         cls._updateLatestModifiers()

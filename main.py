@@ -1,6 +1,12 @@
 """
-Main file for the all usable LibreOffice macros. Can also be executed from the
-command line and connect to opened LibreOffice socket.
+Main entry file for the whole project for both LibreOffice UI and a command-line interface.
+
+For LibreOffice this file contains all runnable Python macros which can be
+attached to key combinations or buttons on the sheet. For command-line
+interface this file will connect to a running LibreOffice process using socket
+and execute this file as a normal Python script. The command-line interface is
+mainly useful during the development. It enables running and debugging macros
+from the command-line without using LibreOffice.
 """
 import uno # noqa
 import os
@@ -26,7 +32,7 @@ if __name__ != '__main__':
     Context.setup()
 
 
-def generateOrRefreshDetails(*args):
+def refreshDetails(*args):
     """
     A very general function that creates / refreshes full Details view up to date with a single button.
     The project can have multiple Details-views and the user directs the code to the correct one with
@@ -60,7 +66,7 @@ def generateOrRefreshDetails(*args):
     '''
 
 
-def generateOrRefreshOverview(*args):
+def refreshOverview(*args):
     if not error.checkTemplatesExists():
         message_box.showWarningWithOk('This file doesn\'t seem to have all necessary templates. Can\'t generate.')
         return
@@ -152,7 +158,7 @@ def testingModifiers():
         print(a.color)
 
 
-# Run when executed from the command line.
+# Run this when executed from the command line.
 if __name__ == '__main__':
     Context.setup(host='localhost', port=2002)
-    generateOrRefreshDetails()
+    refreshDetails()

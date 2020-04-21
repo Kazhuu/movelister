@@ -1,3 +1,6 @@
+from com.sun.star.table.CellHoriJustify import STANDARD, LEFT, CENTER, RIGHT
+import com.sun.star.table.CellVertJustify
+
 from movelister.core import HorizontalAlignment, VerticalAlignment, cursor
 
 
@@ -10,13 +13,13 @@ def setHorizontalAlignmentToRange(sheet, alignment, startColumn, amount):
     cellRange = sheet.getCellRangeByPosition(startColumn, 0, startColumn + amount, len(area) - 1)
 
     if alignment == HorizontalAlignment.LEFT:
-        cellRange.HoriJustify = 1
+        cellRange.HoriJustify = LEFT
     elif alignment == HorizontalAlignment.CENTER:
-        cellRange.HoriJustify = 2
+        cellRange.HoriJustify = CENTER
     elif alignment == HorizontalAlignment.RIGHT:
-        cellRange.HoriJustify = 3
+        cellRange.HoriJustify = RIGHT
     else:
-        cellRange.HoriJustify = 0
+        cellRange.HoriJustify = STANDARD
 
 
 def setVerticalAlignmentToRange(sheet, alignment, startCol, startRow, endCol, endRow):
@@ -27,13 +30,13 @@ def setVerticalAlignmentToRange(sheet, alignment, startCol, startRow, endCol, en
     cellRange = sheet.getCellRangeByPosition(startCol, startRow, endCol, endRow)
 
     if alignment == VerticalAlignment.TOP:
-        cellRange.VertJustify = 1
+        cellRange.VertJustify = CellVertJustify.TOP
     elif alignment == VerticalAlignment.CENTER:
-        cellRange.VertJustify = 2
+        cellRange.VertJustify = CellVertJustify.CENTER
     elif alignment == VerticalAlignment.BOTTOM:
-        cellRange.VertJustify = 3
+        cellRange.VertJustify = CellVertJustify.BOTTOM
     else:
-        cellRange.VertJustify = 0
+        cellRange.VertJustify = CellVertJustify.STANDARD
 
 
 def setOptimalWidthToRange(sheet, startColumn, amount):

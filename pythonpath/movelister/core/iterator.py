@@ -32,7 +32,7 @@ class DetailsIterator:
                 raise StopIteration
 
     def buildModifierCombinations(self, action):
-        modCombinations_= iter([])
+        modCombinations = iter([])
         # If action has default input then add empty modifier combination.
         if action.default:
             chain(modCombinations, combinations([], 1))
@@ -40,5 +40,5 @@ class DetailsIterator:
         for phase in range(action.phases):
             names = action.modifierNamesAsList(phase)
             for i in range(1, len(names) + 1):
-                modCombinations_= chain(modCombinations, combinations(names, i))
+                modCombinations = chain(modCombinations, combinations(names, i))
         return modCombinations
