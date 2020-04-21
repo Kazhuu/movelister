@@ -1,9 +1,11 @@
 import unittest
 
-from test import OfficeTestCase
-from movelister.model import Action
-from movelister.sheet import Overview, Master
-from movelister.process import UpdateOverview, OverviewFactory
+from test.officeTestCase import OfficeTestCase
+from movelister.model.action import Action
+from movelister.sheet.overview import Overview
+from movelister.sheet.master import Master
+from movelister.process.updateOverview import UpdateOverview
+from movelister.process.factory import OverviewFactory
 from movelister.sheet.sheet import MASTER_LIST_SHEET_NAME
 
 

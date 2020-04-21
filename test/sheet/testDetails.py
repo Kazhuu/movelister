@@ -1,5 +1,5 @@
-from test import OfficeTestCase
-from movelister.sheet import Details
+from test.officeTestCase import OfficeTestCase
+from movelister.sheet.details import Details
 
 
 class DetailsTestCase(OfficeTestCase):

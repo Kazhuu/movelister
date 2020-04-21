@@ -1,6 +1,7 @@
 from movelister.sheet.sheet import MODIFIER_LIST_SHEET_NAME
-from movelister.sheet import Modifiers, Overview
-from movelister.model import Action
+from movelister.sheet.modifiers import Modifiers
+from movelister.sheet.overview import Overview
+from movelister.model.action import Action
 
 
 class OverviewFactory:

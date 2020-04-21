@@ -1,6 +1,6 @@
 from itertools import chain, combinations
 
-from movelister.model import Detail
+from movelister.model.detail import Detail
 
 
 class DetailsIterator:

@@ -1,6 +1,6 @@
-from test import OfficeTestCase
+from test.officeTestCase import OfficeTestCase
 from movelister.model import color
-from movelister.sheet import Modifiers
+from movelister.sheet.modifiers import Modifiers
 
 
 class ColorTestCase(OfficeTestCase):

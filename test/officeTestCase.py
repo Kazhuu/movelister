@@ -4,7 +4,8 @@ import time
 import unittest
 from subprocess import Popen
 
-from movelister.core import Context, file
+from movelister.core import file
+from movelister.core.context import Context
 
 
 class OfficeTestCase(unittest.TestCase):

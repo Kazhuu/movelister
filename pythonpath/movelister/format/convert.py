@@ -1,5 +1,5 @@
 import string
-from movelister.core import Context
+from movelister.core.context import Context
 
 
 def cellRangeAddressIntoCellRange(cra):

@@ -1,3 +1,6 @@
+from movelister.core import cursor
+from movelister.sheet.sheet import Sheet
+
 
 class DetailsFormatter:
     """
@@ -13,10 +16,9 @@ class DetailsFormatter:
         Generate new Details sheet by copying template sheet and placing
         formatted Details class instance data in it.
         """
-        print()
-        # sheet = Sheet.newOverview(self.instance.name)
-        # cursor.setSheetContent(sheet, self.format())
-        # return sheet
+        sheet = Sheet.newDetails(self.instance.name)
+        cursor.setSheetContent(sheet, self.format())
+        return sheet
 
     def format(self):
         """

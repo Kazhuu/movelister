@@ -1,8 +1,8 @@
 from com.sun.star.uno import RuntimeException
 
-from test import OfficeTestCase
-from movelister.core import Context
-from movelister.sheet import Sheet, MASTER_LIST_SHEET_NAME, MODIFIER_LIST_SHEET_NAME
+from test.officeTestCase import OfficeTestCase
+from movelister.core.context import Context
+from movelister.sheet.sheet import Sheet, MASTER_LIST_SHEET_NAME, MODIFIER_LIST_SHEET_NAME
 
 
 class SheetTestCase(OfficeTestCase):

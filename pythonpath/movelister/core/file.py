@@ -1,4 +1,4 @@
-from .context import Context
+from movelister.core.context import Context
 
 
 def reopenCurrentFile():

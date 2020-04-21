@@ -1,8 +1,9 @@
 from movelister.core import cursor
 from movelister.core.iterator import DetailsIterator
-from .sheet import Sheet
+from movelister.sheet.sheet import Sheet
 from movelister.format import filter
-from movelister.model import Modifier, Action
+from movelister.model.modifier import Modifier
+from movelister.model.action import Action
 from movelister.sheet import helper
 
 

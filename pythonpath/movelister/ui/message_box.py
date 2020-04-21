@@ -2,7 +2,7 @@ from com.sun.star.awt.MessageBoxType import MESSAGEBOX
 from com.sun.star.awt import MessageBoxButtons
 from com.sun.star.awt import MessageBoxResults
 
-from movelister.core import Context
+from movelister.core.context import Context
 
 
 def createMessage(type, titleText, messageText):

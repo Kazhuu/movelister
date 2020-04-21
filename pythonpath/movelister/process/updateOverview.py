@@ -1,4 +1,7 @@
-from movelister.sheet import MODIFIER_LIST_SHEET_NAME, Modifiers, Overview, Master, MASTER_LIST_SHEET_NAME
+from movelister.sheet.sheet import MODIFIER_LIST_SHEET_NAME, MASTER_LIST_SHEET_NAME
+from movelister.sheet.modifiers import Modifiers
+from movelister.sheet.overview import Overview
+from movelister.sheet.master import Master
 
 
 class UpdateOverview:

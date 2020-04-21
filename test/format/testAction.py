@@ -1,7 +1,8 @@
-from test import OfficeTestCase
-from movelister.format import ActionFormatter
-from movelister.sheet import Overview
-from movelister.model import Action, Modifier
+from test.officeTestCase import OfficeTestCase
+from movelister.format.action import ActionFormatter
+from movelister.sheet.overview import Overview
+from movelister.model.action import Action
+from movelister.model.modifier import Modifier
 
 
 class ActionFormatterTestCase(OfficeTestCase):

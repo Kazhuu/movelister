@@ -1,6 +1,7 @@
-from test import OfficeTestCase
-from movelister.sheet import Master, MASTER_LIST_SHEET_NAME
-from movelister.model import Action
+from test.officeTestCase import OfficeTestCase
+from movelister.sheet.master import Master
+from movelister.sheet.sheet import MASTER_LIST_SHEET_NAME
+from movelister.model.action import Action
 
 
 class MasterTestCase(OfficeTestCase):

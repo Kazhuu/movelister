@@ -1,6 +1,7 @@
-from test import OfficeTestCase
+from test.officeTestCase import OfficeTestCase
 from movelister.core.iterator import DetailsIterator
-from movelister.model import Action, Modifier
+from movelister.model.action import Action
+from movelister.model.modifier import Modifier
 
 
 class DetailsIteratorTestCase(OfficeTestCase):

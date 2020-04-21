@@ -1,6 +1,7 @@
-from test import OfficeTestCase
-from movelister.sheet import Inputs, INPUT_LIST_SHEET_NAME
-from movelister.model import Input
+from test.officeTestCase import OfficeTestCase
+from movelister.sheet.inputs import Inputs
+from movelister.sheet.sheet import INPUT_LIST_SHEET_NAME
+from movelister.model.input import Input
 
 
 class InputsTestCase(OfficeTestCase):
