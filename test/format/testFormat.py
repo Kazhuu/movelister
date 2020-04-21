@@ -1,5 +1,6 @@
-from test import OfficeTestCase
-from movelister.core import HorizontalAlignment, VerticalAlignment, cursor
+from test.officeTestCase import OfficeTestCase
+from movelister.core import cursor
+from movelister.core.alignment import HorizontalAlignment, VerticalAlignment
 from movelister.sheet import Master, MASTER_LIST_SHEET_NAME
 from movelister.format import format
 

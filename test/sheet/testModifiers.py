@@ -1,6 +1,9 @@
-from test import OfficeTestCase
-from movelister.model import Modifier, Detail, Action
-from movelister.sheet import Modifiers, MODIFIER_LIST_SHEET_NAME
+from test.officeTestCase import OfficeTestCase
+from movelister.model.modifier import Modifier
+from movelister.model.detail import Detail
+from movelister.model.action import Action
+from movelister.sheet.modifiers import Modifiers
+from movelister.sheet.sheet import MODIFIER_LIST_SHEET_NAME
 
 
 class ModifiersTestCase(OfficeTestCase):

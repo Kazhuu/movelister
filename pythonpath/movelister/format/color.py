@@ -1,5 +1,5 @@
 from movelister.core import cursor
-from movelister.model import Color
+from movelister.model.color import Color
 from movelister.sheet import helper
 
 

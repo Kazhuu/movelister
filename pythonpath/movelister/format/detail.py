@@ -1,7 +1,3 @@
-from movelister.core import cursor
-from movelister.sheet.sheet import Sheet
-
-
 class DetailFormatter:
     """
     Class responsible for formatting Detail class instance to two
@@ -10,13 +6,8 @@ class DetailFormatter:
     TODO: write code.
     """
 
-    def __init__(self, details):
-        self.instance = details
-
-    def generate(self):
-        sheet = Sheet.newOverview(self.instance.name)
-        cursor.setSheetContent(sheet, self.format())
-        return sheet
+    def __init__(self, detail):
+        self.detail = detail
 
     def format(self):
         data = []
@@ -24,4 +15,10 @@ class DetailFormatter:
 
     def _formatRow(self, phase):
         row = []
+        # Action Name
+        row.append(self.detail.action)
+        # Modifiers
+        row.append(self.detail.modifiers)
+        # Input to Compare
+        row.append(self.detail.inputs)
         return row

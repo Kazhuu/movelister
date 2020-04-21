@@ -1,5 +1,5 @@
 import unittest
-from movelister.model import Action
+from movelister.model.action import Action
 
 
 class ActionTestCase(unittest.TestCase):

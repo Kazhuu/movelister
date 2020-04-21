@@ -7,6 +7,7 @@ class ActionFormatter:
     def __init__(self, overview, action, padding=0):
         self.action = action
         self.overview = overview
+        # is padding used in anything?
         self.padding = padding
 
     def format(self):

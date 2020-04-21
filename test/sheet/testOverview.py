@@ -1,6 +1,7 @@
-from test import OfficeTestCase
-from movelister.model import Action, Modifier
-from movelister.sheet import Overview
+from test.officeTestCase import OfficeTestCase
+from movelister.model.action import Action
+from movelister.model.modifier import Modifier
+from movelister.sheet.overview import Overview
 
 
 class OverviewTestCase(OfficeTestCase):

@@ -1,4 +1,5 @@
-from movelister.core import HorizontalAlignment, VerticalAlignment, cursor
+from movelister.core import cursor
+from movelister.core.alignment import HorizontalAlignment, VerticalAlignment
 
 
 def setHorizontalAlignmentToRange(sheet, alignment, startColumn, amount):

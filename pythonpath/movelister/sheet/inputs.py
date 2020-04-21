@@ -1,7 +1,7 @@
-from .sheet import Sheet
-from . import helper
+from movelister.sheet.sheet import Sheet
+from movelister.sheet import helper
 from movelister.core import cursor
-from movelister.model import Input
+from movelister.model.input import Input
 from movelister.format import filter
 
 

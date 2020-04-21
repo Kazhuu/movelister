@@ -1,5 +1,7 @@
-from test import OfficeTestCase
-from movelister.sheet import Master, MASTER_LIST_SHEET_NAME, Overview
+from test.officeTestCase import OfficeTestCase
+from movelister.sheet.sheet import MASTER_LIST_SHEET_NAME
+from movelister.sheet.master import Master
+from movelister.sheet.overview import Overview
 from movelister.format import filter
 
 

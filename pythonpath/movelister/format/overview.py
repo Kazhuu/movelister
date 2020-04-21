@@ -1,9 +1,10 @@
 from movelister.core import cursor
 from movelister.format import color
-from movelister.model import Modifier
-from movelister.sheet import Modifiers, Overview
+from movelister.model.modifier import Modifier
+from movelister.sheet.modifiers import Modifiers
+from movelister.sheet.overview import Overview
 from movelister.sheet.sheet import Sheet
-from .action import ActionFormatter
+from movelister.format.action import ActionFormatter
 
 
 headerPrefix = ['Action Name', 'Hit', 'Frames', 'Phase', 'DEF']

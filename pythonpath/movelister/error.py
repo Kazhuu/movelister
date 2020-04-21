@@ -1,5 +1,5 @@
 from movelister.ui import message_box
-from movelister.sheet import Sheet
+from movelister.sheet.sheet import Sheet
 
 
 def overviewProjectionErrorCheck(mda, nameCol):

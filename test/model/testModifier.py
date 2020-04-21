@@ -1,4 +1,4 @@
-from movelister.model import Modifier
+from movelister.model.modifier import Modifier
 import unittest
 
 

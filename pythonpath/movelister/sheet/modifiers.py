@@ -1,10 +1,10 @@
 import re
 from collections import defaultdict
 
-from .sheet import Sheet
-from . import helper
+from movelister.sheet.sheet import Sheet
+from movelister.sheet import helper
 from movelister.core import cursor
-from movelister.model import Modifier
+from movelister.model.modifier import Modifier
 
 
 class Modifiers:

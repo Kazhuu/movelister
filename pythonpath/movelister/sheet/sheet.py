@@ -1,6 +1,6 @@
 from com.sun.star.container import NoSuchElementException
 
-from movelister.core import Context
+from movelister.core.context import Context
 
 
 OVERVIEW_TEMPLATE_NAME = 'Overview Template'

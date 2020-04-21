@@ -1,6 +1,6 @@
-from test import OfficeTestCase
+from test.officeTestCase import OfficeTestCase
 from movelister.core import cursor
-from movelister.sheet import Sheet, MASTER_LIST_SHEET_NAME
+from movelister.sheet.sheet import Sheet, MASTER_LIST_SHEET_NAME
 
 
 class CursorTestCase(OfficeTestCase):

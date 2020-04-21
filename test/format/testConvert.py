@@ -1,4 +1,4 @@
-from test import OfficeTestCase
+from test.officeTestCase import OfficeTestCase
 from movelister.format import convert
 
 

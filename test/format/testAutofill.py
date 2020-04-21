@@ -1,7 +1,9 @@
 import pdb
-from test import OfficeTestCase
+from test.officeTestCase import OfficeTestCase
 from movelister.format import autofill
-from movelister.sheet import Master, MASTER_LIST_SHEET_NAME, Inputs, INPUT_LIST_SHEET_NAME
+from movelister.sheet.sheet import MASTER_LIST_SHEET_NAME, INPUT_LIST_SHEET_NAME
+from movelister.sheet.master import Master
+from movelister.sheet.inputs import Inputs
 
 
 class AutoFillTestCase(OfficeTestCase):
