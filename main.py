@@ -60,8 +60,6 @@ def updateDetails(*args):
     Sheet.deleteSheetByName(completeDetailsName)
     formatter = DetailsFormatter(newDetails)
     detailsSheet = formatter.generate()
-    print(detailsSheet)
-
 
 
 def updateOverview(*args):

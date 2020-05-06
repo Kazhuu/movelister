@@ -1,5 +1,4 @@
 from movelister.core import cursor
-from movelister.core.iterator import DetailsIterator
 from movelister.sheet.sheet import Sheet
 from movelister.format import filter
 from movelister.model.modifier import Modifier
@@ -13,7 +12,7 @@ MODIFIER_END_COLUMN_NAME = 'Notes 1'
 
 class Overview:
     """
-    Class representing Overview sheet in the movelister document. Class
+    Class representing Overview sheet in the Movelister document. Class
     abstracts content presented from two dimensional array to more easily
     understandable form.
     """
@@ -64,12 +63,6 @@ class Overview:
         returned. Actions are considered equal if their names are equal.
         """
         return next((action for action in self._actions if action == comparedAction), None)
-
-    def iterateActions(self):
-        """
-        Return iterator to iterate over actions.
-        """
-        return ActionsIterator(self.actions)
 
     def _readSheetContent(self):
         self.sheet = Sheet.getByName(self.name)

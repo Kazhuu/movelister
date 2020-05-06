@@ -93,4 +93,5 @@ class Details:
                     phasesList[line[2]][str(phaseNum)] = [line[cellNum], line[cellNum + 1], line[cellNum + 2]]
         kwargs = {'action': data[0][self.nameColumnIndex], 'modifiers': data[0][self.modifiersColumnIndex],
                   'inputs': inputList, 'phases': phasesList, 'notes': notesList}
+        print(phasesList)
         return Detail(**kwargs)
