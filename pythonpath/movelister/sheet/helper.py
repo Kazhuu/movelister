@@ -1,9 +1,13 @@
-def getActiveSheet(document):
+from movelister.core.context import Context
+
+
+def getActiveSheetName():
     """
-    This function gets the sheet that is currently active in the document.
+    Return currently active sheet name.
     """
+    document = Context.getDocument()
     activeSheet = document.getCurrentController().getActiveSheet()
-    return activeSheet
+    return activeSheet.getName()
 
 
 def getHeaderRowPosition(sheetData):

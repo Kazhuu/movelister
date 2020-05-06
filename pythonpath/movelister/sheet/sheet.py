@@ -125,16 +125,16 @@ class Sheet():
         return cls.getByPosition(position)
 
     @classmethod
-    def newDetails(cls, name):
+    def newDetails(cls, overviewName, detailsName):
         """
-        Insert new Details sheet left of the Inputs sheet with given name put
-        inside of parentheses. Returns created sheet.
+        Insert new Details sheet right of the given overview sheet. New details
+        sheet will have given detailsName in parentheses.
 
         Sheet with given name must not exist, otherwise RuntimeException is
         raised.
         """
-        position = cls.getPosition(INPUT_LIST_SHEET_NAME) - 1
-        sheetName = '{0} ({1})'.format(DETAILS_SHEET_NAME, name)
+        position = cls.getPosition(overviewName) + 1
+        sheetName = '{0} ({1})'.format(DETAILS_SHEET_NAME, detailsName)
         Context.getDocument().Sheets.copyByName(DETAILS_TEMPLATE_NAME, sheetName, position)
         return cls.getByPosition(position)
 

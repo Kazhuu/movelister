@@ -5,9 +5,6 @@ from movelister.sheet.master import Master
 
 
 class UpdateOverview:
-    """
-    TODO: Generate one less phase than original.
-    """
     @classmethod
     def update(cls, previousOverview, name):
         """

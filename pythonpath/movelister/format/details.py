@@ -10,13 +10,14 @@ class DetailsFormatter:
 
     def __init__(self, details):
         self.instance = details
+        self.parentOverviewName = 'Overview ({0})'.format(self.instance.name)
 
     def generate(self):
         """
         Generate new Details sheet by copying template sheet and placing
         formatted Details class instance data in it.
         """
-        sheet = Sheet.newDetails(self.instance.name)
+        sheet = Sheet.newDetails(self.parentOverviewName, self.instance.name)
         cursor.setSheetContent(sheet, self.format())
         return sheet
 
@@ -25,5 +26,5 @@ class DetailsFormatter:
         Format whole Details and returns two dimensional data array which
         can be put to sheet.
         """
-        data = []
+        data = [[]]
         return data

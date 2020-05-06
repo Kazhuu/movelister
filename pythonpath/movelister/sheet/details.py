@@ -13,6 +13,10 @@ class Details:
 
     @classmethod
     def fromSheet(cls, sheetName):
+        """
+        Build instance of Detail from given sheet name which should represents
+        current details sheet.
+        """
         instance = cls(sheetName)
         instance._readSheetContent()
         return instance

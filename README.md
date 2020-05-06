@@ -178,10 +178,8 @@ file.
 * [PyUno documentation](http://www.openoffice.org/udk/python/python-bridge.html).
 * [Apache OpenOffice Developer's Guide](https://wiki.openoffice.org/wiki/Documentation/DevGuide/OpenOffice.org_Developers_Guide)
 for main knowledge about OpenOffice UNO (Universal Network Objects) technology and how to use it.
-* [LibreOffice 6.0 SDK API documentation](https://api.libreoffice.org/docs/idl/ref/index.html).
+* [LibreOffice SDK API documentation](https://api.libreoffice.org/docs/idl/ref/index.html).
 * [Jamie Boyle’s Cookbook](https://documenthacker.files.wordpress.com/2013/07/writing_documents-_for_software_engineers_v0002.pdf).
 * [Christopher Bourez's](http://christopher5106.github.io/office/2015/12/06/openoffice-libreoffice-automate-your-office-tasks-with-python-macros.html)
 	blog post about writing Python macros.
-* [Jannie Theunissen's](https://onesheep.org/scripting-libreoffice-python/) blog
-	post about scripting LibreOffice with Python.
 * [Development enviroment setup using pyenv](https://gist.github.com/thekalinga/b74056272cb1afdabf529a332ff0f517).
