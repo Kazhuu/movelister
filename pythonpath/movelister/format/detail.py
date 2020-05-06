@@ -2,8 +2,6 @@ class DetailFormatter:
     """
     Class responsible for formatting Detail class instance to two
     dimensional array.
-
-    TODO: write code.
     """
 
     def __init__(self, detail):
@@ -23,8 +21,14 @@ class DetailFormatter:
         row.append(self.detail.modifiers)
         # Input to Compare
         row.append(self.detail.inputs)
-        # Phases TO DO
-        row.append(self.detail.phases[self.detail.inputs][0])
-        # Notes TO DO
-        row.append(self.detail.notes[self.detail.inputs][0])
+        # Phases
+        x = -1
+        while x < len(self.detail.phases[self.detail.inputs] + 1):
+            x = x + 1
+            if x in self.detail.phases[self.detail.inputs]:
+                for cell in self.detail.phases[self.detail.inputs][x]:
+                    row.append(cell)
+        # Notes
+        for cell in self.detail.notes[self.detail.inputs]:
+            row.append(cell)
         return row

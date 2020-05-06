@@ -1,4 +1,5 @@
 from movelister.core import cursor
+from movelister.format.detail import DetailFormatter
 from movelister.sheet.sheet import Sheet
 
 
@@ -26,4 +27,14 @@ class DetailsFormatter:
         can be put to sheet.
         """
         data = []
+        data = data + self.formatDetails()
         return data
+
+    def formatDetails(self):
+        """
+        Format actions and return it as two dimensional array.
+        """
+        rows = []
+        for detail in self.instance.actions:
+            rows = rows + DetailFormatter(self.instance, detail).format()
+        return rows
