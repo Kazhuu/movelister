@@ -36,6 +36,6 @@ class DetailsFormatter:
         Format actions and return it as two dimensional array.
         """
         rows = []
-        for detail in self.instance.actions:
+        for detail in self.instance.details:
             rows = rows + DetailFormatter(self.instance, detail).format()
         return rows
