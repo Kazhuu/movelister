@@ -44,6 +44,7 @@ class Details:
         details = []
         filteredData = filter.filterRows(lambda row: row[self.nameColumnIndex] != '', self.dataRows)
         # Create an unused action to the array so that the loop can register all legit actions.
+        # TO DO: this step should be skipped if sheet is empty.
         emptyRow = helper.createEmptyRow(len(filteredData[0]))
         emptyRow[self.nameColumnIndex] = 'Unused'
         emptyRow[self.inputToCompareColumnIndex] = 'Unused'
