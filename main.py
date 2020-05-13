@@ -19,14 +19,25 @@ import re
 if __name__ == '__main__':
     sys.path.append(os.path.join(os.path.dirname('__file__'), 'pythonpath'))
 
-from movelister.core import HorizontalAlignment, VerticalAlignment, Context, cursor # noqa
-from movelister.format import color, convert, format, namedRanges, overview, OverviewFormatter, DetailsFormatter, action, validation # noqa
-from movelister.model import Action, Color # noqa
-from movelister.process import OverviewFactory, UpdateOverview # noqa
-from movelister.process.updateDetails import UpdateDetails
-from movelister.sheet import Details, helper, Inputs, Master, Modifiers, Overview, Sheet # noqa
 from movelister import error, selection  # noqa
-from movelister.sheet import Master, MASTER_LIST_SHEET_NAME, MODIFIER_LIST_SHEET_NAME  # noqa
+from movelister.core import cursor # noqa
+from movelister.core.alignment import HorizontalAlignment, VerticalAlignment # noqa
+from movelister.core.context import Context # noqa
+from movelister.format import action, color, convert, format, namedRanges, overview, validation # noqa
+from movelister.format.details import DetailsFormatter # noqa
+from movelister.format.overview import OverviewFormatter # noqa
+from movelister.model.action import Action # noqa
+from movelister.model.color import Color # noqa
+from movelister.process.factory import OverviewFactory # noqa
+from movelister.process.updateOverview import UpdateOverview # noqa
+from movelister.process.updateDetails import UpdateDetails # noqa
+from movelister.sheet import helper # noqa
+from movelister.sheet.details import Details # noqa
+from movelister.sheet.inputs import Inputs # noqa
+from movelister.sheet.master import Master # noqa
+from movelister.sheet.modifiers import Modifiers # noqa
+from movelister.sheet.overview import Overview # noqa
+from movelister.sheet.sheet import Sheet, MASTER_LIST_SHEET_NAME, MODIFIER_LIST_SHEET_NAME # noqa
 from movelister.ui import message_box  # noqa
 
 # Setup context automatically when macro is run from the LibreOffice.

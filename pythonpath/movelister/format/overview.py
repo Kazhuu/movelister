@@ -56,7 +56,7 @@ class OverviewFormatter:
         """
         rows = []
         for action in self.instance.actions:
-            rows = rows + ActionFormatter(self.instance, action, len(headerPostfix)).format()
+            rows = rows + ActionFormatter(self.instance, action).format()
         return rows
 
     def formatFirstLine(self):

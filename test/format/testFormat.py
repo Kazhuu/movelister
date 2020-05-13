@@ -4,7 +4,8 @@ from com.sun.star.table.CellVertJustify2 import CENTER
 from test.officeTestCase import OfficeTestCase
 from movelister.core import cursor
 from movelister.core.alignment import HorizontalAlignment, VerticalAlignment
-from movelister.sheet import Master, MASTER_LIST_SHEET_NAME
+from movelister.sheet.master import Master
+from movelister.sheet.sheet import MASTER_LIST_SHEET_NAME
 from movelister.format import format
 
 

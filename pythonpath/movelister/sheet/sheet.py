@@ -11,7 +11,6 @@ MASTER_LIST_SHEET_NAME = 'Master List'
 INPUT_LIST_SHEET_NAME = 'Inputs'
 DETAILS_SHEET_NAME = 'Details'
 MODIFIER_LIST_SHEET_NAME = 'Modifiers'
-MODIFIER_LIST_OLD_SHEET_NAME = 'Modifier List (Old)'
 RESULT_LIST_SHEET_NAME = 'Results'
 ABOUT_SHEET_NAME = 'About'
 
@@ -22,7 +21,6 @@ class Sheet():
     document.
     """
 
-    # TODO: Delete old sheet functions that are not needed anymore.
     @classmethod
     def getOverviewSheet(cls):
         return Context.getDocument().Sheets.getByName(OVERVIEW_SHEET_NAME)
@@ -42,10 +40,6 @@ class Sheet():
     @classmethod
     def getModifierSheet(cls):
         return Context.getDocument().Sheets.getByName(MODIFIER_LIST_SHEET_NAME)
-
-    @classmethod
-    def getModifierSheetOld(cls):
-        return Context.getDocument().Sheets.getByName(MODIFIER_LIST_OLD_SHEET_NAME)
 
     @classmethod
     def getResultSheet(cls):
