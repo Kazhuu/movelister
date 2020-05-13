@@ -77,3 +77,18 @@ def stripTrailingEmptyRows(data):
         else:
             break
     return data[:endIndex]
+
+
+def normalizeArray(data):
+    """
+    Makes all lines of an array equally long to avoid pesky uno runtime errors.
+    """
+    highestLength = -1
+    for line in data:
+        if len(line) > highestLength:
+            highestLength = len(line)
+    for line in data:
+        if len(line) < highestLength:
+            difference = highestLength - len(line)
+            line.extend(['' for i in range(difference)])
+    return data
