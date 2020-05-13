@@ -14,15 +14,18 @@ class ActionFormatterTestCase(OfficeTestCase):
         self.action = Action('attack 1', phases=2, hitPhase=1, default=True)
         self.action.addModifier(0, Modifier('aa'))
         self.action.addModifier(1, Modifier('bb'))
+        self.action.addNote(0, "note 1")
+        self.action.addNote(0, "note 2")
+        self.action.addNote(0, "note 3")
+        self.action.setNotes(1, ["note 1", "note 2", "note 3"])
         self.overview.addAction(self.action)
-        # TODO: this test doesn't take all things in Action class into account, like notes.
 
     def testFormattingAction(self):
-        formatter = ActionFormatter(self.overview, self.action, 3)
+        formatter = ActionFormatter(self.overview, self.action)
         data = formatter.format()
         # name, hit, frames, phase, def, aa, bb, cc
         result = [
-            ['attack 1', 'x', '', '0', 'x', 'x', '', '', '', '', ''],
-            ['attack 1', '', '', '1', 'x', '', 'x', '', '', '', '']
+            ['attack 1', 'x', '', '0', 'x', 'x', '', '', 'note 1', 'note 2', 'note 3'],
+            ['attack 1', '', '', '1', 'x', '', 'x', '', 'note 1', 'note 2', 'note 3']
         ]
         self.assertEqual(data, result)

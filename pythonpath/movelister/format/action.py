@@ -4,11 +4,9 @@ class ActionFormatter:
     dimensional array.
     """
 
-    def __init__(self, overview, action, padding=0):
+    def __init__(self, overview, action):
         self.action = action
         self.overview = overview
-        # is padding used in anything?
-        self.padding = padding
 
     def format(self):
         data = []

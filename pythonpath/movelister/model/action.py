@@ -55,13 +55,11 @@ class Action:
     def clearAllModifiers(self):
         self.modifiers = {}
 
-    # note: untested
     def setNotes(self, phase, notes):
         self._checkPhaseRange(phase)
         self.notes[phase] = notes
         return self.notes
 
-    # note: untested
     def addNote(self, phase, notes):
         self._checkPhaseRange(phase)
         try:
