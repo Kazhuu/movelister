@@ -1,6 +1,7 @@
 from movelister.core import cursor
 from movelister.format.detail import DetailFormatter
 from movelister.sheet.sheet import Sheet
+from movelister.sheet import helper
 
 
 class DetailsFormatter:
@@ -29,7 +30,7 @@ class DetailsFormatter:
         """
         data = []
         data = data + self.formatDetails()
-        return data
+        return helper.normalizeArray(data)
 
     def formatDetails(self):
         """
@@ -37,5 +38,5 @@ class DetailsFormatter:
         """
         rows = []
         for detail in self.instance.details:
-            rows.append(DetailFormatter(detail).format())
+            rows = rows + DetailFormatter(detail).format() + [['']]
         return rows
