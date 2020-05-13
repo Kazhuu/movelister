@@ -36,16 +36,21 @@ if __name__ != '__main__':
 
 def updateDetails(*args):
     """
-    A macro function that update one Details sheet while preserving previous user data.
-    The project can have multiple Details-views and the user directs the code to the correct one with
-    a name cell in the Overview-sheet.
+    A macro function that will update one Details sheet while preserving
+    previous user data.  The project can have multiple Details-views and which
+    one to update is detected from which Overview button was pressed to trigger
+    this macro.
     """
     if not error.checkTemplatesExists():
         message_box.showWarningWithOk('This file doesn\'t seem to have all necessary templates. Can\'t generate.')
         return
 
-    # Get current overview sheet where button was pressed.
-    activeOverviewName = helper.getActiveSheetName()
+    # Get overview sheet name if provided or from sheet where button was pressed.
+    activeOverviewName = ''
+    if len(args) > 0:
+        activeOverviewName = args[0]
+    else:
+        activeOverviewName = helper.getActiveSheetName()
     # Get view name for the details. This is presented in overview sheet name inside parentheses.
     detailsViewName = re.search('\((.+)\)', activeOverviewName).group(1)
     completeDetailsName = 'Details ({})'.format(detailsViewName)
@@ -106,4 +111,4 @@ def updateOverview(*args):
 # Run this when executed from the command line.
 if __name__ == '__main__':
     Context.setup(host='localhost', port=2002)
-    updateDetails()
+    updateDetails('Overview (Default)')

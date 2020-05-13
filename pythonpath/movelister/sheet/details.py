@@ -9,7 +9,7 @@ class Details:
 
     def __init__(self, sheetName):
         self.name = sheetName
-        self._details = []
+        self.details = []
 
     @classmethod
     def fromSheet(cls, sheetName):
@@ -31,7 +31,7 @@ class Details:
         self.notesIndex2 = helper.getColumnPosition(self.data, 'Notes 2')
         self.notesIndex3 = helper.getColumnPosition(self.data, 'Notes 3')
         self.dataRows = self._dataRows()
-        self._details = self._readDetails()
+        self.details = self._readDetails()
 
     def _dataRows(self):
         data = self.data[1:]
@@ -59,6 +59,7 @@ class Details:
                     details.append(self._parseArrayIntoDetail(tempArray))
                     tempArray = []
             tempArray.append(row)
+        return details
 
     def _parseArrayIntoDetail(self, data):
         """

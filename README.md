@@ -71,12 +71,13 @@ your development and then make symbolic link from LibreOffice user Python macros
 folder to Movelister folder. This varies a little bit between the platforms and
 is explained below for each platform.
 
-### Linux
+### Linux (Ubuntu and Arch)
 
 #### Running Macros From LibreOffice
 
 LibreOffice user Python macros are located under
-`~/.config/libreoffice/<version_number>/user/Scripts/python/`. If you only have
+`~/.config/libreoffice/4/user/Scripts/python/`. This still holds true if you are
+using LibreOffice version 6 and above. If you only have
 folders up to `.../user/` then you can make folders `Scripts` and `python` with
 `mkdir` program. After this `cd` into just created python folder. You path now
 should be something like this:
