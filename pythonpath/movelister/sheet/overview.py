@@ -84,6 +84,7 @@ class Overview:
         self.modifiers = self._readModifiers()
         self.actionNames = self._getUniqueActionNames()
         self._actions = self._readActions()
+        self.highestPhase = self._getHighestPhase()
 
     def _dataRows(self):
         data = self.data[self.dataBeginRow:]
@@ -143,3 +144,15 @@ class Overview:
         for index, value in enumerate(notes):
             noteList.append(value)
         return noteList
+
+    def _getHighestPhase(self):
+        """
+        Returns the highest phase number that is on the Overview's Phase-column.
+        This value is used when determining the width of the Details-view.
+        """
+        highestLength = -1
+        for row in self.data:
+            if row[self.phaseColumnIndex] != '' and row[self.phaseColumnIndex] != 'Phase':
+                if int(row[self.phaseColumnIndex]) > highestLength:
+                    highestLength = row[self.phaseColumnIndex]
+        return highestLength

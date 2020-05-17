@@ -56,12 +56,9 @@ def updateDetails(*args):
         message_box.showWarningWithOk('This file doesn\'t seem to have all necessary templates. Can\'t generate.')
         return
 
-    # Get overview sheet name if provided or from sheet where button was pressed.
-    activeOverviewName = ''
-    if len(args) > 0:
-        activeOverviewName = args[0]
-    else:
-        activeOverviewName = helper.getActiveSheetName()
+    # Get overview sheet name from sheet where button was pressed.
+    # TODO: the code doesn't discern at the moment where the code was ran.
+    activeOverviewName = helper.getActiveSheetName()
     # Get view name for the details. This is presented in overview sheet name inside parentheses.
     detailsViewName = re.search('\((.+)\)', activeOverviewName).group(1)
     completeDetailsName = 'Details ({})'.format(detailsViewName)
@@ -74,7 +71,7 @@ def updateDetails(*args):
     newDetails = UpdateDetails.update(previousDetails, detailsViewName)
     # Delete previous details sheet and generate a new one.
     Sheet.deleteSheetByName(completeDetailsName)
-    formatter = DetailsFormatter(newDetails)
+    formatter = DetailsFormatter(newDetails, Sheet.getByName(activeOverviewName))
     detailsSheet = formatter.generate()
 
 
@@ -122,4 +119,4 @@ def updateOverview(*args):
 # Run this when executed from the command line.
 if __name__ == '__main__':
     Context.setup(host='localhost', port=2002)
-    updateDetails('Overview (Default)')
+    updateDetails()

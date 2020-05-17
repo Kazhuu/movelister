@@ -10,7 +10,7 @@ class DetailsFormatter:
     array.
     """
 
-    def __init__(self, details):
+    def __init__(self, details, overview):
         self.instance = details
         self.parentOverviewName = 'Overview ({0})'.format(self.instance.name)
 
