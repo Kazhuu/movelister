@@ -3,6 +3,7 @@ import shutil
 import os
 import glob
 
+BASE_DOCUMENT = 'templates/movelister_release.ods'
 RELEASE_DOCUMENT = 'releases/movelister.ods'
 RELEASE_ROOT = 'Scripts/python'
 
@@ -11,7 +12,7 @@ if os.path.exists(RELEASE_DOCUMENT):
     os.remove(RELEASE_DOCUMENT)
 
 # Copy release base ods file.
-shutil.copyfile('templates/movelister_template.ods', RELEASE_DOCUMENT)
+shutil.copyfile(BASE_DOCUMENT, RELEASE_DOCUMENT)
 # Collect paths to all source files of the project.
 movelister_files = glob.glob('pythonpath/**/*.py', recursive=True)
 movelister_files.append('main.py')
