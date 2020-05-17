@@ -16,7 +16,8 @@ import re
 # This is to emulate how LibreOffice adds pythonpath folder to PYTHONPATH where
 # the script is executed. PYTHONPATH is added when executing from the command
 # line.
-if __name__ == '__main__':
+if __name__ == '__main__' or __name__ == 'ooo_script_framework':
+    print('path modified')
     sys.path.append(os.path.join(os.path.dirname('__file__'), 'pythonpath'))
 
 from movelister import error, selection  # noqa

@@ -192,9 +192,11 @@ run the tests. For example something like the following:
 * [LibreOffice Wiki of Python applications](https://wiki.documentfoundation.org/Macros/Python_Design_Guide)
 * [PyUno documentation](http://www.openoffice.org/udk/python/python-bridge.html).
 * [Apache OpenOffice Developer's Guide](https://wiki.openoffice.org/wiki/Documentation/DevGuide/OpenOffice.org_Developers_Guide)
+* [Old StarOffice Programmer's Tutorial](https://www.openoffice.org/api/basic/man/tutorial/tutorial.pdf)
 for main knowledge about OpenOffice UNO (Universal Network Objects) technology and how to use it.
 * [LibreOffice SDK API documentation](https://api.libreoffice.org/docs/idl/ref/index.html).
 * [Jamie Boyle’s Cookbook](https://documenthacker.files.wordpress.com/2013/07/writing_documents-_for_software_engineers_v0002.pdf).
 * [Christopher Bourez's blog post](http://christopher5106.github.io/office/2015/12/06/openoffice-libreoffice-automate-your-office-tasks-with-python-macros.html)
 * [Development enviroment setup using pyenv](https://gist.github.com/thekalinga/b74056272cb1afdabf529a332ff0f517).
 * [LibreOffice's own Python examples](https://cgit.freedesktop.org/libreoffice/core/tree/pyuno/demo)
+* [How to pack Python script as part of the document](https://wiki.openoffice.org/wiki/Python_as_a_macro_language)
