@@ -30,7 +30,7 @@ class OfficeTestCase(unittest.TestCase):
         # Open LibreOffice process differently if platform is Windows.
         system = platform.system()
         if system == 'Windows':
-            cls.process = Popen(libreOffice + 'templates\movelister_template.ods \
+            cls.process = Popen(libreOffice + 'templates\movelister_test.ods \
                 --norestore --accept=socket,host=localhost,port=2003;urp')
         else:
             cls.process = Popen(
