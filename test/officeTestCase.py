@@ -29,12 +29,12 @@ class OfficeTestCase(unittest.TestCase):
         # Open LibreOffice process differently if platform is Windows.
         system = platform.system()
         if system == 'Windows':
-            cls.process = Popen(libreOffice + "templates\movelister_template.ods \
-                --accept=socket,host=localhost,port=2003;urp;StarOffice.ServiceManager")
+            cls.process = Popen(libreOffice + 'templates\movelister_template.ods \
+                --norestore --accept=socket,host=localhost,port=2003;urp')
         else:
             cls.process = Popen(
-                [libreOffice, "templates/movelister_template.ods", "--headless",
-                 "--accept=socket,host=localhost,port=2003;urp;StarOffice.ServiceManager"])
+                [libreOffice, 'templates/movelister_template.ods', '--headless', '--norestore',
+                 '--accept=socket,host=localhost,port=2003;urp'])
         time.sleep(1)
         # Reset and setup context.
         Context.reset()
