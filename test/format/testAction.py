@@ -8,7 +8,6 @@ from movelister.model.modifier import Modifier
 class ActionFormatterTestCase(OfficeTestCase):
 
     def setUp(self):
-        super().setUp()
         self.overview = Overview('test sheet')
         self.overview.modifiers = [Modifier('aa'), Modifier('bb'), Modifier('cc')]
         self.action = Action('attack 1', phases=2, hitPhase=1, default=True)
@@ -23,7 +22,7 @@ class ActionFormatterTestCase(OfficeTestCase):
     def testFormattingAction(self):
         formatter = ActionFormatter(self.overview, self.action)
         data = formatter.format()
-        # name, hit, frames, phase, def, aa, bb, cc
+        # name, hit, frames, phase, def, aa, bb, cc, notes 1, notes 2, notes 3
         result = [
             ['attack 1', 'x', '', '0', 'x', 'x', '', '', 'note 1', 'note 2', 'note 3'],
             ['attack 1', '', '', '1', 'x', '', 'x', '', 'note 1', 'note 2', 'note 3']
