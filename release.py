@@ -3,8 +3,8 @@ import shutil
 import os
 import glob
 
-BASE_DOCUMENT = 'templates/movelister_release.ods'
-RELEASE_DOCUMENT = 'releases/movelister.ods'
+BASE_DOCUMENT = os.path.join('templates', 'movelister_release.ods')
+RELEASE_DOCUMENT = os.path.join('releases', 'movelister.ods')
 RELEASE_ROOT = 'Scripts/python'
 
 # Remove old movelister release if it exists.
