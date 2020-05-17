@@ -1,3 +1,4 @@
+import uno
 from com.sun.star.table.CellHoriJustify import RIGHT
 from com.sun.star.table.CellVertJustify2 import CENTER
 

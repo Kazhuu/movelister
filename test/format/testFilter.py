@@ -16,7 +16,7 @@ class FilterTestCase(OfficeTestCase):
 
     def testGroupRows(self):
         """
-        Test that rows from overview are grouped together with same action name with
+        TODO: finish writing comment
         """
         overview = Overview.fromSheet('Overview (default)')
         actionNames = overview.actionNames
