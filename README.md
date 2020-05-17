@@ -56,9 +56,7 @@ To have a good development environment and with debugging abilities. It's
 easier to develop scripts using a separate Python process which then connects to
 an external LibreOffice process using sockets. After you are done with the
 development, you can run working scripts inside the LibreOffice process. [This
-Christopher
-Bourez's blog
-post](http://christopher5106.github.io/office/2015/12/06/openoffice-libreoffice-automate-your-office-tasks-with-python-macros.html)
+Christopher Bourez's blog post](http://christopher5106.github.io/office/2015/12/06/openoffice-libreoffice-automate-your-office-tasks-with-python-macros.html)
 explains the idea and this same idea is used with this project.
 
 Movelister is developed so that is support running macros from separate Python
@@ -96,7 +94,7 @@ available macros which can be executed or mapped to keys.
 
 In project root folder, start LibreOffice Calc process with:
 ```
-libreoffice templates/movelister_template.ods --accept="socket,host=localhost,port=2002;urp;StarOffice.ServiceManager"
+libreoffice templates/movelister_template.ods --accept="socket,host=localhost,port=2002;urp"
 ```
 This opens socket with port 2002 which Python process then connects. Then start
 a separate Python process by running `main.py` with:
@@ -114,7 +112,7 @@ socket open, you have to start LibreOffice using the parameter listed below.
 For convenience's sake, you might want to include this parameter inside some
 shortcut that starts LibreOffice.
 ```
---accept="socket,host=localhost,port=2002;urp;StarOffice.ServiceManager"
+--accept="socket,host=localhost,port=2002;urp"
 ```
 If you use command line to run scripts, it's the easiest to just use
 LibreOffice's own installed version of Python to run any Python scripts.
@@ -134,8 +132,23 @@ example:
 
 Movelister has unit tests to test application functionality and is implemented
 using Python's own [unittests](https://docs.python.org/3/library/unittest.html)
-library. Unit tests uses external LibreOffice process through UNO API to access
-it.
+library and tests can be found under `test` folder of the project.
+
+During testing Python process will spawn headless LibreOffice Calc process
+accepting socket connections. This connection is then used with UNO API to
+communicate with LibreOffice process to verify application functionality.
+During testing Python will instruct LibreOffice to reload the file between test
+cases.
+
+NOTE: Unit tests works on Linux but not fully on Windows. When you run all unit
+tests on Windows, LibreOffice will show a dialog between test cases that the
+file is already open and do you want to open file in read-only mode. When file
+is opened in the read-only mode then tests that write data over UNO API will
+fail to do so. And as a result unit test will report an error saying it didn't
+see the data it was trying to write over UNO API. This read-only error when
+reopening the file between test cases doesn't exist on Linux and no workaround
+for this has been found yet. Running single unit test at the time on Windows
+should work fine though.
 
 ### Running Tests
 
@@ -153,34 +166,35 @@ and on Windows:
 set MV_LB_BIN="C:\Program Files\LibreOffice 5\program\soffice.exe"
 ```
 
-Test are located under test folder at the project root. Test suite opens a
-headless LibreOffice instance with project template `.ods` file. Then between
-each test the file is reopened. How to run tests depends your LibreOffice
-installation. If you have separate Python that your LibreOffice is installation
-is using. Then go to project root and run:
+How to run tests depends your system you are using. With Linux LibreOffice is
+using system's Python installation and on Windows LibreOffice comes with it's
+own Python executable. On Linux you can just go to the project's root and run
+tests with system's Python:
 
 ```
 python -m unittest
 ```
 
-TODO: Write this to be more clear.
-If your LibreOffice has internal Python installation then. From project root you
-need to traverse path to LibreOffice Python executable. In this case it might be
-easier to make command line script to run tests. On Windows for example  make
-following `.bat` at project root
-file.
+Unfortunately on Windows things are not so simple.  On Windows you need to use
+LibreOffice's own Python executable instead. This executable is located under
+LibreOffice installation folder. From project's root you need to traverse path
+to the LibreOffice Python executable and this path depends where you cloned this
+project. In this case it might be easier to make a command line bat script to
+run the tests. For example something like the following:
 
 ```
-..\..\..\..\program\python -m unittest -v
+..\..\..\..\program\python.exe -m unittest
 ```
 
 ## Resources
 
+* [LibreOffice Python Scripts Help](https://help.libreoffice.org/6.3/en-US/text/sbasic/python/main0000.html)
+* [LibreOffice Wiki of Python applications](https://wiki.documentfoundation.org/Macros/Python_Design_Guide)
 * [PyUno documentation](http://www.openoffice.org/udk/python/python-bridge.html).
 * [Apache OpenOffice Developer's Guide](https://wiki.openoffice.org/wiki/Documentation/DevGuide/OpenOffice.org_Developers_Guide)
 for main knowledge about OpenOffice UNO (Universal Network Objects) technology and how to use it.
 * [LibreOffice SDK API documentation](https://api.libreoffice.org/docs/idl/ref/index.html).
 * [Jamie Boyle’s Cookbook](https://documenthacker.files.wordpress.com/2013/07/writing_documents-_for_software_engineers_v0002.pdf).
-* [Christopher Bourez's](http://christopher5106.github.io/office/2015/12/06/openoffice-libreoffice-automate-your-office-tasks-with-python-macros.html)
-	blog post about writing Python macros.
+* [Christopher Bourez's blog post](http://christopher5106.github.io/office/2015/12/06/openoffice-libreoffice-automate-your-office-tasks-with-python-macros.html)
 * [Development enviroment setup using pyenv](https://gist.github.com/thekalinga/b74056272cb1afdabf529a332ff0f517).
+* [LibreOffice's own Python examples](https://cgit.freedesktop.org/libreoffice/core/tree/pyuno/demo)
