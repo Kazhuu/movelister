@@ -14,9 +14,9 @@ class OfficeTestCase(unittest.TestCase):
     tests. LibreOffice is opened in headless mode. Running tests also works
     when LibreOffice process is opened normally.
 
-    TODO: certain tests which modify the sheet don't work on Windows, because
-    the document is re-opened between tests in read-only mode. This seems to
-    happen because of reopenCurrentFile function.
+    Certain tests which modify the sheet don't work on Windows, because the
+    document is re-opened between tests in read-only mode. Tests work under
+    Linux.
     """
     EXCEPTION_MESSAGE = 'Set environment variable MV_LB_BIN to point to the LibreOffice executable before running tests.'
 
