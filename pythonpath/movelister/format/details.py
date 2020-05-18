@@ -4,6 +4,10 @@ from movelister.sheet.sheet import Sheet
 from movelister.sheet import helper
 
 
+headerPrefix = ['Action Name', 'Modifiers', 'Input to Compare']
+headerPostfix = ['Notes 1', 'Notes 2', 'Notes 3']
+
+
 class DetailsFormatter:
     """
     Class responsible for formatting Details class instance into a two dimensional
@@ -12,6 +16,7 @@ class DetailsFormatter:
 
     def __init__(self, details, overview):
         self.instance = details
+        self.maximumPhases = overview._getHighestPhase()
         self.parentOverviewName = 'Overview ({0})'.format(self.instance.name)
 
     def generate(self):
@@ -29,14 +34,31 @@ class DetailsFormatter:
         can be put to sheet.
         """
         data = []
-        data = data + self.formatDetails()
+        data.append(self.formatHeader())
+        data.extend(self.formatDetails())
         return helper.normalizeArray(data)
+
+    def formatHeader(self):
+        """
+        Formats the header row of the Details-sheet. Wideness of the row varies depending on
+        the maximum amount of phases in an action, as specified in Overview.
+        """
+        data = []
+        for a in headerPrefix:
+            data.append(a)
+        for a in range(self.maximumPhases + 1):
+            data.append('')
+            data.append('> Phase ' + str(a) + ' result')
+            data.append('')
+        for a in headerPostfix:
+            data.append(a)
+        return data
 
     def formatDetails(self):
         """
-        Format actions and return it as two dimensional array.
+        Format details and return them as two dimensional array.
         """
         rows = []
         for detail in self.instance.details:
-            rows = rows + DetailFormatter(detail).format() + [['']]
+            rows.extend(DetailFormatter(detail).format() + [['']])
         return rows

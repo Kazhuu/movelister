@@ -38,7 +38,7 @@ class OverviewFormatter:
         data.append(self.formatFirstLine())
         data.append(self.formatHeader())
         data = data + self.formatActions()
-        return data
+        return helper.normalizeArray(data)
 
     def formatHeader(self):
         """

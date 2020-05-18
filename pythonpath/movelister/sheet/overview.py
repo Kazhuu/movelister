@@ -150,9 +150,9 @@ class Overview:
         Returns the highest phase number that is on the Overview's Phase-column.
         This value is used when determining the width of the Details-view.
         """
-        highestLength = -1
+        highestLength = 1
         for row in self.data:
             if row[self.phaseColumnIndex] != '' and row[self.phaseColumnIndex] != 'Phase':
                 if int(row[self.phaseColumnIndex]) > highestLength:
-                    highestLength = row[self.phaseColumnIndex]
+                    highestLength = int(row[self.phaseColumnIndex])
         return highestLength

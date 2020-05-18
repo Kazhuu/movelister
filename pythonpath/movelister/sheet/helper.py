@@ -83,7 +83,7 @@ def normalizeArray(data):
     """
     Makes all lines of an array equally long to avoid pesky uno runtime errors.
     """
-    highestLength = -1
+    highestLength = 0
     for line in data:
         if len(line) > highestLength:
             highestLength = len(line)

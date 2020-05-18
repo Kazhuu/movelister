@@ -78,8 +78,9 @@ def updateDetails(*args):
         previousDetails = Details.fromSheet(completeDetailsName)
     newDetails = UpdateDetails.update(previousDetails, detailsViewName)
     # Delete previous details sheet and generate a new one.
+    overview = Overview.fromSheet(activeOverviewName)
     Sheet.deleteSheetByName(completeDetailsName)
-    formatter = DetailsFormatter(newDetails, Sheet.getByName(activeOverviewName))
+    formatter = DetailsFormatter(newDetails, overview)
     detailsSheet = formatter.generate()
 
 
