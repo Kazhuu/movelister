@@ -7,6 +7,7 @@ from movelister.model.modifier import Modifier
 class DetailsIteratorTestCase(OfficeTestCase):
 
     def setUp(self):
+        super().setUp()
         self.names = ['test1', 'test2', 'test3']
         self.actions = [Action(name) for name in self.names]
         self.actions[1].default = True

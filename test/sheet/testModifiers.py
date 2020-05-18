@@ -9,6 +9,7 @@ from movelister.sheet.sheet import MODIFIER_LIST_SHEET_NAME
 class ModifiersTestCase(OfficeTestCase):
 
     def setUp(self):
+        super().setUp()
         self.modifier = Modifiers(MODIFIER_LIST_SHEET_NAME)
         self.modifiers = self.modifier.getModifiers()
 

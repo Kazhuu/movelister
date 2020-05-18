@@ -35,16 +35,19 @@ manipulating tables and sheets underneath.
 ## Dependencies
 
 It's necessary for the user to install LibreOffice 5 or newer and Python 3.x to
-be able to use the Movelister scripts. Python is typically automatically
-included in a LibreOffice installation on Windows but not always on Linux. If
-LibreOffice Python support is missing on Linux, you need install LibreOffice
-Python support packages separately. On Windows Python is located with regular
-installation. For instance `C:\Program Files\LibreOffice
+be able to use the Movelister scripts. Movelister is tested to be working on
+both Linux and Windows. Python is typically automatically included in a
+LibreOffice installation on Windows but not always on Linux. If LibreOffice
+Python support is missing on Linux, you need install LibreOffice Python support
+packages separately. On Windows Python is located with regular installation. For
+instance `C:\Program Files\LibreOffice
 5\program\python-core-3.5.0\bin\python.exe`. On Ubuntu install following
 packages to enable Python for LibreOffice:
+
 ```
 sudo apt install libreoffice-script-provider-python uno-libs3 python3-uno
 ```
+
 On Linux distros that has both Python 2 and 3 versions available and command
 `python` points to Python 2. Developers can change `python` commands to
 `python3` in this readme instead.
@@ -84,15 +87,17 @@ LibreOffice user Python macros are located under
 `~/.config/libreoffice/4/user/Scripts/python/`. This still holds true if you are
 using LibreOffice version 6 and above. If you only have
 folders up to `.../user/` then you can make folders `Scripts` and `python` with
-`mkdir` program. After this `cd` into just created python folder. You path now
+`mkdir` program. After this `cd` into just created python folder. Your path now
 should be something like this:
 `/home/kazooie/.config/libreoffice/4/user/Scripts/python`. Now make symbolic
 link to cloned Movelister folder with following and change `path_to_movelister`
 to point to your cloned Movelister folder:
+
 ```
 ln -s <path_to_movelister> movelister
 ```
-Now in LibraOffice when you go to **Tools -> Macros -> Run Macro** and open **My
+
+Now in LibreOffice when you go to **Tools -> Macros -> Run Macro** and open **My
 Macros**. You should see **movelister** as a listed macro package. Now open
 **movelister** and select **main**. Then on the right you should see list of all
 available macros which can be executed or mapped to keys.
@@ -100,14 +105,18 @@ available macros which can be executed or mapped to keys.
 #### Running Macros From Separate Python Process
 
 In project root folder, start LibreOffice Calc process with:
+
 ```
 libreoffice templates/movelister_test.ods --accept="socket,host=localhost,port=2002;urp"
 ```
+
 This opens socket with port 2002 which Python process then connects. Then start
 a separate Python process by running `main.py` with:
+
 ```
 python main.py
 ```
+
 This script should run without errors. If you see error messages, make sure the
 socket is open or follow error message instructions.
 
@@ -118,9 +127,11 @@ TODO: Write this again with better guidelines. To use LibreOffice Calc with a
 socket open, you have to start LibreOffice using the parameter listed below.
 For convenience's sake, you might want to include this parameter inside some
 shortcut that starts LibreOffice.
+
 ```
 --accept="socket,host=localhost,port=2002;urp"
 ```
+
 If you use command line to run scripts, it's the easiest to just use
 LibreOffice's own installed version of Python to run any Python scripts.
 Otherwise Python may have difficulties finding the important UNO library. In
@@ -131,6 +142,7 @@ This part of the process can be made a bit faster by writing an own .bat file
 inside the Movelister main folder that starts main.py with LibreOffice's own
 Python executable that's usually situated in *LibreOffice 5/Program/*. For
 example:
+
 ```
 ..\..\..\..\program\python main.py
 ```
@@ -161,7 +173,7 @@ should work fine though.
 
 Before running tests you need to set `MV_LB_BIN` environment variable to point
 to the LibreOffice executable. This is used to run LibreOffice during test. On
-linux for example:
+Linux for example:
 
 ```
 export MV_LB_BIN="libreoffice"
@@ -199,9 +211,11 @@ To make a release ready LibreOffice document, all Python source files needs to
 be copied inside of it and it's metadata modified so that it includes the
 information of all added files. To make the document simple run following at
 project's root:
+
 ```
 python release.py
 ```
+
 This will make a new movelister LibreOffice document under `releases` folder. If
 you are interested how packing process works take a look at `release.py` file.
 

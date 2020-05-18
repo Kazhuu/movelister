@@ -10,6 +10,7 @@ from movelister.format.overview import OverviewFormatter
 class OverviewFormatterTestCase(OfficeTestCase):
 
     def setUp(self):
+        super().setUp()
         self.sheetName = 'test'
         self.overview = Overview(self.sheetName)
 

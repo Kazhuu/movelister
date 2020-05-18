@@ -7,6 +7,7 @@ from movelister.model.input import Input
 class InputsTestCase(OfficeTestCase):
 
     def setUp(self):
+        super().setUp()
         self.input = Inputs(INPUT_LIST_SHEET_NAME)
         self.inputList = self.input.getInputs()
 
