@@ -94,7 +94,7 @@ available macros which can be executed or mapped to keys.
 
 In project root folder, start LibreOffice Calc process with:
 ```
-libreoffice templates/movelister_template.ods --accept="socket,host=localhost,port=2002;urp"
+libreoffice templates/movelister_test.ods --accept="socket,host=localhost,port=2002;urp"
 ```
 This opens socket with port 2002 which Python process then connects. Then start
 a separate Python process by running `main.py` with:
