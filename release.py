@@ -1,8 +1,27 @@
 import zipfile
+import tempfile
 import shutil
 import os
 import glob
 import posixpath
+
+
+# http://stackoverflow.com/questions/4653768/overwriting-file-in-ziparchive
+def remove_from_zip(zipfname, *filenames):
+    tempdir = tempfile.mkdtemp()
+    # print(tempdir)
+    try:
+        tempname = os.path.join(tempdir, 'new.zip')
+        with zipfile.ZipFile(zipfname, 'r') as zipread:
+            with zipfile.ZipFile(tempname, 'w') as zipwrite:
+                for item in zipread.infolist():
+                    if item.filename not in filenames:
+                        data = zipread.read(item.filename)
+                        zipwrite.writestr(item, data)
+        shutil.move(tempname, zipfname)
+    finally:
+        shutil.rmtree(tempdir)
+
 
 RELEASE_FOLDER = 'releases'
 BASE_DOCUMENT = os.path.join('templates', 'movelister_release.ods')
@@ -25,22 +44,30 @@ movelister_files = ['main.py']
 # This is needed because LibreOffice document's manifest.xml uses '/' slashes.
 movelister_files.extend([posixpath.join(*path.split('\\')) for path in source_files])
 
-# Open release movelister.ods document and write Python source files to it.
-# LibreOffice documents are zipped files.
-with zipfile.ZipFile(RELEASE_DOCUMENT, 'a') as document:
-    # Write Python source files to the document.
-    for src_file in movelister_files:
-        document.write(src_file, '{0}/{1}'.format(RELEASE_ROOT, src_file))
-    # Modify manifest file to include all Python source files.
-    manifest = []
-    for line in document.open('META-INF/manifest.xml'):
-        if '</manifest:manifest>' in line.decode('utf-8'):
-            # Add folder paths where sources reside in the document.
-            for path in ['Scripts/', 'Scripts/python/']:
-                manifest.append(' <manifest:file-entry manifest:media-type="application/binary" manifest:full-path="{0}"/>\n'.format(path))
-            # Add entries for all Python source files in the document.
-            for path in movelister_files:
-                manifest.append(' <manifest:file-entry manifest:media-type="application/binary" manifest:full-path="{0}/{1}"/>\n'.format(RELEASE_ROOT, path))
-        manifest.append(line.decode('utf-8'))
-    document.writestr('META-INF/manifest.xml', ''.join(manifest))
+# Open release document and read manifest.xml to memory and add project Python source files to it.
+document = zipfile.ZipFile(RELEASE_DOCUMENT, 'a')
+# Modify manifest file to include all Python source files.
+manifest = []
+for line in document.open('META-INF/manifest.xml'):
+    if '</manifest:manifest>' in line.decode('utf-8'):
+        # Add folder paths where sources reside in the document.
+        for path in ['Scripts/', 'Scripts/python/']:
+            manifest.append(' <manifest:file-entry manifest:media-type="application/binary" manifest:full-path="{0}"/>\n'.format(path))
+        # Add entries for all Python source files in the document.
+        for path in movelister_files:
+            manifest.append(' <manifest:file-entry manifest:media-type="application/binary" manifest:full-path="{0}/{1}"/>\n'.format(RELEASE_ROOT, path))
+    manifest.append(line.decode('utf-8'))
+document.close()
+
+# Remove old manifest.xml from release document.
+remove_from_zip(RELEASE_DOCUMENT, 'META-INF/manifest.xml')
+
+# Open release document again and write new manifest.xml file.
+document = zipfile.ZipFile(RELEASE_DOCUMENT, 'a')
+document.writestr('META-INF/manifest.xml', ''.join(manifest))
+# Write Python source files to the document.
+for src_file in movelister_files:
+    document.write(src_file, '{0}/{1}'.format(RELEASE_ROOT, src_file))
+document.close()
+
 print('Movelister release made to: {0}'.format(RELEASE_DOCUMENT))
