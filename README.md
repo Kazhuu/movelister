@@ -7,6 +7,25 @@ model the limits of a game's potential interactivity.
 
 **Movelister is still a work in progress and not ready for use.**
 
+## Table of Contents
+
+<!-- vim-markdown-toc GFM -->
+
+* [How It Works](#how-it-works)
+* [Dependencies](#dependencies)
+* [How To Use](#how-to-use)
+* [Development](#development)
+  * [Linux (Ubuntu and Arch)](#linux-ubuntu-and-arch)
+    * [Running Macros From LibreOffice](#running-macros-from-libreoffice)
+    * [Running Macros From Separate Python Process](#running-macros-from-separate-python-process)
+  * [Windows](#windows)
+* [Testing](#testing)
+  * [Running Tests](#running-tests)
+* [Packing Source Files to Be Part of LibreOffice Document](#packing-source-files-to-be-part-of-libreoffice-document)
+* [Resources](#resources)
+
+<!-- vim-markdown-toc -->
+
 ## How It Works
 
 Movelister is implemented on LibreOffice Calc (spreadsheet) and is used with
@@ -15,13 +34,14 @@ manipulating tables and sheets underneath.
 
 ## Dependencies
 
-It's necessary for the user to install LibreOffice 5 or newer and Python 3.x to be able
-to use the Movelister scripts. Python is typically automatically included in a
-LibreOffice installation on Windows but not always on Linux. If LibreOffice
-Python support is missing on Linux, you need install LibreOffice Python support
-packages separately. On Windows Python is located with regular installation at
-`C:\Program Files\LibreOffice 5\program\python-core-3.5.0\bin\python.exe`. On
-Ubuntu install following packages to enable Python for LibreOffice:
+It's necessary for the user to install LibreOffice 5 or newer and Python 3.x to
+be able to use the Movelister scripts. Python is typically automatically
+included in a LibreOffice installation on Windows but not always on Linux. If
+LibreOffice Python support is missing on Linux, you need install LibreOffice
+Python support packages separately. On Windows Python is located with regular
+installation. For instance `C:\Program Files\LibreOffice
+5\program\python-core-3.5.0\bin\python.exe`. On Ubuntu install following
+packages to enable Python for LibreOffice:
 ```
 sudo apt install libreoffice-script-provider-python uno-libs3 python3-uno
 ```
@@ -29,26 +49,13 @@ On Linux distros that has both Python 2 and 3 versions available and command
 `python` points to Python 2. Developers can change `python` commands to
 `python3` in this readme instead.
 
-Arch installation has also been tested and out of the box.
+Arch installation has been tested to work out of the box.
 
 ## How To Use
 
-TODO: Write guide how to setup this project in order to use the template and
-
-LibreOffice 5 has a specific directory where it searches for Python scripts -
-something along the lines of *LibreOffice 5/share/Scripts/python*. If you copy
-any Python scripts there, you are able to find & use them inside LibreOffice
-via *Tools -> Macros -> Run Macro...* It's not a bad idea to copy the entire
-Movelister directory inside *Scripts/Python* if you want to have access to all
-the scripts and ensure that Movelister finds all its dependencies too.
-
-__Note:__ so far the scripts are designed to be used together with the
-Movelister template, so make sure that it's open in LibreOffice Calc before you
-run scripts or you most likely get some errors.
-
-__Note 2:__ since this project is still at its early stages, the scripts don't
-offer a full functionality yet. Feel free to admire the template and give some
-feedback or ideas on it, though.
+Project is released as a LibreOffice document which has all project sources
+embedded inside of it. So no additional installations needed. Just grab the
+movelister document under `releases` folder and you are good to go.
 
 ## Development
 
@@ -185,6 +192,18 @@ run the tests. For example something like the following:
 ```
 ..\..\..\..\program\python.exe -m unittest
 ```
+
+## Packing Source Files to Be Part of LibreOffice Document
+
+To make a release ready LibreOffice document, all Python source files needs to
+be copied inside of it and it's metadata modified so that it includes the
+information of all added files. To make the document simple run following at
+project's root:
+```
+python release.py
+```
+This will make a new movelister LibreOffice document under `releases` folder. If
+you are interested how packing process works take a look at `release.py` file.
 
 ## Resources
 
