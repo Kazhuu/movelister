@@ -21,6 +21,9 @@ class Details:
         instance._readSheetContent()
         return instance
 
+    def addDetail(self, detail):
+        self.details.append(detail)
+
     def _readSheetContent(self):
         self.sheet = Sheet.getByName(self.name)
         self.data = cursor.getSheetContent(self.sheet)
