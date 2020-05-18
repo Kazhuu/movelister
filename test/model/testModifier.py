@@ -5,6 +5,7 @@ import unittest
 class ModifierTestCase(unittest.TestCase):
 
     def setUp(self):
+        super().setUp()
         self.modifier1 = Modifier('aaa')
         self.modifier2 = Modifier('aaa')
         self.modifier3 = Modifier('bbb')

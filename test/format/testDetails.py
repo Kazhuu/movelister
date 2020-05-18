@@ -8,6 +8,7 @@ from movelister.format.details import DetailsFormatter
 class DetailsFormatterTestCase(OfficeTestCase):
 
     def setUp(self):
+        super().setUp()
         self.sheetName = 'test'
         self.overview = Overview(self.sheetName)
         self.details = Details(self.sheetName)
@@ -16,7 +17,7 @@ class DetailsFormatterTestCase(OfficeTestCase):
         """
         TODO: finish writing test.
         """
-        print()
+        pass
 
     def testDetailFormatting(self):
         """
@@ -36,4 +37,4 @@ class DetailsFormatterTestCase(OfficeTestCase):
         sheet really exists and has generated content in it.
         TODO: finish writing test.
         """
-        print()
+        pass

@@ -34,7 +34,7 @@ class OfficeTestCase(unittest.TestCase):
                 --norestore --accept=socket,host=localhost,port=2003;urp')
         else:
             cls.process = Popen(
-                [libreOffice, 'templates/movelister_template.ods', '--headless', '--norestore',
+                [libreOffice, 'templates/movelister_test.ods', '--headless', '--norestore',
                  '--accept=socket,host=localhost,port=2003;urp'])
         time.sleep(1)
         # Reset and setup context.

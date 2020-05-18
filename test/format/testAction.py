@@ -8,6 +8,7 @@ from movelister.model.modifier import Modifier
 class ActionFormatterTestCase(OfficeTestCase):
 
     def setUp(self):
+        super().setUp()
         self.overview = Overview('test sheet')
         self.overview.modifiers = [Modifier('aa'), Modifier('bb'), Modifier('cc')]
         self.action = Action('attack 1', phases=2, hitPhase=1, default=True)

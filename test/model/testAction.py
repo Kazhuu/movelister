@@ -5,6 +5,7 @@ from movelister.model.action import Action
 class ActionTestCase(unittest.TestCase):
 
     def setUp(self):
+        super().setUp()
         self.action1 = Action('aaa')
         self.action2 = Action('aaa')
         self.action3 = Action('bbb')

@@ -7,6 +7,7 @@ from movelister.model.action import Action
 class MasterTestCase(OfficeTestCase):
 
     def setUp(self):
+        super().setUp()
         self.master = Master(MASTER_LIST_SHEET_NAME)
         self.actions = self.master.getActions()
         self.actions = self.master.getActions()
