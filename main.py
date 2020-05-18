@@ -15,12 +15,14 @@ import re
 
 from unohelper import fileUrlToSystemPath
 
-# This is to emulate how LibreOffice adds pythonpath folder to PYTHONPATH where
-# the script is executed. PYTHONPATH is added when executing from the command
-# line.
+# This will modify path to include movelister module be part of it. This is
+# needed because this file is the main entry to the program and it can be
+# executed from three different contexts: from command-line, from LibreOffice
+# when macros are part of the system files and from LibreOffice when movelister
+# source files are packed inside LibreOffice document for release.
 if __name__ == '__main__':
 	sys.path.append(os.path.join(os.path.dirname('__file__'), 'pythonpath'))
-elif __name__ == 'ooo_script_framework':
+elif __name__ == 'ooo_script_framework': # Name when executed from LibreOffice.
 	doc = XSCRIPTCONTEXT.getDocument()
 	url = fileUrlToSystemPath('{}/{}'.format(doc.URL,'Scripts/python/pythonpath'))
 	sys.path.insert(0, url)
