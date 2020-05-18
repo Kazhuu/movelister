@@ -3,10 +3,14 @@ import shutil
 import os
 import glob
 
+RELEASE_FOLDER = 'releases'
 BASE_DOCUMENT = os.path.join('templates', 'movelister_release.ods')
-RELEASE_DOCUMENT = os.path.join('releases', 'movelister.ods')
+RELEASE_DOCUMENT = os.path.join(RELEASE_FOLDER, 'movelister.ods')
 RELEASE_ROOT = 'Scripts/python'
 
+# Create releases folder if it does not exist.
+if not os.path.exists(RELEASE_DOCUMENT):
+    os.mkdir(RELEASE_FOLDER)
 # Remove old movelister release if it exists.
 if os.path.exists(RELEASE_DOCUMENT):
     os.remove(RELEASE_DOCUMENT)
