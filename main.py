@@ -13,11 +13,17 @@ import os
 import sys
 import re
 
+from unohelper import fileUrlToSystemPath
+
 # This is to emulate how LibreOffice adds pythonpath folder to PYTHONPATH where
 # the script is executed. PYTHONPATH is added when executing from the command
 # line.
-if __name__ == '__main__' or __name__ == 'ooo_script_framework':
-    sys.path.append(os.path.join(os.path.dirname('__file__'), 'pythonpath'))
+if __name__ == '__main__':
+	sys.path.append(os.path.join(os.path.dirname('__file__'), 'pythonpath'))
+elif __name__ == 'ooo_script_framework':
+	doc = XSCRIPTCONTEXT.getDocument()
+	url = fileUrlToSystemPath('{}/{}'.format(doc.URL,'Scripts/python/pythonpath'))
+	sys.path.insert(0, url)
 
 from movelister import error, selection  # noqa
 from movelister.core import cursor # noqa

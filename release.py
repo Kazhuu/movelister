@@ -2,6 +2,7 @@ import zipfile
 import shutil
 import os
 import glob
+import posixpath
 
 RELEASE_FOLDER = 'releases'
 BASE_DOCUMENT = os.path.join('templates', 'movelister_release.ods')
@@ -14,12 +15,16 @@ if not os.path.exists(RELEASE_DOCUMENT):
 # Remove old movelister release if it exists.
 if os.path.exists(RELEASE_DOCUMENT):
     os.remove(RELEASE_DOCUMENT)
-
 # Copy release base ods file.
 shutil.copyfile(BASE_DOCUMENT, RELEASE_DOCUMENT)
-# Collect paths to all source files of the project.
-movelister_files = glob.glob('pythonpath/**/*.py', recursive=True)
-movelister_files.append('main.py')
+
+# Collect paths to all source files in the project.
+source_files = glob.glob('pythonpath/**/*.py', recursive=True)
+movelister_files = ['main.py']
+# If executed on Windows then make sure paths are using '/' instead of '\'.
+# This is needed because LibreOffice document's manifest.xml uses '/' slashes.
+movelister_files.extend([posixpath.join(*path.split('\\')) for path in source_files])
+
 # Open release movelister.ods document and write Python source files to it.
 # LibreOffice documents are zipped files.
 with zipfile.ZipFile(RELEASE_DOCUMENT, 'a') as document:
