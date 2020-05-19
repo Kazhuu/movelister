@@ -33,6 +33,7 @@ class Modifiers:
         return modifiers
 
     def isValidDetail(self, detail):
+        # TODO: Move this functionality out of this class.
         for equation in self.booleanEquations:
             if eval(self._substituteEquation(equation, detail)):
                 return True
@@ -58,6 +59,7 @@ class Modifiers:
         return kwargs
 
     def _substituteEquation(self, equation, detail):
+        # TODO: Move this functionality out of this class.
         # Create dict which returns True if modifier is as a key and False when not.
         mods = defaultdict(bool, detail.modifiersAsDict())
         modifier_pattern = r'\b\w+\b'

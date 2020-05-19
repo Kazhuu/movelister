@@ -16,7 +16,7 @@ class DetailsFormatter:
 
     def __init__(self, details, overview):
         self.instance = details
-        self.maximumPhases = overview._getHighestPhase()
+        self.maximumPhases = overview.highestPhase
         self.parentOverviewName = 'Overview ({0})'.format(self.instance.name)
 
     def generate(self):
