@@ -101,17 +101,10 @@ class OverviewFormatter:
     def setOverviewActionColors(self, sheetName):
         """
         This function sets colors to all the actions in the Action Name-column of an Overview.
-        This could be done with conditional formatting too, once it can be created with code.
+        This can be done with conditional formatting too, so there's no reason to write this
+        function until generating conditional formatting with code is possible.
 
         TO DO: seems to be in progress.
         """
         overview = Overview.fromSheet(sheetName)
-        nameColumn = overview.nameColumnIndex
-
-        offset = 0
-        for a in range(len(overview.data)):
-            currentColor = color.Color(0)
-            nextColor = color.Color(0)
-            # The code has to access the sheet itself to change the colors.
-            if overview.sheet.getCellByPosition(nameColumn, a).getString():
-                print()
+        print()

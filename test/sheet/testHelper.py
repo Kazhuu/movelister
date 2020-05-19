@@ -40,6 +40,8 @@ class SheetHelperTestCase(OfficeTestCase):
 
     def testNormalizeArray(self):
         """
-        This test checks if normalize array does what is advertised.
+        This test checks if the Helper-function Normalize Array does what is advertised.
         """
-        pass
+        data = [[1, 2, 3], [1, 2, 3], [1, 2, 3, 4]]
+        helper.normalizeArray(data)
+        self.assertEqual(data, [[1, 2, 3, ''], [1, 2, 3, ''], [1, 2, 3, 4]])
