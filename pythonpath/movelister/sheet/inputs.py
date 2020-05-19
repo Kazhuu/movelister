@@ -24,6 +24,12 @@ class Inputs:
             self.sheet, self.colorColumnIndex, self.dataBeginRow, len(self.data)
         )
 
+    def getInputNames(self, viewName='Default'):
+        inputs = []
+        rows = self.dataRows
+        rows = filter.filterRows(lambda row: row[self.inputsColumnIndex] == viewName, self.dataRows)
+        return [row[self.nameColumnIndex] for row in rows]
+
     def getInputs(self, listName=None):
         """
         Return list of Input class instances.
@@ -32,6 +38,7 @@ class Inputs:
         rows = self.dataRows
         if listName:
             rows = filter.filterRows(lambda row: row[self.inputsColumnIndex] == listName, self.dataRows)
+        import ipdb; ipdb.set_trace()
         for index, row in enumerate(rows):
             if self._isValidRow(row):
                 kwargs = self._rowToKwargs(row)

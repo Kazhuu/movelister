@@ -5,6 +5,7 @@ from movelister.sheet.master import Master
 
 
 class UpdateOverview:
+
     @classmethod
     def update(cls, previousOverview, name):
         """

@@ -6,6 +6,7 @@ from movelister.sheet.modifiers import Modifiers
 from movelister.sheet.overview import Overview
 from movelister.sheet.sheet import Sheet
 from movelister.format.action import ActionFormatter
+from movelister.sheet import helper
 
 
 headerPrefix = ['Action Name', 'Hit', 'Frames', 'Phase', 'DEF']

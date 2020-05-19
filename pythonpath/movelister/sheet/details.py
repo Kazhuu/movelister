@@ -3,6 +3,9 @@ from movelister.core import cursor
 from movelister.format import filter
 from movelister.model.detail import Detail
 from movelister.sheet import helper
+from movelister.model.modifier import Modifier
+
+import re
 
 
 class Details:
@@ -41,13 +44,15 @@ class Details:
         return helper.stripTrailingEmptyRows(data)
 
     def _readDetails(self):
+        # If details sheet is empty return.
+        if not self.dataRows:
+            return []
         currentName = ''
         currentMod = ''
         tempArray = []
         details = []
         filteredData = filter.filterRows(lambda row: row[self.nameColumnIndex] != '', self.dataRows)
         # Create an unused action to the array so that the loop can register all legit actions.
-        # TO DO: this step should be skipped if sheet is empty.
         emptyRow = helper.createEmptyRow(len(filteredData[0]))
         emptyRow[self.nameColumnIndex] = 'Unused'
         emptyRow[self.inputToCompareColumnIndex] = 'Unused'
@@ -96,6 +101,17 @@ class Details:
                     if line[2] not in phasesList:
                         phasesList[line[2]] = {}
                     phasesList[line[2]][str(phaseNum)] = [line[cellNum], line[cellNum + 1], line[cellNum + 2]]
-        kwargs = {'action': data[0][self.nameColumnIndex], 'modifiers': data[0][self.modifiersColumnIndex],
-                  'inputs': inputList, 'phases': phasesList, 'notes': notesList}
+        kwargs = {'action': data[0][self.nameColumnIndex], 'inputs': inputList, 'phases': phasesList, 'notes': notesList}
+        kwargs['modifiers'] = self._parseModifiers(data[0][self.modifiersColumnIndex])
         return Detail(**kwargs)
+
+    def _parseModifiers(self, modifierCell):
+        """
+        Parse string of modifier names to list of Modifier instances.
+        For example 'WPN1 WPN2' will be two Modifier instances.
+        """
+        modifiers = []
+        pattern = re.compile(r'\b\w+\b')
+        for name in re.findall(pattern, modifierCell):
+            modifiers.append(Modifier(name))
+        return modifiers

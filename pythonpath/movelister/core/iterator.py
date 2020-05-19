@@ -1,6 +1,8 @@
 from itertools import chain, combinations
 
 from movelister.model.detail import Detail
+from movelister.sheet.inputs import Inputs
+from movelister.sheet.sheet import INPUT_LIST_SHEET_NAME
 
 
 class DetailsIterator:
@@ -14,6 +16,7 @@ class DetailsIterator:
         self.index = 0
         self.currentAction = None
         self.combinations = iter([])
+        self.inputsSheet = Inputs(INPUT_LIST_SHEET_NAME)
 
     def __iter__(self):
         return self
@@ -21,13 +24,15 @@ class DetailsIterator:
     def __next__(self):
         try:
             modifiers = self.combinations.__next__()
-            return Detail(self.currentAction, modifiers=modifiers)
+            inputs = self.inputsSheet.getInputNames(self.currentAction.inputs)
+            return Detail(self.currentAction, inputs=inputs, modifiers=modifiers)
         except StopIteration:
             try:
                 self.currentAction = self.actions[self.index]
                 self.index += 1
                 self.combinations = self.buildModifierCombinations(self.currentAction)
-                return Detail(self.currentAction, modifiers=self.combinations.__next__())
+                inputs = self.inputsSheet.getInputNames(self.currentAction.inputs)
+                return Detail(self.currentAction, inputs=inputs, modifiers=self.combinations.__next__())
             except IndexError:
                 raise StopIteration
 
@@ -38,7 +43,7 @@ class DetailsIterator:
             chain(modCombinations, combinations([], 1))
         # Add rest of the modifier combinations.
         for phase in range(action.phases):
-            names = action.modifierNamesAsList(phase)
-            for i in range(1, len(names) + 1):
-                modCombinations = chain(modCombinations, combinations(names, i))
+            modifiers = action.getModifiersByPhase(phase)
+            for i in range(1, len(modifiers) + 1):
+                modCombinations = chain(modCombinations, combinations(modifiers, i))
         return modCombinations

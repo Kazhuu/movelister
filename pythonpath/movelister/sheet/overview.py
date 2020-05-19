@@ -24,6 +24,7 @@ class Overview:
         self.name = sheetName
         self._modifiers = []
         self._actions = []
+        self._highestPhase = 0
 
     @classmethod
     def fromSheet(cls, sheetName):
@@ -50,6 +51,10 @@ class Overview:
     @actions.setter
     def actions(self, value):
         self._actions = value
+
+    @property
+    def highestPhase(self):
+        return self._highestPhase
 
     def addModifier(self, modifier):
         self._modifiers.append(modifier)
@@ -84,7 +89,7 @@ class Overview:
         self.modifiers = self._readModifiers()
         self.actionNames = self._getUniqueActionNames()
         self._actions = self._readActions()
-        self.highestPhase = self._getHighestPhase()
+        self._highestPhase = self._getHighestPhase()
 
     def _dataRows(self):
         data = self.data[self.dataBeginRow:]

@@ -35,7 +35,6 @@ class ColorTestCase(OfficeTestCase):
         sheet = Modifiers('Modifiers').sheet
         cell = sheet.getCellByPosition(0, 0)
         c = color.Color(cell.CellBackColor)
-        # print(cell.CellBackColor)
         self.assertEqual(c.value, cell.CellBackColor)
         self.assertEqual(c.red, 230)
         self.assertEqual(c.green, 230)

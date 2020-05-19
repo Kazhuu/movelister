@@ -15,14 +15,17 @@ class DetailFormatter:
     def _formatRow(self, input_name):
         row = []
         # Action Name
-        row.append(self.detail.action)
+        row.append(self.detail.action.name)
         # Modifiers
-        row.append(self.detail.modifiers)
+        row.append(self._formatModifiers(self.detail.modifiers))
         # Input to Compare
         row.append(input_name)
         # Phases
-        for phase_number, values in self.detail.phases[input_name].items():
+        for phase_number, values in self.detail.phases.get(input_name, {}).items():
             row.extend(values)
         # Notes
-        row.extend(self.detail.notes[input_name])
+        row.extend(self.detail.notes.get(input_name, ['']))
         return row
+
+    def _formatModifiers(self, modifiers):
+        return ' '.join([modifier.name for modifier in modifiers])

@@ -45,13 +45,6 @@ class Action:
         self._checkPhaseRange(phase)
         return self.modifiers.pop(phase, [])
 
-    def modifierNamesAsList(self, phase):
-        """
-        Return modifiers names as a list.
-        """
-        self._checkPhaseRange(phase)
-        return [mod.name for mod in self.modifiers.get(phase, [])]
-
     def clearAllModifiers(self):
         self.modifiers = {}
 

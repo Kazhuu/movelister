@@ -21,11 +21,11 @@ from unohelper import fileUrlToSystemPath
 # when macros are part of the system files and from LibreOffice when movelister
 # source files are packed inside LibreOffice document for release.
 if __name__ == '__main__':
-	sys.path.append(os.path.join(os.path.dirname('__file__'), 'pythonpath'))
+        sys.path.append(os.path.join(os.path.dirname('__file__'), 'pythonpath'))
 elif __name__ == 'ooo_script_framework': # Name when executed from LibreOffice.
-	doc = XSCRIPTCONTEXT.getDocument()
-	url = fileUrlToSystemPath('{}/{}'.format(doc.URL,'Scripts/python/pythonpath'))
-	sys.path.insert(0, url)
+        doc = XSCRIPTCONTEXT.getDocument()
+        url = fileUrlToSystemPath('{}/{}'.format(doc.URL,'Scripts/python/pythonpath'))
+        sys.path.insert(0, url)
 
 from movelister import error, selection  # noqa
 from movelister.core import cursor # noqa
@@ -53,7 +53,7 @@ if __name__ != '__main__':
     Context.setup()
 
 
-def updateDetails(*args):
+def updateDetails(*args, **kwargs):
     """
     A macro function that will update one Details sheet while preserving
     previous user data.  The project can have multiple Details-views and which
@@ -64,9 +64,8 @@ def updateDetails(*args):
         message_box.showWarningWithOk('This file doesn\'t seem to have all necessary templates. Can\'t generate.')
         return
 
-    # Get overview sheet name from sheet where button was pressed.
-    # TODO: the code doesn't discern at the moment where the code was ran.
-    activeOverviewName = helper.getActiveSheetName()
+    # Get overview sheet name from active sheet or from provided kwargs.
+    activeOverviewName = kwargs.get('activeSheet', helper.getActiveSheetName())
     # Get view name for the details. This is presented in overview sheet name inside parentheses.
     detailsViewName = re.search('\((.+)\)', activeOverviewName).group(1)
     completeDetailsName = 'Details ({})'.format(detailsViewName)
@@ -76,11 +75,13 @@ def updateDetails(*args):
         if not message_box.showSheetUpdateWarning():
             return
         previousDetails = Details.fromSheet(completeDetailsName)
-    newDetails = UpdateDetails.update(previousDetails, detailsViewName)
+    modifiersSheet = Modifiers(MODIFIER_LIST_SHEET_NAME)
+    parentOverview = Overview.fromSheet(activeOverviewName)
+    # Create new Details sheet by combining new and existing data.
+    newDetails = UpdateDetails.update(modifiersSheet, parentOverview, previousDetails, detailsViewName)
     # Delete previous details sheet and generate a new one.
-    overview = Overview.fromSheet(activeOverviewName)
     Sheet.deleteSheetByName(completeDetailsName)
-    formatter = DetailsFormatter(newDetails, overview)
+    formatter = DetailsFormatter(newDetails, parentOverview)
     detailsSheet = formatter.generate()
 
 
@@ -128,4 +129,4 @@ def updateOverview(*args):
 # Run this when executed from the command line.
 if __name__ == '__main__':
     Context.setup(host='localhost', port=2002)
-    updateDetails()
+    updateDetails(activeSheet='Overview (Default)')
