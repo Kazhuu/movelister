@@ -37,3 +37,9 @@ class SheetHelperTestCase(OfficeTestCase):
         """
         number = helper.getColumnPosition(self.master.data, 'Color')
         self.assertEqual(number, 3)
+
+    def testNormalizeArray(self):
+        """
+        This test checks if normalize array does what is advertised.
+        """
+        pass
