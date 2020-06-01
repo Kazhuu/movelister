@@ -1,7 +1,7 @@
 from movelister.core import cursor
 from movelister.format.detail import DetailFormatter
-from movelister.sheet.sheet import Sheet
 from movelister.sheet import helper
+from movelister.sheet.sheet import Sheet
 
 
 headerPrefix = ['Action Name', 'Modifiers', 'Input to Compare']
@@ -50,8 +50,8 @@ class DetailsFormatter:
             data.append('')
             data.append('> Phase ' + str(a) + ' result')
             data.append('')
-        for a in headerPostfix:
-            data.append(a)
+        # for a in headerPostfix
+        # data.append(a)
         return data
 
     def formatDetails(self):

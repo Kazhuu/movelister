@@ -83,6 +83,11 @@ def updateDetails(*args, **kwargs):
     Sheet.deleteSheetByName(completeDetailsName)
     formatter = DetailsFormatter(newDetails, parentOverview)
     detailsSheet = formatter.generate()
+    # Make columns width optimal.
+    length = cursor.getColumnLength(detailsSheet)
+    format.setOptimalWidthToRange(detailsSheet, 0, length)
+    # Generate data validation.
+    validation.setDataValidationToDetailsSheet(detailsSheet)
 
 
 def updateOverview(*args):

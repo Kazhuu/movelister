@@ -2,8 +2,8 @@ from .sheet import Sheet
 from movelister.core import cursor
 from movelister.format import filter
 from movelister.model.detail import Detail
-from movelister.sheet import helper
 from movelister.model.modifier import Modifier
+from movelister.sheet import helper
 
 import re
 
