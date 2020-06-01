@@ -28,6 +28,7 @@ class DetailsIterator:
             return Detail(self.currentAction, inputs=inputs, modifiers=modifiers)
         except StopIteration:
             try:
+                self.index = self.nextIndex()
                 self.currentAction = self.actions[self.index]
                 self.index += 1
                 self.combinations = self.buildModifierCombinations(self.currentAction)
@@ -36,14 +37,20 @@ class DetailsIterator:
             except IndexError:
                 raise StopIteration
 
+    def nextIndex(self):
+        for index in range(self.index, len(self.actions)):
+            action = self.actions[index]
+            if action.validAction():
+                return index
+        return len(self.actions)
+
     def buildModifierCombinations(self, action):
         modCombinations = iter([])
         # If action has default input then add empty modifier combination.
         if action.default:
             chain(modCombinations, combinations([], 1))
         # Add rest of the modifier combinations.
-        for phase in range(action.phases):
-            modifiers = action.getModifiersByPhase(phase)
-            for i in range(1, len(modifiers) + 1):
-                modCombinations = chain(modCombinations, combinations(modifiers, i))
+        modifiers = action.getModifiersSet()
+        for i in range(1, len(modifiers) + 1):
+            modCombinations = chain(modCombinations, combinations(modifiers, i))
         return modCombinations

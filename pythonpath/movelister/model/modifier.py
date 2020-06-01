@@ -17,3 +17,6 @@ class Modifier:
         Test object nonequality.
         """
         return not self == other
+
+    def __hash__(self):
+        return hash(self.name)
