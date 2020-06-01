@@ -9,6 +9,8 @@ from movelister.model.modifier import Modifier
 
 class Modifiers:
 
+    MODIFIER_PATTER = re.compile(r'\b\w+\b')
+
     def __init__(self, sheetName):
         self.name = sheetName
         self.sheet = Sheet.getByName(sheetName)
@@ -34,10 +36,18 @@ class Modifiers:
 
     def isValidDetail(self, detail):
         # TODO: Move this functionality out of this class.
-        for equation in self.booleanEquations:
+        equations = self._filterEquations(detail)
+        # If equation is not found for these details then it's considered valid.
+        if not list(equations):
+            return True
+        for equation in self._filterEquations(detail):
             if eval(self._substituteEquation(equation, detail)):
                 return True
         return False
+
+    def _filterEquations(self, detail):
+        pattern = detail.modifiersAsRegExp()
+        return filter(pattern.search, self.booleanEquations)
 
     def _dataRows(self):
         data = self.data[self.dataBeginRow:]
@@ -62,6 +72,5 @@ class Modifiers:
         # TODO: Move this functionality out of this class.
         # Create dict which returns True if modifier is as a key and False when not.
         mods = defaultdict(bool, detail.modifiersAsDict())
-        modifier_pattern = r'\b\w+\b'
         # Substitute modifiers in equation with True and False words.
-        return re.sub(modifier_pattern, lambda m: str(mods[m.group(0)]), equation)
+        return re.sub(Modifiers.MODIFIER_PATTER, lambda m: str(mods[m.group(0)]), equation)

@@ -41,6 +41,12 @@ class Action:
         self._checkPhaseRange(phase)
         return self.modifiers.get(phase, [])
 
+    def getModifiersSet(self):
+        mods = set()
+        for phase_mods in self.modifiers.values():
+            mods |= set(phase_mods)
+        return mods
+
     def clearModifiersByPhase(self, phase):
         self._checkPhaseRange(phase)
         return self.modifiers.pop(phase, [])
@@ -64,6 +70,9 @@ class Action:
     def getNotesByPhase(self, phase):
         self._checkPhaseRange(phase)
         return self.notes.get(phase, [])
+
+    def validAction(self):
+        return self.default or self.modifiers
 
     def _checkPhaseRange(self, phase):
         if phase < 0 or phase > self.phases - 1:

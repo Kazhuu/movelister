@@ -38,7 +38,6 @@ class Inputs:
         rows = self.dataRows
         if listName:
             rows = filter.filterRows(lambda row: row[self.inputsColumnIndex] == listName, self.dataRows)
-        import ipdb; ipdb.set_trace()
         for index, row in enumerate(rows):
             if self._isValidRow(row):
                 kwargs = self._rowToKwargs(row)
