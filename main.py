@@ -87,7 +87,7 @@ def updateDetails(*args, **kwargs):
     length = cursor.getColumnLength(detailsSheet)
     format.setOptimalWidthToRange(detailsSheet, 0, length)
     # Generate data validation.
-    validation.setDataValidationToDetailsSheet(detailsSheet)
+    # validation.setDataValidationToDetailsSheet(detailsSheet)
 
 
 def updateOverview(*args):

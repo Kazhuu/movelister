@@ -9,6 +9,7 @@ class UpdateDetails:
         newDetails = Details(name)
         actions = parentOverview.actions
         newDetails.details = list(filter(lambda detail: modifiersSheet.isValidDetail(detail), DetailsIterator(actions)))
+        # TODO: Remove when done.
         output = ''
         for detail in newDetails.details:
             output += detail.action.name + ': '

@@ -21,7 +21,8 @@ class Modifiers:
         self.nameColumnIndex = helper.getColumnPosition(self.data, 'Short Name')
         self.colorColumnIndex = helper.getColumnPosition(self.data, 'Color')
         self.booleanEquationColumIndex = helper.getColumnPosition(self.data, 'Filters')
-        self.booleanEquations = self._getEquations()
+        self.requiredColumIndex = helper.getColumnPosition(self.data, 'Required')
+        self.booleanEquations = self._parseEquations()
         self.dataHeader = self.data[self.headerRowIndex]
         self.dataRows = self.data[self.dataBeginRow:]
         self.modifierColors = helper.getCellColorsFromColumn(
@@ -36,28 +37,34 @@ class Modifiers:
 
     def isValidDetail(self, detail):
         # TODO: Move this functionality out of this class.
-        equations = self._filterEquations(detail)
-        # If equation is not found for these details then it's considered valid.
-        if not list(equations):
+        equationPairs = self._filterEquations(detail)
+        # If equation is not found for this detail then it's considered valid.
+        if not list(equationPairs):
             return True
-        for equation in self._filterEquations(detail):
+        for equation in equationPairs:
             if eval(self._substituteEquation(equation, detail)):
                 return True
         return False
 
     def _filterEquations(self, detail):
         pattern = detail.modifiersAsRegExp()
-        return filter(pattern.search, self.booleanEquations)
+        equations = []
+        for equationPair in self.booleanEquations:
+            if equationPair[1] | bool(pattern.search(equationPair[0])):
+                equations.append(equationPair[0])
+        return equations
 
     def _dataRows(self):
         data = self.data[self.dataBeginRow:]
         return helper.stripTrailingEmptyRows(data)
 
-    def _getEquations(self):
+    def _parseEquations(self):
         equations = []
         for row in self.dataRows:
             if row[self.booleanEquationColumIndex]:
-                equations.append(row[self.booleanEquationColumIndex])
+                required = bool(row[self.requiredColumIndex])
+                equation = row[self.booleanEquationColumIndex]
+                equations.append((equation, required))
         return equations
 
     def _isValidRow(self, row):

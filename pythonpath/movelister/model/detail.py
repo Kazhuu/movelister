@@ -26,7 +26,7 @@ class Detail:
 
     def modifiersAsRegExp(self):
         names = [modifier.name for modifier in self._modifiers]
-        return re.compile(r'[' + '|'.join(names) + ']')
+        return re.compile(r'(?:' + '|'.join(r'\b{0}\b'.format(name) for name in names) + ')')
 
     def __eq__(self, other):
         """
