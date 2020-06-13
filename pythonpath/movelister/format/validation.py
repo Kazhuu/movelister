@@ -1,4 +1,5 @@
 from movelister.core import cursor
+from movelister.sheet.about import About
 
 
 def setDataValidationToColumn(sheet, column, lastRow, type):
@@ -13,6 +14,10 @@ def setDataValidationToColumn(sheet, column, lastRow, type):
 
     range = sheet.getCellRangeByPosition(column, 1, column, lastRow)
     validation = range.Validation
+
+    # Get relevant options from the About-screen.
+    about = About('About')
+    showEntriesAscendingOption = About.getShowEntriesAscendingOption(about)
 
     if type == "phase":
         validation.Type = 2
@@ -41,14 +46,16 @@ def setDataValidationToColumn(sheet, column, lastRow, type):
     if type == 'details-result':
         validation.Type = 6
         validation.ErrorAlertStyle = 0
-        validation.ShowList = 2
+        if showEntriesAscendingOption == True:
+            validation.ShowList = 2
         validation.setOperator(1)
         validation.setFormula1('$A$2:$A$' + str(lastRow))
 
     if type == 'details-modifier':
         validation.Type = 6
         validation.ErrorAlertStyle = 0
-        validation.ShowList = 2
+        if showEntriesAscendingOption == True:
+            validation.ShowList = 2
         validation.setOperator(1)
         validation.setFormula1('$B$2:$B$' + str(lastRow))
 

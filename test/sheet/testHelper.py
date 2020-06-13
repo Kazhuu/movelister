@@ -11,15 +11,23 @@ class SheetHelperTestCase(OfficeTestCase):
         super().setUp()
         self.master = Master(MASTER_LIST_SHEET_NAME)
 
+    def testCreateEmptyRow(self):
+        """
+        This test checks if this function adds an empty row.
+        """
+        data = [[1, 2, 3], [1, 2, 3], [1, 2, 3]]
+        data.append(helper.createEmptyRow(3))
+        self.assertEqual(data, [[1, 2, 3], [1, 2, 3], [1, 2, 3], ['', '', '']])
+
     def testGetActiveSheetName(self):
         """
         This test checks if active Sheet name is successfully acquired by this Helper-function.
+        Note: this test requires that the template sheet opens with Master List active.
         """
         document = Context.getDocument()
-        # activeSheet = document.getCurrentController().getActiveSheet()
-        # activeSheet.setName('testname')
-        # name = helper.getActiveSheetName()
-        # self.assertEqual(name, 'testname')
+        activeSheet = document.getCurrentController().getActiveSheet()
+        name = helper.getActiveSheetName()
+        self.assertEqual(name, 'Master List')
 
     def testGetCellColorsFromColumn(self):
         """
