@@ -41,7 +41,9 @@ class Modifiers:
         # If equation is not found for this detail then it's considered valid.
         if not list(equationPairs):
             return True
+        # TODO: For some reason WPN1 and WPN2 and WPN3 all appear even they are in XOR group.
         for equation in equationPairs:
+            # TODO: Change to all equations are true, only then valid.
             if eval(self._substituteEquation(equation, detail)):
                 return True
         return False
