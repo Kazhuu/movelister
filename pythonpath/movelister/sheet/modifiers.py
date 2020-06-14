@@ -47,7 +47,7 @@ class Modifiers:
             return True
         # Evaluate all equations. All of the filtered equations must return
         # true for this detail to be valid.
-        return all(eval(self._substituteEquation(equation, detail), sel._evalContext()) for equation in equations)
+        return all(eval(self._substituteEquation(equation, detail), self._evalContext()) for equation in equations)
 
     def _filterEquations(self, detail):
         pattern = detail.modifiersAsRegExp()
@@ -84,9 +84,10 @@ class Modifiers:
         """
         def xor(*args):
             return sum(args) == 1
-        return = {
+        context = {
             'xor': xor
         }
+        return context
 
     def _substituteEquation(self, equation, detail):
         # TODO: Move this functionality out of this class.
