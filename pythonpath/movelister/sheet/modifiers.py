@@ -37,6 +37,10 @@ class Modifiers:
 
     def isValidDetail(self, detail):
         # TODO: Move this functionality out of this class.
+        # This details is a default instance without any modifiers. So this is
+        # always a valid case.
+        if not detail.modifiers:
+            return True
         equations = self._filterEquations(detail)
         # If equation is not found for this detail then it's considered valid.
         if not list(equations):

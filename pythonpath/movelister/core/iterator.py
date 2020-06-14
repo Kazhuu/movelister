@@ -48,7 +48,7 @@ class DetailsIterator:
         modCombinations = iter([])
         # If action has default input then add empty modifier combination.
         if action.default:
-            chain(modCombinations, combinations([], 1))
+            modCombinations = chain(modCombinations, combinations([], 0))
         # Add rest of the modifier combinations.
         modifiers = action.getModifiersSet()
         for i in range(1, len(modifiers) + 1):
