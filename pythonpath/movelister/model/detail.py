@@ -32,13 +32,13 @@ class Detail:
         """
         Test object equality. Compares both action name and modifier name.
         """
-        s = '-'
-        selfName = s.join(self.action, ''.join(self.modiferNames()))
-        otherName = s.join(other.action, ''.join(other.modiferNames()))
-        return selfName == otherName
+        return self._identifierString() == other._identifierString()
 
     def __ne__(self, other):
         """
         Test object nonequality.
         """
         return not self == other
+
+    def _identifierString(self):
+        return '{0} {1}'.format(self.action.name,  ' '.join(self.modiferNames()))

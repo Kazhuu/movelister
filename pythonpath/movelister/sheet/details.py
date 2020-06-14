@@ -2,6 +2,7 @@ from .sheet import Sheet
 from movelister.core import cursor
 from movelister.format import filter
 from movelister.model.detail import Detail
+from movelister.model.action import Action
 from movelister.model.modifier import Modifier
 from movelister.sheet import helper
 
@@ -26,6 +27,14 @@ class Details:
 
     def addDetail(self, detail):
         self.details.append(detail)
+
+    def findDetail(self, seekedDetail):
+        """
+        Find given details instance from this Details sheet. Return it if it's
+        found, otherwise return None.
+        """
+        return next((detail for detail in self.details if detail == seekedDetail), None)
+
 
     def _readSheetContent(self):
         self.sheet = Sheet.getByName(self.name)
@@ -74,6 +83,7 @@ class Details:
         This function goes through rows to parse everything that belongs to a single Detail,
         then returns the data inside a Detail object.
         """
+        # TODO: Clean this up to separate functions.
         # collect Input column.
         inputList = []
         for line in data:
@@ -101,7 +111,7 @@ class Details:
                     if line[2] not in phasesList:
                         phasesList[line[2]] = {}
                     phasesList[line[2]][str(phaseNum)] = [line[cellNum], line[cellNum + 1], line[cellNum + 2]]
-        kwargs = {'action': data[0][self.nameColumnIndex], 'inputs': inputList, 'phases': phasesList, 'notes': notesList}
+        kwargs = {'action': Action(data[0][self.nameColumnIndex]), 'inputs': inputList, 'phases': phasesList, 'notes': notesList}
         kwargs['modifiers'] = self._parseModifiers(data[0][self.modifiersColumnIndex])
         return Detail(**kwargs)
 

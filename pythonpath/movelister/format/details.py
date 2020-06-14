@@ -46,12 +46,12 @@ class DetailsFormatter:
         data = []
         for a in headerPrefix:
             data.append(a)
-        for a in range(self.maximumPhases + 1):
+        for a in range(self.maximumPhases):
             data.append('')
             data.append('> Phase ' + str(a) + ' result')
             data.append('')
-        # for a in headerPostfix
-        # data.append(a)
+        for a in headerPostfix:
+            data.append(a)
         return data
 
     def formatDetails(self):

@@ -7,17 +7,26 @@ class UpdateDetails:
     @classmethod
     def update(cls, modifiersSheet, parentOverview, previousDetails, name):
         newDetails = Details(name)
-        actions = parentOverview.actions
-        newDetails.details = list(filter(lambda detail: modifiersSheet.isValidDetail(detail), DetailsIterator(actions)))
-        # TODO: Remove when done.
-        output = ''
-        for detail in newDetails.details:
-            output += detail.action.name + ': '
-            for mod in detail.modifiers:
-                output += mod.name + ' '
-            output += '\n'
-        print(output)
-        # TODO: Copy data from previous details to the new one.
-        # newDetails.details = previousDetails.details
+        cls._generateNewDetails(newDetails, parentOverview, modifiersSheet)
+        cls._updateFromPreviousDetails(newDetails, previousDetails)
         return newDetails
 
+    @classmethod
+    def _generateNewDetails(cls, newDetails, parentOverview, modifiersSheet):
+        actions = parentOverview.actions
+        newDetails.details = list(filter(lambda detail: modifiersSheet.isValidDetail(detail), DetailsIterator(actions)))
+
+    @classmethod
+    def _updateFromPreviousDetails(cls, newDetails, previousDetails):
+        for detail in newDetails.details:
+            oldDetail = previousDetails.findDetail(detail)
+            if oldDetail:
+                cls._updateDetail(detail, oldDetail)
+
+    @classmethod
+    def _updateDetail(cls, newDetail, previousDetail):
+        newDetail.action = previousDetail.action
+        newDetail.inputs = previousDetail.inputs
+        newDetail.phases = previousDetail.phases
+        newDetail.notes = previousDetail.notes
+        newDetail.modifiers = previousDetail.modifiers
