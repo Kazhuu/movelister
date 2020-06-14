@@ -88,6 +88,8 @@ def updateDetails(*args, **kwargs):
     format.setOptimalWidthToRange(detailsSheet, 0, length)
     # Generate data validation.
     validation.setDataValidationToDetailsSheet(detailsSheet)
+    # Generate named ranges.
+    namedRanges.createNamedRangesToSheet(detailsSheet, 0)
 
 
 def updateOverview(*args):

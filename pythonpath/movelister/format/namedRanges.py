@@ -1,4 +1,37 @@
+from movelister.core import cursor
+from movelister.core.context import Context
 from movelister.format import convert
+from movelister.sheet.sheet import Sheet
+from com.sun.star.sheet.Border import TOP
+
+
+def createNamedRangesToSheet(sheet, column):
+    """
+    This function goes through a column in a sheet and assigns Named Ranges based
+    on its values to make it easier to move around the sheet. This function is mostly
+    intended for Details-sheets, however.
+
+    TODO: switch to deleteFilteredNamedRanges eventually, since otherwise you lose
+    named ranges whenever running this function from all except one sheet.
+    """
+    namedRanges = Context.getDocument().NamedRanges
+    sheetData = cursor.getColumn(sheet, 0)
+
+    # Delete previous named ranges.
+    deleteNamedRanges(namedRanges)
+
+    currentAction = sheet.getCellByPosition(0, 1).getString()
+    startRow = 1
+
+    x = -1
+    for line in sheetData[1:]:
+        x = x + 1
+        if line != currentAction and line != '':
+            createNewNamedRange(sheet, currentAction, namedRanges, startRow + 1, x, 1, 1)
+            startRow = x
+            currentAction = line
+        if x == len(sheetData) - 2:
+            createNewNamedRange(sheet, currentAction, namedRanges, startRow + 1, x + 1, 1, 1)
 
 
 def createNewNamedRange(sheet, name, namedRanges, startRow, endRow, startCol, endCol):
@@ -9,6 +42,7 @@ def createNewNamedRange(sheet, name, namedRanges, startRow, endRow, startCol, en
     col2 = convert.convertIntoBaseAddress(endCol)
     cellAddress = sheet.getCellByPosition(1, 1).getCellAddress()
     string = '$\'' + sheet.Name + '\'.' + '$' + col1 + '$' + str(startRow) + ':' + '$' + col2 + '$' + str(endRow)
+    print(string)
     namedRanges.addNewByName(name, string, cellAddress, 0)
 
 
@@ -23,7 +57,7 @@ def deleteNamedRanges(namedRanges):
 
 def deleteFilteredNamedRanges(namedRanges, sheetName):
     """
-    A function that deletes all named ranges of a user-named sheet.
+    A function that deletes all named ranges from a specific sheet.
     """
     deleteArray = []
     string = '$\'' + sheetName + '\''

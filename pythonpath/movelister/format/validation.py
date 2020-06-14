@@ -70,7 +70,7 @@ def setDataValidationToDetailsSheet(sheet):
     colNum = cursor.getColumnLength(sheet)
     lastRow = area.EndRow
 
-    # prevent code from crashing if sheet is empty.
+    # Prevent code from crashing if sheet is empty.
     if lastRow == 0:
         lastRow = 10
 
