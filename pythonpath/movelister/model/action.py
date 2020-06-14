@@ -41,10 +41,13 @@ class Action:
         self._checkPhaseRange(phase)
         return self.modifiers.get(phase, [])
 
-    def getModifiersSet(self):
+    def getModifiersSet(self, ordering=[]):
         mods = set()
-        for phase_mods in self.modifiers.values():
-            mods |= set(phase_mods)
+        for phaseMods in self.modifiers.values():
+            mods |= set(phaseMods)
+        mods = list(mods)
+        if ordering:
+            mods.sort(key=lambda mod: ordering.index(mod))
         return mods
 
     def clearModifiersByPhase(self, phase):

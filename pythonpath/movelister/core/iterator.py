@@ -2,7 +2,8 @@ from itertools import chain, combinations
 
 from movelister.model.detail import Detail
 from movelister.sheet.inputs import Inputs
-from movelister.sheet.sheet import INPUT_LIST_SHEET_NAME
+from movelister.sheet.sheet import INPUT_LIST_SHEET_NAME, MODIFIER_LIST_SHEET_NAME
+from movelister.sheet.modifiers import Modifiers
 
 
 class DetailsIterator:
@@ -17,6 +18,7 @@ class DetailsIterator:
         self.currentAction = None
         self.combinations = iter([])
         self.inputsSheet = Inputs(INPUT_LIST_SHEET_NAME)
+        self.ordering = Modifiers(MODIFIER_LIST_SHEET_NAME).getModifiers()
 
     def __iter__(self):
         return self
@@ -50,7 +52,7 @@ class DetailsIterator:
         if action.default:
             modCombinations = chain(modCombinations, combinations([], 0))
         # Add rest of the modifier combinations.
-        modifiers = action.getModifiersSet()
+        modifiers = action.getModifiersSet(self.ordering)
         for i in range(1, len(modifiers) + 1):
             modCombinations = chain(modCombinations, combinations(modifiers, i))
         return modCombinations
