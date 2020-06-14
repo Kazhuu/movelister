@@ -3,8 +3,14 @@ class DetailFormatter:
     Class responsible for formatting Detail class instance to two
     dimensional array.
     """
-    def __init__(self, detail):
+    def __init__(self, detail, modifiersOrdering):
+        """
+        Construct Detail class formatter. modifiersOrdering is a list of
+        modifiers names which is used for ordering modifier combinations. List
+        index is used as a sorting key.
+        """
         self.detail = detail
+        self.modifiersOrdering = modifiersOrdering
 
     def format(self):
         data = []
@@ -28,4 +34,7 @@ class DetailFormatter:
         return row
 
     def _formatModifiers(self, modifiers):
-        return ' '.join([modifier.name for modifier in modifiers])
+        names = [modifier.name for modifier in modifiers]
+        # Sort modifiers according to given modifiers list index.
+        names.sort(key=lambda name: self.modifiersOrdering.index(name))
+        return ' '.join(names)

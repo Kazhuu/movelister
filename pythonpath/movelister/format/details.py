@@ -16,6 +16,8 @@ class DetailsFormatter:
 
     def __init__(self, details, overview):
         self.instance = details
+        # Modifier names are used for sorting.
+        self.modifierNames = overview.modifierNames()
         self.maximumPhases = overview.highestPhase
         self.parentOverviewName = 'Overview ({0})'.format(self.instance.name)
 
@@ -60,5 +62,5 @@ class DetailsFormatter:
         """
         rows = []
         for detail in self.instance.details:
-            rows.extend(DetailFormatter(detail).format() + [['']])
+            rows.extend(DetailFormatter(detail, self.modifierNames).format() + [['']])
         return rows

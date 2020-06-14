@@ -59,6 +59,9 @@ class Overview:
     def addModifier(self, modifier):
         self._modifiers.append(modifier)
 
+    def modifierNames(self):
+        return [modifier.name for modifier in self._modifiers]
+
     def addAction(self, action):
         self._actions.append(action)
 
