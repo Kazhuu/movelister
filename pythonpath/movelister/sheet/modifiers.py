@@ -47,7 +47,7 @@ class Modifiers:
             return True
         # Evaluate all equations. All of the filtered equations must return
         # true for this detail to be valid.
-        return all(eval(self._substituteEquation(equation, detail)) for equation in equations)
+        return all(eval(self._substituteEquation(equation, detail), sel._evalContext()) for equation in equations)
 
     def _filterEquations(self, detail):
         pattern = detail.modifiersAsRegExp()
@@ -78,9 +78,21 @@ class Modifiers:
         kwargs['color'] = self.modifierColors[index]
         return kwargs
 
+    def _evalContext(self):
+        """
+        Supported functions for the user in boolean equations.
+        """
+        def xor(*args):
+            return sum(args) == 1
+        return = {
+            'xor': xor
+        }
+
     def _substituteEquation(self, equation, detail):
         # TODO: Move this functionality out of this class.
         # Create dict which returns True if modifier is as a key and False when not.
         mods = defaultdict(bool, detail.modifiersAsDict())
+        # Add supported functions.
+        mods['xor'] = 'xor'
         # Substitute modifiers in equation with True and False words.
         return re.sub(Modifiers.MODIFIER_PATTER, lambda m: str(mods[m.group(0)]), equation)
