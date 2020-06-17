@@ -27,8 +27,12 @@ class DetailFormatter:
         # Input to Compare
         row.append(input_name)
         # Phases
-        for phase_number, values in self.detail.phases.get(input_name, {}).items():
-            row.extend(values)
+        input_phases = self.detail.phases.get(input_name, {})
+        phase_numbers = list(input_phases.keys())
+        # Loop phase number in sorted order.
+        for phase_number in sorted(phase_numbers):
+            row.extend(input_phases[phase_number])
+        # for phase_number, values in self.detail.phases.get(input_name, {}).items():
         # Notes
         row.extend(self.detail.notes.get(input_name, ['']))
         return row
