@@ -3,7 +3,7 @@ from movelister.core.context import Context
 from movelister.format import convert
 from movelister.sheet.sheet import Sheet
 from com.sun.star.sheet.Border import TOP
-
+from com.sun.star.uno import RuntimeException
 
 def createNamedRangesToSheet(sheet, column):
     """
@@ -42,8 +42,10 @@ def createNewNamedRange(sheet, name, namedRanges, startRow, endRow, startCol, en
     col2 = convert.convertIntoBaseAddress(endCol)
     cellAddress = sheet.getCellByPosition(1, 1).getCellAddress()
     string = '$\'' + sheet.Name + '\'.' + '$' + col1 + '$' + str(startRow) + ':' + '$' + col2 + '$' + str(endRow)
-    print(string)
-    namedRanges.addNewByName(name, string, cellAddress, 0)
+    try:
+        namedRanges.addNewByName(name, string, cellAddress, 0)
+    except RuntimeException:
+        print('Movelister: case insensitive named range with name "{0}" already exist'.format(name))
 
 
 def deleteNamedRanges(namedRanges):
