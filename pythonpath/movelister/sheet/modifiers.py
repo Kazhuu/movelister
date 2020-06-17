@@ -47,7 +47,8 @@ class Modifiers:
             return True
         # Evaluate all equations. All of the filtered equations must return
         # true for this detail to be valid.
-        return all(eval(self._substituteEquation(equation, detail), self._evalContext()) for equation in equations)
+        results = [eval(self._substituteEquation(equation, detail), self._evalContext()) for equation in equations]
+        return all(results)
 
     def _filterEquations(self, detail):
         pattern = detail.modifiersAsRegExp()
@@ -84,8 +85,11 @@ class Modifiers:
         """
         def xor(*args):
             return sum(args) == 1
+        def neg(result):
+            return not result
         context = {
-            'xor': xor
+            'xor': xor,
+            'neg': neg
         }
         return context
 
@@ -95,5 +99,6 @@ class Modifiers:
         mods = defaultdict(bool, detail.modifiersAsDict())
         # Add supported functions.
         mods['xor'] = 'xor'
+        mods['neg'] = 'neg'
         # Substitute modifiers in equation with True and False words.
         return re.sub(Modifiers.MODIFIER_PATTER, lambda m: str(mods[m.group(0)]), equation)
