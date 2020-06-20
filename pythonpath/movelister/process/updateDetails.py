@@ -26,7 +26,6 @@ class UpdateDetails:
     @classmethod
     def _updateDetail(cls, newDetail, previousDetail):
         newDetail.action = previousDetail.action
-        newDetail.inputs = previousDetail.inputs
         newDetail.phases = previousDetail.phases
         newDetail.notes = previousDetail.notes
         newDetail.modifiers = previousDetail.modifiers
