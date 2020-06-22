@@ -71,8 +71,9 @@ def stripTrailingEmptyRows(data):
     This code is used when instantiating certain classes and the code reads from sheet.
     """
     endIndex = len(data)
+
     for index, row in reversed(list(enumerate(data))):
-        text = str(''.join(row))
+        text = ''.join(map(str, row))
         if text == '':
             endIndex = endIndex - 1
         else:
