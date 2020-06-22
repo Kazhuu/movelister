@@ -72,7 +72,8 @@ def stripTrailingEmptyRows(data):
     """
     endIndex = len(data)
     for index, row in reversed(list(enumerate(data))):
-        if row[0] == '':
+        text = str(''.join(row))
+        if text == '':
             endIndex = endIndex - 1
         else:
             break

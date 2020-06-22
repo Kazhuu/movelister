@@ -53,3 +53,11 @@ class SheetHelperTestCase(OfficeTestCase):
         data = [[1, 2, 3], [1, 2, 3], [1, 2, 3, 4]]
         helper.normalizeArray(data)
         self.assertEqual(data, [[1, 2, 3, ''], [1, 2, 3, ''], [1, 2, 3, 4]])
+
+    def testStripTrailingEmptyRows(self):
+        """
+        This test checks if testStripTrailingEmptyRows works.
+        """
+        data = [["a", "", ""], ["", "", "c"], [""], [""]]
+        data2 = helper.stripTrailingEmptyRows(data)
+        self.assertEqual(data2, [["a", "", ""], ["", "", "c"]])
