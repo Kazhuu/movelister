@@ -25,8 +25,10 @@ import posixpath
 
 import utils
 
+# Check that base release document is generated before doing anything.
 if not os.path.exists(utils.RELEASE_BASE_DOCUMENT):
-    raise '{0} file does not exist. Run \'scripts/make_release_base.py\' script to generate one'.format(utils.RELEASE_BASE_DOCUMENT)
+    print('{0} file does not exist.\nRun \'scripts/make_release_base.py\' script to generate one.'.format(utils.RELEASE_BASE_DOCUMENT))
+    exit()
 # Create releases folder if it does not exist.
 if not os.path.exists(utils.RELEASE_DOCUMENT):
     os.mkdir(utils.PROJECT_RELEASE_FOLDER)
