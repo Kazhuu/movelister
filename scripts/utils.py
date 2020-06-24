@@ -45,5 +45,7 @@ def file_path_to_document_path(source_file_path):
     'programming/movelister/pythonpath/movelister/error.py' to
     'Scripts/python/pythonpath/movelister/error.py'
     """
-    file_path = re.sub(PROJECT_ROOT_FOLDER, '', source_file_path)
+    # If on Windows change '\' to '/'.
+    pattern = PROJECT_ROOT_FOLDER.replace('\\', r'/')
+    file_path = re.sub(pattern, '', source_file_path)
     return '{0}{1}'.format(DOCUMENT_PYTHON_PATH, file_path)
