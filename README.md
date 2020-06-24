@@ -21,7 +21,7 @@ model the limits of a game's potential interactivity.
   * [Windows](#windows)
 * [Testing](#testing)
   * [Running Tests](#running-tests)
-* [Packing Source Files to Be Part of LibreOffice Document](#packing-source-files-to-be-part-of-libreoffice-document)
+* [Making Release Document](#making-release-document)
 * [Resources](#resources)
 
 <!-- vim-markdown-toc -->
@@ -205,19 +205,44 @@ run the tests. For example something like the following:
 ..\..\..\..\program\python.exe -m unittest
 ```
 
-## Packing Source Files to Be Part of LibreOffice Document
+## Making Release Document
 
-To make a release ready LibreOffice document, all Python source files needs to
-be copied inside of it and it's metadata modified so that it includes the
-information of all added files. To make the document simple run following at
-project's root:
+It's possible to pack Python source files be part of the LibreOffice document.
+This way when file is shared the sources come with it. So no system installation
+needed.
+
+LibreOffice files are like zip files which consist of files and metadata xml
+file named `manifest.xml`. This file contains list of paths of all files inside
+the document. When Python source files are added to the document, manifest.xml
+file also need to be edited to include paths of added files. If path is missing
+then LibreOffice will not find the file. All Python files need to be placed
+under `Scripts/python` subfolder of the document.
+
+To automate above process project includes Python scripts which will do the
+heavy lifting. All scripts are located under `scripts` folder of the project.
+
+In Movelister making final release document is a two step process. First
+`release_base.ods` file is created which includes only dummy Python macros that
+doesn't do anything. This document is then used to manually assign macros to
+buttons in the document. To make `release_base.ods` file run:
 
 ```
-python release.py
+python scripts/make_release_base.py
 ```
 
-This will make a new movelister LibreOffice document under `releases` folder. If
-you are interested how packing process works take a look at `release.py` file.
+After buttons are assigned manually, the actual release can be made from
+`release_base.ods`.  In this stage all source files are packed into the final
+document and its `manifest.xml` modified to include source file paths. Also the
+file including dummy macros is replaced with the real one. To make a release
+document run:
+
+```
+python scripts/make_release.py
+```
+
+This will make a new movelister LibreOffice document under `releases` folder
+which is ready to use. If you are interested how packing process works take a
+look at files inside the `scripts` folder.
 
 ## Resources
 
