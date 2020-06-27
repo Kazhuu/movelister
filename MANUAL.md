@@ -25,7 +25,9 @@ Movelister is a LibreOffice Calc template with macros for making detailed notes 
 
 ## Getting Started
 
-The latest Movelister template is available in the "Releases" folder. Download it and rename it to something more useful, like the name of the game you're making notes of.
+There is no official release of Movelister yet. There is a template that works, but lacks some features and may have bugs - consider it a sort of a 'beta' release. You can find it [here.](https://github.com/Kazhuu/movelister/raw/master/templates/movelister.ods)
+
+Download it and rename it to something more useful, like the name of the game you're making notes of.
 
 Note: only open LibreOffice Calc-sheets with macros from sources you trust, since macros can contain all sorts of dubious code. Hopefully future versions will have a solution regarding this.
 
@@ -48,11 +50,17 @@ The default behavior of Movelister is that all Modifiers will combine with one a
 
 Also, if you mark an 'x' on the "Required"-column next to the formula, this will further filter all versions of all Actions which don't have at least one of these weapon Modifiers, in case the character never having any weapon at all is also an impossible variation.
 
-![Example 1](./images/case 1-1.PNG "Modifier-sheet with three Modifiers and a Filter.")
+Picture 1: Modifier-sheet with three Modifiers and a Filter.
 
-![Example 2](./images/case 1-2.PNG "Overview-sheet where all compatible Actions are marked with 'x'.")
+![Example 1](./images/case 1-1.PNG)
 
-![Example 3](./images/case 1-3.PNG "The resulting output in the Details-sheet.")
+Picture 2: Overview-sheet where all compatible Actions are marked with 'x'.
+
+![Example 2](./images/case 1-2.PNG)
+
+Picture 3: The resulting output in the Details-sheet.
+
+![Example 3](./images/case 1-3.PNG)
 
 
 * Case example 2: you are trying to make mechanics notes of a third-person shooter that has a variety of arm-only Actions which overlap with movement skills such as jumping and crouching. Normally, if you wanted to list all the possible ways these Actions can overlap, you'd have to do it manually: "jump (reload), crouch (reload), jump (switch weapon), crouch (switch weapon)" and so on. But with Modifiers, you could create a Modifier of each arm-only animation, indicate in Overview-sheet which Actions are compatible with which Modifiers with an 'x' and then make a boolean logic filter that prevents impossible combinations of the modifiers from appearing in any Action.
