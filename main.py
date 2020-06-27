@@ -40,6 +40,7 @@ from movelister.process.factory import OverviewFactory # noqa
 from movelister.process.updateOverview import UpdateOverview # noqa
 from movelister.process.updateDetails import UpdateDetails # noqa
 from movelister.sheet import helper # noqa
+from movelister.sheet.about import About # noqa
 from movelister.sheet.details import Details # noqa
 from movelister.sheet.inputs import Inputs # noqa
 from movelister.sheet.master import Master # noqa
@@ -87,9 +88,11 @@ def updateDetails(*args, **kwargs):
     length = cursor.getColumnLength(detailsSheet)
     format.setOptimalWidthToRange(detailsSheet, 0, length)
     # Generate data validation.
-    validation.setDataValidationToDetailsSheet(detailsSheet)
+    validation.setDataValidationToDetailsSheet(detailsSheet, detailsViewName)
     # Generate named ranges.
-    namedRanges.createNamedRangesToSheet(detailsSheet, 0)
+    about = About('About')
+    if About.getGenerateNamedRangesOption(about) == True:
+        namedRanges.createNamedRangesToSheet(detailsSheet, 0)
 
 
 def updateOverview(*args):
