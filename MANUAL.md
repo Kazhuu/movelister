@@ -44,20 +44,30 @@ Note: only open LibreOffice Calc-sheets with macros from sources you trust, sinc
 However, to make the most out of Movelister, it helps to understand even more of its functionality, especially Modifiers. Following examples attempt to illustrate situations where Modifiers could be helpful.
 
 
-* Case example 1: you are trying to make mechanics notes of a hack 'n' slash game where the character can wield three different weapons. Besides giving the character a different moveset, there's a chance that the currently active weapon also causes other subtle differences in the character mechanics, and you want to get to the bottom of it. In a case like this it's the best to make the three weapons into Modifiers. This way you can easily generate three different versions of any Action for testing these potential differences. Add three Modifiers (WPN1, WPN2, WPN3) in the Modifiers-sheet, refresh Overview, then indicate with 'x' which Actions are compatible with which Modifiers.
+### Case example 1:
+
+You are trying to make mechanics notes of a hack 'n' slash game where the character can wield three different weapons. Besides giving the character a different moveset, there's a chance that the currently active weapon also causes other subtle differences in the character mechanics, and you want to get to the bottom of it. In a case like this it's the best to make the three weapons into Modifiers. This way you can easily generate three different versions of any Action for testing these potential differences. Add three Modifiers (WPN1, WPN2, WPN3) in the Modifiers-sheet, refresh Overview, then indicate with 'x' which Actions are compatible with which Modifiers.
 
 The default behavior of Movelister is that all Modifiers will combine with one another automatically. So if you generate the Details-view right now, it will add variations that are probably impossible in-game, such as "Action (WPN1 WPN2)". This is where the Filters-column of the Modifier-sheet comes into play. You could make an Exclusive OR filter which prevents more than one weapon Modifier from appearing at once since it's likely that you cannot wield more than one of the three weapons simultaneously in this hypothetical game. Something like xor(WPN1, WPN2, WPN3) should do the trick.
 
 Also, if you mark an 'x' on the "Required"-column next to the formula, this will further filter all versions of all Actions which don't have at least one of these weapon Modifiers, in case the character never having any weapon at all is also an impossible variation.
 
+Picture 1: Modifier-sheet with three Modifiers and a Filter.
+
 ![Example-1](./images/case-1-1.PNG?raw=true "Picture 1: Modifier-sheet with three Modifiers and a Filter.")
 
+Picture 2: Overview-sheet where all compatible Actions are marked with 'x'.
+
 ![Example-2](./images/case-1-2.PNG?raw=true "Picture 2: Overview-sheet where all compatible Actions are marked with 'x'.")
+
+Picture 3: The resulting output in the Details-sheet.
 
 ![Example-3](./images/case-1-3.PNG?raw=true "Picture 3: The resulting output in the Details-sheet.")
 
 
-* Case example 2: you are trying to make mechanics notes of a third-person shooter that has a variety of arm-only Actions which overlap with movement skills such as jumping and crouching. Normally, if you wanted to list all the possible ways these Actions can overlap, you'd have to do it manually: "jump (reload), crouch (reload), jump (switch weapon), crouch (switch weapon)" and so on. But with Modifiers, you could create a Modifier of each arm-only animation, indicate in Overview-sheet which Actions are compatible with which Modifiers with an 'x' and then make a boolean logic filter that prevents impossible combinations of the modifiers from appearing in any Action.
+### Case example 2:
+
+You are trying to make mechanics notes of a third-person shooter that has a variety of arm-only Actions which overlap with movement skills such as jumping and crouching. Normally, if you wanted to list all the possible ways these Actions can overlap, you'd have to do it manually: "jump (reload), crouch (reload), jump (switch weapon), crouch (switch weapon)" and so on. But with Modifiers, you could create a Modifier of each arm-only animation, indicate in Overview-sheet which Actions are compatible with which Modifiers with an 'x' and then make a boolean logic filter that prevents impossible combinations of the modifiers from appearing in any Action.
 
 
 # The different sheets of Movelister
@@ -192,6 +202,8 @@ Explanation of various options:
 
 (TODO: the color options aren't used in this version of Movelister yet.)
 
+* Generate Named Ranges: if this option is marked with 'x', then Named Ranges are generated for each Action after generating the Details-sheet. Named Ranges are a handy way to quickly move inside a large sheet, but generating them takes a bit of time, so turning this option off is like a small optimization. TODO: Named Ranges don't work perfectly if there is more than one View and Details-sheet in the file, so in that case turning Named Ranges off can also be a good idea.
+
 * Show entries ascending when generating validation: if this option is marked with 'x', then the data validation for Details-sheet shows the entries in an ascending order instead of the order they are listed in inside the Details-sheet. Ascending order removes duplicates from the list and it can thus make the validation a bit more readable.
 
 
@@ -200,3 +212,15 @@ Explanation of various options:
 
 The two templates are used whenever generating or refreshing Overview or Details. Optimally, the user shouldn't need to do any adjustments to them by hand.
 
+
+## Other TODO things
+
+* Make manual more in-depth.
+
+* Conditional formatting. Optimally, Movelister should read user input from "Results"-sheet and make a new conditional format every time a new Details is generated to make this sheet easier to read. Other "color" features can also be done around the template using conditional formatting (but only once we learn to harness this mysterious technology with Python).
+
+* Generating input lists. It might be a handy feature for the user to be able to generate an Input List based on certain criteria. For instance, if the user wants to test hit reactions, they could generate an Input List using the 'Hit' column.
+
+* Data import / export. If data from a Movelister sheet could be exported to some human-readable text format, it could be shared and versioned more conveniently, allowing multiple people to work on a single project easier. Besides that, having an export / import functionality would also improve the security as this would mean people don't have to share a full LibreOffice Calc template with macros in it, only the data in it.
+
+* Optimizations. Generating very large sheets is slow, but hopefully it can be optimized some way in the future.
