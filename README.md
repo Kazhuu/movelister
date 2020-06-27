@@ -5,20 +5,22 @@ about video game mechanics data in sheet form. This could include simple
 move lists, detailed mechanics notes for glitchers or other type of tables which
 model the limits of a game's potential interactivity.
 
-**Movelister is still a work in progress and not ready for use.**
+**Movelister is a work in progress and can be used, but may contain bugs.**
 
 ## Table of Contents
 
 <!-- vim-markdown-toc GFM -->
 
-* [How It Works](#how-it-works)
-* [Dependencies](#dependencies)
 * [How To Use](#how-to-use)
-* [Development](#development)
+* [Dependencies](#dependencies)
+  * [Windows](#windows)
   * [Linux (Ubuntu and Arch)](#linux-ubuntu-and-arch)
+* [How It Works](#how-it-works)
+* [Contributing](#contributing)
+  * [Linux (Ubuntu and Arch)](#linux-ubuntu-and-arch-1)
     * [Running Macros From LibreOffice](#running-macros-from-libreoffice)
     * [Running Macros From Separate Python Process](#running-macros-from-separate-python-process)
-  * [Windows](#windows)
+  * [Windows](#windows-1)
 * [Testing](#testing)
   * [Running Tests](#running-tests)
 * [Making Release Document](#making-release-document)
@@ -26,47 +28,68 @@ model the limits of a game's potential interactivity.
 
 <!-- vim-markdown-toc -->
 
-## How It Works
+## How To Use
 
-Movelister is implemented on LibreOffice Calc (spreadsheet) and is used with
-Python macros. Macros call further Python code which is responsible for
-manipulating tables and sheets underneath.
+Project is released as a LibreOffice document which has all project sources
+embedded inside of it. Meaning no additional installation needed and your game
+data can be shared just by sharing the document. Movelister is supported on both
+Windows and Linux.
+
+Before using Movelister check [dependencies](#dependencies) below like
+downloading latest LibreOffice. Then to use Movelister download template
+document from
+[here](https://github.com/Kazhuu/movelister/raw/master/templates/movelister.ods)
+and start glitching your game. To learn how to use Movelister, please read the
+[manual](https://github.com/Kazhuu/movelister/blob/master/MANUAL.md).
+
 
 ## Dependencies
 
-It's necessary for the user to install LibreOffice 5 or newer and Python 3.x to
-be able to use the Movelister scripts. Movelister is tested to be working on
-both Linux and Windows. Python is typically automatically included in a
-LibreOffice installation on Windows but not always on Linux. If LibreOffice
-Python support is missing on Linux, you need install LibreOffice Python support
-packages separately. On Windows Python is located with regular installation. For
-instance `C:\Program Files\LibreOffice
-5\program\python-core-3.5.0\bin\python.exe`. On Ubuntu install following
-packages to enable Python for LibreOffice:
+### Windows
+
+On Windows install LibreOffice 5 or newer and you are able to use Movelister.
+On Windows Python is included and self-contained with LibreOffice installation
+so no separate Python installation needed.
+
+### Linux (Ubuntu and Arch)
+
+Install LibreOffice from sources or package repository
+
+```
+sudo apt install libreoffice
+```
+
+Movelister needs Python 3 to work properly. On Linux LibreOffice is using
+system's Python installation. Meaning it's necessary to install Python if not
+included in your system's installation. After that you need to install
+LibreOffice Python support packages. On Ubuntu install following packages to
+enable Python for LibreOffice:
 
 ```
 sudo apt install libreoffice-script-provider-python uno-libs3 python3-uno
 ```
 
-On Linux distros that has both Python 2 and 3 versions available and command
-`python` points to Python 2. Developers can change `python` commands to
-`python3` in this readme instead.
-
 Arch installation has been tested to work out of the box.
 
-## How To Use
+## How It Works
 
-Project is released as a LibreOffice document which has all project sources
-embedded inside of it. So no additional installations needed. Just grab the
-movelister document under `releases` folder and you are good to go.
+Movelister is implemented on LibreOffice Calc (spreadsheet) and is used with
+Python macros. Macros call further Python code which is responsible for
+manipulating tables and sheets underneath. Python process responsible of
+executing macros is communicating to LibreOffice process using socket. Socket
+communication is handler by LibreOffice's UNO (Universal Network Objects)
+interface. UNO interface is used to read and write sheet data.
 
-## Development
+## Contributing
 
-To have a good development environment and with debugging abilities. It's
-easier to develop scripts using a separate Python process which then connects to
-an external LibreOffice process using sockets. After you are done with the
-development, you can run working scripts inside the LibreOffice process. [This
-Christopher Bourez's blog post](http://christopher5106.github.io/office/2015/12/06/openoffice-libreoffice-automate-your-office-tasks-with-python-macros.html)
+If you want to contribute to Movelister then this section is for you.
+
+To have a good development environment with debugging abilities. It's easier to
+develop and run macros using separate Python process executed from command-line
+which then connects to an external LibreOffice process using sockets. After you
+are done with the development, you can run working scripts inside the
+LibreOffice using it's own macro manager. [This Christopher Bourez's blog
+post](http://christopher5106.github.io/office/2015/12/06/openoffice-libreoffice-automate-your-office-tasks-with-python-macros.html)
 explains the idea and this same idea is used with this project.
 
 Movelister is developed so that is support running macros from separate Python
@@ -87,9 +110,9 @@ LibreOffice user Python macros are located under
 `~/.config/libreoffice/4/user/Scripts/python/`. This still holds true if you are
 using LibreOffice version 6 and above. If you only have
 folders up to `.../user/` then you can make folders `Scripts` and `python` with
-`mkdir` program. After this `cd` into just created python folder. Your path now
+`mkdir` program. After this `cd` into just created folders. Your path now
 should be something like this:
-`/home/kazooie/.config/libreoffice/4/user/Scripts/python`. Now make symbolic
+`/home/username/.config/libreoffice/4/user/Scripts/python`. Now make symbolic
 link to cloned Movelister folder with following and change `path_to_movelister`
 to point to your cloned Movelister folder:
 
@@ -110,21 +133,23 @@ In project root folder, start LibreOffice Calc process with:
 libreoffice templates/movelister_test.ods --accept="socket,host=localhost,port=2002;urp"
 ```
 
-This opens socket with port 2002 which Python process then connects. Then start
-a separate Python process by running `main.py` with:
+This opens a socket connection with port 2002. Separate Python process can now
+connect to this one using UNO interface. Now start Python process by running
+`main.py` with:
 
 ```
 python main.py
 ```
 
-This script should run without errors. If you see error messages, make sure the
-socket is open or follow error message instructions.
+Edit `main.py` file at the bottom of the file to run macro you are trying to
+develop.
 
 ### Windows
 
-TODO: Write this again with better guidelines. To use LibreOffice Calc with a
+TODO: Fix this section!
 
-socket open, you have to start LibreOffice using the parameter listed below.
+To use LibreOffice Calc with a socket open, you have to start LibreOffice using
+the parameter listed below.
 For convenience's sake, you might want to include this parameter inside some
 shortcut that starts LibreOffice.
 
@@ -149,12 +174,12 @@ example:
 
 ## Testing
 
-Movelister has unit tests to test application functionality and is implemented
+Movelister has unit tests to test application functionality and are implemented
 using Python's own [unittests](https://docs.python.org/3/library/unittest.html)
 library and tests can be found under `test` folder of the project.
 
 During testing Python process will spawn headless LibreOffice Calc process
-accepting socket connections. This connection is then used with UNO API to
+accepting socket connections. This connection is then used with UNO interface to
 communicate with LibreOffice process to verify application functionality.
 During testing Python will instruct LibreOffice to reload the file between test
 cases.
@@ -218,31 +243,16 @@ file also need to be edited to include paths of added files. If path is missing
 then LibreOffice will not find the file. All Python files need to be placed
 under `Scripts/python` subfolder of the document.
 
-To automate above process project includes Python scripts which will do the
-heavy lifting. All scripts are located under `scripts` folder of the project.
-
-In Movelister making final release document is a two step process. First
-`release_base.ods` file is created which includes only dummy Python macros that
-doesn't do anything. This document is then used to manually assign macros to
-buttons in the document. To make `release_base.ods` file run:
-
-```
-python scripts/make_release_base.py
-```
-
-After buttons are assigned manually, the actual release can be made from
-`release_base.ods`.  In this stage all source files are packed into the final
-document and its `manifest.xml` modified to include source file paths. Also the
-file including dummy macros is replaced with the real one. To make a release
-document run:
+To automate above process project includes Python code under `scripts` folder.
+To make a release document run
 
 ```
 python scripts/make_release.py
 ```
 
-This will make a new movelister LibreOffice document under `releases` folder
-which is ready to use. If you are interested how packing process works take a
-look at files inside the `scripts` folder.
+This will update LibreOffice document at `templates/movelister.ods`
+to include latest source files. After this document is ready to use Movelister
+template for your game.
 
 ## Resources
 
