@@ -1,8 +1,9 @@
+import re
 from movelister.core import cursor
 from movelister.sheet.about import About
 
 
-def setDataValidationToColumn(sheet, column, lastRow, type):
+def setDataValidationToColumn(sheet, column, lastRow, name, type):
     """
     This code sets a specific type of data validation to a single column.
 
@@ -49,7 +50,7 @@ def setDataValidationToColumn(sheet, column, lastRow, type):
         if showEntriesAscendingOption == True:
             validation.ShowList = 2
         validation.setOperator(1)
-        validation.setFormula1('$A$2:$A$' + str(lastRow))
+        validation.setFormula1('$\'Overview (' + name + ')\'.$A$3:$A$' + str(lastRow))
 
     if type == 'details-modifier':
         validation.Type = 6
@@ -62,7 +63,7 @@ def setDataValidationToColumn(sheet, column, lastRow, type):
     range.Validation = validation
 
 
-def setDataValidationToDetailsSheet(sheet):
+def setDataValidationToDetailsSheet(sheet, name):
     '''
     This function sets data validation to all the Phase-columns in a Details-sheet.
     '''
@@ -83,11 +84,11 @@ def setDataValidationToDetailsSheet(sheet):
         # that repeat once for each Phase.
         if a > 2:
             if valType == 0:
-                setDataValidationToColumn(sheet, a, lastRow, 'details-reaction')
+                setDataValidationToColumn(sheet, a, lastRow, name, 'details-reaction')
             if valType == 1:
-                setDataValidationToColumn(sheet, a, lastRow, 'details-result')
+                setDataValidationToColumn(sheet, a, lastRow, name, 'details-result')
             if valType == 2:
-                setDataValidationToColumn(sheet, a, lastRow, 'details-modifier')
+                setDataValidationToColumn(sheet, a, lastRow, name, 'details-modifier')
             valType = valType + 1
             # Make sure validation type loops back to 0 for next Phase.
             if valType > 2:
