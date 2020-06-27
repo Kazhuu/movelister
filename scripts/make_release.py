@@ -11,24 +11,15 @@ installation needed.
 
 Tested to work on both Windows and Linux.
 """
-import shutil
 import os
 
 import utils
 from utils import Document, Manifest
 
-# Check that base document exists.
-if not os.path.exists(utils.BASE_DOCUMENT):
-    print('release template missing: {0}'.format(utils.BASE_DOCUMENT))
+# Check that release document exists.
+if not os.path.exists(utils.RELEASE_DOCUMENT):
+    print('release document missing: {0}'.format(utils.RELEASE_DOCUMENT))
     exit()
-# Create releases folder if it does not exist.
-if not os.path.exists(utils.PROJECT_RELEASE_FOLDER):
-    os.mkdir(utils.PROJECT_RELEASE_FOLDER)
-# Remove old movelister release if it exists.
-if os.path.exists(utils.RELEASE_DOCUMENT):
-    os.remove(utils.RELEASE_DOCUMENT)
-# Copy release base document file.
-shutil.copyfile(utils.BASE_DOCUMENT, utils.RELEASE_DOCUMENT)
 
 # Collect paths to all source files in the project.
 source_files = utils.collect_project_source_files()

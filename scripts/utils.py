@@ -13,15 +13,10 @@ from pathlib import Path
 # Project related paths.
 PROJECT_ROOT_FOLDER = str(Path(os.path.dirname(os.path.realpath(__file__))).parent)
 PROJECT_SOURCE_FILES_FOLDER = os.path.join(PROJECT_ROOT_FOLDER, 'pythonpath', 'movelister')
-PROJECT_SCRIPTS_FOLDER = os.path.join(PROJECT_ROOT_FOLDER, 'scripts')
-PROJECT_RELEASE_FOLDER = os.path.join(PROJECT_ROOT_FOLDER, 'releases')
 PROJECT_TEMPLATE_FOLDER = os.path.join(PROJECT_ROOT_FOLDER, 'templates')
+RELEASE_DOCUMENT = os.path.join(PROJECT_TEMPLATE_FOLDER, 'movelister.ods')
 
 # Handled document files.
-BASE_DOCUMENT = os.path.join(PROJECT_TEMPLATE_FOLDER, 'movelister_base.ods')
-RELEASE_DOCUMENT = os.path.join(PROJECT_RELEASE_FOLDER, 'movelister.ods')
-
-# Document related paths.
 DOCUMENT_PYTHON_PATH = 'Scripts/python/'
 DOCUMENT_MANIFEST_PATH = 'META-INF/manifest.xml'
 
@@ -123,14 +118,6 @@ class Document:
         with zipfile.ZipFile(document, 'a') as open_document:
             for src_file in source_files:
                 open_document.write(src_file, Manifest.file_path_to_document_path(src_file))
-
-    @classmethod
-    def add_file_as(cls, document, file_path, file_as):
-        """
-        Add given file to document as different file name.
-        """
-        with zipfile.ZipFile(document, 'a') as open_document:
-            open_document.write(file_path, file_as)
 
     @classmethod
     def read_manifest_xml(cls, document):
