@@ -95,6 +95,8 @@ issues before first release.**
     validation that tells user that action names are case-insensitive and should
     not be used. This also brakes named range naming. LibreOffice named ranges
     are case-insensitive.
+* Update manual to cover everything with examples.
+* Add tooltips to document to help user about different columns and what they do.
 
 ## How To Use
 
