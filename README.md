@@ -65,9 +65,6 @@ issues before first release.**
 * When generating non-existing view in Master List Overview sheet will be
     generated and Python code will throw an error after that. User should be
     warned that not view exists with that name.
-* When latest `template/movelister.ods` file is opened and saved. All macros are
-    lost and cannot be found anymore. This is probably because metadata.xml is
-    missing Python macro folders from the metadata.xml.
 * Input list from Input sheet is not taken from correct input list when Details
     sheet is generated. At the moment Default input list is always taken.
 * Input sheet group column is not used, remove it and make sure code is not
@@ -97,6 +94,9 @@ issues before first release.**
     are case-insensitive.
 * Update manual to cover everything with examples.
 * Add tooltips to document to help user about different columns and what they do.
+* Generating Details sheet can be quite slow if more than 10 000 lines are for
+    example generated. Add time measurements to the code and see are there any
+    easy improvements. Socket communication will always be slow, no matter what.
 
 ## How To Use
 

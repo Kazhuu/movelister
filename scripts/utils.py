@@ -17,7 +17,8 @@ PROJECT_TEMPLATE_FOLDER = os.path.join(PROJECT_ROOT_FOLDER, 'templates')
 RELEASE_DOCUMENT = os.path.join(PROJECT_TEMPLATE_FOLDER, 'movelister.ods')
 
 # Handled document files.
-DOCUMENT_PYTHON_PATH = 'Scripts/python/'
+DOCUMENT_SCRIPTS_FOLDER = 'Scripts/'
+DOCUMENT_PYTHON_FOLDER = '{0}python/'.format(DOCUMENT_SCRIPTS_FOLDER)
 DOCUMENT_MANIFEST_PATH = 'META-INF/manifest.xml'
 
 # Pattern to match to be deleted files from the document before new ones are
@@ -72,6 +73,24 @@ class Manifest:
         return manifest
 
     @classmethod
+    def add_python_source_folders(cls, manifest_xml_content):
+        """
+        Add Python source folder paths to the new manifest array and return it.
+        Paths to add are 'Scripts/' and 'Scripts/python/'.
+
+        Folder paths in the manifest are needed because if they don't exist, on
+        saving the document LibreOffice will delete all Python files and remove
+        them from the manifest.xml.
+        """
+        manifest = []
+        for line in manifest_xml_content:
+            if '</manifest:manifest>' in line:
+                manifest.append(' <manifest:file-entry manifest:media-type="application/binary" manifest:full-path="{0}"/>\n'.format(DOCUMENT_SCRIPTS_FOLDER))
+                manifest.append(' <manifest:file-entry manifest:media-type="application/binary" manifest:full-path="{0}"/>\n'.format(DOCUMENT_PYTHON_FOLDER))
+            manifest.append(line)
+        return manifest
+
+    @classmethod
     def file_path_to_document_path(cls, source_file_path):
         """
         Convert given full file path to LibreOffice document Python source
@@ -82,7 +101,7 @@ class Manifest:
         """
         pattern = PROJECT_ROOT_FOLDER.replace('\\', r'/') + '/'
         file_path = re.sub(pattern, '', source_file_path)
-        return '{0}{1}'.format(DOCUMENT_PYTHON_PATH, file_path)
+        return '{0}{1}'.format(DOCUMENT_PYTHON_FOLDER, file_path)
 
 
 class Document:

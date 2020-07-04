@@ -27,6 +27,7 @@ source_files = utils.collect_project_source_files()
 # Read manifest.xml content, remove old source paths from it and add new ones.
 manifest = Document.read_manifest_xml(utils.RELEASE_DOCUMENT)
 manifest = Manifest.remove_source_paths(manifest)
+manifest = Manifest.add_python_source_folders(manifest)
 manifest = Manifest.add_file_paths(manifest, source_files)
 
 # Remove old manifest.xml and Python files from the document.
