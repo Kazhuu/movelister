@@ -5,4 +5,3 @@ class Input:
             raise ValueError('input must have a name as string')
         self.name = name
         self.color = kwargs.get('color', -1)
-        self.group = kwargs.get('group', None)
