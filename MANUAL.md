@@ -148,8 +148,6 @@ Explanation of various columns:
 
 * Button: this is an optional column where the user can clarify which button they mean, if it doesn't become apparent from the Input Name already.
 
-* Group: (TODO: in the current version of the program this column does nothing. But it was intended for grouping and folding parts of the Details-sheet to keep it neater after generation. For instance, if the user wanted to generate large swathes of specialized Inputs that might as well be hidden most of the time until they're needed.)
-
 * Color: this is an optional column where the user can give a color for the input. (TODO: in a later version the color will be added to Details-view, but for now it does nothing.)
 
 
@@ -220,6 +218,8 @@ The two templates are used whenever generating or refreshing Overview or Details
 * Conditional formatting. Optimally, Movelister should read user input from "Results"-sheet and make a new conditional format every time a new Details is generated to make this sheet easier to read. Other "color" features can also be done around the template using conditional formatting (but only once we learn to harness this mysterious technology with Python).
 
 * Generating input lists. It might be a handy feature for the user to be able to generate an Input List based on certain criteria. For instance, if the user wants to test hit reactions, they could generate an Input List using the 'Hit' column.
+
+* Automatic grouping of Input Lists. You'd have some setting in Inputs which allow automatic creation of groups after Details-generation. This way you could keep less important Inputs folded until the user needs them if they have really large Input Lists.
 
 * Data import / export. If data from a Movelister sheet could be exported to some human-readable text format, it could be shared and versioned more conveniently, allowing multiple people to work on a single project easier. Besides that, having an export / import functionality would also improve the security as this would mean people don't have to share a full LibreOffice Calc template with macros in it, only the data in it.
 
