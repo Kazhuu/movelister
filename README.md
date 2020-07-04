@@ -70,8 +70,6 @@ issues before first release.**
     missing Python macro folders from the metadata.xml.
 * Input list from Input sheet is not taken from correct input list when Details
     sheet is generated. At the moment Default input list is always taken.
-* Input sheet group column is not used, remove it and make sure code is not
-    using either.
 * Input sheet color column is not used. Use it in Details sheet on result column
     with conditional formatting.
 * About sheet needs to be cleaned up. Remove unused color options and future
@@ -96,7 +94,6 @@ issues before first release.**
     not be used. This also brakes named range naming. LibreOffice named ranges
     are case-insensitive.
 * Update manual to cover everything with examples.
-* Add tooltips to document to help user about different columns and what they do.
 
 ## How To Use
 
