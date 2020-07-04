@@ -67,8 +67,6 @@ issues before first release.**
     warned that not view exists with that name.
 * Input list from Input sheet is not taken from correct input list when Details
     sheet is generated. At the moment Default input list is always taken.
-* Input sheet group column is not used, remove it and make sure code is not
-    using either.
 * Input sheet color column is not used. Use it in Details sheet on result column
     with conditional formatting.
 * About sheet needs to be cleaned up. Remove unused color options and future

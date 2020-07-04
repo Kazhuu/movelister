@@ -16,7 +16,6 @@ class Inputs:
         self.inputsColumnIndex = helper.getColumnPosition(self.data, 'Input List')
         self.nameColumnIndex = helper.getColumnPosition(self.data, 'Input Name')
         self.buttonColumnIndex = helper.getColumnPosition(self.data, 'Button')
-        self.inputGroupIndex = helper.getColumnPosition(self.data, 'Group')
         self.colorColumnIndex = helper.getColumnPosition(self.data, 'Color')
         self.dataHeader = self.data[self.headerRowIndex]
         self.dataRows = self.data[self.dataBeginRow:]
@@ -50,6 +49,4 @@ class Inputs:
 
     def _rowToKwargs(self, row):
         kwargs = {'name': row[self.nameColumnIndex]}
-        if row[self.inputGroupIndex] != '':
-            kwargs['group'] = row[self.inputGroupIndex]
         return kwargs
