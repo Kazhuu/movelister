@@ -3,6 +3,7 @@ from com.sun.star.uno import RuntimeException
 from test.officeTestCase import OfficeTestCase
 from movelister.core.context import Context
 from movelister.sheet.sheet import Sheet, MASTER_LIST_SHEET_NAME, MODIFIER_LIST_SHEET_NAME
+from movelister.core import names
 
 
 class SheetTestCase(OfficeTestCase):
@@ -54,7 +55,7 @@ class SheetTestCase(OfficeTestCase):
 
     def testNewOverview(self):
         name = 'test'
-        overViewName = 'Overview ({0})'.format(name)
-        sheet = Sheet.newOverview(name)
-        self.assertEqual(sheet.Name, overViewName)
-        self.assertTrue(overViewName in Sheet.getSheetNames())
+        overviewName = names.getOverviewName(name)
+        sheet = Sheet.newOverview(overviewName)
+        self.assertEqual(sheet.Name, overviewName)
+        self.assertTrue(overviewName in Sheet.getSheetNames())

@@ -4,6 +4,9 @@ from movelister.sheet import helper
 from movelister.model.action import Action
 from movelister.format import filter
 
+from collections import defaultdict
+from collections import OrderedDict
+
 
 class Master:
 
@@ -22,18 +25,18 @@ class Master:
         self.dataRows = self.data[self.dataBeginRow:]
         self.actionColors = helper.getCellColorsFromColumn(
             self.sheet, self.colorColumnIndex, self.dataBeginRow, len(self.data))
+        self.actions = self._parseActions()
 
     def getActions(self, view=None):
-        actions = []
-        rows = self.dataRows
         if view:
-            rows = filter.filterRows(lambda row: row[self.viewColumnIndex] == view, self.dataRows)
-        for index, row in enumerate(rows):
-            if self._isValidRow(row):
-                kwargs = self._rowToKwargs(row)
-                kwargs['color'] = self.actionColors[index]
-                actions.append(Action(**kwargs))
-        return actions
+            return [action for _, action in self.actions[view].items()]
+        actionList = []
+        for _, viewActions in self.actions.items():
+            actionList.extend([action for _, action, in viewActions.items()])
+        return actionList
+
+    def findAction(self, view, name):
+        return self.actions[view][name]
 
     def getOverviewName(self):
         """
@@ -42,8 +45,16 @@ class Master:
         name = self.data[0][2]
         return name
 
-    def _isValidRow(self, row):
-        return row[self.nameColumnIndex] != ''
+    def _parseActions(self):
+        actions = defaultdict(OrderedDict)
+        for index, row in enumerate(self.dataRows):
+            # Skip empty rows.
+            if row[self.nameColumnIndex] != '':
+                view = row[self.viewColumnIndex]
+                kwargs = self._rowToKwargs(row)
+                kwargs['color'] = self.actionColors[index]
+                actions[view][kwargs['name']] = Action(**kwargs)
+        return actions
 
     def _rowToKwargs(self, row):
         kwargs = {'name': row[self.nameColumnIndex]}

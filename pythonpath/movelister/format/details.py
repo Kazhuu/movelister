@@ -1,4 +1,4 @@
-from movelister.core import cursor
+from movelister.core import cursor, names
 from movelister.format.detail import DetailFormatter
 from movelister.sheet import helper
 from movelister.sheet.sheet import Sheet
@@ -19,7 +19,7 @@ class DetailsFormatter:
         # Modifier names are used for sorting.
         self.modifierNames = overview.modifierNames()
         self.maximumPhases = overview.highestPhase
-        self.parentOverviewName = 'Overview ({0})'.format(self.instance.name)
+        self.parentOverviewName = names.getOverviewName(self.instance.viewName)
 
     def generate(self):
         """

@@ -11,7 +11,6 @@ from the command-line without using LibreOffice.
 import uno # noqa
 import os
 import sys
-import re
 
 from unohelper import fileUrlToSystemPath
 
@@ -27,8 +26,9 @@ elif __name__ == 'ooo_script_framework': # Name when executed from LibreOffice.
         url = fileUrlToSystemPath('{}/{}'.format(doc.URL,'Scripts/python/pythonpath'))
         sys.path.insert(0, url)
 
+# TODO: Remove imports we don't use anymore.
 from movelister import error, selection  # noqa
-from movelister.core import cursor # noqa
+from movelister.core import cursor, names  # noqa
 from movelister.core.alignment import HorizontalAlignment, VerticalAlignment # noqa
 from movelister.core.context import Context # noqa
 from movelister.format import action, color, convert, format, namedRanges, overview, validation # noqa
@@ -68,27 +68,27 @@ def updateDetails(*args, **kwargs):
     # Get overview sheet name from active sheet or from provided kwargs.
     activeOverviewName = kwargs.get('activeSheet', helper.getActiveSheetName())
     # Get view name for the details. This is presented in overview sheet name inside parentheses.
-    detailsViewName = re.search('\((.+)\)', activeOverviewName).group(1)
-    completeDetailsName = 'Details ({})'.format(detailsViewName)
-    previousDetails = Details(detailsViewName)
-    if Sheet.hasByName(completeDetailsName):
+    viewName = names.getViewName(activeOverviewName)
+    detailsSheetName = names.getDetailsName(viewName)
+    previousDetails = Details(viewName)
+    if Sheet.hasByName(detailsSheetName):
         # Check if user wants to update existing detail sheet.
         if not message_box.showSheetUpdateWarning():
             return
-        previousDetails = Details.fromSheet(completeDetailsName)
+        previousDetails = Details.fromSheet(detailsSheetName)
     modifiersSheet = Modifiers(MODIFIER_LIST_SHEET_NAME)
     parentOverview = Overview.fromSheet(activeOverviewName)
     # Create new Details sheet by combining new and existing data.
-    newDetails = UpdateDetails.update(modifiersSheet, parentOverview, previousDetails, detailsViewName)
+    newDetails = UpdateDetails.update(modifiersSheet, parentOverview, previousDetails, viewName)
     # Delete previous details sheet and generate a new one.
-    Sheet.deleteSheetByName(completeDetailsName)
+    Sheet.deleteSheetByName(detailsSheetName)
     formatter = DetailsFormatter(newDetails, parentOverview)
     detailsSheet = formatter.generate()
     # Make columns width optimal.
     length = cursor.getColumnLength(detailsSheet)
     format.setOptimalWidthToRange(detailsSheet, 0, length)
     # Generate data validation.
-    validation.setDataValidationToDetailsSheet(detailsSheet, detailsViewName)
+    validation.setDataValidationToDetailsSheet(detailsSheet, viewName)
     # Generate named ranges.
     about = About('About')
     if About.getGenerateNamedRangesOption(about) == True:
@@ -106,25 +106,25 @@ def updateOverview(*args):
 
     # Get name of the Overview which user wants to generate.
     masterSheet = Master(MASTER_LIST_SHEET_NAME)
-    overviewName = masterSheet.getOverviewName()
-    completeOverviewName = 'Overview ({})'.format(overviewName)
+    viewName = masterSheet.getOverviewName()
+    overviewSheetName = names.getOverviewName(viewName)
 
-    if not overviewName:
+    if not viewName:
         message_box.showWarningWithOk('Provide Overview name to update.')
         return
 
-    oldOverview = Overview(overviewName)
+    oldOverview = Overview(viewName)
     # If document has existing Overview, then that is set as previous instead.
-    if Sheet.hasByName(completeOverviewName):
+    if Sheet.hasByName(overviewSheetName):
         # Check if user wants to update existing Overview.
         if not message_box.showSheetUpdateWarning():
             return
-        oldOverview = Overview.fromSheet(completeOverviewName)
+        oldOverview = Overview.fromSheet(overviewSheetName)
 
-    newOverview = UpdateOverview.update(oldOverview, overviewName)
+    newOverview = UpdateOverview.update(oldOverview, viewName)
 
     # Delete old sheet if exist.
-    Sheet.deleteSheetByName(completeOverviewName)
+    Sheet.deleteSheetByName(overviewSheetName)
     # Generate a new one.
     formatter = OverviewFormatter(newOverview)
     overviewSheet = formatter.generate()
@@ -132,8 +132,8 @@ def updateOverview(*args):
     length = cursor.getColumnLength(overviewSheet)
     format.setOptimalWidthToRange(overviewSheet, 0, length)
     # Fix sheet colors.
-    formatter.setOverviewModifierColors(completeOverviewName)
-    formatter.setOverviewActionColors(completeOverviewName)
+    formatter.setOverviewModifierColors(overviewSheetName)
+    formatter.setOverviewActionColors(overviewSheetName)
 
 
 # Run this when executed from the command line.

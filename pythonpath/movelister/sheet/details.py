@@ -1,18 +1,21 @@
 from .sheet import Sheet
-from movelister.core import cursor
+from movelister.core import cursor, names
 from movelister.format import filter
 from movelister.model.detail import Detail
 from movelister.model.action import Action
 from movelister.model.modifier import Modifier
 from movelister.sheet import helper
+from movelister.sheet.master import Master
+from movelister.sheet.sheet import MASTER_LIST_SHEET_NAME
 
 import re
 
 
 class Details:
 
-    def __init__(self, sheetName):
-        self.name = sheetName
+    def __init__(self, viewName):
+        self.name = names.getDetailsName(viewName)
+        self.viewName = viewName
         self.details = []
 
     @classmethod
@@ -21,7 +24,7 @@ class Details:
         Build instance of Detail from given sheet name which should represents
         current details sheet.
         """
-        instance = cls(sheetName)
+        instance = cls(names.getViewName(sheetName))
         instance._readSheetContent()
         return instance
 
@@ -37,6 +40,9 @@ class Details:
 
 
     def _readSheetContent(self):
+        # We need master sheet to get number of phases for each Action in the
+        # Detail class. Details sheet doesn't provide enough information.
+        self.masterSheet = Master(MASTER_LIST_SHEET_NAME)
         self.sheet = Sheet.getByName(self.name)
         self.data = cursor.getSheetContent(self.sheet)
         self.nameColumnIndex = helper.getColumnPosition(self.data, 'Action Name')
@@ -111,8 +117,9 @@ class Details:
                     if line[2] not in phasesList:
                         phasesList[line[2]] = {}
                     phasesList[line[2]][str(phaseNum)] = [line[cellNum], line[cellNum + 1], line[cellNum + 2]]
-        kwargs = {'action': Action(data[0][self.nameColumnIndex]), 'inputs': inputList, 'phases': phasesList, 'notes': notesList}
+        kwargs = {'inputs': inputList, 'phases': phasesList, 'notes': notesList}
         kwargs['modifiers'] = self._parseModifiers(data[0][self.modifiersColumnIndex])
+        kwargs['action'] = self.masterSheet.findAction(self.viewName, data[0][self.nameColumnIndex])
         return Detail(**kwargs)
 
     def _parseModifiers(self, modifierCell):

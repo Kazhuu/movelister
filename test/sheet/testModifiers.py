@@ -27,7 +27,7 @@ class ModifiersTestCase(OfficeTestCase):
         action = Action('action')
         modifiers = [Modifier('WPN1'), Modifier('WPN2')]
         detail = Detail(action, modifiers=modifiers)
-        self.assertTrue(self.modifier.isValidDetail(detail))
+        self.assertFalse(self.modifier.isValidDetail(detail))
 
     def testIsValidDetailNotSuccess(self):
         action = Action('action')

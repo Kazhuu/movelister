@@ -3,7 +3,7 @@ from movelister.model.modifier import Modifier
 from movelister.model.action import Action
 from movelister.sheet.overview import Overview
 from movelister.sheet.sheet import Sheet
-from movelister.core import cursor
+from movelister.core import cursor, names
 from movelister.format.overview import OverviewFormatter
 
 
@@ -77,7 +77,7 @@ class OverviewFormatterTestCase(OfficeTestCase):
         formatter = OverviewFormatter(self.overview)
         formatter.generate()
 
-        sheet = Sheet.getByName('Overview ({0})'.format(self.sheetName))
+        sheet = Sheet.getByName(names.getOverviewName(self.sheetName))
         data = cursor.getSheetContent(sheet)
         self.assertEqual(data, [
             ['', '', '', '', '', '', '', '', '', '', ''],

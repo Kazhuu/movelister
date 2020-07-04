@@ -10,7 +10,6 @@ class MasterTestCase(OfficeTestCase):
         super().setUp()
         self.master = Master(MASTER_LIST_SHEET_NAME)
         self.actions = self.master.getActions()
-        self.actions = self.master.getActions()
 
     def testMasterInstance(self):
         self.assertIsInstance(self.master.data, list)
@@ -22,6 +21,10 @@ class MasterTestCase(OfficeTestCase):
         self.assertTrue(self.actions)
         for action in self.actions:
             self.assertIsInstance(action, Action)
+
+    def testGetActionsForView(self):
+        actions = self.master.getActions('Target')
+        self.assertTrue(actions[0].name, 'Minotaur (Idle)')
 
     def testGetDefaultActions(self):
         actions = self.master.getActions('Default')

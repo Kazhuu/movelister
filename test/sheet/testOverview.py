@@ -18,7 +18,7 @@ class OverviewTestCase(OfficeTestCase):
         self.assertEqual(self.overview.name, self.overviewName)
 
     def testModifiers(self):
-        names = ['WPN1', 'WPN2', 'WPN3', 'Super', 'FL1', 'FL2', 'PG', 'LAM', 'PAM', 's b', 't b']
+        names = ['WPN1', 'WPN2', 'WPN3', 'Super', 'FL1', 'FL2', 'PG', 'LAM', 'PAM', 's_b', 't_b']
         modifiers = self.overview.modifiers
         self.assertTrue(all(modifier.name in names for modifier in modifiers))
 

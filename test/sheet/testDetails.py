@@ -7,7 +7,7 @@ class DetailsTestCase(OfficeTestCase):
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
-        cls.detailsName = 'Details (default)'
+        cls.detailsName = 'Details (Default)'
         cls.details = Details.fromSheet(cls.detailsName)
 
     def testDetailsInstance(self):

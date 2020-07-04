@@ -1,4 +1,4 @@
-from movelister.core import cursor
+from movelister.core import cursor, names
 from movelister.sheet.sheet import Sheet
 from movelister.format import filter
 from movelister.model.modifier import Modifier
@@ -17,11 +17,12 @@ class Overview:
     understandable form.
     """
 
-    def __init__(self, sheetName):
+    def __init__(self, viewName):
         """
-        Instantiate empty Overview sheet with given name.
+        Instantiate empty Overview sheet with given view name.
         """
-        self.name = sheetName
+        self.name = names.getOverviewName(viewName)
+        self.viewName = viewName
         self._modifiers = []
         self._actions = []
         self._highestPhase = 0
@@ -32,7 +33,7 @@ class Overview:
         Instantiate this class by reading given Overview sheet content and
         extracting data from it.
         """
-        instance = cls(sheetName)
+        instance = cls(names.getViewName(sheetName))
         instance._readSheetContent()
         return instance
 

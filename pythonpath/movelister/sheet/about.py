@@ -27,8 +27,7 @@ class About:
 
     def getGenerateNamedRangesOption(self):
         cell = self.sheet.getCellByPosition(1, self.generateNamedRangesIndex)
-        print(cell.getString())
-        if cell.getString() == 'x':
+        if cell.getString():
             return True
         else:
             return False

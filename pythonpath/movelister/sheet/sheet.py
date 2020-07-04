@@ -107,29 +107,26 @@ class Sheet():
     @classmethod
     def newOverview(cls, name):
         """
-        Insert new Overview sheet right of Master sheet with given name put
-        inside of parentheses. Returns created sheet.
+        Insert new Overview sheet with given name right of Master sheet.
+        Returns created sheet.
 
         Sheet with given name must not exist, otherwise RuntimeException is
         raised.
         """
         position = cls.getPosition(MASTER_LIST_SHEET_NAME) + 1
-        sheetName = '{0} ({1})'.format(OVERVIEW_SHEET_NAME, name)
-        Context.getDocument().Sheets.copyByName(OVERVIEW_TEMPLATE_NAME, sheetName, position)
+        Context.getDocument().Sheets.copyByName(OVERVIEW_TEMPLATE_NAME, name, position)
         return cls.getByPosition(position)
 
     @classmethod
-    def newDetails(cls, overviewName, detailsName):
+    def newDetails(cls, overviewName, name):
         """
-        Insert new Details sheet right of the given overview sheet. New details
-        sheet will have given detailsName in parentheses.
+        Insert new Details sheet with given name right of the given overview sheet.
 
         Sheet with given name must not exist, otherwise RuntimeException is
         raised.
         """
         position = cls.getPosition(overviewName) + 1
-        sheetName = '{0} ({1})'.format(DETAILS_SHEET_NAME, detailsName)
-        Context.getDocument().Sheets.copyByName(DETAILS_TEMPLATE_NAME, sheetName, position)
+        Context.getDocument().Sheets.copyByName(DETAILS_TEMPLATE_NAME, name, position)
         return cls.getByPosition(position)
 
     @classmethod
@@ -140,6 +137,6 @@ class Sheet():
     @classmethod
     def getSheetNames(cls):
         """
-        Return list of sheet names in current file.
+        Return list of sheet names in current document.
         """
         return Context.getDocument().Sheets.getElementNames()
