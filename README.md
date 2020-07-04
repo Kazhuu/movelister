@@ -5,12 +5,14 @@ about video game mechanics data in sheet form. This could include simple
 move lists, detailed mechanics notes for glitchers or other type of tables which
 model the limits of a game's potential interactivity.
 
-**Movelister is a work in progress and can be used, but may contain bugs.**
+**Movelister is a work in progress and can be used. Check TODO below for know
+issues before first release.**
 
 ## Table of Contents
 
 <!-- vim-markdown-toc GFM -->
 
+* [TODO Before Release](#todo-before-release)
 * [How To Use](#how-to-use)
 * [Dependencies](#dependencies)
   * [Windows](#windows)
@@ -27,6 +29,74 @@ model the limits of a game's potential interactivity.
 * [Resources](#resources)
 
 <!-- vim-markdown-toc -->
+
+## TODO Before Release
+
+* Action color column is not used from Master List sheet.
+* When generating Overviews and Details for multiple views newly added are not
+    added consistently, instead their position jumps around.
+* When generating Detail sheets for multiple views, number of phase columns for
+    master sheet is taken from maximum number among all views from Master sheet.
+    Meaning if view 1 has maximum 2 phases and view 2 has maximum 3 phases. Both
+    generated Details for view 1 and view 2 has 3 phases even view 1 is supposed
+    to have only 2 phase columns.
+* Also relating to above when action is multiplied in Overview for example wpn1
+    two times with 2 phases. Generated Details will have 4 phase columns instead
+    of 2.
+* When generating multiple Details for different views named ranges are only
+    valid for the previous generated Details sheet. Previous named ranges are
+    all deleted.
+* When giving Actions to Master List with the same name. Action lines are copied
+    in Overview sheet but are unique in Details sheet. Actions with the same
+    name should only be generated once in Overview sheet too, not copied.
+* When Action phase number is decreased and Details is generated again.
+    Previously entered Details result data still exists on those phases that are
+    not part of the Action phase numbering anymore. Data from out of bounds
+    phase numbers should be deleted instead. Also some boundary marking for
+    each Action in Details sheet should be placed to mark phase columns that are
+    not part of the Action and should not be filled.
+* Details sheet is missing coloring on some columns when entering result data.
+    This is because conditional formatting is places by hand and not programmatically
+    when Details sheet is generated.
+* When Overview is generated hit phase jumps around and sometimes disappears.
+    Also frame column data disappears too, don't jump around.
+* When modifiers with the same name are entered, it's column is multiplied to
+    Overview sheet and not to Details sheet. Modifier names should be unique.
+* When generating non-existing view in Master List Overview sheet will be
+    generated and Python code will throw an error after that. User should be
+    warned that not view exists with that name.
+* When latest `template/movelister.ods` file is opened and saved. All macros are
+    lost and cannot be found anymore. This is probably because metadata.xml is
+    missing Python macro folders from the metadata.xml.
+* Input list from Input sheet is not taken from correct input list when Details
+    sheet is generated. At the moment Default input list is always taken.
+* Input sheet group column is not used, remove it and make sure code is not
+    using either.
+* Input sheet color column is not used. Use it in Details sheet on result column
+    with conditional formatting.
+* About sheet needs to be cleaned up. Remove unused color options and future
+    options.
+* Change version text to button which executes Python code and shows
+    a dialog about the version information to the user. This because Python code
+    is not tied to the ods file itself.
+* Write some notes about Python macro safety to README for the user.
+* When multiple Overview sheets has Refresh Overview button. All buttons
+    actually update Overview (Default) and not the actual Overview where the
+    button was pressed. Fix for this is to have new macro which takes the active
+    sheet instead of hard coding default Overview name.
+* When modifier is input with spaces and when Details is generated, it's treated
+    as two different modifiers instead. Warn user about not using spaces in
+    modifier names instead.
+* Have some validation on modifier names that does not allow hyphens '-'. This
+    is because when using these modifier names in equations they treated as
+    separate modifiers instead.
+* Action names can be entered in case-insensitive matter. This causes latest
+    action name to be taken and generated to Overview and Details. Make some
+    validation that tells user that action names are case-insensitive and should
+    not be used. This also brakes named range naming. LibreOffice named ranges
+    are case-insensitive.
+* Update manual to cover everything with examples.
+* Add tooltips to document to help user about different columns and what they do.
 
 ## How To Use
 
