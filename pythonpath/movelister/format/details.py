@@ -62,5 +62,5 @@ class DetailsFormatter:
         """
         rows = []
         for detail in self.instance.details:
-            rows.extend(DetailFormatter(detail, self.modifierNames).format() + [['']])
+            rows.extend(DetailFormatter.format(detail, self.modifierNames) + [['']])
         return rows

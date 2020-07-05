@@ -6,39 +6,41 @@ class DetailFormatter:
     Class responsible for formatting Detail class instance to two
     dimensional array.
     """
-    def __init__(self, detail, modifiersOrdering):
-        """
-        Construct Detail class formatter. modifiersOrdering is a list of
-        modifiers names which is used for ordering modifier combinations. List
-        index is used as a sorting key.
-        """
-        self.detail = detail
-        self.modifiersOrdering = modifiersOrdering
 
-    def format(self):
+    @classmethod
+    def format(cls, detail, modifiersOrdering):
+        """
+        Format Detail instance. Given modifiersOrdering is a list of modifiers
+        names which is used for ordering modifier combinations. List index is
+        used as a sorting key.
+        """
+        cls.detail = detail
+        cls.modifiersOrdering = modifiersOrdering
         data = []
-        for inputName in self.detail.inputs:
-            data.append(self._formatRow(inputName))
+        for inputName in detail.inputs:
+            data.append(cls._formatRow(inputName))
         return data
 
-    def _formatRow(self, inputName):
+    @classmethod
+    def _formatRow(cls, inputName):
         row = []
         # Action Name
-        row.append(self.detail.action.name)
+        row.append(cls.detail.action.name)
         # Modifiers
-        row.append(self._formatModifiers(self.detail.modifiers))
+        row.append(cls._formatModifiers(cls.detail.modifiers))
         # Input to Compare
         row.append(inputName)
         # Phase columns.
-        inputResults = self.detail.getInputResults(inputName)
+        inputResults = cls.detail.getInputResults(inputName)
         for result in inputResults:
             row.extend(ResultFormatter.format(result))
         # Notes
-        row.extend(self.detail.notes.get(inputName, ['']))
+        row.extend(cls.detail.notes.get(inputName, ['']))
         return row
 
-    def _formatModifiers(self, modifiers):
+    @classmethod
+    def _formatModifiers(cls, modifiers):
         names = [modifier.name for modifier in modifiers]
         # Sort modifiers according to given modifiers list index.
-        names.sort(key=lambda name: self.modifiersOrdering.index(name))
+        names.sort(key=lambda name: cls.modifiersOrdering.index(name))
         return ' '.join(names)
