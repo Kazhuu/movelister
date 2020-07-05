@@ -8,7 +8,7 @@ class DetailFormatter:
     """
 
     @classmethod
-    def format(cls, detail, modifiersOrdering):
+    def format(cls, detail, modifiersOrdering, maximumPhasesCount):
         """
         Format Detail instance. Given modifiersOrdering is a list of modifiers
         names which is used for ordering modifier combinations. List index is
@@ -16,6 +16,7 @@ class DetailFormatter:
         """
         cls.detail = detail
         cls.modifiersOrdering = modifiersOrdering
+        cls.maximumPhasesCount = maximumPhasesCount
         data = []
         for inputName in detail.inputs:
             data.append(cls._formatRow(inputName))
@@ -32,8 +33,13 @@ class DetailFormatter:
         row.append(inputName)
         # Phase columns.
         inputResults = cls.detail.getInputResults(inputName)
-        for result in inputResults:
-            row.extend(ResultFormatter.format(result))
+        for index in range(cls.detail.action.phases):
+            row.extend(ResultFormatter.format(inputResults[index]))
+        # Mark end of phases for this action.
+        if cls.detail.action.phases < cls.maximumPhasesCount:
+            row.extend(['---', '', ''])
+        # Fill rest of the cells if any.
+        row.extend(['', '', ''] * (cls.maximumPhasesCount - cls.detail.action.phases - 1))
         # Notes
         row.extend(cls.detail.notes.get(inputName, ['']))
         return row
