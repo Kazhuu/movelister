@@ -1,3 +1,6 @@
+from movelister.format.result import ResultFormatter
+
+
 class DetailFormatter:
     """
     Class responsible for formatting Detail class instance to two
@@ -14,27 +17,24 @@ class DetailFormatter:
 
     def format(self):
         data = []
-        for input_name in self.detail.inputs:
-            data.append(self._formatRow(input_name))
+        for inputName in self.detail.inputs:
+            data.append(self._formatRow(inputName))
         return data
 
-    def _formatRow(self, input_name):
+    def _formatRow(self, inputName):
         row = []
         # Action Name
         row.append(self.detail.action.name)
         # Modifiers
         row.append(self._formatModifiers(self.detail.modifiers))
         # Input to Compare
-        row.append(input_name)
-        # Phases
-        input_phases = self.detail.phases.get(input_name, {})
-        phase_numbers = list(input_phases.keys())
-        # Loop phase number in sorted order.
-        for phase_number in sorted(phase_numbers):
-            row.extend(input_phases[phase_number])
-        # for phase_number, values in self.detail.phases.get(input_name, {}).items():
+        row.append(inputName)
+        # Phase columns.
+        inputResults = self.detail.getInputResults(inputName)
+        for result in inputResults:
+            row.extend(ResultFormatter.format(result))
         # Notes
-        row.extend(self.detail.notes.get(input_name, ['']))
+        row.extend(self.detail.notes.get(inputName, ['']))
         return row
 
     def _formatModifiers(self, modifiers):

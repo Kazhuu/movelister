@@ -4,6 +4,7 @@ from movelister.format import filter
 from movelister.model.detail import Detail
 from movelister.model.action import Action
 from movelister.model.modifier import Modifier
+from movelister.model.result import Result
 from movelister.sheet import helper
 from movelister.sheet.master import Master
 from movelister.sheet.sheet import MASTER_LIST_SHEET_NAME
@@ -98,7 +99,6 @@ class Details:
         phasesList = {}
         notesList = {}
         for line in data:
-            phaseNum = -1
             cellNum = 2
             counter = -1
             for cell in line:
@@ -113,10 +113,9 @@ class Details:
                     counter = 0
                 # takes data from the three cells of a single phase and places them in a list inside the dict.
                 if counter == 0:
-                    phaseNum = phaseNum + 1
                     if line[2] not in phasesList:
-                        phasesList[line[2]] = {}
-                    phasesList[line[2]][str(phaseNum)] = [line[cellNum], line[cellNum + 1], line[cellNum + 2]]
+                        phasesList[line[2]] = []
+                    phasesList[line[2]].append(Result(line[cellNum], line[cellNum + 1], line[cellNum + 2]))
         kwargs = {'inputs': inputList, 'phases': phasesList, 'notes': notesList}
         kwargs['modifiers'] = self._parseModifiers(data[0][self.modifiersColumnIndex])
         kwargs['action'] = self.masterSheet.findAction(self.viewName, data[0][self.nameColumnIndex])

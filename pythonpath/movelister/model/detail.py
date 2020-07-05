@@ -18,6 +18,9 @@ class Detail:
     def modifiers(self, modifiers):
         self._modifiers = modifiers
 
+    def getInputResults(self, inputName):
+        return self.phases[inputName]
+
     def modiferNames(self):
         return [modifier.name for modifier in self._modifiers]
 
