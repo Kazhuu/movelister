@@ -38,4 +38,3 @@ class DetailsIteratorTestCase(OfficeTestCase):
         self.assertIsNot(details[0].phases, details[1].phases)
         self.assertIsNot(details[0].inputs, details[1].inputs)
         self.assertIsNot(details[0].notes, details[1].notes)
-
