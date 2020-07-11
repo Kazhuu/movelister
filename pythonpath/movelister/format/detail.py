@@ -1,4 +1,4 @@
-from movelister.format.result import ResultFormatter
+from movelister.format import result
 
 
 class DetailFormatter:
@@ -34,12 +34,12 @@ class DetailFormatter:
         # Phase columns.
         inputResults = cls.detail.getInputResults(inputName)
         for index in range(cls.detail.action.phases):
-            row.extend(ResultFormatter.format(inputResults[index]))
+            row.extend(result.ResultFormatter.format(inputResults[index]))
         # Mark end of phases for this action.
         if cls.detail.action.phases < cls.maximumPhasesCount:
-            row.extend(['---', '', ''])
+            row.extend(result.EndResultFormatter.format())
         # Fill rest of the cells if any.
-        row.extend(['', '', ''] * (cls.maximumPhasesCount - cls.detail.action.phases - 1))
+        row.extend(result.EmptyResultFormatter.format() * (cls.maximumPhasesCount - cls.detail.action.phases - 1))
         # Notes
         row.extend(cls.detail.notes.get(inputName, ['']))
         return row

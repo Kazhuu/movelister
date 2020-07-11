@@ -49,12 +49,6 @@ issues before first release.**
 * When giving Actions to Master List with the same name. Action lines are copied
     in Overview sheet but are unique in Details sheet. Actions with the same
     name should only be generated once in Overview sheet too, not copied.
-* When Action phase number is decreased and Details is generated again.
-    Previously entered Details result data still exists on those phases that are
-    not part of the Action phase numbering anymore. Data from out of bounds
-    phase numbers should be deleted instead. Also some boundary marking for
-    each Action in Details sheet should be placed to mark phase columns that are
-    not part of the Action and should not be filled.
 * Details sheet is missing coloring on some columns when entering result data.
     This is because conditional formatting is places by hand and not programmatically
     when Details sheet is generated.
