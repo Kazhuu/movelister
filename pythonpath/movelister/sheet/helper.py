@@ -22,14 +22,17 @@ def getHeaderRowPosition(sheetData):
     return 0
 
 
-def getColumnPosition(sheetData, columnName):
+def getColumnPosition(sheetData, columnName, defaultPosition):
     """
     This function iterates through the header row and return given column name
-    index.
+    index. If not found then defaultPosition is returned instead.
     """
     headerRow = getHeaderRowPosition(sheetData)
     columnRow = sheetData[headerRow]
-    return columnRow.index(columnName)
+    try:
+        return columnRow.index(columnName)
+    except ValueError:
+        return defaultPosition
 
 
 def getRowPosition(sheetData, text, column):

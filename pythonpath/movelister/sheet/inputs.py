@@ -13,10 +13,10 @@ class Inputs:
         self.data = cursor.getSheetContent(self.sheet)
         self.headerRowIndex = helper.getHeaderRowPosition(self.data)
         self.dataBeginRow = self.headerRowIndex + 1
-        self.inputsColumnIndex = helper.getColumnPosition(self.data, 'Input List')
-        self.nameColumnIndex = helper.getColumnPosition(self.data, 'Input Name')
-        self.buttonColumnIndex = helper.getColumnPosition(self.data, 'Button')
-        self.colorColumnIndex = helper.getColumnPosition(self.data, 'Color')
+        self.inputsColumnIndex = helper.getColumnPosition(self.data, 'Input List', 0)
+        self.nameColumnIndex = helper.getColumnPosition(self.data, 'Input Name', 1)
+        self.buttonColumnIndex = helper.getColumnPosition(self.data, 'Button', 2)
+        self.colorColumnIndex = helper.getColumnPosition(self.data, 'Color', 3)
         self.dataHeader = self.data[self.headerRowIndex]
         self.dataRows = self.data[self.dataBeginRow:]
         self.inputColors = helper.getCellColorsFromColumn(

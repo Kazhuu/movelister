@@ -27,7 +27,9 @@ class DetailsIterator:
         try:
             modifiers = self.combinations.__next__()
             inputs = self.inputsSheet.getInputNames(self.currentAction.inputs)
-            return Detail(self.currentAction, inputs=inputs, modifiers=modifiers)
+            detail = Detail(self.currentAction, modifiers)
+            detail.inputs = inputs
+            return detail
         except StopIteration:
             try:
                 self.index = self.nextIndex()
@@ -35,7 +37,9 @@ class DetailsIterator:
                 self.index += 1
                 self.combinations = self.buildModifierCombinations(self.currentAction)
                 inputs = self.inputsSheet.getInputNames(self.currentAction.inputs)
-                return Detail(self.currentAction, inputs=inputs, modifiers=self.combinations.__next__())
+                detail = Detail(self.currentAction, self.combinations.__next__())
+                detail.inputs = inputs
+                return detail
             except IndexError:
                 raise StopIteration
 

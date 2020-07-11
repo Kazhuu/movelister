@@ -46,12 +46,12 @@ class Details:
         self.masterSheet = Master(MASTER_LIST_SHEET_NAME)
         self.sheet = Sheet.getByName(self.name)
         self.data = cursor.getSheetContent(self.sheet)
-        self.nameColumnIndex = helper.getColumnPosition(self.data, 'Action Name')
-        self.modifiersColumnIndex = helper.getColumnPosition(self.data, 'Modifiers')
-        self.inputToCompareColumnIndex = helper.getColumnPosition(self.data, 'Input to Compare')
-        self.notesIndex1 = helper.getColumnPosition(self.data, 'Notes 1')
-        self.notesIndex2 = helper.getColumnPosition(self.data, 'Notes 2')
-        self.notesIndex3 = helper.getColumnPosition(self.data, 'Notes 3')
+        self.nameColumnIndex = helper.getColumnPosition(self.data, 'Action Name', 0)
+        self.modifiersColumnIndex = helper.getColumnPosition(self.data, 'Modifiers', 1)
+        self.inputToCompareColumnIndex = helper.getColumnPosition(self.data, 'Input to Compare', 2)
+        self.notesIndex1 = helper.getColumnPosition(self.data, 'Notes 1', 3)
+        self.notesIndex2 = helper.getColumnPosition(self.data, 'Notes 2', 4)
+        self.notesIndex3 = helper.getColumnPosition(self.data, 'Notes 3', 5)
         self.dataRows = self._dataRows()
         self.details = self._readDetails()
 
@@ -116,10 +116,13 @@ class Details:
                     if line[2] not in phasesList:
                         phasesList[line[2]] = []
                     phasesList[line[2]].append(Result(line[cellNum], line[cellNum + 1], line[cellNum + 2]))
-        kwargs = {'inputs': inputList, 'phases': phasesList, 'notes': notesList}
-        kwargs['modifiers'] = self._parseModifiers(data[0][self.modifiersColumnIndex])
-        kwargs['action'] = self.masterSheet.findAction(self.viewName, data[0][self.nameColumnIndex])
-        return Detail(**kwargs)
+        modifiers = self._parseModifiers(data[0][self.modifiersColumnIndex])
+        action = self.masterSheet.findAction(self.viewName, data[0][self.nameColumnIndex])
+        detail = Detail(action, modifiers)
+        detail.inputs = inputList
+        detail.phases = phasesList
+        detail.notes = notesList
+        return detail
 
     def _parseModifiers(self, modifierCell):
         """

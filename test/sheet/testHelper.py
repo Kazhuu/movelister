@@ -41,10 +41,17 @@ class SheetHelperTestCase(OfficeTestCase):
 
     def testGetColumnPosition(self):
         """
-        This test checks if the Helper-function GetColumnPosition does what is advertised.
+        Test that getColumnPosition return correct column index.
         """
-        number = helper.getColumnPosition(self.master.data, 'Color')
+        number = helper.getColumnPosition(self.master.data, 'Color', 0)
         self.assertEqual(number, 3)
+
+    def testGetColumnPositionWithDefult(self):
+        """
+        Test that getColumnPosition return given default value when column index is not found.
+        """
+        number = helper.getColumnPosition(self.master.data, 'Cannot find', 10)
+        self.assertEqual(number, 10)
 
     def testNormalizeArray(self):
         """

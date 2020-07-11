@@ -16,11 +16,11 @@ class Master:
         self.data = cursor.getSheetContent(self.sheet)
         self.headerRowIndex = helper.getHeaderRowPosition(self.data)
         self.dataBeginRow = self.headerRowIndex + 1
-        self.viewColumnIndex = helper.getColumnPosition(self.data, 'View')
-        self.inputsColumnIndex = helper.getColumnPosition(self.data, 'Input List')
-        self.nameColumnIndex = helper.getColumnPosition(self.data, 'Action Name')
-        self.colorColumnIndex = helper.getColumnPosition(self.data, 'Color')
-        self.phaseColumnIndex = helper.getColumnPosition(self.data, 'Phases')
+        self.viewColumnIndex = helper.getColumnPosition(self.data, 'View', 0)
+        self.inputsColumnIndex = helper.getColumnPosition(self.data, 'Input List', 1)
+        self.nameColumnIndex = helper.getColumnPosition(self.data, 'Action Name', 2)
+        self.colorColumnIndex = helper.getColumnPosition(self.data, 'Color', 3)
+        self.phaseColumnIndex = helper.getColumnPosition(self.data, 'Phases', 4)
         self.dataHeader = self.data[self.headerRowIndex]
         self.dataRows = self.data[self.dataBeginRow:]
         self.actionColors = helper.getCellColorsFromColumn(

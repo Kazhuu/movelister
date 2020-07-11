@@ -27,3 +27,15 @@ class DetailsIteratorTestCase(OfficeTestCase):
         self.assertEqual(filteredDetails[0].modifiers, (Modifier('WPN1'),))
         self.assertEqual(filteredDetails[1].modifiers, (Modifier('WPN2'),))
         self.assertEqual(filteredDetails[2].modifiers, (Modifier('WPN1'), Modifier('WPN2')))
+
+    def testDetailsDoNotPointToSameData(self):
+        """
+        Test that details objects are individual and can be modified separately
+        without affecting one another. In other words do not point to same
+        underlying data.
+        """
+        details = list(DetailsIterator(self.actions))
+        self.assertIsNot(details[0].phases, details[1].phases)
+        self.assertIsNot(details[0].inputs, details[1].inputs)
+        self.assertIsNot(details[0].notes, details[1].notes)
+
