@@ -36,7 +36,11 @@ class Master:
         return actionList
 
     def findAction(self, view, name):
-        return self.actions[view][name]
+        """
+        Find Action instance with given view name and action name from current Master sheet actions.
+        If not found None is returned.
+        """
+        return self.actions[view].get(name, None)
 
     def getOverviewName(self):
         """

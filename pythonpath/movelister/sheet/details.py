@@ -80,8 +80,11 @@ class Details:
                 currentName = row[self.nameColumnIndex]
                 currentMod = row[self.modifiersColumnIndex]
                 if tempArray != []:
-                    details.append(self._parseArrayIntoDetail(tempArray))
+                    detail = self._parseArrayIntoDetail(tempArray)
                     tempArray = []
+                    if not detail:
+                        continue
+                    details.append(detail)
             tempArray.append(row)
         return details
 
@@ -118,6 +121,9 @@ class Details:
                     phasesList[line[2]].append(Result(line[cellNum], line[cellNum + 1], line[cellNum + 2]))
         modifiers = self._parseModifiers(data[0][self.modifiersColumnIndex])
         action = self.masterSheet.findAction(self.viewName, data[0][self.nameColumnIndex])
+        # If Action instance was not found then user must have removed it.
+        if not action:
+            return None
         detail = Detail(action, modifiers)
         detail.inputs = inputList
         detail.phases = phasesList

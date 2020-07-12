@@ -22,12 +22,12 @@ class OverviewFormatter:
     def __init__(self, overview):
         self.instance = overview
 
-    def generate(self):
+    def generate(self, overviewSheetPosition):
         """
-        Generate new Overview sheet by copying template sheet and placing
-        formatted Overview class instance data in it.
+        Generate new Overview sheet by copying template sheet to given position
+        and placing formatted Overview class instance data in it.
         """
-        sheet = Sheet.newOverview(self.instance.name)
+        sheet = Sheet.newOverview(self.instance.name, overviewSheetPosition)
         cursor.setSheetContent(sheet, self.format())
         return sheet
 

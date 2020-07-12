@@ -56,6 +56,6 @@ class SheetTestCase(OfficeTestCase):
     def testNewOverview(self):
         name = 'test'
         overviewName = names.getOverviewName(name)
-        sheet = Sheet.newOverview(overviewName)
+        sheet = Sheet.newOverview(overviewName, 0)
         self.assertEqual(sheet.Name, overviewName)
         self.assertTrue(overviewName in Sheet.getSheetNames())
