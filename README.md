@@ -33,16 +33,6 @@ issues before first release.**
 ## TODO Before Release
 
 * Action color column is not used from Master List sheet.
-* When generating Overviews and Details for multiple views newly added are not
-    added consistently, instead their position jumps around.
-* When generating Detail sheets for multiple views, number of phase columns for
-    master sheet is taken from maximum number among all views from Master sheet.
-    Meaning if view 1 has maximum 2 phases and view 2 has maximum 3 phases. Both
-    generated Details for view 1 and view 2 has 3 phases even view 1 is supposed
-    to have only 2 phase columns.
-* Also relating to above when action is multiplied in Overview for example wpn1
-    two times with 2 phases. Generated Details will have 4 phase columns instead
-    of 2.
 * When generating multiple Details for different views named ranges are only
     valid for the previous generated Details sheet. Previous named ranges are
     all deleted.
