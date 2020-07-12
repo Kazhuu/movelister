@@ -6,10 +6,8 @@ from movelister.core.context import Context
 OVERVIEW_TEMPLATE_NAME = 'Overview Template'
 DETAILS_TEMPLATE_NAME = 'Details Template'
 
-OVERVIEW_SHEET_NAME = 'Overview'
 MASTER_LIST_SHEET_NAME = 'Master List'
 INPUT_LIST_SHEET_NAME = 'Inputs'
-DETAILS_SHEET_NAME = 'Details'
 MODIFIER_LIST_SHEET_NAME = 'Modifiers'
 RESULT_LIST_SHEET_NAME = 'Results'
 ABOUT_SHEET_NAME = 'About'
@@ -22,20 +20,12 @@ class Sheet():
     """
 
     @classmethod
-    def getOverviewSheet(cls):
-        return Context.getDocument().Sheets.getByName(OVERVIEW_SHEET_NAME)
-
-    @classmethod
     def getMasterSheet(cls):
         return Context.getDocument().Sheets.getByName(MASTER_LIST_SHEET_NAME)
 
     @classmethod
     def getInputSheet(cls):
         return Context.getDocument().Sheets.getByName(INPUT_LIST_SHEET_NAME)
-
-    @classmethod
-    def getDetailsSheet(cls):
-        return Context.getDocument().Sheets.getByName(DETAILS_SHEET_NAME)
 
     @classmethod
     def getModifierSheet(cls):
@@ -105,15 +95,14 @@ class Sheet():
         return cls.newSheet(newName, position)
 
     @classmethod
-    def newOverview(cls, name):
+    def newOverview(cls, name, position):
         """
-        Insert new Overview sheet with given name right of Master sheet.
-        Returns created sheet.
+        Insert new Overview sheet with given name to the given position.
+        Returns created sheet UNO object.
 
         Sheet with given name must not exist, otherwise RuntimeException is
         raised.
         """
-        position = cls.getPosition(MASTER_LIST_SHEET_NAME) + 1
         Context.getDocument().Sheets.copyByName(OVERVIEW_TEMPLATE_NAME, name, position)
         return cls.getByPosition(position)
 
@@ -131,8 +120,15 @@ class Sheet():
 
     @classmethod
     def getPosition(cls, name):
+        """
+        Document can contain many sheets. Return index of the sheet with given
+        name. If not found None is returned instead.
+        """
         sheets = cls.getSheetNames()
-        return sheets.index(name)
+        try:
+            return sheets.index(name)
+        except ValueError:
+            return None
 
     @classmethod
     def getSheetNames(cls):

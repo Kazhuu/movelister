@@ -127,11 +127,16 @@ def updateOverview(*args):
 
     newOverview = UpdateOverview.update(oldOverview, viewName)
 
+    # Place new overview sheet on the same position as the previous one. If previous one
+    # does not exist, then place if right of the master sheet instead.
+    position = Sheet.getPosition(overviewSheetName)
+    if not position:
+        position = Sheet.getPosition(MASTER_LIST_SHEET_NAME) + 1
     # Delete old sheet if exist.
     Sheet.deleteSheetByName(overviewSheetName)
     # Generate a new one.
     formatter = OverviewFormatter(newOverview)
-    unoOverviewSheet = formatter.generate()
+    unoOverviewSheet = formatter.generate(position)
     # Make columns width optimal.
     length = cursor.getColumnLength(unoOverviewSheet)
     format.setOptimalWidthToRange(unoOverviewSheet, 0, length)
@@ -145,4 +150,5 @@ def updateOverview(*args):
 # Run this when executed from the command line.
 if __name__ == '__main__':
     Context.setup(host='localhost', port=2002)
-    updateDetails(activeSheet='Overview (Default)')
+    # updateDetails(activeSheet='Overview (Default)')
+    updateOverview()
