@@ -36,9 +36,6 @@ issues before first release.**
 * When generating multiple Details for different views named ranges are only
     valid for the previous generated Details sheet. Previous named ranges are
     all deleted.
-* When giving Actions to Master List with the same name. Action lines are copied
-    in Overview sheet but are unique in Details sheet. Actions with the same
-    name should only be generated once in Overview sheet too, not copied.
 * Details sheet is missing coloring on some columns when entering result data.
     This is because conditional formatting is places by hand and not programmatically
     when Details sheet is generated.

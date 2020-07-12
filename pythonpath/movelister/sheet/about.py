@@ -18,19 +18,16 @@ class About:
             self.sheet, 1, self.dataBeginRow, len(self.data)
         )
 
-    def getShowEntriesAscendingOption(self):
+    def isShowEntriesAscendingOn(self):
         cell = self.sheet.getCellByPosition(1, self.showEntriesAscendingIndex)
-        if cell.getString() == 'x':
-            return True
-        else:
-            return False
-
-    def getGenerateNamedRangesOption(self):
-        cell = self.sheet.getCellByPosition(1, self.generateNamedRangesIndex)
         if cell.getString():
             return True
         else:
             return False
 
-    def _isValidRow(self, row):
-        return row[self.nameColumnIndex] != ''
+    def isGenerateNamedRangesOn(self):
+        cell = self.sheet.getCellByPosition(1, self.generateNamedRangesIndex)
+        if cell.getString():
+            return True
+        else:
+            return False

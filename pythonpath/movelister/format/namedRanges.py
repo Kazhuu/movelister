@@ -53,7 +53,8 @@ def deleteNamedRanges(namedRanges):
     A function that deletes all named ranges in a document. Probably useful to
     invoke whenever code deletes a sheet with named ranges from the document.
     """
-    for item in namedRanges.getElementNames():
+    namedRangesList = namedRanges.getElementNames()
+    for item in namedRangesList:
         namedRanges.removeByName(item)
 
 

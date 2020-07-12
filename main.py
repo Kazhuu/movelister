@@ -48,7 +48,8 @@ from movelister.sheet.inputs import Inputs # noqa
 from movelister.sheet.master import Master # noqa
 from movelister.sheet.modifiers import Modifiers # noqa
 from movelister.sheet.overview import Overview # noqa
-from movelister.sheet.sheet import Sheet, MASTER_LIST_SHEET_NAME, MODIFIER_LIST_SHEET_NAME # noqa
+from movelister.sheet.sheet import Sheet, MASTER_LIST_SHEET_NAME # noqa
+from movelister.sheet.sheet import MODIFIER_LIST_SHEET_NAME, ABOUT_SHEET_NAME# noqa
 from movelister.ui import message_box  # noqa
 
 # Setup context automatically when macro is run from the LibreOffice.
@@ -92,8 +93,8 @@ def updateDetails(*args, **kwargs):
     # Generate data validation.
     validation.setDataValidationToDetailsSheet(unoDetailsSheet, viewName)
     # Generate named ranges.
-    about = About('About')
-    if About.getGenerateNamedRangesOption(about) == True:
+    about = About(ABOUT_SHEET_NAME)
+    if about.isGenerateNamedRangesOn():
         namedRanges.createNamedRangesToSheet(unoDetailsSheet, 0)
     # Set new sheet as currently active sheet.
     helper.setActiveSheet(unoDetailsSheet)
@@ -150,5 +151,4 @@ def updateOverview(*args):
 # Run this when executed from the command line.
 if __name__ == '__main__':
     Context.setup(host='localhost', port=2002)
-    # updateDetails(activeSheet='Overview (Default)')
-    updateOverview()
+    updateDetails(activeSheet='Overview (Default)')

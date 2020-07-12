@@ -1,6 +1,7 @@
 import re
 from movelister.core import cursor
 from movelister.sheet.about import About
+from movelister.sheet.sheet import ABOUT_SHEET_NAME
 
 
 def setDataValidationToColumn(sheet, column, lastRow, name, type):
@@ -17,8 +18,8 @@ def setDataValidationToColumn(sheet, column, lastRow, name, type):
     validation = range.Validation
 
     # Get relevant options from the About-screen.
-    about = About('About')
-    showEntriesAscendingOption = About.getShowEntriesAscendingOption(about)
+    about = About(ABOUT_SHEET_NAME)
+    showEntriesAscendingOption = about.isShowEntriesAscendingOn()
 
     if type == "phase":
         validation.Type = 2
