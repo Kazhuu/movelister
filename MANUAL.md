@@ -32,16 +32,84 @@ Download it and rename it to something more useful, like the name of the game yo
 Note: only open LibreOffice Calc-sheets with macros from sources you trust, since macros can contain all sorts of dubious code. Hopefully future versions will have a solution regarding this.
 
 
-## The first steps of using Movelister:
+## The first steps of using Movelister - Master List
 
-* write down Actions (or other type of states you want to test and make notes of) in the Master List.
-* add Inputs to test the Actions with in the Inputs-sheet.
-* generate an Overview using the button in the Master List.
-* adjust any details in Overview. Put 'x' in the DEF column for each Action (if you're not using any other Modifiers), then press the "Generate Details"-button to generate a Details-view with the selected Actions.
-* Once you have generated a Details-view, you can start doing detailed mechanics notes.
+When you first open a Movelister-template, it's almost empty of data. So, how to get started using it?
+
+First, you should list all the Actions that you want to make notes of in the Master List. In this context, Action usually means character actions such as attacking or jumping, but on a broader scale it could mean other types of in-game "states" too, such as different states of a menu.
+
+Write down the different Actions in the Action Name-column. Give each Action a compact yet unique name. Optionally, if you want to write a longer name, description or notes about any Action, feel free to use the columns Full Name, Description and Notes 1, Notes 2 and Notes 3 for that purpose.
+
+As for the View and Input List columns, if you just want to get started quickly, feel free to leave them as "Default" for now.
+
+The View-column allows you to split Actions and their mechanics notes into separate groups. For instance, if a game has multiple playable characters, you could give the Actions of each playable character their own View. Movelister can then generate a separate Overview and Details-sheet based on the unique View-names.
+
+The Input List-column indicates which Input List you want to test each Action with. This information is used in the Details-view a bit later on.
+
+Phases-column indicates the complexity of an Action. In fighting game terms, your usual punch animation could have a start-up, active phase and recovery, which would make it 3 Phases. The amount of Phases has some relevance later on when generating a Details-view. If you don't want to fiddle with it too much, feel free to give every Action 3 or 4 Phases, that should be enough for most purposes.
+
+ 
+Picture 1: Master List with five Actions.
+
+![1](./images/1.PNG?raw=true "Picture 1: Master List with five Actions.")
 
 
-However, to make the most out of Movelister, it helps to understand even more of its functionality, especially Modifiers. Following examples attempt to illustrate situations where Modifiers could be helpful.
+## The first steps of using Movelister - Inputs
+
+You manage both Inputs and Input Lists from the Inputs-sheet.
+
+Another early step when starting to use Movelister is to list all the relevant Inputs from the game you're making mechanics notes of. While playing the game, pay attention to which Inputs cause changes in character state, then add them to the Input Name-column. It can also be relevant to list some level design elements like water or slippery floor in here too, as they can also cause changes in character state.
+
+Give each Input a compact but unique name. Optionally, you can write down which button corresponds to this Input in the Button-column next to it.
+
+You can group the various Inputs with the Input List-column. If you just want to get started quickly, feel free to leave all the Inputs as "Default". Just keep in mind that it is possible to use different Input Lists for different Actions. For instance, you could make a separate, simplified "Water" Input List for swimming sections so that the mechanics notes for swimming actions will be shorter to read.
+
+Picture 2: The default Input List of Movelister.
+
+![2](./images/2.PNG?raw=true "Picture 2: The default Input List of Movelister.")
+
+
+## The first steps of using Movelister - Overview pt. 1
+
+Once you have added at least some Actions and Inputs, the next step is generating an Overview. Write the name of some View in the cell C1 in Master List, then press the button to the right to generate an Overview.
+
+So, what is an Overview? You could think of it as a slightly more zoomed-in look at the various Actions that you have listed. Most of the basic info in this sheet is generated based on the info in both Master List and Modifers (which we'll get to later) and shouldn't be modified by hand.
+
+Using the Hit-, Frames- and Notes-columns is optional. The user can indicate which Phase of an Action is "active" and reacts to targets using the Hit-column. Frames-column can be used to list frame data, if needed. And once again, some freeform notes can be written in the Notes-columns.
+
+The most interesting feature of the Overview is the ability to manage Modifiers. Any Modifiers you add in the Modifiers-sheet will also be generated into the Overview upon refreshing it (using the left button). Modifers are an advanced feature of the program you can leave for later if you wish.
+
+The DEF-column is short for "Default". You can use it to generate a vanilla version of an Action in the Details-view without any set up, so it can be helpful for quick testing. Note that every Action you want to generate more detailed notes of needs to have a mark on either DEF or one of the other Modifier-columns, so make sure to leave 'x' or another mark on every Action you want to generate.
+
+
+Picture 3: A generated Overview with no Modifiers yet.
+
+![3](./images/3.PNG?raw=true "Picture 3: A generated Overview with no Modifiers yet.")
+
+
+## The first steps of using Movelister - Details
+
+Once you're done, press the right button in the Overview to generate a Details-sheet using the data in the Master List, the current Overview, Inputs-sheet and the previous Details-sheet (if one exists).
+
+Details is the most zoomed-in view for the various Actions, and it's here where you finally write mechanics notes for them. The first three columns Action Name, Modifiers and Input to Compare are automatically filled by Movelister, so don't try to change them by hand.
+
+You write the mechanics notes to columns D and onward. Every three columns, for instance D, E and F, signifies a single Phase of an Action. The Phases are laid out horizontally like this so that you can pay attention to how the rules of an Action change as it progresses. For instance: in many fighting games the recovery or cooldown at the end of an attack has more lenient cancel rules than the previous Phases. Since all of the Action's different Phases can have different rules, they're necessary to list separately like this if you want to be truly systematic about it.
+
+As mentioned, there are three columns reserved for each Phase. The first of these columns holds a Result - it essentially means whether an input cancels, buffers, does nothing, etc. when used during an action - and the column also has a data validation with listed Results in Results-sheet. The purpose of the data validation is that it creates a drop-down menu, allowing you to add data to the mechanics notes faster.
+
+The second column holds the name of an Action. If some input would, for example, cancel an Action, you can use this column to indicate what the next Action will be. This column also has a data validation to make creating notes faster.
+
+The third column holds the name of any Modifiers that are a part of the Action. It can also be used to clarify what an Action will become after a specific Input.
+
+Note: Movelister always generates Phase 0 for all Actions. This should be reserved for simultaneous input tests. For instance, what happens if you simultaneously do a punch and block in some fighting game. Sometimes even this type of results can cause glitches and should be kept track of.
+
+
+Picture 4: Details-sheet after generation.
+
+![4](./images/3.PNG?raw=true "Picture 4: Details-sheet after generation.")
+
+
+At this point, you can use Movelister to generate sheets of Actions and Inputs for creating basic mechanics notes. However, to make the most out of Movelister, it helps to understand even more of its functionality, especially Modifiers. Following examples attempt to illustrate situations where Modifiers could be helpful.
 
 
 ### Case example 1:
@@ -76,32 +144,35 @@ The following sections relate more info about how the individual sheets in Movel
 
 ## Master List
 
-This is the sheet where you list all the Actions, animations or other states that you want to make notes of. It has one button; pressing it will generate a new Overview based on the View-name that you've written in the cell C1.
+This is the sheet where you list all the Actions or other states that you want to make notes of. It has only one button; pressing it will generate a new Overview based on the View-name that you've written in the cell C1.
+
+Note: if you want to rename an Action without a potential loss of data, so far you have to manually find and replace text around the file.
+
 
 Explanation of various columns:
 
-* View: this column tells the program what View you want to put your notes in. If you just want to get started quickly, feel free to leave everything in this column as Default. An advanced user might want to create more than one View to, for instance, create a separate notes sheet for multiple playable characters.
+* View: this column tells the program which View you want to put your notes in. If you just want to get started quickly, feel free to leave everything in this column as Default. An advanced user might want to create more than one View to, for instance, create a separate notes sheet for multiple playable characters.
 
-* Input List: this column tells the program what Input List will be used for an Action when generating a Details-view. Again, if you just want to get started quickly, feel free to leave everything as Default. An advanced user could give, f.e. swimming animations a different, simplified Input List to make their mechanics notes shorter and easier to maintain.
+* Input List: this column tells the program what Input List will be used for an Action when generating a Details-view. If you just want to get started quickly, feel free to leave everything as Default. An advanced user could give, f.e. swimming animations a different, simplified Input List to make water action mechanics notes shorter and easier to maintain.
 
-* Action Name: this column is where you name a given Action. Note that LibreOffice Uno does not differentiate between lower-case and capitalised letters, so create a naming convention that does not rely on caps.
+* Action Name: this column is where you name a given Action. Note that LibreOffice Uno does not differentiate between lower-case and capitalised letters, so use a naming convention that does not rely on caps.
 
 * Color: you can optionally give an Action some color for visual flair. This color will be added to a table in Details-sheet. (TODO: or at least it will be in some future version of this program.)
 
 * Phases: You can note how many different Phases an Action has in the Phases column. For instance, in typical fighting game terms, an attack could have startup, active and recovery - three different Phases. A more complex Action could have even more Phases. From the point of view of mechanics notes, each of these Phases could have unique rules too, and so the wideness of the Details-view will change depending on what is the maximum number of Phases on this column. The number of Phases also adds multiple Rows for an Action in the Overview-sheet to give more precision in setting Modifiers.
 
-* Full Name: you can add the official / full name for an Action here, if there exists one, if you feel it makes the sheet easier to read. It's basically an optional column for the benefit of the user.
+* Full Name: optionally, you can add the official / full name for an Action here, if there exists one, if you feel it makes the sheet easier to read.
 
-* Description: you can add a short description of the Action, if you want. This column is also optional.
+* Description: optionally, you can add a short description of the Action.
 
-* Notes 1: you can write some Notes here. These three columns are also optional.
+* Notes 1: optionally, you can write some freeform Notes here.
 
 
 ## Overview
 
-This is a generated, named sheet which lists all Actions of a given View. It's a more in-depth view of Actions where you can adjust how they are generated into a Details-view, where the actual mechanics notes creation happens.
+This is a generated, named sheet which lists all Actions of a given View. It's a more in-depth view of Actions where you can adjust how they are generated into a Details-sheet, which is where the actual mechanics notes writing happens.
 
-It has two buttons. First button refreshes the Overview. You should always refresh if you've added Actions to the Master List or changed Modifiers in the Modifier-sheet. Second button generates a Details-view with all the Actions listed in the Overview according to the given settings.
+An Overview has two buttons. First button refreshes the Overview. You should always refresh if you've added Actions to the Master List or changed Modifiers in the Modifier-sheet. Second button generates a Details-view with all the Actions listed in the Overview according to the given settings.
 
 Explanation of various columns:
 
@@ -113,16 +184,16 @@ Explanation of various columns:
 
 * Phase: this column indicates which Phase the current row of the Action is on.
 
-* DEF: this column is short for "Default". If you want to ignore Movelister's more advanced features with Modifiers and just get to making your notes quickly, you can put an 'x' here to indicate that you want to generate a version of this Action without any other properties in the Details-view. Note that all Actions need to have an 'x' on either this or following Modifier-columns to be generated in the Details-view at all.
+* DEF: this column is short for "Default". If you want to ignore Movelister's more advanced features with Modifiers and just get to making your notes quickly, you can put an 'x' or another mark here to indicate that you want to generate a vanilla version of this Action in the Details-view. Note that all Actions need to have a mark on either this or following Modifier-columns to be generated in the Details-view at all.
 
-* (Other Modifier columns): these columns appear once you have added any Modifiers in the Modifiers-sheet and then refresh Overview. You can indicate which Actions and Phases are compatible with a Modifier by adding an 'x' on its column. This impacts how the Action is generated in the Details-sheet as well. By default, all Modifiers that are marked with 'x' combine with each other, resulting in a ton of variations for a single Action, so be careful with adding too many 'x' before you create some filters in the Modifiers-sheet, otherwise you may end up generating a massive Details-sheet by accident (which takes ages).
+* (Other Modifier columns): these columns appear once you have added any Modifiers in the Modifiers-sheet and then refresh Overview. You can indicate which Actions and Phases are compatible with a Modifier by adding an 'x' or another mark on its column. This impacts how the Action is generated in the Details-sheet as well. By default, all Modifiers that are marked with 'x' combine with each other, resulting in a ton of variations for a single Action, so be careful with adding too many 'x' before you create some filters in the Modifiers-sheet, otherwise you may end up generating a massive Details-sheet by accident (which takes ages).
 
-* Notes 1: once again, you can make some freeform Notes in the final columns.
+* Notes 1: optionally, you can make some freeform Notes in the final columns.
 
 
 ## Details
 
-This is a generated, named sheet that also serves as the most in-depth view for Actions in some View. Here the Action is compared against the Input List specified in the Master List and the user can finally get on to creating those mechanics notes.
+This is a generated, named sheet that also serves as the most in-depth view for Actions in a View. Here the Action is compared against the Input List specified in the Master List and Inputs-sheet and the user can finally get on to creating those mechanics notes.
 
 * Action Name: the name of the Action, as it was written in the Master List.
 
@@ -133,10 +204,9 @@ This is a generated, named sheet that also serves as the most in-depth view for 
 * Phase Columns: this is the area for the mechanics notes themselves. Each Phase has three columns reserved for it. The first column should feature a Result (listed in the Results-sheet) indicating if the move is cancelled, buffered, etc. by the Input. The second column features an Action name, indicating which is the new Action (if any) that follows the Input. Third column optionally features a Modifier, in case the new Action has one. To make writing notes easier, each of the columns also has relevant data validation, allowing the user to browse for relevant Results, Actions or Modifiers quickly.
 
 
-
 ## Inputs
 
-This is a sheet where you list all the Inputs that you want to test game states with. In a typical workflow the user gets started on a decent Input List before generating Details, but it's possible to add more Inputs later on as well.
+This is a sheet where you list all the Inputs that you want to test game states with. In a typical workflow the user gets started on a decent Input List before generating Details, but it's possible to add more Inputs at any point later on as well.
 
 Note: if you want to rename an Input without a potential loss of data, so far you have to manually find and replace text around the file. Same is true for the various Actions as well.
 
