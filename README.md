@@ -305,16 +305,18 @@ file also need to be edited to include paths of added files. If path is missing
 then LibreOffice will not find the file. All Python files need to be placed
 under `Scripts/python` subfolder of the document.
 
-To automate above process project includes Python code under `scripts` folder.
-To make a release document run
+To automate above process project has a script `scripts/update_document.py`
+which takes a document file as an argument. Given document will be packed with
+current Movelister sources and its manifest.xml modified to include them. If
+document already has Python sources they will be replaced with newer ones
+instead. In other words you can update your game notes to use newer Movelister
+version without losing your data.
+
+For example to update sources on project's Movelister template run
 
 ```
-python scripts/make_release.py
+python scripts/update_document.py templates/movelister.ods
 ```
-
-This will update LibreOffice document at `templates/movelister.ods`
-to include latest source files. After this document is ready to use Movelister
-template for your game.
 
 ## Resources
 

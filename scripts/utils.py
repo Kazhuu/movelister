@@ -13,8 +13,6 @@ from pathlib import Path
 # Project related paths.
 PROJECT_ROOT_FOLDER = str(Path(os.path.dirname(os.path.realpath(__file__))).parent)
 PROJECT_SOURCE_FILES_FOLDER = os.path.join(PROJECT_ROOT_FOLDER, 'pythonpath', 'movelister')
-PROJECT_TEMPLATE_FOLDER = os.path.join(PROJECT_ROOT_FOLDER, 'templates')
-RELEASE_DOCUMENT = os.path.join(PROJECT_TEMPLATE_FOLDER, 'movelister.ods')
 
 # Handled document files.
 DOCUMENT_SCRIPTS_FOLDER = 'Scripts/'
@@ -25,6 +23,18 @@ DOCUMENT_MANIFEST_PATH = 'META-INF/manifest.xml'
 # added. Will match manifest.xml file and all Python source files under
 # 'Scripts' folder.
 OLD_FILE_PATTERN = re.compile(r'(^Scripts|^META-INF\/manifest\.xml$)')
+
+def isValidLibreOfficeFile(file_path):
+    """
+    Return true if given file is valid LibreOffice ods file containing
+    manifest.xml, false otherwise.
+    """
+    try:
+        with zipfile.ZipFile(file_path, 'a') as open_document:
+            open_document.open(DOCUMENT_MANIFEST_PATH)
+        return True
+    except KeyError:
+        return False
 
 
 def collect_project_source_files():
