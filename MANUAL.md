@@ -58,7 +58,7 @@ Picture 1: Master List with five Actions.
 
 You manage both Inputs and Input Lists from the Inputs-sheet.
 
-Another early step when starting to use Movelister is to list all the relevant Inputs from the game you're making mechanics notes of. While playing the game, pay attention to which Inputs cause changes in character state, then add them to the Input Name-column. It can also be relevant to list some level design elements like water or slippery floor in here too, as they can also cause changes in character state.
+Another early step when starting to use Movelister is to list all the relevant Inputs from the game you're making mechanics notes of. While playing the game, pay attention to which Inputs cause changes in character state, then add them to the Input Name-column. It can be relevant to list some level design elements like water in here too, as they can also cause changes in character state.
 
 Give each Input a compact but unique name. Optionally, you can write down which button corresponds to this Input in the Button-column next to it.
 
@@ -73,7 +73,7 @@ Picture 2: The default Input List of Movelister.
 
 Once you have added at least some Actions and Inputs, the next step is generating an Overview. Write the name of some View in the cell C1 in Master List, then press the button to the right to generate an Overview.
 
-So, what is an Overview? You could think of it as a slightly more zoomed-in look at the various Actions that you have listed. Most of the basic info in this sheet is generated based on the info in both Master List and Modifers (which we'll get to later) and shouldn't be modified by hand.
+So, what is an Overview? You could think of it as a slightly more zoomed-in look at the various Actions that you have listed. Most of the basic info in this sheet is generated based on the info in both Master List and Modifiers (which we'll get to later) and shouldn't be edited by hand.
 
 Using the Hit-, Frames- and Notes-columns is optional. The user can indicate which Phase of an Action is "active" and reacts to targets using the Hit-column. Frames-column can be used to list frame data, if needed. And once again, some freeform notes can be written in the Notes-columns.
 
@@ -95,7 +95,7 @@ Details is the most zoomed-in view for the various Actions, and it's here where 
 
 You write the mechanics notes to columns D and onward. Every three columns, for instance D, E and F, signifies a single Phase of an Action. The Phases are laid out horizontally like this so that you can pay attention to how the rules of an Action change as it progresses. For instance: in many fighting games the recovery or cooldown at the end of an attack has more lenient cancel rules than the previous Phases. Since all of the Action's different Phases can have different rules, they're necessary to list separately like this if you want to be truly systematic about it.
 
-As mentioned, there are three columns reserved for each Phase. The first of these columns holds a Result - it essentially means whether an input cancels, buffers, does nothing, etc. when used during an action - and the column also has a data validation with listed Results in Results-sheet. The purpose of the data validation is that it creates a drop-down menu, allowing you to add data to the mechanics notes faster.
+As mentioned, there are three columns reserved for each Phase. The first of these columns holds a Result - it essentially means whether an input cancels, buffers, does nothing, etc. when used during an action - and the column also has a data validation with listed Results in Results-sheet. The purpose of the data validation is that it creates a drop-down menu for the user, allowing them to add data to the mechanics notes faster.
 
 The second column holds the name of an Action. If some input would, for example, cancel an Action, you can use this column to indicate what the next Action will be. This column also has a data validation to make creating notes faster.
 
@@ -106,10 +106,12 @@ Note: Movelister always generates Phase 0 for all Actions. This should be reserv
 
 Picture 4: Details-sheet after generation.
 
-![4](./images/3.PNG?raw=true "Picture 4: Details-sheet after generation.")
+![4](./images/4.PNG?raw=true "Picture 4: Details-sheet after generation.")
 
 
 At this point, you can use Movelister to generate sheets of Actions and Inputs for creating basic mechanics notes. However, to make the most out of Movelister, it helps to understand even more of its functionality, especially Modifiers. Following examples attempt to illustrate situations where Modifiers could be helpful.
+
+(Note: this section will be expanded and made more detailed in the future.)
 
 
 ### Case example 1:
