@@ -20,11 +20,13 @@ from unohelper import fileUrlToSystemPath
 # when macros are part of the system files and from LibreOffice when movelister
 # source files are packed inside LibreOffice document for release.
 if __name__ == '__main__':
-        sys.path.append(os.path.join(os.path.dirname('__file__'), 'pythonpath'))
+    sys.path.append(os.path.join(os.path.dirname('__file__'), 'pythonpath'))
 elif __name__ == 'ooo_script_framework': # Name when executed from LibreOffice.
-        doc = XSCRIPTCONTEXT.getDocument()
-        url = fileUrlToSystemPath('{}/{}'.format(doc.URL,'Scripts/python/pythonpath'))
-        sys.path.insert(0, url)
+    # When executed from LibreOffice, add Python files inside to the document
+    # be part of the system path so they can be imported normally.
+    doc = XSCRIPTCONTEXT.getDocument()
+    url = fileUrlToSystemPath('{}/{}'.format(doc.URL,'Scripts/python/pythonpath'))
+    sys.path.insert(0, url)
 
 # TODO: Remove imports we don't use anymore.
 from movelister import error, selection  # noqa
@@ -83,16 +85,18 @@ def updateDetails(*args, **kwargs):
     # Delete previous details sheet and generate a new one.
     Sheet.deleteSheetByName(detailsSheetName)
     formatter = DetailsFormatter(newDetails, parentOverview)
-    detailsSheet = formatter.generate()
+    unoDetailsSheet = formatter.generate()
     # Make columns width optimal.
-    length = cursor.getColumnLength(detailsSheet)
-    format.setOptimalWidthToRange(detailsSheet, 0, length)
+    length = cursor.getColumnLength(unoDetailsSheet)
+    format.setOptimalWidthToRange(unoDetailsSheet, 0, length)
     # Generate data validation.
-    validation.setDataValidationToDetailsSheet(detailsSheet, viewName)
+    validation.setDataValidationToDetailsSheet(unoDetailsSheet, viewName)
     # Generate named ranges.
     about = About('About')
     if About.getGenerateNamedRangesOption(about) == True:
-        namedRanges.createNamedRangesToSheet(detailsSheet, 0)
+        namedRanges.createNamedRangesToSheet(unoDetailsSheet, 0)
+    # Set new sheet as currently active sheet.
+    helper.setActiveSheet(unoDetailsSheet)
 
 
 def updateOverview(*args):
@@ -127,13 +131,15 @@ def updateOverview(*args):
     Sheet.deleteSheetByName(overviewSheetName)
     # Generate a new one.
     formatter = OverviewFormatter(newOverview)
-    overviewSheet = formatter.generate()
+    unoOverviewSheet = formatter.generate()
     # Make columns width optimal.
-    length = cursor.getColumnLength(overviewSheet)
-    format.setOptimalWidthToRange(overviewSheet, 0, length)
+    length = cursor.getColumnLength(unoOverviewSheet)
+    format.setOptimalWidthToRange(unoOverviewSheet, 0, length)
     # Fix sheet colors.
     formatter.setOverviewModifierColors(overviewSheetName)
     formatter.setOverviewActionColors(overviewSheetName)
+    # Set new sheet as currently active sheet.
+    helper.setActiveSheet(unoOverviewSheet)
 
 
 # Run this when executed from the command line.

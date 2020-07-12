@@ -10,6 +10,14 @@ def getActiveSheetName():
     return activeSheet.getName()
 
 
+def setActiveSheet(unoSheet):
+    """
+    Set currently active sheet to given UNO object presenting sheet.
+    """
+    document = Context.getDocument()
+    document.getCurrentController().setActiveSheet(unoSheet)
+
+
 def getHeaderRowPosition(sheetData):
     """
     This function figures out at what position the header row is. This may vary
