@@ -109,12 +109,57 @@ Picture 4: Details-sheet after generation.
 ![4](./images/4.PNG?raw=true "Picture 4: Details-sheet after generation.")
 
 
-At this point, you can use Movelister to generate sheets of Actions and Inputs for creating basic mechanics notes. However, to make the most out of Movelister, it helps to understand even more of its functionality, especially Modifiers. Following examples attempt to illustrate situations where Modifiers could be helpful.
-
-(Note: this section will be expanded and made more detailed in the future.)
+At this point, you can use Movelister to generate sheets of Actions and Inputs for creating basic mechanics notes. However, to make the most out of Movelister, it helps to understand even more of its functionality, especially Modifiers.
 
 
-### Case example 1:
+## The first steps of using Movelister - Modifiers pt. 1
+
+Modifiers are a way to control how Actions are generated in the Details-view using boolean logic. The most common use for Modifiers would be to essentially "duplicate" Actions, for instance if there are several different variations of the same Action that you'd want to test separately.
+
+For example: imagine a third-person shooter that has a variety of arm-only Actions that overlap with movement skills such as jumping and crouching. If you wanted to list all the ways the arm-only Actions and movement Actions can overlap, you'd have to do it manually: "jump (reload), crouch (reload), jump (switch weapon), crouch (switch weapon)" and so on. But with Modifiers, you could create a Modifier of each arm-only animation, indicate in Overview-sheet which Actions are compatible with which arm-only animations with an 'x' (or similar marking) and then make a boolean logic filter that prevents impossible combinations from being generated. This way, you end up with all the different variations of a single Action that can realistically happen in-game without having to list them by hand.
+
+This is really only useful if you want to do systematic testing or model the very limits of a game's potential interactivity. Making lists like this by hand for modern games would be impractical or even impossible due to how many different combinations there can exist, especially if you take into account glitches, which usually increase the potential complexity of a game in ways even the developers can't predict.
+
+
+## The first steps of using Movelister - Modifiers pt. 2
+
+So, when you want to start adding some Modifiers to the sheet, add them to the Short Name-column. Give each Modifier a compact but unique name. Optionally, you can write a longer name to the Full Name-column or some notes about the Modifier to the Notes 1-column if you think it makes things a bit clearer. You can also give each Modifier a color using the Color-column. This is helpful if you need to visually group the different Modifiers, and it adds some flair to your notes as well.
+
+You should write any boolean logic formulas to the Filters-column. The row that you write the formula on doesn't matter - instead, you name which Modifier you want the formula to apply to in the formula itself.
+
+You can set which Modifiers sum with others with a more restrictive 'AND' operator using the Required-column. For instance, if you had a hack 'n' slash game where the character can wield three different weapons, and the character will always have only one of the weapons out at a time, you could create a xor-group for the weapons (example: xor(WPN1, WPN2, WPN3)) and then put a mark right next to the formula on the Required-column to ensure that every single generated Action will have one of these weapons and not a single Action is generated that does not have at least one weapon Modifier active.
+
+The later columns Required, Operators and Description are only there to show examples and describe the possible things you can do with Filters. They're not a part of Movelister's logic, per se.
+
+
+Picture 5: Modifier-sheet with three Modifiers and a Filter.
+
+![Example-1](./images/case-1-1.PNG?raw=true "Picture 5: Modifier-sheet with three Modifiers and a Filter.")
+
+
+## The first steps of using Movelister - Overview pt. 2
+
+After you have created the Modifiers you want, remember to refresh the current Overview you have by either using Master List or the left button of the Overview. Then add a mark on the newly created Modifier-columns on at least one of the Phases of an Action if you want the Modifier to apply to it.
+
+A word of warning: Movelister's Modifier-logic is by default very accepting. Normally all the different variations of an Action *will combine with each other*. So be careful not to set marks in the Overview-sheet too carelessly before setting some formulas culling down impossible variations or else you might end up generating a massive sheet by accident. If your project has 8+ Modifiers and some Action has all of them enabled and there are also no filters, you might end up generating hundreds of thousands of lines for just a single Action!
+
+Also, it can be helpful to test generating Details early and often and get the shape of the file ready before starting to write more detailed mechanics notes. Doing major changes to how Modifiers work later could result in a loss of data - Movelister is rather merciless in deleting lines it deems obsolete from the generated sheets.
+
+
+Picture 6: Overview-sheet where all compatible Actions are marked with 'x'.
+
+![Example-2](./images/case-1-2.PNG?raw=true "Picture 6: Overview-sheet where all compatible Actions are marked with 'x'.")
+
+
+Then, when you're done, generate Details again to create Actions based on the boolean logic of the Modifiers.
+
+
+Picture 7: The resulting output in the Details-sheet.
+
+![Example-3](./images/case-1-3.PNG?raw=true "Picture 7: The resulting output in the Details-sheet.")
+
+
+### The hack 'n' slash game example in more detail
 
 You are trying to make mechanics notes of a hack 'n' slash game where the character can wield three different weapons. Besides giving the character a different moveset, there's a chance that the currently active weapon also causes other subtle differences in the character mechanics, and you want to get to the bottom of it. In a case like this it's the best to make the three weapons into Modifiers. This way you can easily generate three different versions of any Action for testing these potential differences. Add three Modifiers (WPN1, WPN2, WPN3) in the Modifiers-sheet, refresh Overview, then indicate with 'x' which Actions are compatible with which Modifiers.
 
@@ -134,10 +179,6 @@ Picture 3: The resulting output in the Details-sheet.
 
 ![Example-3](./images/case-1-3.PNG?raw=true "Picture 3: The resulting output in the Details-sheet.")
 
-
-### Case example 2:
-
-You are trying to make mechanics notes of a third-person shooter that has a variety of arm-only Actions which overlap with movement skills such as jumping and crouching. Normally, if you wanted to list all the possible ways these Actions can overlap, you'd have to do it manually: "jump (reload), crouch (reload), jump (switch weapon), crouch (switch weapon)" and so on. But with Modifiers, you could create a Modifier of each arm-only animation, indicate in Overview-sheet which Actions are compatible with which Modifiers with an 'x' and then make a boolean logic filter that prevents impossible combinations of the modifiers from appearing in any Action.
 
 
 # The different sheets of Movelister
