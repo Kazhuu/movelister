@@ -33,9 +33,6 @@ issues before first release.**
 ## TODO Before Release
 
 * Action color column is not used from Master List sheet.
-* When generating multiple Details for different views named ranges are only
-    valid for the previous generated Details sheet. Previous named ranges are
-    all deleted.
 * Details sheet is missing coloring on some columns when entering result data.
     This is because conditional formatting is places by hand and not programmatically
     when Details sheet is generated.
