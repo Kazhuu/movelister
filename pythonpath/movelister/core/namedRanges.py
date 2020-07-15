@@ -26,7 +26,7 @@ class NamedRanges:
         Delete old named ranged related to this view.
         """
         namedRangesList = self.namedRanges.getElementNames()
-        pattern = re.compile(r'\(.+\)$')
+        pattern = re.compile(r'\(' + re.escape(self.viewName) + r'\)$')
         for name in namedRangesList:
             if pattern.search(name):
                 self.namedRanges.removeByName(name)

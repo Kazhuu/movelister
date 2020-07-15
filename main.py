@@ -30,10 +30,11 @@ elif __name__ == 'ooo_script_framework': # Name when executed from LibreOffice.
 
 # TODO: Remove imports we don't use anymore.
 from movelister import error, selection  # noqa
-from movelister.core import cursor, names  # noqa
+from movelister.core import cursor, names # noqa
+from movelister.core.namedRanges import NamedRanges
 from movelister.core.alignment import HorizontalAlignment, VerticalAlignment # noqa
 from movelister.core.context import Context # noqa
-from movelister.format import action, color, convert, format, namedRanges, overview, validation # noqa
+from movelister.format import action, color, convert, format, overview, validation # noqa
 from movelister.format.details import DetailsFormatter # noqa
 from movelister.format.overview import OverviewFormatter # noqa
 from movelister.model.action import Action # noqa
@@ -95,7 +96,7 @@ def updateDetails(*args, **kwargs):
     # Generate named ranges.
     about = About(ABOUT_SHEET_NAME)
     if about.isGenerateNamedRangesOn():
-        namedRanges.createNamedRangesToSheet(unoDetailsSheet, 0)
+        NamedRanges(unoDetailsSheet, 0, viewName).generate()
     # Set new sheet as currently active sheet.
     helper.setActiveSheet(unoDetailsSheet)
 
