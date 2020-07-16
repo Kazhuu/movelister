@@ -3,7 +3,8 @@
 Movelister is a tool for creating various types of in-depth notes
 about video game mechanics data in sheet form. This could include simple
 move lists, detailed mechanics notes for glitchers or other type of tables which
-model the limits of a game's potential interactivity.
+model the limits of a game's potential interactivity. Project might also be used
+as a tutorial or learning experience how to write Python macros for LibreOffice.
 
 **Movelister is a work in progress and can be used. Check TODO below for know
 issues before first release.**
