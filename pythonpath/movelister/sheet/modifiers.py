@@ -73,13 +73,13 @@ class Modifiers:
                    'Spaces are not allowed characters, use underscore instead. For example '
                    '"some_mod".'
             ).format(modifierName, MODIFIER_LIST_SHEET_NAME)
-            raise errors.UnsupportedCharacter(msg)
+            raise errors.UnsupportedCharacter(MODIFIER_LIST_SHEET_NAME, msg)
         if modifierName in map(lambda mod: mod.name, modifiers):
             msg = ('Modifier named "{0}" already exists in the sheet {1}. '
                    'Modifier names must be unique. To fix remove or rename '
                    'duplicates.'
             ).format(modifierName, MODIFIER_LIST_SHEET_NAME)
-            raise errors.DuplicateError(msg)
+            raise errors.DuplicateError(MODIFIER_LIST_SHEET_NAME, msg)
 
 
     def _filterEquations(self, detail):

@@ -73,7 +73,7 @@ class Master:
                    'already exists in the {2} sheet. To fix make sure no case-insensitive '
                    'actions with the same exist in the same view.'
             ).format(actionName, view, MASTER_LIST_SHEET_NAME)
-            raise errors.DuplicateError(msg)
+            raise errors.DuplicateError(MASTER_LIST_SHEET_NAME, msg)
 
     def _rowToKwargs(self, row):
         kwargs = {'name': row[self.nameColumnIndex]}

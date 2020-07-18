@@ -102,6 +102,7 @@ def updateDetails(*args, **kwargs):
         helper.setActiveSheet(unoDetailsSheet)
     except errors.MovelisterError as e:
         message_box.showWarningWithOk(str(e))
+        helper.setActiveSheet(e.activeSheet)
 
 
 def updateOverview(*args):
@@ -153,9 +154,11 @@ def updateOverview(*args):
         helper.setActiveSheet(unoOverviewSheet)
     except errors.MovelisterError as e:
         message_box.showWarningWithOk(str(e))
+        helper.setActiveSheet(e.activeSheet)
 
 
 # Run this when executed from the command line.
 if __name__ == '__main__':
     Context.setup(host='localhost', port=2002)
-    updateDetails(activeSheet='Overview (Default)')
+    # updateDetails(activeSheet='Overview (Default)')
+    updateOverview()
