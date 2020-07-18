@@ -3,6 +3,8 @@ from movelister.sheet.sheet import Sheet
 from movelister.sheet import helper
 from movelister.model.action import Action
 from movelister.format import filter
+from movelister.core import errors
+from movelister.sheet.sheet import MASTER_LIST_SHEET_NAME
 
 from collections import defaultdict
 from collections import OrderedDict
@@ -57,8 +59,17 @@ class Master:
                 view = row[self.viewColumnIndex]
                 kwargs = self._rowToKwargs(row)
                 kwargs['color'] = self.actionColors[index]
+                self._actionExist(actions, view, kwargs['name'])
                 actions[view][kwargs['name']] = Action(**kwargs)
         return actions
+
+    def _actionExist(self, actions, view, actionName):
+        if actionName.lower() in map(str.lower, actions[view].keys()):
+            msg = ''.join(('Case-insensitive duplicate action named "{0}" in view "{1}" ',
+                   'already exists on the {2} sheet. To fix make sure no case-insensitive '
+                   'actions with the same exist in the same view.'
+            ))
+            raise errors.DuplicateError(msg.format(actionName, view, MASTER_LIST_SHEET_NAME))
 
     def _rowToKwargs(self, row):
         kwargs = {'name': row[self.nameColumnIndex]}
