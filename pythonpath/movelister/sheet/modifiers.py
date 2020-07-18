@@ -3,13 +3,15 @@ from collections import defaultdict
 
 from movelister.sheet.sheet import Sheet
 from movelister.sheet import helper
-from movelister.core import cursor
+from movelister.core import cursor, errors
 from movelister.model.modifier import Modifier
+from movelister.sheet.sheet import MODIFIER_LIST_SHEET_NAME
 
 
 class Modifiers:
 
     MODIFIER_PATTER = re.compile(r'\b\w+\b')
+    ILLEGAL_MODIFIER_PATTER = re.compile(r'[^\w+]')
 
     def __init__(self, sheetName):
         self.name = sheetName
@@ -27,13 +29,10 @@ class Modifiers:
         self.dataRows = self.data[self.dataBeginRow:]
         self.modifierColors = helper.getCellColorsFromColumn(
             self.sheet, self.colorColumnIndex, self.dataBeginRow, len(self.data))
+        self._modifiers = self._parseModifers()
 
     def getModifiers(self):
-        modifiers = []
-        for index, row in enumerate(self.dataRows):
-            if self._isValidRow(row):
-                modifiers.append(Modifier(**self._modifierKwargs(row, index)))
-        return modifiers
+        return self._modifiers
 
     def isValidDetail(self, detail):
         # TODO: Move this functionality out of this class.
@@ -49,6 +48,39 @@ class Modifiers:
         # true for this detail to be valid.
         results = [eval(self._substituteEquation(equation, detail), self._evalContext()) for equation in equations]
         return all(results)
+
+    def _parseModifers(self):
+        modifiers = []
+        for index, row in enumerate(self.dataRows):
+            if row[self.nameColumnIndex] != '':
+                kwargs = self._modifierKwargs(row, index)
+                self._isValidModifier(modifiers, kwargs['name'])
+                modifiers.append(Modifier(**kwargs))
+        return modifiers
+
+    def _modifierKwargs(self, row, index):
+        kwargs = {'name': row[self.nameColumnIndex]}
+        kwargs['color'] = self.modifierColors[index]
+        return kwargs
+
+    def _isValidModifier(self, modifiers, modifierName):
+        """
+        Check that given modifier name is valid one. If not raise exception based on violation.
+        """
+        if Modifiers.ILLEGAL_MODIFIER_PATTER.search(modifierName):
+            msg = ('Modifier named "{0}" in sheet {1} contains illegal characters. '
+                   'Supported characters are a to z, A to Z, 0 to 9 and underscore "_". '
+                   'Spaces are not allowed characters, use underscore instead. For example '
+                   '"some_mod".'
+            ).format(modifierName, MODIFIER_LIST_SHEET_NAME)
+            raise errors.UnsupportedCharacter(msg)
+        if modifierName in map(lambda mod: mod.name, modifiers):
+            msg = ('Modifier named "{0}" already exists in the sheet {1}. '
+                   'Modifier names must be unique. To fix remove or rename '
+                   'duplicates.'
+            ).format(modifierName, MODIFIER_LIST_SHEET_NAME)
+            raise errors.DuplicateError(msg)
+
 
     def _filterEquations(self, detail):
         pattern = detail.modifiersAsRegExp()
@@ -70,14 +102,6 @@ class Modifiers:
                 equation = row[self.booleanEquationColumIndex]
                 equations.append((equation, required))
         return equations
-
-    def _isValidRow(self, row):
-        return row[self.nameColumnIndex] != ''
-
-    def _modifierKwargs(self, row, index):
-        kwargs = {'name': row[self.nameColumnIndex]}
-        kwargs['color'] = self.modifierColors[index]
-        return kwargs
 
     def _evalContext(self):
         """

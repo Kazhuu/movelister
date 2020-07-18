@@ -12,3 +12,10 @@ class DuplicateError(MovelisterError):
     Raised when duplicate exists.
     """
     pass
+
+
+class UnsupportedCharacter(MovelisterError):
+    """
+    Raised when string contains unsupported characters.
+    """
+    pass

@@ -64,12 +64,16 @@ class Master:
         return actions
 
     def _actionExist(self, actions, view, actionName):
+        """
+        Check that no duplicate case-insensitive action name already exist for
+        given name. If does then raise DuplicateError.
+        """
         if actionName.lower() in map(str.lower, actions[view].keys()):
-            msg = ''.join(('Case-insensitive duplicate action named "{0}" in view "{1}" ',
-                   'already exists on the {2} sheet. To fix make sure no case-insensitive '
+            msg = ('Case-insensitive duplicate action named "{0}" in view "{1}" '
+                   'already exists in the {2} sheet. To fix make sure no case-insensitive '
                    'actions with the same exist in the same view.'
-            ))
-            raise errors.DuplicateError(msg.format(actionName, view, MASTER_LIST_SHEET_NAME))
+            ).format(actionName, view, MASTER_LIST_SHEET_NAME)
+            raise errors.DuplicateError(msg)
 
     def _rowToKwargs(self, row):
         kwargs = {'name': row[self.nameColumnIndex]}
