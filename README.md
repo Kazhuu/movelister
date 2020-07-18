@@ -39,8 +39,6 @@ issues before first release.**
     when Details sheet is generated.
 * When Overview is generated hit phase jumps around and sometimes disappears.
     Also frame column data disappears too, don't jump around.
-* When modifiers with the same name are entered, it's column is multiplied to
-    Overview sheet and not to Details sheet. Modifier names should be unique.
 * When generating non-existing view in Master List Overview sheet will be
     generated and Python code will throw an error after that. User should be
     warned that not view exists with that name.
@@ -58,19 +56,7 @@ issues before first release.**
     actually update Overview (Default) and not the actual Overview where the
     button was pressed. Fix for this is to have new macro which takes the active
     sheet instead of hard coding default Overview name.
-* When modifier is input with spaces and when Details is generated, it's treated
-    as two different modifiers instead. Warn user about not using spaces in
-    modifier names instead.
-* Have some validation on modifier names that does not allow hyphens '-'. This
-    is because when using these modifier names in equations they treated as
-    separate modifiers instead.
-* Action names can be entered in case-insensitive matter. This causes latest
-    action name to be taken and generated to Overview and Details. Make some
-    validation that tells user that action names are case-insensitive and should
-    not be used. This also brakes named range naming. LibreOffice named ranges
-    are case-insensitive.
 * Update manual to cover everything with examples.
-* Add tooltips to document to help user about different columns and what they do.
 * Generating Details sheet can be quite slow if more than 10 000 lines are for
     example generated. Add time measurements to the code and see are there any
     easy improvements. Socket communication will always be slow, no matter what.
