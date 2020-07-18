@@ -101,8 +101,8 @@ def updateDetails(*args, **kwargs):
         # Set new sheet as currently active sheet.
         helper.setActiveSheet(unoDetailsSheet)
     except errors.MovelisterError as e:
-        message_box.showWarningWithOk(str(e))
         helper.setActiveSheet(e.activeSheet)
+        message_box.showWarningWithOk(str(e))
 
 
 def updateOverview(*args):
@@ -153,8 +153,8 @@ def updateOverview(*args):
         # Set new sheet as currently active sheet.
         helper.setActiveSheet(unoOverviewSheet)
     except errors.MovelisterError as e:
-        message_box.showWarningWithOk(str(e))
         helper.setActiveSheet(e.activeSheet)
+        message_box.showWarningWithOk(str(e))
 
 
 # Run this when executed from the command line.
