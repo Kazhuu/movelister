@@ -36,7 +36,12 @@ class NamedRanges:
         This function goes through a column in a sheet and assigns named ranges
         on regions when column content changes.
         """
-        currentAction = self.sheetData[1]
+        try:
+            currentAction = self.sheetData[1]
+        except IndexError:
+            # If sheet does not contain any data then do not continue.
+            return
+
         regionStartRow = 2
         for index, line in enumerate(self.sheetData[1:]):
             if line and line != currentAction:

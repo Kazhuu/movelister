@@ -160,5 +160,5 @@ def updateOverview(*args):
 # Run this when executed from the command line.
 if __name__ == '__main__':
     Context.setup(host='localhost', port=2002)
-    # updateDetails(activeSheet='Overview (Default)')
-    updateOverview()
+    updateDetails(activeSheet='Overview (Default)')
+    # updateOverview()
