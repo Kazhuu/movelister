@@ -20,11 +20,12 @@ class ActionFormatter:
         row.append(self.action.name)
         # hit
         if self.action.hitPhase is not None:
-            row.append('x' if self.action.hitPhase - 1 == phase else '')
+            row.append('x' if self.action.hitPhase == phase else '')
         else:
             row.append('')
         # frames
-        row.append('')
+        frames = self.action.getPhaseFrames(phase)
+        row.append(str(frames) if frames else '')
         # phase number
         row.append(str(phase))
         # default

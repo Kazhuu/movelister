@@ -11,18 +11,7 @@ class Action:
         self.hitPhase = kwargs.get('hitPhase', None)
         self.modifiers = kwargs.get('modifiers', {})
         self.notes = kwargs.get('notes', {})
-
-    def __eq__(self, other):
-        """
-        Test object equality.
-        """
-        return self.name == other.name
-
-    def __ne__(self, other):
-        """
-        Test object nonequality.
-        """
-        return not self == other
+        self.frames = kwargs.get('frames', {})
 
     def setModifiers(self, phase, modifiers):
         self._checkPhaseRange(phase)
@@ -57,6 +46,14 @@ class Action:
     def clearAllModifiers(self):
         self.modifiers = {}
 
+    def setPhaseFrames(self, phaseNumber, frames):
+        self._checkPhaseRange(phaseNumber)
+        self.frames[str(phaseNumber)] = frames
+
+    def getPhaseFrames(self, phaseNumber):
+        self._checkPhaseRange(phaseNumber)
+        return self.frames.get(str(phaseNumber), None)
+
     def setNotes(self, phase, notes):
         self._checkPhaseRange(phase)
         self.notes[phase] = notes
@@ -80,3 +77,15 @@ class Action:
     def _checkPhaseRange(self, phase):
         if phase < 0 or phase > self.phases - 1:
             raise ValueError('phase {0} out of range, must be from 0 to {1}'.format(phase, self.phases - 1))
+
+    def __eq__(self, other):
+        """
+        Test object equality.
+        """
+        return self.name == other.name
+
+    def __ne__(self, other):
+        """
+        Test object nonequality.
+        """
+        return not self == other

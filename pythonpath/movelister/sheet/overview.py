@@ -123,11 +123,14 @@ class Overview:
     def _rowGroupToAction(self, rowGroup):
         modifiers = {}
         notes = {}
+        frames = {}
         kwargs = {'name': rowGroup[0][self.nameColumnIndex], 'phases': len(rowGroup),
-                  'modifiers': modifiers, 'notes': notes}
+                  'modifiers': modifiers, 'notes': notes, 'frames': frames}
         for phase, row in enumerate(rowGroup):
             if row[self.hitColumnIndex] != '':
                 kwargs['hitPhase'] = phase
+            if row[self.framesColumnIndex] != '':
+                frames[str(phase)] = self._parseFrames(row[self.framesColumnIndex])
             if row[self.defaultColumnIndex] != '':
                 kwargs['default'] = True
             modInstances = self._modifiersFromRow(row)
@@ -137,6 +140,12 @@ class Overview:
             if noteInstances:
                 notes[phase] = noteInstances
         return Action(**kwargs)
+
+    def _parseFrames(self, framesCell):
+        try:
+            return int(float(framesCell))
+        except ValueError:
+            return ''
 
     def _modifiersFromRow(self, row):
         mods = row[self.modifierStartColumn:self.modifierEndColumn]
@@ -159,4 +168,6 @@ class Overview:
         Returns the highest phase number that is on the Overview's Phase-column.
         This value is used when determining the width of the Details-view.
         """
+        if not self._actions:
+            return 0
         return max(action.phases for action in self._actions)

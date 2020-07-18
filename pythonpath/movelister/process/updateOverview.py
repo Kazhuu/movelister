@@ -27,6 +27,7 @@ class UpdateOverview:
             if previousAction:
                 action.modifiers = cls._deleteOldModifiersFromAction(previousAction)
                 action.hitPhase = previousAction.hitPhase
+                action.frames = previousAction.frames
                 action.default = previousAction.default
                 action.notes = previousAction.notes
 

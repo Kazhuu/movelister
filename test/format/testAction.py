@@ -18,6 +18,8 @@ class ActionFormatterTestCase(OfficeTestCase):
         self.action.addNote(0, "note 2")
         self.action.addNote(0, "note 3")
         self.action.setNotes(1, ["note 1", "note 2", "note 3"])
+        self.action.setPhaseFrames(0,  1)
+        self.action.setPhaseFrames(1,  2)
         self.overview.addAction(self.action)
 
     def testFormattingAction(self):
@@ -25,7 +27,7 @@ class ActionFormatterTestCase(OfficeTestCase):
         data = formatter.format()
         # name, hit, frames, phase, def, aa, bb, cc, notes 1, notes 2, notes 3
         result = [
-            ['attack 1', 'x', '', '0', 'x', 'x', '', '', 'note 1', 'note 2', 'note 3'],
-            ['attack 1', '', '', '1', 'x', '', 'x', '', 'note 1', 'note 2', 'note 3']
+            ['attack 1', '', '1', '0', 'x', 'x', '', '', 'note 1', 'note 2', 'note 3'],
+            ['attack 1', 'x', '2', '1', 'x', '', 'x', '', 'note 1', 'note 2', 'note 3']
         ]
         self.assertEqual(data, result)
