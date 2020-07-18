@@ -77,7 +77,7 @@ So, what is an Overview? You could think of it as a slightly more zoomed-in look
 
 Using the Hit-, Frames- and Notes-columns is optional. The user can indicate which Phase of an Action is "active" and reacts to targets using the Hit-column. Frames-column can be used to list frame data, if needed. And once again, some freeform notes can be written in the Notes-columns.
 
-The most interesting feature of the Overview is the ability to manage Modifiers. Any Modifiers you add in the Modifiers-sheet will also be generated into the Overview upon refreshing it (using the left button). Modifers are an advanced feature of the program you can leave for later if you wish.
+The most interesting feature of the Overview is the ability to manage Modifiers. Any Modifiers you add in the Modifiers-sheet will also be generated into the Overview upon refreshing it (using the left button). Modifiers are an advanced feature of the program you can leave for later if you wish.
 
 The DEF-column is short for "Default". You can use it to generate a vanilla version of an Action in the Details-view without any set up, so it can be helpful for quick testing. Note that every Action you want to generate more detailed notes of needs to have a mark on either DEF or one of the other Modifier-columns, so make sure to leave 'x' or another mark on every Action you want to generate.
 
@@ -95,7 +95,7 @@ Details is the most zoomed-in view for the various Actions, and it's here where 
 
 You write the mechanics notes to columns D and onward. Every three columns, for instance D, E and F, signifies a single Phase of an Action. The Phases are laid out horizontally like this so that you can pay attention to how the rules of an Action change as it progresses. For instance: in many fighting games the recovery or cooldown at the end of an attack has more lenient cancel rules than the previous Phases. Since all of the Action's different Phases can have different rules, they're necessary to list separately like this if you want to be truly systematic about it.
 
-As mentioned, there are three columns reserved for each Phase. The first of these columns holds a Result - it essentially means whether an input cancels, buffers, does nothing, etc. when used during an action - and the column also has a data validation with listed Results in Results-sheet. The purpose of the data validation is that it creates a drop-down menu for the user, allowing them to add data to the mechanics notes faster.
+As mentioned, there are three columns reserved for each Phase. The first of these columns holds a Result - it essentially means whether an Input cancels, buffers, does nothing, etc. when used during an Action - and the column also has a data validation with listed Results in Results-sheet. The purpose of the data validation is that it creates a drop-down menu for the user, allowing them to add data to the mechanics notes faster.
 
 The second column holds the name of an Action. If some input would, for example, cancel an Action, you can use this column to indicate what the next Action will be. This column also has a data validation to make creating notes faster.
 
@@ -213,7 +213,7 @@ Explanation of various columns:
 
 ## Overview
 
-This is a generated, named sheet which lists all Actions of a given View. It's a more in-depth view of Actions where you can adjust how they are generated into a Details-sheet, which is where the actual mechanics notes writing happens.
+This is a generated, named sheet which lists all the Actions of a given View. It's a more in-depth view of Actions where you can adjust the details of how they are generated into a Details-sheet.
 
 An Overview has two buttons. First button refreshes the Overview. You should always refresh if you've added Actions to the Master List or changed Modifiers in the Modifier-sheet. Second button generates a Details-view with all the Actions listed in the Overview according to the given settings.
 
@@ -221,47 +221,47 @@ Explanation of various columns:
 
 * Action Name: the name of the Action, as it was written in the Master List.
 
-* Hit: this is an optional column that allows you to indicate which part of an Action has "active frames", i.e. when it reacts to enemies or other targets.
+* Hit: optionally, the user can use this column to indicate which part of an Action has "active frames", i.e. when it reacts to enemies or other targets.
 
-* Frames: this is an optional column where you can list the frames of each Phase.
+* Frames: optionally, you can list the frame data of each Phase on this column. Listing this data could be relevant when examining a fighting game, although so far it isn't used to do anything inside the program.
 
 * Phase: this column indicates which Phase the current row of the Action is on.
 
-* DEF: this column is short for "Default". If you want to ignore Movelister's more advanced features with Modifiers and just get to making your notes quickly, you can put an 'x' or another mark here to indicate that you want to generate a vanilla version of this Action in the Details-view. Note that all Actions need to have a mark on either this or following Modifier-columns to be generated in the Details-view at all.
+* DEF: this column is short for "Default". You can put an 'x' or another mark on this column to indicate that you want to include a vanilla version of the Action on the same row inside the Details-view. This can be helpful if you just want to do quick mechanics notes and ignore the Modifiers for now. Note that all Actions *need* to have a mark on either this or the following Modifier-columns to be listed inside the Details-view at all.
 
-* (Other Modifier columns): these columns appear once you have added any Modifiers in the Modifiers-sheet and then refresh Overview. You can indicate which Actions and Phases are compatible with a Modifier by adding an 'x' or another mark on its column. This impacts how the Action is generated in the Details-sheet as well. By default, all Modifiers that are marked with 'x' combine with each other, resulting in a ton of variations for a single Action, so be careful with adding too many 'x' before you create some filters in the Modifiers-sheet, otherwise you may end up generating a massive Details-sheet by accident (which takes ages).
+* (Other Modifier columns): these columns appear once you have added any Modifiers in the Modifiers-sheet and then refresh Overview. You can indicate which Actions and Phases are compatible with a Modifier by adding an 'x' or another mark on its column. By default, all enabled Modifiers combine with each other, resulting in a ton of variations for a single Action, so be careful with adding too many 'x' before you create some filters in the Modifiers-sheet, otherwise you may end up generating a massive Details-sheet by accident (which takes ages).
 
 * Notes 1: optionally, you can make some freeform Notes in the final columns.
 
 
 ## Details
 
-This is a generated, named sheet that also serves as the most in-depth view for Actions in a View. Here the Action is compared against the Input List specified in the Master List and Inputs-sheet and the user can finally get on to creating those mechanics notes.
+This is a generated, named sheet that also serves as the most in-depth view for Actions in a View. Here the Action is compared against an Input List (as specified in Master List) and the user can finally get on to creating those mechanics notes.
 
-* Action Name: the name of the Action, as it was written in the Master List.
+* Action Name: the name of the Action as it was written in the Master List.
 
 * Modifiers: this column lists any Modifiers that are a part of the Action. It's essentially a second part of the name of the Action.
 
 * Input to Compare: the Input that you are supposed to test on each row.
 
-* Phase Columns: this is the area for the mechanics notes themselves. Each Phase has three columns reserved for it. The first column should feature a Result (listed in the Results-sheet) indicating if the move is cancelled, buffered, etc. by the Input. The second column features an Action name, indicating which is the new Action (if any) that follows the Input. Third column optionally features a Modifier, in case the new Action has one. To make writing notes easier, each of the columns also has relevant data validation, allowing the user to browse for relevant Results, Actions or Modifiers quickly.
+* Phase Columns: this is the area for the mechanics notes themselves. Each Phase of an Action has three columns reserved for it. The first column should feature a Result (listed in the Results-sheet) indicating whether the move is cancelled, buffered, etc. by the Input. The second column features an Action name, indicating which is the new Action (if any) that follows the Input. Third column optionally features a Modifier, in case the new Action has one. To make writing notes easier, each of the columns has data validation, allowing the user to browse for relevant Results, Actions or Modifiers quickly.
 
 
 ## Inputs
 
-This is a sheet where you list all the Inputs that you want to test game states with. In a typical workflow the user gets started on a decent Input List before generating Details, but it's possible to add more Inputs at any point later on as well.
+This is a sheet where you list any Inputs that you want to test game states with. The Inputs are grouped under Input Lists, and their main use is in a Details-sheet when making more detailed mechanics notes.
 
 Note: if you want to rename an Input without a potential loss of data, so far you have to manually find and replace text around the file. Same is true for the various Actions as well.
 
 Explanation of various columns:
 
-* Input List: the name of the current Input List. You can create numerous different Input Lists for different situations by naming them differently.
+* Input List: the name of the current Input List. You can create numerous different Input Lists for different situations by giving them a different name.
 
-* Input Name: the name of the input. This is shown in Details-view, so give it a name that makes sense.
+* Input Name: the name of the Input. Give each Input a compact but unique name.
 
-* Button: this is an optional column where the user can clarify which button they mean, if it doesn't become apparent from the Input Name already.
+* Button: optionally, the user can clarify which button the Input uses, if it's not already apparent from the Input Name itself.
 
-* Color: this is an optional column where the user can give a color for the input. (TODO: in a later version the color will be added to Details-view, but for now it does nothing.)
+* Color: optionally, the user can give a color for the Input. Using color can be helpful to visually group sets of Inputs.
 
 
 
@@ -271,17 +271,17 @@ This is a sheet where you can create Modifiers. Using Modifiers allows you to ge
 
 Explanation of various columns:
 
-* Short Name: the name for the Modifier that is used during Details-view generation. In complex projects Actions could get a ton of different Modifiers, so it helps to keep this name as short as possible. Also, don't use a hyphen '-' in Modifier-names because this will confuse the boolean logic.
+* Short Name: the name of the Modifier. Actions could get a ton of different Modifiers in complex projects, so it helps to keep this name as short as possible. Supported characters are a to z, A to Z, 0 to 9 and underscore "_". Don't use regular space in Modifiers.
 
-* Full Name: an optional column where the user can give the Modifier a longer name if they want, just for readability.
+* Full Name: optionally, the user can give the Modifier a longer name for better readability.
 
-* Color: an optional column where the user gives a color to the Modifier. This color is used in Overview, and it can be helpful to visually group different Modifiers based on their type.
+* Color: optionally, the user can give a color to the Modifier. It can be helpful to visually group different Modifiers based on their type. For now, this color is only put to use in Overview.
 
-* Notes 1: an optional column where the user can write freeform notes about what a Modifier is and what it should do.
+* Notes 1: optionally, the user can write some freeform notes about the Modifier.
 
-* Filters: this column is where you write rules for how the various Modifiers work. To write a filter, either use the available Operators (as listed in the "Operators"-column) or the pre-made Functions (as listed in the "Functions"-column) to indicate how a Modifier can combine with other Modifiers. By default, all Modifiers combine with all other Modifiers, so by using Filters you can cull down the number of combinations to a more manageable amount. Note that the row where you write the formulas on doesn't matter.
+* Filters: write rules about how the various Modifiers work on this column. To write a filter, either use the available Operators (as listed in the "Operators"-column) or the pre-made Functions (as listed in the "Functions"-column) to indicate how a Modifier can combine with other Modifiers. By default, all Modifiers freely combine with all other Modifiers, so Filters are necessary to cull the number of possible combinations to something more realistic. Note that the row where you write the formulas on doesn't matter.
 
-* Required: place a mark on this column next to a formula if you want that formula to be true for all generated Actions. See Case Example 1 near the start of this file for a good idea on how to use it.
+* Required: place a mark on this column next to some formula if you want it to sum with all other Modifiers in a more restrictive way. It essentially prevents the generation of Actions that do not fulfill the condition of the selected formula. See the tutorial in the above sections for a good idea on how to use it.
 
 * Operators: this column lists the available Operators in Movelister, it's just there for user reference.
 
@@ -297,11 +297,11 @@ This sheet lists the various Results of detailed mechanics testing, i.e. whether
 
 Explanation of various columns:
 
-* List of Results: this column lists existing Results. The user can customize the list however they want. This column is used in Details-sheet when making detailed mechanics notes; the first column in each Phase has data validation that reads this column so that the user can readily access it.
+* List of Results: this column lists existing Results. The user can customize the list however they want. This column is used in Details-sheet when making detailed mechanics notes; the first column for each Phase has data validation that reads this column so that the user can readily access it.
 
-* Color: the user can give a color to a Result and it will show up in the Details-sheet for some visual flair. (TODO: so far the program does not read these colors nor does it generate a new conditional formatting for the Details-sheet whenever the Details is generated again.)
+* Color: optionally, the user can give a color to a Result for some visual flair. This color will appear inside Details-view too, thanks to automatically generated conditional formatting.
 
-* Explanation for the user: the user can write some freeform notes on these columns.
+* Explanation for the user: optionally, the user can write some freeform notes on these columns.
 
 
 
@@ -313,27 +313,34 @@ Explanation of various options:
 
 (TODO: the color options aren't used in this version of Movelister yet.)
 
-* Generate Named Ranges: if this option is marked with 'x', then Named Ranges are generated for each Action after generating the Details-sheet. Named Ranges are a handy way to quickly move inside a large sheet, but generating them takes a bit of time, so turning this option off is like a small optimization. TODO: Named Ranges don't work perfectly if there is more than one View and Details-sheet in the file, so in that case turning Named Ranges off can also be a good idea.
+* Generate Named Ranges: if this option is enabled, a Named Range is created for each Action after the Details-sheet has been generated. Named Ranges are basically a handy way to quickly move inside a large sheet, and you can access them from the drop down menu that is by default to the upper-left of the LibreOffice Calc UI. Usually there's no reason to not generate Named Ranges, but disabling this option can speed up sheet generation a little bit.
 
-* Show entries ascending when generating validation: if this option is marked with 'x', then the data validation for Details-sheet shows the entries in an ascending order instead of the order they are listed in inside the Details-sheet. Ascending order removes duplicates from the list and it can thus make the validation a bit more readable.
+* Show entries ascending when generating validation: if this option is enabled, the data validation inside Details-sheet will sort entries in an ascending order. Ascending order removes duplicates from the list, making the validation generally a bit more readable.
 
 
 
 ## Templates
 
-The two templates are used whenever generating or refreshing Overview or Details. Optimally, the user shouldn't need to do any adjustments to them by hand.
+The two templates Overview Template and Details Template are used whenever generating or refreshing Overview or Details. Optimally, the user shouldn't need to do any adjustments to these two sheets by hand.
 
 
-## Other TODO things
 
-* Make manual more in-depth.
+## Good Movelister conventions
 
-* Conditional formatting. Optimally, Movelister should read user input from "Results"-sheet and make a new conditional format every time a new Details is generated to make this sheet easier to read. Other "color" features can also be done around the template using conditional formatting (but only once we learn to harness this mysterious technology with Python).
+* Figure out a consistent glossary for naming things inside Movelister and stick to it. Use the established names for Actions, Results and Modifiers in the same way all over the file to keep the data both more formal and readable.
 
-* Generating input lists. It might be a handy feature for the user to be able to generate an Input List based on certain criteria. For instance, if the user wants to test hit reactions, they could generate an Input List using the 'Hit' column.
+* It's recommended to use the game's own terminology when naming Actions. See if the game has its own movelist and consult it when needed.
 
-* Automatic grouping of Input Lists. You'd have some setting in Inputs which allow automatic creation of groups after Details-generation. This way you could keep less important Inputs folded until the user needs them if they have really large Input Lists.
+* Reserve Phase 0 in the Details-view for simultaneous inputs testing.
 
-* Data import / export. If data from a Movelister sheet could be exported to some human-readable text format, it could be shared and versioned more conveniently, allowing multiple people to work on a single project easier. Besides that, having an export / import functionality would also improve the security as this would mean people don't have to share a full LibreOffice Calc template with macros in it, only the data in it.
 
-* Optimizations. Generating very large sheets is slow, but hopefully it can be optimized some way in the future.
+
+## Some possible features to add in future
+
+* Automated Input List generation. It might be a handy feature for the user to be able to generate an Input List based on certain criteria. For instance, if the user wants to test hit reactions, they could generate an Input List using the 'Hit' column in some Overview.
+
+* Automated grouping of Input Lists. "Group" in LibreOffice terms means the possibility to fold certain rows or columns to hide them from sight. A feature like this would be convenient if you are working on a project with very large Input Lists. You could set certain Inputs to be hidden by default to keep the mechanics notes a bit cleaner.
+
+* More customization. Being able to customize the colors from the Options-menu and fine-tune other features of Movelister is always a bonus for the user.
+
+* Data import / export. If data from a Movelister sheet could be exported to some human-readable text format, it could be shared and versioned, allowing multiple people to work on a single project easier. Besides that, having an export / import functionality would also improve the security as this would mean people don't have to share a full LibreOffice Calc template with macros in it, only the data in it.
