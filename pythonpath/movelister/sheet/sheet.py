@@ -1,7 +1,7 @@
 from com.sun.star.container import NoSuchElementException
 
 from movelister.core.context import Context
-
+from movelister.ui import message_box
 
 OVERVIEW_TEMPLATE_NAME = 'Overview Template'
 DETAILS_TEMPLATE_NAME = 'Details Template'
@@ -136,3 +136,10 @@ class Sheet():
         Return list of sheet names in current document.
         """
         return Context.getDocument().Sheets.getElementNames()
+
+    @classmethod
+    def checkTemplatesExists(cls):
+        """
+        Return true if all needed template sheets exists for this document, false otherwise.
+        """
+        return Sheet.hasByName('Overview Template') and Sheet.hasByName('Details Template')

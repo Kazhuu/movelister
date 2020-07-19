@@ -1,5 +1,5 @@
 from test.officeTestCase import OfficeTestCase
-from movelister.format import convert
+from movelister.utils import convert
 
 
 class ConvertTestCase(OfficeTestCase):

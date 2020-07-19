@@ -297,11 +297,13 @@ This sheet lists the various Results of detailed mechanics testing, i.e. whether
 
 Explanation of various columns:
 
-* List of Results: this column lists existing Results. The user can customize the list however they want. This column is used in Details-sheet when making detailed mechanics notes; the first column for each Phase has data validation that reads this column so that the user can readily access it.
+* Results: this column lists existing Results. The user can customize the list however they want. This column is used in Details-sheet when making detailed mechanics notes; the first column for each Phase has data validation that reads this column so that the user can readily access it.
 
 * Color: optionally, the user can give a color to a Result for some visual flair. This color will appear inside Details-view too, thanks to automatically generated conditional formatting.
 
-* Explanation for the user: optionally, the user can write some freeform notes on these columns.
+* Full Name: optionally, the user can give a Result a longer name for better clarity.
+
+* Description: optionally, the user can write some freeform notes on this column.
 
 
 
@@ -330,6 +332,8 @@ The two templates Overview Template and Details Template are used whenever gener
 * Figure out a consistent glossary for naming things inside Movelister and stick to it. Use the established names for Actions, Results and Modifiers in the same way all over the file to keep the data both more formal and readable.
 
 * It's recommended to use the game's own terminology when naming Actions. See if the game has its own movelist and consult it when needed.
+
+* It's useful to name all Results with a different letter so that it's faster to add them via data validation in Details-view.
 
 * Reserve Phase 0 in the Details-view for simultaneous inputs testing.
 

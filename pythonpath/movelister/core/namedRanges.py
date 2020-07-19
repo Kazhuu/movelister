@@ -1,7 +1,7 @@
 from movelister.core import cursor
 from movelister.core.context import Context
-from movelister.format import convert
 from movelister.sheet.sheet import Sheet
+from movelister.utils import convert
 from com.sun.star.uno import RuntimeException
 
 import re

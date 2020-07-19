@@ -10,7 +10,7 @@ from com.sun.star.table.CellVertJustify2 import CENTER as VERTICAL_CENTER
 from com.sun.star.table.CellVertJustify2 import BOTTOM as VERTICAL_BOTTOM
 
 from movelister.core import cursor
-from movelister.core.alignment import HorizontalAlignment, VerticalAlignment
+from movelister.utils.alignment import HorizontalAlignment, VerticalAlignment
 
 
 def setHorizontalAlignmentToRange(sheet, alignment, startColumn, amount):

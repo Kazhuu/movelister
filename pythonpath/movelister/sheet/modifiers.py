@@ -23,7 +23,7 @@ class Modifiers:
         self.nameColumnIndex = helper.getColumnPosition(self.data, 'Short Name', 0)
         self.colorColumnIndex = helper.getColumnPosition(self.data, 'Color', 2)
         self.booleanEquationColumIndex = helper.getColumnPosition(self.data, 'Filters', 4)
-        self.requiredColumIndex = helper.getColumnPosition(self.data, 'Required', 5)
+        self.requiredColumnIndex = helper.getColumnPosition(self.data, 'Required', 5)
         self.booleanEquations = self._parseEquations()
         self.dataHeader = self.data[self.headerRowIndex]
         self.dataRows = self.data[self.dataBeginRow:]
@@ -98,7 +98,7 @@ class Modifiers:
         equations = []
         for row in self.dataRows:
             if row[self.booleanEquationColumIndex]:
-                required = bool(row[self.requiredColumIndex])
+                required = bool(row[self.requiredColumnIndex])
                 equation = row[self.booleanEquationColumIndex]
                 equations.append((equation, required))
         return equations

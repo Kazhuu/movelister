@@ -3,10 +3,10 @@ from com.sun.star.table.CellVertJustify2 import CENTER
 
 from test.officeTestCase import OfficeTestCase
 from movelister.core import cursor
-from movelister.core.alignment import HorizontalAlignment, VerticalAlignment
 from movelister.sheet.master import Master
 from movelister.sheet.sheet import MASTER_LIST_SHEET_NAME
-from movelister.format import format
+from movelister.utils import format
+from movelister.utils.alignment import HorizontalAlignment, VerticalAlignment
 
 
 class FormatTestCase(OfficeTestCase):
