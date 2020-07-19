@@ -37,8 +37,6 @@ issues before first release.**
 * Details sheet is missing coloring on some columns when entering result data.
     This is because conditional formatting is places by hand and not programmatically
     when Details sheet is generated.
-* When Overview is generated hit phase jumps around and sometimes disappears.
-    Also frame column data disappears too, don't jump around.
 * When generating non-existing view in Master List Overview sheet will be
     generated and Python code will throw an error after that. User should be
     warned that not view exists with that name.
