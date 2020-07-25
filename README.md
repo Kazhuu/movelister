@@ -44,8 +44,6 @@ issues before first release.**
     sheet is generated. At the moment Default input list is always taken.
 * Input sheet color column is not used. Use it in Details sheet on result column
     with conditional formatting.
-* About sheet needs to be cleaned up. Remove unused color options and future
-    options.
 * Change version text to button which executes Python code and shows
     a dialog about the version information to the user. This because Python code
     is not tied to the ods file itself.

@@ -51,7 +51,7 @@ from movelister.sheet.sheet import Sheet, MASTER_LIST_SHEET_NAME # noqa
 from movelister.sheet.sheet import MODIFIER_LIST_SHEET_NAME, ABOUT_SHEET_NAME# noqa
 from movelister.ui import message_box  # noqa
 from movelister.utils.alignment import HorizontalAlignment, VerticalAlignment # noqa
-from movelister.utils import color, convert, format, validation # noqa
+from movelister.utils import color, convert, format, validation, version # noqa
 
 # Setup context automatically when macro is run from the LibreOffice.
 if __name__ != '__main__':
@@ -156,9 +156,21 @@ def updateOverview(*args):
         helper.setActiveSheet(e.activeSheet)
         message_box.showWarningWithOk(str(e))
 
+def showCurrentVersion(*args):
+    ver = version.getCurrentVersion()
+    credits = 'Kazhuu and Nelitarnia'
+    link = 'https://github.com/Kazhuu/movelister'
+    message = ('Movelister v{0} \n \n'
+           'Made by {1} \n \n'
+           'Home page of the project: \n'
+           '{2}'
+    ).format(ver, credits, link)
+    message_box.createMessage('OK', 'Version information:', message)
+
 
 # Run this when executed from the command line.
 if __name__ == '__main__':
     Context.setup(host='localhost', port=2002)
-    updateDetails(activeSheet='Overview (Default)')
+    showCurrentVersion()
+    # updateDetails(activeSheet='Overview (Default)')
     # updateOverview()
