@@ -162,6 +162,7 @@ def showCurrentVersion(*args):
     link = 'https://github.com/Kazhuu/movelister'
     message = ('Movelister v{0} \n \n'
            'Made by {1} \n \n'
+           'Movelister is licensed under the MIT License. \n\n'
            'Home page of the project: \n'
            '{2}'
     ).format(ver, credits, link)

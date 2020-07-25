@@ -14,6 +14,7 @@ issues before first release.**
 <!-- vim-markdown-toc GFM -->
 
 * [TODO Before Release](#todo-before-release)
+* [Safety notes about Movelister] (#safety-notes-about-movelister)
 * [How To Use](#how-to-use)
 * [Dependencies](#dependencies)
   * [Windows](#windows)
@@ -47,7 +48,6 @@ issues before first release.**
 * Change version text to button which executes Python code and shows
     a dialog about the version information to the user. This because Python code
     is not tied to the ods file itself.
-* Write some notes about Python macro safety to README for the user.
 * When multiple Overview sheets has Refresh Overview button. All buttons
     actually update Overview (Default) and not the actual Overview where the
     button was pressed. Fix for this is to have new macro which takes the active
@@ -56,6 +56,27 @@ issues before first release.**
 * Generating Details sheet can be quite slow if more than 10 000 lines are for
     example generated. Add time measurements to the code and see are there any
     easy improvements. Socket communication will always be slow, no matter what.
+
+
+## Safety notes about Movelister
+
+There are two security precautions to keep in mind if you want to share
+Movelister-templates with other people. First is that macros can contain
+arbitrary code - you should always be careful when opening Movelister-templates
+from any unofficial source.
+
+Movelister comes with a script that deletes any existing code from a LibreOffice
+Calc-file and only adds the newest Movelister functionality, so that's one way
+to get a "verified" Movelister-sheet for yourself. There's its own section
+detailing this process near the end of this file.
+
+Another security issue is that the "Filters"-column in the Modifiers-sheet is
+interpreted as code by Movelister. In theory, someone could run malicious code
+by hiding it somewhere on this column. It's recommended to examine this column
+closely before using Movelister-templates from unofficial sources. You could
+always copy the visible contents of the column and delete everything else on
+it (sans the header) to ensure it doesn't have anything hidden on it.
+
 
 ## How To Use
 
