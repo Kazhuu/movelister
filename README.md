@@ -45,9 +45,6 @@ issues before first release.**
     sheet is generated. At the moment Default input list is always taken.
 * Input sheet color column is not used. Use it in Details sheet on result column
     with conditional formatting.
-* Change version text to button which executes Python code and shows
-    a dialog about the version information to the user. This because Python code
-    is not tied to the ods file itself.
 * When multiple Overview sheets has Refresh Overview button. All buttons
     actually update Overview (Default) and not the actual Overview where the
     button was pressed. Fix for this is to have new macro which takes the active
@@ -80,10 +77,10 @@ it (sans the header) to ensure it doesn't have anything hidden on it.
 
 ## How To Use
 
-Project is released as a LibreOffice document which has all project sources
-embedded inside of it. Meaning no additional installation needed and your game
-data can be shared just by sharing the document. Movelister is supported on both
-Windows and Linux.
+Movelister is released as a LibreOffice document that has all the project
+sources embedded inside of it. No additional installation is required, and your
+mechanics notes data can be shared by just sharing the document. Movelister is
+supported on both Windows and Linux.
 
 Before using Movelister check [dependencies](#dependencies) below like
 downloading latest LibreOffice. Then to use Movelister download template
@@ -97,7 +94,7 @@ and start glitching your game. To learn how to use Movelister, please read the
 
 ### Windows
 
-On Windows install LibreOffice 5 or newer and you are able to use Movelister.
+On Windows install LibreOffice 5 or newer to be able to use Movelister.
 On Windows Python is included and self-contained with LibreOffice installation
 so no separate Python installation needed.
 
@@ -127,7 +124,7 @@ Movelister is implemented on LibreOffice Calc (spreadsheet) and is used with
 Python macros. Macros call further Python code which is responsible for
 manipulating tables and sheets underneath. Python process responsible of
 executing macros is communicating to LibreOffice process using socket. Socket
-communication is handler by LibreOffice's UNO (Universal Network Objects)
+communication is handled by LibreOffice's UNO (Universal Network Objects)
 interface. UNO interface is used to read and write sheet data.
 
 ## Contributing
