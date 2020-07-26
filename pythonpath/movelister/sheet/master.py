@@ -1,4 +1,4 @@
-from movelister.core import cursor
+from movelister.core import cursor, styles
 from movelister.sheet.sheet import Sheet
 from movelister.sheet import helper
 from movelister.model.action import Action
@@ -50,6 +50,16 @@ class Master:
         """
         name = self.data[0][2]
         return name
+
+    def createActionStyles(self):
+        """
+        Create cell styles to LibreOffice. One style per user defined action in
+        the Master List sheet. Color column is used to define color for the style.
+        """
+        for viewName, actionsDict in self.actions.items():
+            for action in actionsDict.values():
+                name = '({0}/{1})/{2}'.format('Action', viewName, action.name)
+                styles.addCellStyle(name, action.color)
 
     def _parseActions(self):
         actions = defaultdict(OrderedDict)
