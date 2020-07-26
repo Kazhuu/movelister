@@ -29,8 +29,3 @@ class MasterTestCase(OfficeTestCase):
     def testGetDefaultActions(self):
         actions = self.master.getActions('Default')
         self.assertNotEqual(len(self.master.getActions()), len(actions))
-
-    def testActionColor(self):
-        firstActionColor = self.master.sheet.getCellByPosition(self.master.colorColumnIndex,
-                                                               self.master.dataBeginRow).CellBackColor
-        self.assertEqual(self.actions[0].color, firstActionColor)

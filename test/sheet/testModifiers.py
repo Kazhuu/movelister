@@ -21,7 +21,7 @@ class ModifiersTestCase(OfficeTestCase):
     def testModifierColor(self):
         firstActionColor = self.modifier.sheet.getCellByPosition(self.modifier.colorColumnIndex,
                                                                  self.modifier.dataBeginRow).CellBackColor
-        self.assertEqual(self.modifiers[0].color, firstActionColor)
+        self.assertEqual(self.modifiers[0].color.value, firstActionColor)
 
     def testIsValidDetailSuccess(self):
         action = Action('action')

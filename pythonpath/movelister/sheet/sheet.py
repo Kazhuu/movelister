@@ -87,11 +87,15 @@ class Sheet():
     @classmethod
     def newSheetRightOf(cls, rightOfName, newName):
         position = cls.getPosition(rightOfName)
+        if position == None:
+            return None
         return cls.newSheet(newName, position + 1)
 
     @classmethod
     def newSheetLeftOf(cls, leftOfName, newName):
         position = cls.getPosition(leftOfName)
+        if position == None:
+            return None
         return cls.newSheet(newName, position)
 
     @classmethod
@@ -115,6 +119,8 @@ class Sheet():
         raised.
         """
         position = cls.getPosition(overviewName) + 1
+        if position == None:
+            return None
         Context.getDocument().Sheets.copyByName(DETAILS_TEMPLATE_NAME, name, position)
         return cls.getByPosition(position)
 
