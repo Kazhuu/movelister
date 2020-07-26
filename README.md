@@ -42,10 +42,6 @@ issues before first release.**
     sheet is generated. At the moment Default input list is always taken.
 * Input sheet color column is not used. Use it in Details sheet on result column
     with conditional formatting.
-* When multiple Overview sheets has Refresh Overview button. All buttons
-    actually update Overview (Default) and not the actual Overview where the
-    button was pressed. Fix for this is to have new macro which takes the active
-    sheet instead of hard coding default Overview name.
 * Update manual to cover everything with examples.
 * Generating Details sheet can be quite slow if more than 10 000 lines are for
     example generated. Add time measurements to the code and see are there any

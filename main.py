@@ -99,7 +99,21 @@ def updateDetails(*args, **kwargs):
         message_box.showWarningWithOk(str(e))
 
 
-def updateOverview(*args):
+def updateOverviewFromActiveSheet(*args):
+    """
+    This function is used in the Overview-template buttons. It checks if Overview
+    is attempted to update from an Overview instead of Master List and gives the
+    relevat Overview-name from sheet instead of Master List in that case.
+    """
+    active = helper.getActiveSheetName()
+
+    if active != 'Master List':
+        updateOverview(activeSheet=active)
+    else:
+        updateOverview()
+
+
+def updateOverview(*args, **kwargs):
     """
     A macro function to update or create a new Overview sheet. Updated sheet
     will include earlier user data in the old Overview if any.
@@ -111,8 +125,13 @@ def updateOverview(*args):
 
         # Get name of the Overview which user wants to generate.
         masterSheet = Master(MASTER_LIST_SHEET_NAME)
-        viewName = masterSheet.getOverviewName()
-        overviewSheetName = names.getOverviewName(viewName)
+        activeSheetName = kwargs.get('activeSheet', '')
+        if activeSheetName == '':
+            viewName = masterSheet.getOverviewName()
+            overviewSheetName = names.getOverviewName(viewName)
+        else:
+            viewName = names.getViewName(activeSheetName)
+            overviewSheetName = activeSheetName
 
         # Some error checking.
         if not viewName:
@@ -149,7 +168,6 @@ def updateOverview(*args):
         format.setOptimalWidthToRange(unoOverviewSheet, 0, length)
         # Fix sheet colors.
         formatter.setOverviewModifierColors(overviewSheetName)
-        formatter.setOverviewActionColors(overviewSheetName)
         # Set new sheet as currently active sheet.
         helper.setActiveSheet(unoOverviewSheet)
     except errors.MovelisterError as e:
