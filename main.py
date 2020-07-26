@@ -29,12 +29,10 @@ elif __name__ == 'ooo_script_framework': # Name when executed from LibreOffice.
     sys.path.insert(0, url)
 
 # TODO: Remove imports we don't use anymore.
-from movelister import error, selection  # noqa
 from movelister.core import cursor, names, errors  # noqa
 from movelister.core.namedRanges import NamedRanges
-from movelister.core.alignment import HorizontalAlignment, VerticalAlignment # noqa
 from movelister.core.context import Context # noqa
-from movelister.format import action, color, convert, format, overview, validation # noqa
+from movelister.format import action, overview # noqa
 from movelister.format.details import DetailsFormatter # noqa
 from movelister.format.overview import OverviewFormatter # noqa
 from movelister.model.action import Action # noqa
@@ -52,6 +50,8 @@ from movelister.sheet.overview import Overview # noqa
 from movelister.sheet.sheet import Sheet, MASTER_LIST_SHEET_NAME # noqa
 from movelister.sheet.sheet import MODIFIER_LIST_SHEET_NAME, ABOUT_SHEET_NAME# noqa
 from movelister.ui import message_box  # noqa
+from movelister.utils.alignment import HorizontalAlignment, VerticalAlignment # noqa
+from movelister.utils import color, convert, format, validation, version # noqa
 
 # Setup context automatically when macro is run from the LibreOffice.
 if __name__ != '__main__':
@@ -60,24 +60,24 @@ if __name__ != '__main__':
 
 def updateDetails(*args, **kwargs):
     """
-    A macro function that will update one Details sheet while preserving
-    previous user data.  The project can have multiple Details-views and which
-    one to update is detected from which Overview button was pressed to trigger
-    this macro.
+    A macro function that will update one Details-sheet while preserving
+    previous user data. Movelister can have multiple Details-views. To determine
+    which one is updated, the code checks which Overview button was pressed to
+    trigger the macro.
     """
     try:
-        if not error.checkTemplatesExists():
+        if not Sheet.checkTemplatesExists():
             message_box.showWarningWithOk('This file doesn\'t seem to have all necessary templates. Can\'t generate.')
             return
 
-        # Get overview sheet name from active sheet or from provided kwargs.
+        # Get Overview sheet name from active sheet or from provided kwargs.
         activeOverviewName = kwargs.get('activeSheet', helper.getActiveSheetName())
-        # Get view name for the details. This is presented in overview sheet name inside parentheses.
+        # Get view name for the Details. This is presented in Overview sheet name inside parentheses.
         viewName = names.getViewName(activeOverviewName)
         detailsSheetName = names.getDetailsName(viewName)
         previousDetails = Details(viewName)
         if Sheet.hasByName(detailsSheetName):
-            # Check if user wants to update existing detail sheet.
+            # Check if user wants to update existing Details-sheet.
             if not message_box.showSheetUpdateWarning():
                 return
             previousDetails = Details.fromSheet(detailsSheetName)
@@ -85,7 +85,7 @@ def updateDetails(*args, **kwargs):
         parentOverview = Overview.fromSheet(activeOverviewName)
         # Create new Details sheet by combining new and existing data.
         newDetails = UpdateDetails.update(modifiersSheet, parentOverview, previousDetails, viewName)
-        # Delete previous details sheet and generate a new one.
+        # Delete previous Details-sheet and generate a new one.
         Sheet.deleteSheetByName(detailsSheetName)
         formatter = DetailsFormatter(newDetails, parentOverview)
         unoDetailsSheet = formatter.generate()
@@ -111,7 +111,7 @@ def updateOverview(*args):
     will include earlier user data in the old Overview if any.
     """
     try:
-        if not error.checkTemplatesExists():
+        if not Sheet.checkTemplatesExists():
             message_box.showWarningWithOk('This file doesn\'t seem to have all necessary templates. Can\'t generate.')
             return
 
@@ -134,8 +134,8 @@ def updateOverview(*args):
 
         newOverview = UpdateOverview.update(oldOverview, viewName)
 
-        # Place new overview sheet on the same position as the previous one. If previous one
-        # does not exist, then place if right of the master sheet instead.
+        # Place new Overview sheet on the same position as the previous one. If previous one
+        # does not exist, then place if right of the Master sheet instead.
         position = Sheet.getPosition(overviewSheetName)
         if not position:
             position = Sheet.getPosition(MASTER_LIST_SHEET_NAME) + 1
@@ -156,9 +156,22 @@ def updateOverview(*args):
         helper.setActiveSheet(e.activeSheet)
         message_box.showWarningWithOk(str(e))
 
+def showCurrentVersion(*args):
+    ver = version.getCurrentVersion()
+    credits = 'Kazhuu and Nelitarnia'
+    link = 'https://github.com/Kazhuu/movelister'
+    message = ('Movelister v{0} \n \n'
+           'Made by {1} \n \n'
+           'Movelister is licensed under the MIT License. \n\n'
+           'Home page of the project: \n'
+           '{2}'
+    ).format(ver, credits, link)
+    message_box.createMessage('OK', 'Version information:', message)
+
 
 # Run this when executed from the command line.
 if __name__ == '__main__':
     Context.setup(host='localhost', port=2002)
-    updateDetails(activeSheet='Overview (Default)')
+    showCurrentVersion()
+    # updateDetails(activeSheet='Overview (Default)')
     # updateOverview()

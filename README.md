@@ -14,6 +14,7 @@ issues before first release.**
 <!-- vim-markdown-toc GFM -->
 
 * [TODO Before Release](#todo-before-release)
+* [Safety notes about Movelister] (#safety-notes-about-movelister)
 * [How To Use](#how-to-use)
 * [Dependencies](#dependencies)
   * [Windows](#windows)
@@ -44,12 +45,6 @@ issues before first release.**
     sheet is generated. At the moment Default input list is always taken.
 * Input sheet color column is not used. Use it in Details sheet on result column
     with conditional formatting.
-* About sheet needs to be cleaned up. Remove unused color options and future
-    options.
-* Change version text to button which executes Python code and shows
-    a dialog about the version information to the user. This because Python code
-    is not tied to the ods file itself.
-* Write some notes about Python macro safety to README for the user.
 * When multiple Overview sheets has Refresh Overview button. All buttons
     actually update Overview (Default) and not the actual Overview where the
     button was pressed. Fix for this is to have new macro which takes the active
@@ -59,12 +54,33 @@ issues before first release.**
     example generated. Add time measurements to the code and see are there any
     easy improvements. Socket communication will always be slow, no matter what.
 
+
+## Safety notes about Movelister
+
+There are two security precautions to keep in mind if you want to share
+Movelister-templates with other people. First is that macros can contain
+arbitrary code - you should always be careful when opening Movelister-templates
+from any unofficial source.
+
+Movelister comes with a script that deletes any existing code from a LibreOffice
+Calc-file and only adds the newest Movelister functionality, so that's one way
+to get a "verified" Movelister-sheet for yourself. There's its own section
+detailing this process near the end of this file.
+
+Another security issue is that the "Filters"-column in the Modifiers-sheet is
+interpreted as code by Movelister. In theory, someone could run malicious code
+by hiding it somewhere on this column. It's recommended to examine this column
+closely before using Movelister-templates from unofficial sources. You could
+always copy the visible contents of the column and delete everything else on
+it (sans the header) to ensure it doesn't have anything hidden on it.
+
+
 ## How To Use
 
-Project is released as a LibreOffice document which has all project sources
-embedded inside of it. Meaning no additional installation needed and your game
-data can be shared just by sharing the document. Movelister is supported on both
-Windows and Linux.
+Movelister is released as a LibreOffice document that has all the project
+sources embedded inside of it. No additional installation is required, and your
+mechanics notes data can be shared by just sharing the document. Movelister is
+supported on both Windows and Linux.
 
 Before using Movelister check [dependencies](#dependencies) below like
 downloading latest LibreOffice. Then to use Movelister download template
@@ -78,7 +94,7 @@ and start glitching your game. To learn how to use Movelister, please read the
 
 ### Windows
 
-On Windows install LibreOffice 5 or newer and you are able to use Movelister.
+On Windows install LibreOffice 5 or newer to be able to use Movelister.
 On Windows Python is included and self-contained with LibreOffice installation
 so no separate Python installation needed.
 
@@ -108,7 +124,7 @@ Movelister is implemented on LibreOffice Calc (spreadsheet) and is used with
 Python macros. Macros call further Python code which is responsible for
 manipulating tables and sheets underneath. Python process responsible of
 executing macros is communicating to LibreOffice process using socket. Socket
-communication is handler by LibreOffice's UNO (Universal Network Objects)
+communication is handled by LibreOffice's UNO (Universal Network Objects)
 interface. UNO interface is used to read and write sheet data.
 
 ## Contributing

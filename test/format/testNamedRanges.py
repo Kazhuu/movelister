@@ -1,7 +1,7 @@
 from test.officeTestCase import OfficeTestCase
 
+from movelister.core import namedRanges
 from movelister.core.context import Context
-from movelister.format import namedRanges
 from movelister.sheet.sheet import Sheet, MASTER_LIST_SHEET_NAME, MODIFIER_LIST_SHEET_NAME
 
 
