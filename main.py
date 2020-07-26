@@ -28,30 +28,24 @@ elif __name__ == 'ooo_script_framework': # Name when executed from LibreOffice.
     url = fileUrlToSystemPath('{}/{}'.format(doc.URL,'Scripts/python/pythonpath'))
     sys.path.insert(0, url)
 
-# TODO: Remove imports we don't use anymore.
 from movelister.core import cursor, names, errors  # noqa
 from movelister.core.namedRanges import NamedRanges
 from movelister.core.context import Context # noqa
 from movelister.format import action, overview # noqa
 from movelister.format.details import DetailsFormatter # noqa
 from movelister.format.overview import OverviewFormatter # noqa
-from movelister.model.action import Action # noqa
-from movelister.model.color import Color # noqa
-from movelister.process.factory import OverviewFactory # noqa
 from movelister.process.updateOverview import UpdateOverview # noqa
 from movelister.process.updateDetails import UpdateDetails # noqa
 from movelister.sheet import helper # noqa
 from movelister.sheet.about import About # noqa
 from movelister.sheet.details import Details # noqa
-from movelister.sheet.inputs import Inputs # noqa
 from movelister.sheet.master import Master # noqa
 from movelister.sheet.modifiers import Modifiers # noqa
 from movelister.sheet.overview import Overview # noqa
 from movelister.sheet.sheet import Sheet, MASTER_LIST_SHEET_NAME # noqa
 from movelister.sheet.sheet import MODIFIER_LIST_SHEET_NAME, ABOUT_SHEET_NAME# noqa
 from movelister.ui import message_box  # noqa
-from movelister.utils.alignment import HorizontalAlignment, VerticalAlignment # noqa
-from movelister.utils import color, convert, format, validation, version # noqa
+from movelister.utils import format, validation, version # noqa
 
 # Setup context automatically when macro is run from the LibreOffice.
 if __name__ != '__main__':
@@ -120,8 +114,14 @@ def updateOverview(*args):
         viewName = masterSheet.getOverviewName()
         overviewSheetName = names.getOverviewName(viewName)
 
+        # Some error checking.
         if not viewName:
-            message_box.showWarningWithOk('Provide Overview name to update.')
+            message_box.showWarningWithOk('You can\'t generate an Overview if no View-name is set in cell C1.')
+            return
+
+        if viewName not in masterSheet.getViewNames():
+            message_box.showWarningWithOk('You can\'t generate a View that has no Actions. Make sure at least one ' +
+                                          'Action uses the View-name written in cell C1 before continuing.')
             return
 
         oldOverview = Overview(viewName)
@@ -135,11 +135,11 @@ def updateOverview(*args):
         newOverview = UpdateOverview.update(oldOverview, viewName)
 
         # Place new Overview sheet on the same position as the previous one. If previous one
-        # does not exist, then place if right of the Master sheet instead.
+        # does not exist, then place right of the Master sheet instead.
         position = Sheet.getPosition(overviewSheetName)
         if not position:
             position = Sheet.getPosition(MASTER_LIST_SHEET_NAME) + 1
-        # Delete old sheet if exist.
+        # Delete old sheet if exists.
         Sheet.deleteSheetByName(overviewSheetName)
         # Generate a new one.
         formatter = OverviewFormatter(newOverview)
@@ -157,6 +157,10 @@ def updateOverview(*args):
         message_box.showWarningWithOk(str(e))
 
 def showCurrentVersion(*args):
+    """
+    A macro function used in the About-sheet. Shows current version
+    alongside other data about Movelister.
+    """
     ver = version.getCurrentVersion()
     credits = 'Kazhuu and Nelitarnia'
     link = 'https://github.com/Kazhuu/movelister'
@@ -172,6 +176,6 @@ def showCurrentVersion(*args):
 # Run this when executed from the command line.
 if __name__ == '__main__':
     Context.setup(host='localhost', port=2002)
-    showCurrentVersion()
+    # showCurrentVersion()
     # updateDetails(activeSheet='Overview (Default)')
-    # updateOverview()
+    updateOverview()

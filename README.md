@@ -1,10 +1,10 @@
 # Movelister
 
-Movelister is a tool for creating various types of in-depth notes
-about video game mechanics data in sheet form. This could include simple
-move lists, detailed mechanics notes for glitchers or other type of tables which
-model the limits of a game's potential interactivity. Project might also be used
-as a tutorial or learning experience how to write Python macros for LibreOffice.
+Movelister is a tool for creating various types of in-depth notes about video
+game mechanics in sheet form. This could include simple move lists, detailed
+mechanics notes for glitchers or other type of tables that model the limits of
+a game's potential interactivity. This project might also be used as a tutorial
+or learning experience on how to write Python macros for LibreOffice.
 
 **Movelister is a work in progress and can be used. Check TODO below for know
 issues before first release.**
@@ -14,12 +14,12 @@ issues before first release.**
 <!-- vim-markdown-toc GFM -->
 
 * [TODO Before Release](#todo-before-release)
-* [Safety notes about Movelister] (#safety-notes-about-movelister)
 * [How To Use](#how-to-use)
 * [Dependencies](#dependencies)
   * [Windows](#windows)
   * [Linux (Ubuntu and Arch)](#linux-ubuntu-and-arch)
 * [How It Works](#how-it-works)
+* [Safety notes about Movelister] (#safety-notes-about-movelister)
 * [Contributing](#contributing)
   * [Linux (Ubuntu and Arch)](#linux-ubuntu-and-arch-1)
     * [Running Macros From LibreOffice](#running-macros-from-libreoffice)
@@ -38,9 +38,6 @@ issues before first release.**
 * Details sheet is missing coloring on some columns when entering result data.
     This is because conditional formatting is places by hand and not programmatically
     when Details sheet is generated.
-* When generating non-existing view in Master List Overview sheet will be
-    generated and Python code will throw an error after that. User should be
-    warned that not view exists with that name.
 * Input list from Input sheet is not taken from correct input list when Details
     sheet is generated. At the moment Default input list is always taken.
 * Input sheet color column is not used. Use it in Details sheet on result column
@@ -53,26 +50,6 @@ issues before first release.**
 * Generating Details sheet can be quite slow if more than 10 000 lines are for
     example generated. Add time measurements to the code and see are there any
     easy improvements. Socket communication will always be slow, no matter what.
-
-
-## Safety notes about Movelister
-
-There are two security precautions to keep in mind if you want to share
-Movelister-templates with other people. First is that macros can contain
-arbitrary code - you should always be careful when opening Movelister-templates
-from any unofficial source.
-
-Movelister comes with a script that deletes any existing code from a LibreOffice
-Calc-file and only adds the newest Movelister functionality, so that's one way
-to get a "verified" Movelister-sheet for yourself. There's its own section
-detailing this process near the end of this file.
-
-Another security issue is that the "Filters"-column in the Modifiers-sheet is
-interpreted as code by Movelister. In theory, someone could run malicious code
-by hiding it somewhere on this column. It's recommended to examine this column
-closely before using Movelister-templates from unofficial sources. You could
-always copy the visible contents of the column and delete everything else on
-it (sans the header) to ensure it doesn't have anything hidden on it.
 
 
 ## How To Use
@@ -94,9 +71,9 @@ and start glitching your game. To learn how to use Movelister, please read the
 
 ### Windows
 
-On Windows install LibreOffice 5 or newer to be able to use Movelister.
-On Windows Python is included and self-contained with LibreOffice installation
-so no separate Python installation needed.
+You have to install LibreOffice 5 or newer to be able to use Movelister
+on Windows. Python is included and self-contained with LibreOffice, so no
+separate Python installation is needed.
 
 ### Linux (Ubuntu and Arch)
 
@@ -106,11 +83,12 @@ Install LibreOffice from sources or package repository
 sudo apt install libreoffice
 ```
 
-Movelister needs Python 3 to work properly. On Linux LibreOffice is using
-system's Python installation. Meaning it's necessary to install Python if not
-included in your system's installation. After that you need to install
-LibreOffice Python support packages. On Ubuntu install following packages to
-enable Python for LibreOffice:
+Movelister needs Python 3 to work properly.
+
+LibreOffice uses the system's own Python on Linux, so you have to install
+Python on your system if it's not installed already. After that, you also
+need to install LibreOffice Python support packages. On Ubuntu, install
+following packages to enable Python for LibreOffice:
 
 ```
 sudo apt install libreoffice-script-provider-python uno-libs3 python3-uno
@@ -126,6 +104,25 @@ manipulating tables and sheets underneath. Python process responsible of
 executing macros is communicating to LibreOffice process using socket. Socket
 communication is handled by LibreOffice's UNO (Universal Network Objects)
 interface. UNO interface is used to read and write sheet data.
+
+## Safety notes about Movelister
+
+There are two security precautions to keep in mind if you want to share
+Movelister-templates with other people. First is that macros can contain
+arbitrary code - you should always be careful when opening Movelister-templates
+from any unofficial source.
+
+Movelister comes with a script that deletes any existing code from a LibreOffice
+Calc-file and only adds the newest Movelister functionality, so that's one way
+to get a "verified" Movelister-sheet for yourself. There's its own section
+detailing this process near the end of this file.
+
+Another security issue is that the "Filters"-column in the Modifiers-sheet is
+interpreted as code by Movelister. In theory, someone could run malicious code
+by hiding it somewhere on this column. It's recommended to examine this column
+closely before using Movelister-templates from unofficial sources. You could
+always copy the visible contents of the column and delete everything else on
+it (sans the header) to ensure it doesn't have anything hidden on it.
 
 ## Contributing
 

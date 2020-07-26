@@ -44,6 +44,12 @@ class Master:
         """
         return self.actions[view].get(name, None)
 
+    def getViewNames(self):
+        """
+        This function returns the names of the existing Views.
+        """
+        return self.actions.keys()
+
     def getOverviewName(self):
         """
         Return name from user input field on Master List sheet.
