@@ -1,10 +1,9 @@
-from com.sun.star.uno import RuntimeException
-
 from test.officeTestCase import OfficeTestCase
 from movelister.core.context import Context
 from movelister.sheet.sheet import Sheet, MASTER_LIST_SHEET_NAME, MODIFIER_LIST_SHEET_NAME
 from movelister.core import names
 
+from com.sun.star.uno import RuntimeException
 
 class SheetTestCase(OfficeTestCase):
 
@@ -22,8 +21,7 @@ class SheetTestCase(OfficeTestCase):
         self.assertEqual(position, 4)
 
     def testGetWrongPosition(self):
-        with self.assertRaises(ValueError):
-            Sheet.getPosition('fails')
+        self.assertEqual(Sheet.getPosition('fails'), None)
 
     def testGetSheetNames(self):
         names = Sheet.getSheetNames()
@@ -50,8 +48,7 @@ class SheetTestCase(OfficeTestCase):
 
     def testNewSheetRightOfWithWrongName(self):
         rightOfName = 'fail'
-        with self.assertRaises(ValueError):
-            Sheet.newSheetRightOf(rightOfName, 'will fail')
+        self.assertEqual(Sheet.newSheetRightOf(rightOfName, 'will fail'), None)
 
     def testNewOverview(self):
         name = 'test'

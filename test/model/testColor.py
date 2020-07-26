@@ -1,5 +1,5 @@
 from test.officeTestCase import OfficeTestCase
-from movelister.model import color
+from movelister.model.color import Color
 from movelister.sheet.modifiers import Modifiers
 
 
@@ -14,14 +14,14 @@ class ColorTestCase(OfficeTestCase):
         """
         sheet = Modifiers('Modifiers').sheet
         cell = sheet.getCellByPosition(0, 0)
-        c = color.Color(0)
+        c = Color(0)
         c.alpha = 0
         c.red = 0
         c.green = 0
         c.blue = 255
         cell.CellBackColor = c.value
         # Read cell value again and assert that color changed.
-        c2 = color.Color(sheet.getCellByPosition(0, 0).CellBackColor)
+        c2 = Color(sheet.getCellByPosition(0, 0).CellBackColor)
         self.assertEqual(c2.alpha, 0)
         self.assertEqual(c2.red, 0)
         self.assertEqual(c2.green, 0)
@@ -32,9 +32,11 @@ class ColorTestCase(OfficeTestCase):
         Test reading color value from a cell and check that Color.value
         returns the same value. Also asserts individual colors.
         """
+        # TODO: For some reason color value is not the same as set in
+        # LibreOffice. Figure out why and fix to Color class.
         sheet = Modifiers('Modifiers').sheet
         cell = sheet.getCellByPosition(0, 0)
-        c = color.Color(cell.CellBackColor)
+        c = Color(cell.CellBackColor)
         self.assertEqual(c.value, cell.CellBackColor)
         self.assertEqual(c.red, 230)
         self.assertEqual(c.green, 230)

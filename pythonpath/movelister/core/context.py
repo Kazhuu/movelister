@@ -74,7 +74,7 @@ class Context(Singleton):
     def getDocument(cls):
         """
         Returns current document component.
-        RunTimeError is raised if setup() is not called before this.
+        RuntimeError is raised if setup() is not called before this.
         """
         return cls.getDesktop().getCurrentComponent()
 
@@ -95,3 +95,11 @@ class Context(Singleton):
         if not hasattr(cls, 'desktop'):
             raise RuntimeError(cls.EXCEPTION_MESSAGE)
         return cls.context
+
+    @classmethod
+    def createInstance(cls, objectName):
+        """
+        Construct instance of given UNO object and return it. Return None if
+        object is not found.
+        """
+        return cls.getDocument().createInstance(objectName)

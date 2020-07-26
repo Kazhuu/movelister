@@ -1,8 +1,10 @@
 from movelister.sheet.sheet import Sheet
 from movelister.sheet import helper
-from movelister.core import cursor
+from movelister.core import cursor, styles
 from movelister.model.input import Input
 from movelister.format import filter
+
+from collections import defaultdict
 
 
 class Inputs:
@@ -22,30 +24,41 @@ class Inputs:
         self.inputColors = helper.getCellColorsFromColumn(
             self.sheet, self.colorColumnIndex, self.dataBeginRow, len(self.data)
         )
+        self.inputs = self._parseInputs()
 
     def getInputNames(self, viewName='Default'):
-        inputs = []
-        rows = self.dataRows
-        rows = filter.filterRows(lambda row: row[self.inputsColumnIndex] == viewName, self.dataRows)
-        return [row[self.nameColumnIndex] for row in rows]
+        return [instance.name for instance in self.inputs[viewName]]
 
-    def getInputs(self, listName=None):
+    def getInputs(self, viewName=None):
         """
-        Return list of Input class instances.
+        Return list of Input class instances using given view. If view is not
+        given then return all inputs as a list.
         """
+        if viewName:
+            return self.inputs[viewName]
         inputs = []
-        rows = self.dataRows
-        if listName:
-            rows = filter.filterRows(lambda row: row[self.inputsColumnIndex] == listName, self.dataRows)
-        for index, row in enumerate(rows):
-            if self._isValidRow(row):
-                kwargs = self._rowToKwargs(row)
-                kwargs['color'] = self.inputColors[index]
-                inputs.append(Input(**kwargs))
+        for inputList in self.inputs.values():
+            inputs.extend(inputList)
         return inputs
 
-    def _isValidRow(self, row):
-        return row[self.nameColumnIndex] != ''
+    def createInputStyles(self):
+        """
+        Create cell styles based on used defined input names and their colors.
+        """
+        for viewName, inputs in self.inputs.items():
+            for inputInstance in inputs:
+                name = '({0}/{1})/{2}'.format('Input', viewName, inputInstance.name)
+                styles.addCellStyle(name, inputInstance.color)
+
+    def _parseInputs(self):
+        inputs = defaultdict(list)
+        for index, row in enumerate(self.dataRows):
+            if row[self.nameColumnIndex] != '':
+                kwargs = self._rowToKwargs(row)
+                kwargs['color'] = self.inputColors[index]
+                viewName = row[self.inputsColumnIndex]
+                inputs[viewName].append(Input(**kwargs))
+        return inputs
 
     def _rowToKwargs(self, row):
         kwargs = {'name': row[self.nameColumnIndex]}

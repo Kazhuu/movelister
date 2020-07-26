@@ -6,6 +6,9 @@ from com.sun.star.uno import RuntimeException
 
 import re
 
+def getNameRanges():
+    return Context.getDocument().NamedRanges.getElementNames()
+
 class NamedRanges:
 
     def __init__(self, UnoSheet, column, viewName):

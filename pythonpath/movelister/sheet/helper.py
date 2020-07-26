@@ -1,4 +1,5 @@
 from movelister.core.context import Context
+from movelister.model.color import Color
 
 
 def getActiveSheetName():
@@ -62,7 +63,8 @@ def getCellColorsFromColumn(sheet, column, top, bottom):
     colors = []
     colorRange = sheet.getCellRangeByPosition(column, top, column, bottom)
     for index in range(0, bottom - top):
-        colors.append(colorRange.getCellByPosition(0, index).CellBackColor)
+        value = colorRange.getCellByPosition(0, index).CellBackColor
+        colors.append(Color(value))
     return colors
 
 

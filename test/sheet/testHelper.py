@@ -27,7 +27,7 @@ class SheetHelperTestCase(OfficeTestCase):
         document = Context.getDocument()
         activeSheet = document.getCurrentController().getActiveSheet()
         name = helper.getActiveSheetName()
-        self.assertEqual(name, 'Master List')
+        self.assertEqual(name, 'Inputs')
 
     def testGetCellColorsFromColumn(self):
         """
@@ -37,7 +37,7 @@ class SheetHelperTestCase(OfficeTestCase):
                                                 self.master.dataBeginRow, len(self.master.data))
         self.assertTrue(colors)
         for color in colors:
-            self.assertIsInstance(color, int)
+            self.assertIsInstance(color.value, int)
 
     def testGetColumnPosition(self):
         """
