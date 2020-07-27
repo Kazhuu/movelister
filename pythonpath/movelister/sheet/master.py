@@ -70,7 +70,7 @@ class Master:
     def getActionStyleNames(self, viewName):
         names = []
         for action in self.actions[viewName].values():
-                names.append([action.name, self._formatStyleName(viewName, action.name)])
+            names.append([action.name, self._formatStyleName(viewName, action.name)])
         return names
 
     def _formatStyleName(self, viewName, actionName):
