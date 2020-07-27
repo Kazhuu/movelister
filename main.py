@@ -103,7 +103,7 @@ def updateDetails(*args, **kwargs):
         masterSheet = Master(MASTER_LIST_SHEET_NAME)
         resultsSheet = Results(RESULT_LIST_SHEET_NAME)
         inputSheet = Inputs(INPUT_LIST_SHEET_NAME)
-        conditionalFormat.createDetailsConditionalFormats(unoDetailsSheet, masterSheet, resultsSheet, inputSheet)
+        conditionalFormat.createDetailsConditionalFormats(unoDetailsSheet, masterSheet, resultsSheet, inputSheet, viewName)
         # Set new sheet as currently active sheet.
         helper.setActiveSheet(unoDetailsSheet)
     except errors.MovelisterError as e:

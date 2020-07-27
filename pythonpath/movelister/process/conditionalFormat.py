@@ -4,15 +4,15 @@ from com.sun.star.sheet.ConditionOperator import EQUAL
 from movelister.core import cursor
 
 
-def createDetailsConditionalFormats(detailsUnoSheet, masterSheet, resultsSheet, inputsSheet):
+def createDetailsConditionalFormats(detailsUnoSheet, masterSheet, resultsSheet, inputsSheet, viewName):
     """
     Create conditional formats for the given details sheet. Three conditional
     format areas are created. One for action names, one for input names and one
     largest one for results of different phases.
     """
     createResultsConditionalFormat(detailsUnoSheet, resultsSheet)
-    createInputsConditionalFormat(detailsUnoSheet, inputsSheet)
-    createActionConditionalFormats(detailsUnoSheet, masterSheet)
+    createInputsConditionalFormat(detailsUnoSheet, inputsSheet, viewName)
+    createActionConditionalFormats(detailsUnoSheet, masterSheet, viewName)
 
 
 def createResultsConditionalFormat(detailsUnoSheet, resultsSheet):
@@ -28,27 +28,27 @@ def createResultsConditionalFormat(detailsUnoSheet, resultsSheet):
     return _createConditionalFormat(resultRange, resultStyleNames)
 
 
-def createInputsConditionalFormat(detailsUnoSheet, inputsSheet):
+def createInputsConditionalFormat(detailsUnoSheet, inputsSheet, viewName):
     """
     Create conditional format to input column which applies background color
     from Inputs sheet for different input names.
     """
     inputColumn = 2
     rowCount = cursor.getHeight(detailsUnoSheet)
-    inputStyleNames = inputsSheet.getInputStylesNames()
+    inputStyleNames = inputsSheet.getInputStylesNames(viewName)
     inputRange = detailsUnoSheet.getCellRangeByPosition(inputColumn, 1, inputColumn, rowCount)
     inputConditionalFormat = inputRange.ConditionalFormat
     return _createConditionalFormat(inputRange, inputStyleNames)
 
 
-def createActionConditionalFormats(detailsUnoSheet, masterSheet):
+def createActionConditionalFormats(detailsUnoSheet, masterSheet, viewName):
     """
     Create conditional format for action column which applies background color
     from Master List sheet for different action names.
     """
     actionColumn = 0
     rowCount = cursor.getHeight(detailsUnoSheet)
-    actionStyleNames = masterSheet.getActionStyleNames()
+    actionStyleNames = masterSheet.getActionStyleNames(viewName)
     actionRange = detailsUnoSheet.getCellRangeByPosition(actionColumn, 1, actionColumn, rowCount)
     actionConditionalFormat = actionRange.ConditionalFormat
     return _createConditionalFormat(actionRange, actionStyleNames)

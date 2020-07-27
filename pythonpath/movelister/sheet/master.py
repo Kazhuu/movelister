@@ -67,10 +67,9 @@ class Master:
                 name = self._formatStyleName(viewName, action.name)
                 styles.addCellStyle(name, action.color)
 
-    def getActionStyleNames(self):
+    def getActionStyleNames(self, viewName):
         names = []
-        for viewName, actionsDict in self.actions.items():
-            for action in actionsDict.values():
+        for action in self.actions[viewName].values():
                 names.append([action.name, self._formatStyleName(viewName, action.name)])
         return names
 

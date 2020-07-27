@@ -19,7 +19,7 @@ issues before first release.**
   * [Windows](#windows)
   * [Linux (Ubuntu and Arch)](#linux-ubuntu-and-arch)
 * [How It Works](#how-it-works)
-* [Safety notes about Movelister] (#safety-notes-about-movelister)
+* [Safety notes about Movelister](#safety-notes-about-movelister)
 * [Contributing](#contributing)
   * [Linux (Ubuntu and Arch)](#linux-ubuntu-and-arch-1)
     * [Running Macros From LibreOffice](#running-macros-from-libreoffice)
@@ -34,14 +34,13 @@ issues before first release.**
 
 ## TODO Before Release
 
-* Action color column is not used from Master List sheet.
-* Details sheet is missing coloring on some columns when entering result data.
-    This is because conditional formatting is places by hand and not programmatically
-    when Details sheet is generated.
+* When details is generated for multiple views, inputs column conditional
+    formatting is created depending on the details view name used. Input column
+    formatting should be done based on action input list name, not details view
+    name. Change code so that action input list is used for conditional
+    formatting.
 * Input list from Input sheet is not taken from correct input list when Details
     sheet is generated. At the moment Default input list is always taken.
-* Input sheet color column is not used. Use it in Details sheet on result column
-    with conditional formatting.
 * Update manual to cover everything with examples.
 * Generating Details sheet can be quite slow if more than 10 000 lines are for
     example generated. Add time measurements to the code and see are there any

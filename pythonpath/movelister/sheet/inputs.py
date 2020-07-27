@@ -50,11 +50,10 @@ class Inputs:
                 name = self._formatStyleName(viewName, inputInstance.name)
                 styles.addCellStyle(name, inputInstance.color)
 
-    def getInputStylesNames(self):
+    def getInputStylesNames(self, viewName):
         stylesPairs = []
-        for viewName, inputs in self.inputs.items():
-            for inputInstance in inputs:
-                stylesPairs.append([inputInstance.name, self._formatStyleName(viewName, inputInstance.name)])
+        for inputInstance in self.inputs[viewName]:
+            stylesPairs.append([inputInstance.name, self._formatStyleName(viewName, inputInstance.name)])
         return stylesPairs
 
     def _formatStyleName(self, viewName, inputName):
