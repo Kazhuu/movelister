@@ -86,7 +86,7 @@ class OverviewFormatter:
 
             # Ensures that no runtime error is created from reading from a too high index.
             if a != len(overview.modifiers) - 1:
-                nextColor = color.Color(modifiers.modifierColors[a + 1])
+                nextColor = color.Color(modifiers.modifierColors[a + 1].value)
 
             # Compares the color value of the current and next column. If they're the same
             # then they can be colored in the same CellRange to save time.
