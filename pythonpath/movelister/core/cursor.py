@@ -9,12 +9,21 @@ def getUsedAreaSize(sheet):
     cursor.gotoEndOfUsedArea(True)
     return cursor.getRangeAddress()
 
+def getHeight(sheet):
+    """
+    Get amount of rows in given sheet.
+    """
+    return getUsedAreaSize(sheet).EndRow
 
-def getColumnLength(sheet):
+def getWidth(sheet):
     """
     Get amount of columns in given sheet.
     """
     return getUsedAreaSize(sheet).EndColumn
+
+def getWidthAndHeight(sheet):
+    cellRange = getUsedAreaSize(sheet)
+    return [cellRange.EndColumn, cellRange.EndRow]
 
 
 def getSheetContent(sheet):

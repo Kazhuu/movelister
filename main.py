@@ -36,14 +36,18 @@ from movelister.format.details import DetailsFormatter # noqa
 from movelister.format.overview import OverviewFormatter # noqa
 from movelister.process.updateOverview import UpdateOverview # noqa
 from movelister.process.updateDetails import UpdateDetails # noqa
+from movelister.process import conditionalFormat # noqa
+from movelister.process.updateStyles import UpdateStyles # noqa
 from movelister.sheet import helper # noqa
 from movelister.sheet.about import About # noqa
 from movelister.sheet.details import Details # noqa
 from movelister.sheet.master import Master # noqa
 from movelister.sheet.modifiers import Modifiers # noqa
 from movelister.sheet.overview import Overview # noqa
+from movelister.sheet.results import Results # noqa
+from movelister.sheet.inputs import Inputs
 from movelister.sheet.sheet import Sheet, MASTER_LIST_SHEET_NAME # noqa
-from movelister.sheet.sheet import MODIFIER_LIST_SHEET_NAME, ABOUT_SHEET_NAME# noqa
+from movelister.sheet.sheet import MODIFIER_LIST_SHEET_NAME, ABOUT_SHEET_NAME, RESULT_LIST_SHEET_NAME, INPUT_LIST_SHEET_NAME # noqa
 from movelister.ui import message_box  # noqa
 from movelister.utils import format, validation, version # noqa
 
@@ -84,7 +88,7 @@ def updateDetails(*args, **kwargs):
         formatter = DetailsFormatter(newDetails, parentOverview)
         unoDetailsSheet = formatter.generate()
         # Make columns width optimal.
-        length = cursor.getColumnLength(unoDetailsSheet)
+        length = cursor.getWidth(unoDetailsSheet)
         format.setOptimalWidthToRange(unoDetailsSheet, 0, length)
         # Generate data validation.
         validation.setDataValidationToDetailsSheet(unoDetailsSheet, viewName)
@@ -92,6 +96,14 @@ def updateDetails(*args, **kwargs):
         about = About(ABOUT_SHEET_NAME)
         if about.isGenerateNamedRangesOn():
             NamedRanges(unoDetailsSheet, 0, viewName).generate()
+        # Generate cell styles used for details sheet.
+        UpdateStyles.update()
+        # Create conditional format ranges to the new details sheet which uses
+        # styles created above.
+        masterSheet = Master(MASTER_LIST_SHEET_NAME)
+        resultsSheet = Results(RESULT_LIST_SHEET_NAME)
+        inputSheet = Inputs(INPUT_LIST_SHEET_NAME)
+        conditionalFormat.createDetailsConditionalFormats(unoDetailsSheet, masterSheet, resultsSheet, inputSheet)
         # Set new sheet as currently active sheet.
         helper.setActiveSheet(unoDetailsSheet)
     except errors.MovelisterError as e:
@@ -101,9 +113,10 @@ def updateDetails(*args, **kwargs):
 
 def updateOverviewFromActiveSheet(*args):
     """
-    This function is used in the Overview-template buttons. It checks if Overview
-    is attempted to update from an Overview instead of Master List and gives the
-    relevat Overview-name from sheet instead of Master List in that case.
+    This function is used in the Overview-template buttons. It checks if
+    Overview is attempted to update from an Overview instead of Master List and
+    gives the relevant Overview-name from sheet instead of Master List in that
+    case.
     """
     active = helper.getActiveSheetName()
 
@@ -164,7 +177,7 @@ def updateOverview(*args, **kwargs):
         formatter = OverviewFormatter(newOverview)
         unoOverviewSheet = formatter.generate(position)
         # Make columns width optimal.
-        length = cursor.getColumnLength(unoOverviewSheet)
+        length = cursor.getWidth(unoOverviewSheet)
         format.setOptimalWidthToRange(unoOverviewSheet, 0, length)
         # Fix sheet colors.
         formatter.setOverviewModifierColors(overviewSheetName)
@@ -195,5 +208,5 @@ def showCurrentVersion(*args):
 if __name__ == '__main__':
     Context.setup(host='localhost', port=2002)
     # showCurrentVersion()
-    # updateDetails(activeSheet='Overview (Default)')
-    updateOverview()
+    updateDetails(activeSheet='Overview (Default)')
+    # updateOverview()

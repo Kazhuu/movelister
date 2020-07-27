@@ -81,7 +81,7 @@ class OverviewFormatter:
 
         offset = 0
         for a in range(len(overview.modifiers)):
-            currentColor = color.Color(modifiers.modifierColors[a])
+            currentColor = color.Color(modifiers.modifierColors[a].value)
             nextColor = color.Color(0)
 
             # Ensures that no runtime error is created from reading from a too high index.

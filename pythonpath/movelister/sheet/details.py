@@ -39,7 +39,6 @@ class Details:
         """
         return next((detail for detail in self.details if detail == seekedDetail), None)
 
-
     def _readSheetContent(self):
         # We need master sheet to get number of phases for each Action in the
         # Detail class. Details sheet doesn't provide enough information.

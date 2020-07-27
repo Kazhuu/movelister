@@ -23,8 +23,17 @@ class Results:
         """
         for index, resultName in enumerate(self.resultNames):
             color = self.resultColors[index]
-            name = '({0})/{1}'.format('Result', resultName)
+            name = self._formatStyleName(resultName)
             styles.addCellStyle(name, color)
+
+    def getResultStyleNames(self):
+        results = []
+        for resultName in self.resultNames:
+            results.append([resultName, self._formatStyleName(resultName)])
+        return results
+
+    def _formatStyleName(self, resultName):
+        return '({0})/{1}'.format('Result', resultName)
 
     def _parseResults(self):
         results = []

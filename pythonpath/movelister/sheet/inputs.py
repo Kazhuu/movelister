@@ -47,8 +47,18 @@ class Inputs:
         """
         for viewName, inputs in self.inputs.items():
             for inputInstance in inputs:
-                name = '({0}/{1})/{2}'.format('Input', viewName, inputInstance.name)
+                name = self._formatStyleName(viewName, inputInstance.name)
                 styles.addCellStyle(name, inputInstance.color)
+
+    def getInputStylesNames(self):
+        stylesPairs = []
+        for viewName, inputs in self.inputs.items():
+            for inputInstance in inputs:
+                stylesPairs.append([inputInstance.name, self._formatStyleName(viewName, inputInstance.name)])
+        return stylesPairs
+
+    def _formatStyleName(self, viewName, inputName):
+        return '({0}/{1})/{2}'.format('Input', viewName, inputName)
 
     def _parseInputs(self):
         inputs = defaultdict(list)

@@ -64,8 +64,18 @@ class Master:
         """
         for viewName, actionsDict in self.actions.items():
             for action in actionsDict.values():
-                name = '({0}/{1})/{2}'.format('Action', viewName, action.name)
+                name = self._formatStyleName(viewName, action.name)
                 styles.addCellStyle(name, action.color)
+
+    def getActionStyleNames(self):
+        names = []
+        for viewName, actionsDict in self.actions.items():
+            for action in actionsDict.values():
+                names.append([action.name, self._formatStyleName(viewName, action.name)])
+        return names
+
+    def _formatStyleName(self, viewName, actionName):
+            return '({0}/{1})/{2}'.format('Action', viewName, actionName)
 
     def _parseActions(self):
         actions = defaultdict(OrderedDict)

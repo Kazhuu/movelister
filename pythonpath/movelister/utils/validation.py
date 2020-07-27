@@ -65,12 +65,10 @@ def setDataValidationToColumn(sheet, column, lastRow, name, type):
 
 
 def setDataValidationToDetailsSheet(sheet, name):
-    '''
+    """
     This function sets data validation to all the Phase-columns in a Details-sheet.
-    '''
-    area = cursor.getUsedAreaSize(sheet)
-    colNum = cursor.getColumnLength(sheet)
-    lastRow = area.EndRow
+    """
+    colNum, lastRow = cursor.getWidthAndHeight(sheet)
 
     # Prevent code from crashing if sheet is empty.
     if lastRow == 0:
