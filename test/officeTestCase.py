@@ -18,28 +18,32 @@ class OfficeTestCase(unittest.TestCase):
     document is re-opened between tests in read-only mode. Tests work under
     Linux.
     """
-    EXCEPTION_MESSAGE = 'Set environment variable MV_LB_BIN to point to the LibreOffice executable before running tests.'
+    BIN_EXCEPTION_MESSAGE = 'Set environment variable MV_LB_BIN to point to the LibreOffice executable before running tests.'
+    PORT_ERROR_MESSAGE = 'Set environment variable MV_LB_PORT to given port number to use for UNO socket communication.'
 
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
         # Get LibreOffice executable from env variable.
         libreOffice = os.environ.get('MV_LB_BIN')
+        port = os.environ.get('MV_LB_PORT')
         if libreOffice is None:
-            raise RuntimeError(cls.EXCEPTION_MESSAGE)
+            raise RuntimeError(cls.BIN_EXCEPTION_MESSAGE)
+        if port is None:
+            raise RuntimeError(cls.PORT_ERROR_MESSAGE)
         # Open LibreOffice process differently if platform is Windows.
         system = platform.system()
         if system == 'Windows':
             cls.process = Popen(libreOffice + 'templates\movelister_test.ods \
-                --norestore --accept=socket,host=localhost,port=2003;urp')
+                --norestore --accept=socket,host=localhost,port={0};urp'.format(port))
         else:
             cls.process = Popen(
                 [libreOffice, 'templates/movelister_test.ods', '--headless', '--norestore',
-                 '--accept=socket,host=localhost,port=2003;urp'])
+                 '--accept=socket,host=localhost,port={0};urp'.format(port)])
         time.sleep(1)
         # Reset and setup context.
         Context.reset()
-        Context.setup(host='localhost', port=2003)
+        Context.setup(host='localhost', port=port)
 
     @classmethod
     def tearDownClass(cls):
