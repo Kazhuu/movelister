@@ -1,6 +1,7 @@
 name: Movelister
 
 on:
+  # Enable to run this action manually.
   workflow_dispatch:
   push:
     branches: [ master ]
@@ -9,29 +10,25 @@ on:
 
 jobs:
   test:
-    name: Run Movelister unit test
+    name: Run unit tests
     runs-on: ubuntu-latest
-    env:
-      # Binary to run LibreOffice from the command line.
-      MV_LB_BIN : soffice
-      MV_LB_PORT: 8080
 
     steps:
     - uses: actions/checkout@v2
     - name: Install LibreOffice and dependencies
-      run: sudo apt install libreoffice-base libreoffice libreoffice-script-provider-python uno-libs3 python3-un
+      run: sudo apt install libreoffice-base libreoffice libreoffice-script-provider-python uno-libs3 python3-uno
     - name: Print Python version
       run: python3 --version
     - name: Print LibreOffce version
       run: $MV_LB_BIN --version
-    - name: Install dependencies
+    - name: Install Python dependencies
       run: |
         pip3 install flake8
     - name: Test
       run: python3 -m unittest
     - name: Lint with flake8
       run: |
-        # stop the build if there are Python syntax errors or undefined names
+        # Stop the build if there are Python syntax errors or undefined names
         flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
-        # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
-        flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
+        # Exit-zero treats all errors as warnings.
+        flake8 . --count --exit-zero --statistics

@@ -1,6 +1,5 @@
 import os
 import platform
-import time
 import unittest
 from subprocess import Popen
 
@@ -14,23 +13,21 @@ class OfficeTestCase(unittest.TestCase):
     tests. LibreOffice is opened in headless mode. Running tests also works
     when LibreOffice process is opened normally.
 
+    Environment variables MV_LB_BIN is used to locate LibreOffice executable
+    binary, defaults to 'soffice'. Environment variable MV_LB_PORT is used to
+    provide port number for UNO socket connection, defaults to 8080.
+
     Certain tests which modify the sheet don't work on Windows, because the
     document is re-opened between tests in read-only mode. Tests work under
     Linux.
     """
-    BIN_EXCEPTION_MESSAGE = 'Set environment variable MV_LB_BIN to point to the LibreOffice executable before running tests.'
-    PORT_ERROR_MESSAGE = 'Set environment variable MV_LB_PORT to given port number to use for UNO socket communication.'
 
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
         # Get LibreOffice executable from env variable.
-        libreOffice = os.environ.get('MV_LB_BIN')
-        port = os.environ.get('MV_LB_PORT')
-        if libreOffice is None:
-            raise RuntimeError(cls.BIN_EXCEPTION_MESSAGE)
-        if port is None:
-            raise RuntimeError(cls.PORT_ERROR_MESSAGE)
+        libreOffice = os.environ.get('MV_LB_BIN', 'soffice')
+        port = os.environ.get('MV_LB_PORT', 8080)
         # Open LibreOffice process differently if platform is Windows.
         system = platform.system()
         if system == 'Windows':
@@ -40,7 +37,6 @@ class OfficeTestCase(unittest.TestCase):
             cls.process = Popen(
                 [libreOffice, 'templates/movelister_test.ods', '--headless', '--norestore',
                  '--accept=socket,host=127.0.0.1,port={0};urp'.format(port)])
-        time.sleep(5)
         # Reset and setup context.
         Context.reset()
         Context.setup(host='127.0.0.1', port=port)

@@ -1,3 +1,5 @@
+import time
+
 import uno
 from com.sun.star.connection import NoConnectException
 
@@ -7,6 +9,8 @@ from .meta import Singleton
 class Context(Singleton):
 
     EXCEPTION_MESSAGE = 'setup runtime with Context.setup() method before doing anything else'
+    RECONNECT_ATTEMPTS = 5
+    RECONNECT_INTERVAL_SECONDS = 2
 
     @classmethod
     def setup(cls, **kwargs):
@@ -18,27 +22,33 @@ class Context(Singleton):
         """
         if not hasattr(cls, 'desktop'):
             # Get the uno component context from the PyUNO runtime.
-            cls.context = uno.getComponentContext()
             if 'host' in kwargs and 'port' in kwargs:
-                try:
-                    # Create the UnoUrlResolver with context.
-                    cls.resolver = cls.context.ServiceManager.createInstanceWithContext(
-                        'com.sun.star.bridge.UnoUrlResolver', cls.context)
-                    # Connect to the running office.
-                    uri = 'uno:socket,host={0},port={1};urp;StarOffice.ComponentContext'.format(
-                        kwargs['host'], kwargs['port']
-                    )
-                    cls.context = cls.resolver.resolve(uri)
-                    cls.serviceManager = cls.context.ServiceManager
-                    # Get the central desktop object.
-                    cls.desktop = cls.serviceManager.createInstanceWithContext(
-                        'com.sun.star.frame.Desktop', cls.context)
-                    print('connected to port {0} successfully'.format(kwargs['port']))
-                except NoConnectException:
-                    print('could not connect to LibreOffice socket at {0}:{1}'.format(kwargs['host'], kwargs['port']))
-                    print('make sure the socket is open')
-                    return None
+                cls.componentContext = uno.getComponentContext()
+                # Create the UnoUrlResolver with context.
+                cls.resolver = cls.componentContext.ServiceManager.createInstanceWithContext(
+                    'com.sun.star.bridge.UnoUrlResolver', cls.componentContext)
+                # Connect to the running office.
+                uri = 'uno:socket,host={0},port={1};urp;StarOffice.ComponentContext'.format(
+                    kwargs['host'], kwargs['port']
+                )
+                # Try to reconnect to the socket if LibreOffice process haven't fully started yet.
+                cls.context = None
+                for _ in range(cls.RECONNECT_ATTEMPTS):
+                    try:
+                        cls.context = cls.resolver.resolve(uri)
+                        break
+                    except NoConnectException:
+                        print('trying to reconnect to LibreOffice using socket')
+                        time.sleep(cls.RECONNECT_INTERVAL_SECONDS)
+                if cls.context == None:
+                    msg = 'Could not connect to LibreOffice socket at {0}:{1}. Is socket open?'.format(kwargs['host'], kwargs['port'])
+                    raise RuntimeError(msg)
+                cls.serviceManager = cls.context.ServiceManager
+                # Get the central desktop object.
+                cls.desktop = cls.serviceManager.createInstanceWithContext(
+                    'com.sun.star.frame.Desktop', cls.context)
             else:
+                cls.context = uno.getComponentContext()
                 cls.desktop = cls.context.ServiceManager.createInstanceWithContext(
                     "com.sun.star.frame.Desktop", cls.context
                 )
