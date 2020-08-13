@@ -9,8 +9,11 @@ on:
 
 jobs:
   test:
-    name: Movelister unit test
+    name: Run Movelister unit test
     runs-on: ubuntu-latest
+    env:
+      # Binary to run LibreOffice from the command line.
+      MV_LB_BIN : soffice
 
     steps:
     - uses: actions/checkout@v2
@@ -19,7 +22,7 @@ jobs:
     - name: Print Python version
       run: python3 --version
     - name: Print LibreOffce version
-      run: soffice --version
+      run: $MV_LB_BIN --version
     - name: Install dependencies
       run: |
         pip3 install flake8
