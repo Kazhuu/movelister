@@ -40,7 +40,7 @@ class OfficeTestCase(unittest.TestCase):
             cls.process = Popen(
                 [libreOffice, 'templates/movelister_test.ods', '--headless', '--norestore',
                  '--accept=socket,host=127.0.0.1,port={0};urp'.format(port)])
-        time.sleep(1)
+        time.sleep(5)
         # Reset and setup context.
         Context.reset()
         Context.setup(host='127.0.0.1', port=port)
