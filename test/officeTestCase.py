@@ -35,15 +35,15 @@ class OfficeTestCase(unittest.TestCase):
         system = platform.system()
         if system == 'Windows':
             cls.process = Popen(libreOffice + 'templates\movelister_test.ods \
-                --norestore --accept=socket,host=localhost,port={0};urp'.format(port))
+                --norestore --accept=socket,host=127.0.0.1,port={0};urp'.format(port))
         else:
             cls.process = Popen(
                 [libreOffice, 'templates/movelister_test.ods', '--headless', '--norestore',
-                 '--accept=socket,host=localhost,port={0};urp'.format(port)])
+                 '--accept=socket,host=127.0.0.1,port={0};urp'.format(port)])
         time.sleep(1)
         # Reset and setup context.
         Context.reset()
-        Context.setup(host='localhost', port=port)
+        Context.setup(host='127.0.0.1', port=port)
 
     @classmethod
     def tearDownClass(cls):
