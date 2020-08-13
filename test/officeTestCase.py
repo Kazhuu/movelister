@@ -45,6 +45,7 @@ class OfficeTestCase(unittest.TestCase):
     def tearDownClass(cls):
         # Terminate the opened process.
         cls.process.terminate()
+        time.sleep(1)
         super().tearDownClass()
 
     def setUp(self):
