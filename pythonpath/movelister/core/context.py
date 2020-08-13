@@ -33,6 +33,7 @@ class Context(Singleton):
                     # Get the central desktop object.
                     cls.desktop = cls.serviceManager.createInstanceWithContext(
                         'com.sun.star.frame.Desktop', cls.context)
+                    print('connected to port {0} successfully'.format(kwargs['port']))
                 except NoConnectException:
                     print('could not connect to LibreOffice socket at {0}:{1}'.format(kwargs['host'], kwargs['port']))
                     print('make sure the socket is open')
