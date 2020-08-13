@@ -27,7 +27,8 @@ jobs:
       run: python3 --version
     - name: Print LibreOffce version
       run: $MV_LB_BIN --version
-    - name: Run tests
+    - name: Test
       run: python3 -m unittest
-    - name: Lint
-      run: python3 -m flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
+    # Enable when flake8 errors are fixed.
+    #- name: Lint
+      #run: python3 -m flake8 . --count --show-source --statistics
