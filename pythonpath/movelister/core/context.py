@@ -10,7 +10,7 @@ class Context(Singleton):
 
     EXCEPTION_MESSAGE = 'setup runtime with Context.setup() method before doing anything else'
     RECONNECT_ATTEMPTS = 5
-    RECONNECT_INTERVAL_SECONDS = 2
+    RECONNECT_INTERVAL_SECONDS = 5
 
     @classmethod
     def setup(cls, **kwargs):
